@@ -1,0 +1,3 @@
+[submodule "secrets"]
+	path = secrets
+	url = ../secrets

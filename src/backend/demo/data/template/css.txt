@@ -1,0 +1,18 @@
+body {
+  background: white; 
+  font-family: arial
+}
+.header {
+  display: flex;
+  justify-content: space-between;
+}
+.header img {
+  width: 5cm;
+  margin-left: -0.4cm;
+}
+.body{
+  margin-top: 1.5rem
+}
+img {
+  max-width: 100%;
+}

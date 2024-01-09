@@ -1,0 +1,26 @@
+{
+  "extends": ["github>numerique-gouv/renovate-configuration"],
+  "dependencyDashboard": true,
+  "labels": ["dependencies", "noChangeLog"],
+  "packageRules": [
+    {
+      "enabled": false,
+      "groupName": "ignored python dependencies",
+      "matchManagers": ["pep621"],
+      "matchPackageNames": []
+    },
+    {
+      "enabled": false,
+      "groupName": "ignored js dependencies",
+      "matchManagers": ["npm"],
+      "matchPackageNames": [
+        "node",
+        "node-fetch",
+        "i18next-parser",
+        "eslint",
+        "react",
+        "react-dom"
+      ]
+    }
+  ]
+}

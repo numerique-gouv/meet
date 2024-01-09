@@ -1,0 +1,150 @@
+version: '3.8'
+
+services:
+  postgresql:
+    image: postgres:16
+    env_file:
+      - env.d/development/postgresql
+    ports:
+      - "15432:5432"
+
+  redis:
+    image: redis:5
+
+  mailcatcher:
+    image: sj26/mailcatcher:latest
+    ports:
+      - "1081:1080"
+
+  app-dev:
+    build:
+      context: .
+      target: backend-development
+      args:
+        DOCKER_USER: ${DOCKER_USER:-1000}
+    user: ${DOCKER_USER:-1000}
+    image: impress:backend-development
+    environment:
+      - PYLINTHOME=/app/.pylint.d
+      - DJANGO_CONFIGURATION=Development
+    env_file:
+      - env.d/development/common
+      - env.d/development/postgresql
+    ports:
+      - "8071:8000"
+    volumes:
+      - ./src/backend:/app
+      - ./data/static:/data/static
+    depends_on:
+        - postgresql
+        - mailcatcher
+        - redis
+        - nginx
+  
+  celery-dev:
+    user: ${DOCKER_USER:-1000}
+    image: impress:backend-development
+    command: ["celery", "-A", "impress.celery_app", "worker", "-l", "DEBUG"]
+    environment:
+      - DJANGO_CONFIGURATION=Development
+    env_file:
+      - env.d/development/common
+      - env.d/development/postgresql
+    volumes:
+      - ./src/backend:/app
+      - ./data/static:/data/static
+    depends_on:
+      - app-dev
+
+  app:
+    build:
+      context: .
+      target: backend-production
+      args:
+        DOCKER_USER: ${DOCKER_USER:-1000}
+    user: ${DOCKER_USER:-1000}
+    image: impress:backend-production
+    environment:
+      - DJANGO_CONFIGURATION=Demo
+    env_file:
+      - env.d/development/common
+      - env.d/development/postgresql
+    depends_on:
+      - postgresql
+      - redis
+
+  celery:
+    user: ${DOCKER_USER:-1000}
+    image: impress:backend-production
+    command: ["celery", "-A", "impress.celery_app", "worker", "-l", "INFO"]
+    environment:
+      - DJANGO_CONFIGURATION=Demo
+    env_file:
+      - env.d/development/common
+      - env.d/development/postgresql
+    depends_on:
+      - app
+
+  nginx:
+    image: nginx:1.25
+    ports:
+      - "8083:8083"
+    volumes:
+      - ./docker/files/etc/nginx/conf.d:/etc/nginx/conf.d:ro
+    depends_on:
+      - keycloak
+
+  dockerize:
+    image: jwilder/dockerize
+
+  crowdin:
+    image: crowdin/cli:3.16.0
+    volumes:
+      - ".:/app"
+    env_file:
+      - env.d/development/crowdin
+    user: "${DOCKER_USER:-1000}"
+    working_dir: /app
+
+  node:
+    image: node:18
+    user: "${DOCKER_USER:-1000}"
+    environment:
+      HOME: /tmp
+    volumes:
+      - ".:/app"
+
+  kc_postgresql:
+    image: postgres:14.3
+    ports:
+      - "5433:5432"
+    env_file:
+      - env.d/development/kc_postgresql
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:20.0.1
+    volumes:
+      - ./docker/auth/realm.json:/opt/keycloak/data/import/realm.json
+    command:
+      - start-dev
+      - --features=preview
+      - --import-realm
+      - --proxy=edge
+      - --hostname-url=http://localhost:8083
+      - --hostname-admin-url=http://localhost:8083/
+      - --hostname-strict=false
+      - --hostname-strict-https=false
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+      KC_DB: postgres
+      KC_DB_URL_HOST: kc_postgresql
+      KC_DB_URL_DATABASE: keycloak
+      KC_DB_PASSWORD: pass
+      KC_DB_USERNAME: impress
+      KC_DB_SCHEMA: public
+      PROXY_ADDRESS_FORWARDING: 'true'
+    ports:
+      - "8080:8080"
+    depends_on:
+      - kc_postgresql
