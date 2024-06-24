@@ -62,3 +62,17 @@ class UserAdmin(auth_admin.UserAdmin):
     ordering = ("is_active", "-is_superuser", "-is_staff", "-is_device", "-updated_at")
     readonly_fields = ("id", "sub", "email", "created_at", "updated_at")
     search_fields = ("id", "sub", "admin_email", "email")
+
+
+class ResourceAccessInline(admin.TabularInline):
+    """Admin class for the room user access model"""
+
+    model = models.ResourceAccess
+    extra = 0
+
+
+@admin.register(models.Room)
+class RoomAdmin(admin.ModelAdmin):
+    """Room admin interface declaration."""
+
+    inlines = (ResourceAccessInline,)

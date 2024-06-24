@@ -1,4 +1,12 @@
 """API endpoints"""
+import uuid
+
+from django.conf import settings
+from django.db.models import Q
+from django.http import Http404
+from django.shortcuts import get_object_or_404
+from django.utils.text import slugify
+
 from rest_framework import (
     decorators,
     mixins,
@@ -140,3 +148,131 @@ class UserViewSet(
         return drf_response.Response(
             self.serializer_class(request.user, context=context).data
         )
+
+
+class RoomViewSet(
+    mixins.CreateModelMixin,
+    mixins.DestroyModelMixin,
+    mixins.UpdateModelMixin,
+    viewsets.GenericViewSet,
+):
+    """
+    API endpoints to access and perform actions on rooms.
+    """
+
+    permission_classes = [permissions.RoomPermissions]
+    queryset = models.Room.objects.all()
+    serializer_class = serializers.RoomSerializer
+
+    def get_object(self):
+        """Allow getting a room by its slug."""
+        try:
+            uuid.UUID(self.kwargs["pk"])
+            filter_kwargs = {"pk": self.kwargs["pk"]}
+        except ValueError:
+            filter_kwargs = {"slug": slugify(self.kwargs["pk"])}
+        queryset = self.filter_queryset(self.get_queryset())
+        obj = get_object_or_404(queryset, **filter_kwargs)
+        # May raise a permission denied
+        self.check_object_permissions(self.request, obj)
+        return obj
+
+    def retrieve(self, request, *args, **kwargs):
+        """
+        Allow unregistered rooms when activated.
+        For unregistered rooms we only return a null id and the livekit room and token.
+        """
+        try:
+            instance = self.get_object()
+        except Http404:
+            if not settings.ALLOW_UNREGISTERED_ROOMS:
+                raise
+            slug = slugify(self.kwargs["pk"])
+            data = {
+                "id": None,
+                "livekit": {
+                    "room": slug,
+                    # todo - generate a proper token
+                    "token": "foo",
+                },
+            }
+        else:
+            data = self.get_serializer(instance).data
+
+        return drf_response.Response(data)
+
+    def list(self, request, *args, **kwargs):
+        """Limit listed rooms to the ones related to the authenticated user."""
+        user = self.request.user
+
+        if user.is_authenticated:
+            # todo - simplify this queryset
+            queryset = (
+                self.filter_queryset(self.get_queryset())
+                .filter(Q(users=user))
+                .distinct()
+            )
+        else:
+            queryset = self.get_queryset().none()
+
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+
+        serializer = self.get_serializer(queryset, many=True)
+        return drf_response.Response(serializer.data)
+
+    def perform_create(self, serializer):
+        """Set the current user as owner of the newly created room."""
+        room = serializer.save()
+        models.ResourceAccess.objects.create(
+            resource=room,
+            user=self.request.user,
+            role=models.RoleChoices.OWNER,
+        )
+
+
+class ResourceAccessListModelMixin:
+    """List mixin for resource access API."""
+
+    def get_permissions(self):
+        """User only needs to be authenticated to list rooms access"""
+        if self.action == "list":
+            permission_classes = [permissions.IsAuthenticated]
+        else:
+            return super().get_permissions()
+
+        return [permission() for permission in permission_classes]
+
+    def get_queryset(self):
+        """Return the queryset according to the action."""
+        queryset = super().get_queryset()
+        if self.action == "list":
+            user = self.request.user
+            queryset = queryset.filter(
+                Q(resource__accesses__user=user),
+                resource__accesses__role__in=[
+                    models.RoleChoices.ADMIN,
+                    models.RoleChoices.OWNER,
+                ],
+            ).distinct()
+        return queryset
+
+
+class ResourceAccessViewSet(
+    ResourceAccessListModelMixin,
+    mixins.CreateModelMixin,
+    mixins.DestroyModelMixin,
+    mixins.ListModelMixin,
+    mixins.RetrieveModelMixin,
+    mixins.UpdateModelMixin,
+    viewsets.GenericViewSet,
+):
+    """
+    API endpoints to access and perform actions on resource accesses.
+    """
+
+    permission_classes = [permissions.ResourceAccessPermission]
+    queryset = models.ResourceAccess.objects.all()
+    serializer_class = serializers.ResourceAccessSerializer

@@ -1,6 +1,8 @@
 """Permission handlers for the impress core app."""
 from rest_framework import permissions
 
+from ..models import RoleChoices
+
 ACTION_FOR_METHOD_TO_PERMISSION = {
     "versions_detail": {"DELETE": "versions_destroy", "GET": "versions_retrieve"}
 }
@@ -34,3 +36,49 @@ class IsSelf(IsAuthenticated):
     def has_object_permission(self, request, view, obj):
         """Write permissions are only allowed to the user itself."""
         return obj == request.user
+
+
+class RoomPermissions(permissions.BasePermission):
+    """
+    Permissions applying to the room API endpoint.
+    """
+
+    def has_permission(self, request, view):
+        """Only allow authenticated users for unsafe methods."""
+        if request.method in permissions.SAFE_METHODS:
+            return True
+
+        return request.user.is_authenticated
+
+    def has_object_permission(self, request, view, obj):
+        """Object permissions are only given to administrators of the room."""
+
+        if request.method in permissions.SAFE_METHODS:
+            return True
+
+        user = request.user
+
+        if request.method == "DELETE":
+            return obj.is_owner(user)
+
+        return obj.is_administrator(user)
+
+
+class ResourceAccessPermission(permissions.BasePermission):
+    """
+    Permissions for a room that can only be updated by room administrators.
+    """
+
+    def has_permission(self, request, view):
+        """Only allow authenticated users."""
+        return request.user.is_authenticated
+
+    def has_object_permission(self, request, view, obj):
+        """
+        Check that the logged-in user is administrator of the linked room.
+        """
+        user = request.user
+        if request.method == "DELETE" and obj.role == RoleChoices.OWNER:
+            return obj.user == user
+
+        return obj.resource.is_administrator(user)
