@@ -372,6 +372,9 @@ class Base(Configuration):
     DEFAULT_ROOM_IS_PUBLIC = values.BooleanValue(
         True, environ_name="MAGNIFY_DEFAULT_ROOM_IS_PUBLIC", environ_prefix=None
     )
+    ALLOW_UNREGISTERED_ROOMS = values.BooleanValue(
+        True, environ_name="MAGNIFY_ALLOW_UNREGISTERED_ROOMS", environ_prefix=None
+    )
 
     # pylint: disable=invalid-name
     @property

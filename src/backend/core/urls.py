@@ -10,6 +10,10 @@ from core.authentication.urls import urlpatterns as oidc_urls
 # - Main endpoints
 router = DefaultRouter()
 router.register("users", viewsets.UserViewSet, basename="users")
+router.register("rooms", viewsets.RoomViewSet, basename="rooms")
+router.register(
+    "resource-accesses", viewsets.ResourceAccessViewSet, basename="resource_accesses"
+)
 
 urlpatterns = [
     path(
