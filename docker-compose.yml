@@ -40,6 +40,7 @@ services:
         - mailcatcher
         - redis
         - nginx
+        - livekit
   
   celery-dev:
     user: ${DOCKER_USER:-1000}
@@ -72,6 +73,7 @@ services:
     depends_on:
       - postgresql
       - redis
+      - livekit
 
   celery:
     user: ${DOCKER_USER:-1000}
@@ -148,3 +150,11 @@ services:
       - "8080:8080"
     depends_on:
       - kc_postgresql
+
+  livekit:
+    image: livekit/livekit-server
+    entrypoint: /livekit-server --dev --bind 0.0.0.0
+    ports:
+      - "7880:7880"
+      - "7881:7881"
+      - "7882:7882/udp"
