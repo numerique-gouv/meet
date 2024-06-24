@@ -114,20 +114,6 @@ services:
     volumes:
       - ".:/app"
 
-  frontend-dev:
-    user: "${DOCKER_USER:-1000}"
-    build: 
-      context: .
-      dockerfile: ./src/frontend/Dockerfile
-      target: impress-dev
-    ports:
-      - "3000:3000"
-    volumes:
-      - ./src/frontend/apps/impress:/home/frontend/apps/impress
-      - /home/frontend/node_modules/
-    depends_on:
-      - celery-dev
-
   kc_postgresql:
     image: postgres:14.3
     ports:

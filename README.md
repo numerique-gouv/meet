@@ -46,11 +46,7 @@ dependency-releated or migration-releated issues.
 
 Your Docker services should now be up and running 🎉
 
-Note that if you need to run them afterwards, you can use the eponym Make rule:
-
-```bash
-$ make run-frontend-dev
-```
+[FIXME] Explain how to run the frontend project.
 
 ### Adding content
 

@@ -53,7 +53,6 @@ TSCLIENT_YARN       = $(COMPOSE_RUN) -w /app/src/tsclient node yarn
 
 # -- Frontend
 PATH_FRONT          = ./src/frontend
-PATH_FRONT_IMPRESS  = $(PATH_FRONT)/apps/impress
 
 # ==============================================================================
 # RULES
@@ -82,7 +81,6 @@ bootstrap: \
 	data/static \
 	create-env-files \
 	build \
-	run-frontend-dev \
 	migrate \
 	demo \
 	back-i18n-compile \
@@ -276,10 +274,12 @@ mails-install: ## install the mail generator
 
 # -- TS client generator
 
+# FIXME : adapt this command
 tsclient-install: ## Install the Typescript API client generator
 	@$(TSCLIENT_YARN) install
 .PHONY: tsclient-install
 
+# FIXME : adapt this command
 tsclient: tsclient-install ## Generate a Typescript API client
 	@$(TSCLIENT_YARN) generate:api:client:local ../frontend/tsclient
 .PHONY: tsclient-install
@@ -295,21 +295,19 @@ help:
 	@grep -E '^[a-zA-Z0-9_-]+:.*?## .*$$' $(firstword $(MAKEFILE_LIST)) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "$(GREEN)%-30s$(RESET) %s\n", $$1, $$2}'
 .PHONY: help
 
-# Front 
-run-frontend-dev: ## Install and run the frontend dev  
-	@$(COMPOSE) up --force-recreate -d frontend-dev
-.PHONY: run-frontend-dev
-
+# FIXME : adapt this command
 frontend-i18n-extract: ## Extract the frontend translation inside a json to be used for crowdin
 	cd $(PATH_FRONT) && yarn i18n:extract
 .PHONY: frontend-i18n-extract
 
+# FIXME : adapt this command
 frontend-i18n-generate: ## Generate the frontend json files used for crowdin
 frontend-i18n-generate: \
 	crowdin-download-sources \
 	frontend-i18n-extract
 .PHONY: frontend-i18n-generate
 
+# FIXME : adapt this command
 frontend-i18n-compile: ## Format the crowin json files used deploy to the apps
 	cd $(PATH_FRONT) && yarn i18n:deploy
 .PHONY: frontend-i18n-compile
