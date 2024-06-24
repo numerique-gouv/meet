@@ -6,13 +6,6 @@ from django.utils.translation import gettext_lazy as _
 from . import models
 
 
-class TemplateAccessInline(admin.TabularInline):
-    """Inline admin class for template accesses."""
-
-    model = models.TemplateAccess
-    extra = 0
-
-
 @admin.register(models.User)
 class UserAdmin(auth_admin.UserAdmin):
     """Admin class for the User model"""
@@ -53,7 +46,6 @@ class UserAdmin(auth_admin.UserAdmin):
             },
         ),
     )
-    inlines = (TemplateAccessInline,)
     list_display = (
         "id",
         "sub",
@@ -70,52 +62,3 @@ class UserAdmin(auth_admin.UserAdmin):
     ordering = ("is_active", "-is_superuser", "-is_staff", "-is_device", "-updated_at")
     readonly_fields = ("id", "sub", "email", "created_at", "updated_at")
     search_fields = ("id", "sub", "admin_email", "email")
-
-
-@admin.register(models.Template)
-class TemplateAdmin(admin.ModelAdmin):
-    """Template admin interface declaration."""
-
-    inlines = (TemplateAccessInline,)
-
-
-class DocumentAccessInline(admin.TabularInline):
-    """Inline admin class for template accesses."""
-
-    model = models.DocumentAccess
-    extra = 0
-
-
-@admin.register(models.Document)
-class DocumentAdmin(admin.ModelAdmin):
-    """Document admin interface declaration."""
-
-    inlines = (DocumentAccessInline,)
-
-
-@admin.register(models.Invitation)
-class InvitationAdmin(admin.ModelAdmin):
-    """Admin interface to handle invitations."""
-
-    fields = (
-        "email",
-        "document",
-        "role",
-        "created_at",
-        "issuer",
-    )
-    readonly_fields = (
-        "created_at",
-        "is_expired",
-        "issuer",
-    )
-    list_display = (
-        "email",
-        "document",
-        "created_at",
-        "is_expired",
-    )
-
-    def save_model(self, request, obj, form, change):
-        obj.issuer = request.user
-        obj.save()

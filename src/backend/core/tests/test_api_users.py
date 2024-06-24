@@ -68,30 +68,6 @@ def test_api_users_list_query_email():
     assert user_ids == [str(nicole.id), str(frank.id)]
 
 
-def test_api_users_list_query_email_exclude_doc_user():
-    """
-    Authenticated users should be able to list users
-    and filter by email and exclude users who have access to a document.
-    """
-    user = factories.UserFactory()
-    document = factories.DocumentFactory()
-
-    client = APIClient()
-    client.force_login(user)
-
-    nicole = factories.UserFactory(email="nicole_foole@work.com")
-    frank = factories.UserFactory(email="frank_poole@work.com")
-    factories.UserFactory(email="heywood_floyd@work.com")
-
-    factories.UserDocumentAccessFactory(document=document, user=frank)
-
-    response = client.get("/api/v1.0/users/?q=oole&document_id=" + str(document.id))
-
-    assert response.status_code == 200
-    user_ids = [user["id"] for user in response.json()["results"]]
-    assert user_ids == [str(nicole.id)]
-
-
 def test_api_users_retrieve_me_anonymous():
     """Anonymous users should not be allowed to list users."""
     factories.UserFactory.create_batch(2)

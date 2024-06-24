@@ -15,4 +15,4 @@ def test_commands_create_demo():
     """The create_demo management command should create objects as expected."""
     call_command("create_demo")
 
-    assert models.Template.objects.count() == 1
+    assert models.User.objects.count() == 100
