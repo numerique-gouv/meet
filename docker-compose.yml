@@ -16,31 +16,6 @@ services:
     ports:
       - "1081:1080"
 
-  minio:
-    user: ${DOCKER_USER:-1000}
-    image: minio/minio
-    environment:
-      - MINIO_ROOT_USER=impress
-      - MINIO_ROOT_PASSWORD=password
-    ports:
-      - '9000:9000'
-      - '9001:9001'
-    entrypoint: ""
-    command: minio server --console-address :9001 /data
-    volumes:
-      - ./data/media:/data
-
-  createbuckets:
-    image: minio/mc
-    depends_on:
-      - minio
-    entrypoint: >
-      sh -c "
-      /usr/bin/mc alias set impress http://minio:9000 impress password && \
-      /usr/bin/mc mb impress/impress-media-storage && \
-      /usr/bin/mc version enable impress/impress-media-storage && \
-      exit 0;"
-
   app-dev:
     build:
       context: .
@@ -64,7 +39,6 @@ services:
         - postgresql
         - mailcatcher
         - redis
-        - createbuckets
         - nginx
   
   celery-dev:
@@ -98,7 +72,6 @@ services:
     depends_on:
       - postgresql
       - redis
-      - minio
 
   celery:
     user: ${DOCKER_USER:-1000}
@@ -141,20 +114,6 @@ services:
     volumes:
       - ".:/app"
 
-  y-webrtc-signaling:
-    user: ${DOCKER_USER:-1000}
-    build: 
-      context: .
-      dockerfile: ./src/frontend/Dockerfile
-      target: y-webrtc-signaling
-    restart: unless-stopped
-    ports:
-      - "4444:4444"
-    volumes:
-      - ./src/frontend/apps/y-webrtc-signaling:/home/frontend/apps/y-webrtc-signaling
-      - /home/frontend/apps/y-webrtc-signaling/node_modules/
-      - /home/frontend/apps/y-webrtc-signaling/dist/
-
   frontend-dev:
     user: "${DOCKER_USER:-1000}"
     build: 
@@ -167,7 +126,6 @@ services:
       - ./src/frontend/apps/impress:/home/frontend/apps/impress
       - /home/frontend/node_modules/
     depends_on:
-      - y-webrtc-signaling
       - celery-dev
 
   kc_postgresql:
