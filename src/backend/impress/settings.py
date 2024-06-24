@@ -368,6 +368,11 @@ class Base(Configuration):
         default=True, environ_name="ALLOW_LOGOUT_GET_METHOD", environ_prefix=None
     )
 
+    # Video conference configuration
+    DEFAULT_ROOM_IS_PUBLIC = values.BooleanValue(
+        True, environ_name="MAGNIFY_DEFAULT_ROOM_IS_PUBLIC", environ_prefix=None
+    )
+
     # pylint: disable=invalid-name
     @property
     def ENVIRONMENT(self):
