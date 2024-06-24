@@ -3,7 +3,7 @@
 Impress prints your markdown to pdf from predefined templates with user and role based access rights.
 
 Impress is built on top of [Django Rest
-Framework](https://www.django-rest-framework.org/) and [Next.js](https://nextjs.org/).
+Framework](https://www.django-rest-framework.org/) and [Vite.js](https://vitejs.dev/).
 
 ## Getting started
 
