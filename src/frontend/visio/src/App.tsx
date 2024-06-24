@@ -1,34 +1,72 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import {useEffect, useState} from 'react'
 import './App.css'
 
+const API_BASE_URL = 'http://localhost:8071/api/v1.0/'
+
+export interface User {
+  id: string;
+  email: string;
+}
+
+function getCSRFToken() {
+  return document.cookie
+    .split(';')
+    .filter((cookie) => cookie.trim().startsWith('csrftoken='))
+    .map((cookie) => cookie.split('=')[1])
+    .pop();
+}
+
+async function getMe() {
+  const csrfToken = getCSRFToken();
+  const response = await fetch(
+    `${API_BASE_URL}users/me/`,
+    {
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+        ...(csrfToken && {'X-CSRFToken': csrfToken}),
+      },
+    }
+  )
+  if (!response.ok) {
+    throw new Error(`Couldn't fetch user data: ${response.statusText}`);
+  }
+  return response.json() as Promise<User>;
+}
+
+
 function App() {
-  const [count, setCount] = useState(0)
+  const [authenticatedUser, setAuthenticatedUser] = useState<User | null>(null)
+  const [isLoading, setIsLoading] = useState<boolean>(true)
+
+  useEffect(() => {
+    getMe()
+      .then((data) => setAuthenticatedUser(data))
+      .catch(() => {
+        console.log('user not logged-in.')
+      })
+      .finally(() => setIsLoading(false))
+  }, [])
+
+  if (isLoading) {
+    return (
+      <div>
+        loading ...
+      </div>
+    )
+  }
+
+  if (authenticatedUser) {
+    return (
+      <div style={{display: 'flex', flexDirection: 'column'}}>
+        <p>You are connected as: {authenticatedUser.email}</p>
+        <button onClick={() => window.location.replace(new URL('logout/', API_BASE_URL).href)}>Logout</button>
+      </div>
+    )
+  }
 
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    <button onClick={() => window.location.replace(new URL('authenticate/', API_BASE_URL).href)}>Login</button>
   )
 }
 
