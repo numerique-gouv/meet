@@ -48,8 +48,8 @@ WAIT_DB             = @$(COMPOSE_RUN) dockerize -wait tcp://$(DB_HOST):$(DB_PORT
 
 # -- Backend
 MANAGE              = $(COMPOSE_RUN_APP) python manage.py
-MAIL_YARN           = $(COMPOSE_RUN) -w /app/src/mail node yarn
-TSCLIENT_YARN       = $(COMPOSE_RUN) -w /app/src/tsclient node yarn
+MAIL_YARN           = $(COMPOSE_RUN) -w /app/src/mail node yarn # FIXME : use npm
+TSCLIENT_YARN       = $(COMPOSE_RUN) -w /app/src/tsclient node yarn # FIXME : use npm
 
 # -- Frontend
 PATH_FRONT          = ./src/frontend
