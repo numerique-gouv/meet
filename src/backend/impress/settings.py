@@ -369,6 +369,12 @@ class Base(Configuration):
     )
 
     # Video conference configuration
+    LIVEKIT_CONFIGURATION = {
+        "api_key": values.Value(environ_name="LIVEKIT_API_KEY", environ_prefix=None),
+        "api_secret": values.Value(
+            environ_name="LIVEKIT_API_SECRET", environ_prefix=None
+        ),
+    }
     DEFAULT_ROOM_IS_PUBLIC = values.BooleanValue(
         True, environ_name="MAGNIFY_DEFAULT_ROOM_IS_PUBLIC", environ_prefix=None
     )
