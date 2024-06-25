@@ -17,7 +17,7 @@ from rest_framework import (
     response as drf_response,
 )
 
-from core import models
+from core import models, utils
 
 from . import permissions, serializers
 
@@ -192,8 +192,7 @@ class RoomViewSet(
                 "id": None,
                 "livekit": {
                     "room": slug,
-                    # todo - generate a proper token
-                    "token": "foo",
+                    "token": utils.generate_token(room=slug, user=request.user),
                 },
             }
         else:

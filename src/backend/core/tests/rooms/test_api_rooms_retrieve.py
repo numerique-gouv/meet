@@ -2,7 +2,9 @@
 Test rooms API endpoints in the impress core app: retrieve.
 """
 import random
+from unittest import mock
 
+from django.contrib.auth.models import AnonymousUser
 from django.test.utils import override_settings
 
 import pytest
@@ -83,7 +85,8 @@ def test_api_rooms_retrieve_anonymous_private_slug_not_normalized():
 
 
 @override_settings(ALLOW_UNREGISTERED_ROOMS=True)
-def test_api_rooms_retrieve_anonymous_unregistered_allowed():
+@mock.patch("core.utils.generate_token", return_value="foo")
+def test_api_rooms_retrieve_anonymous_unregistered_allowed(mock_token):
     """
     Retrieving an unregistered room should return a Livekit token
     if unregistered rooms are allowed.
@@ -100,11 +103,12 @@ def test_api_rooms_retrieve_anonymous_unregistered_allowed():
         },
     }
 
-    # todo - assert generate_token has been called
+    mock_token.assert_called_once_with(room="unregistered-room", user=AnonymousUser())
 
 
 @override_settings(ALLOW_UNREGISTERED_ROOMS=True)
-def test_api_rooms_retrieve_anonymous_unregistered_allowed_not_normalized():
+@mock.patch("core.utils.generate_token", return_value="foo")
+def test_api_rooms_retrieve_anonymous_unregistered_allowed_not_normalized(mock_token):
     """
     Getting an unregistered room by a slug that is not normalized should work
     and use the Livekit room on the url-safe name.
@@ -121,7 +125,7 @@ def test_api_rooms_retrieve_anonymous_unregistered_allowed_not_normalized():
         },
     }
 
-    # todo - assert generate_token has been called
+    mock_token.assert_called_once_with(room="reunion", user=AnonymousUser())
 
 
 @override_settings(ALLOW_UNREGISTERED_ROOMS=False)
@@ -136,7 +140,8 @@ def test_api_rooms_retrieve_anonymous_unregistered_not_allowed():
     assert response.json() == {"detail": "Not found."}
 
 
-def test_api_rooms_retrieve_anonymous_public():
+@mock.patch("core.utils.generate_token", return_value="foo")
+def test_api_rooms_retrieve_anonymous_public(mock_token):
     """
     Anonymous users should be able to retrieve a room with a token provided it is public.
     """
@@ -145,22 +150,24 @@ def test_api_rooms_retrieve_anonymous_public():
     response = client.get(f"/api/v1.0/rooms/{room.id!s}/")
 
     assert response.status_code == 200
+    expected_name = f"{room.id!s}".replace("-", "")
     assert response.json() == {
         "id": str(room.id),
         "is_administrable": False,
         "is_public": True,
         "livekit": {
-            "room": "foo",
+            "room": expected_name,
             "token": "foo",
         },
         "name": room.name,
         "slug": room.slug,
     }
 
-    # todo - assert generate_token has been called
+    mock_token.assert_called_once()
 
 
-def test_api_rooms_retrieve_authenticated_public():
+@mock.patch("core.utils.generate_token", return_value="foo")
+def test_api_rooms_retrieve_authenticated_public(mock_token):
     """
     Authenticated users should be allowed to retrieve a room and get a token for a room to
     which they are not related, provided the room is public.
@@ -177,19 +184,20 @@ def test_api_rooms_retrieve_authenticated_public():
     )
     assert response.status_code == 200
 
+    expected_name = f"{room.id!s}".replace("-", "")
     assert response.json() == {
         "id": str(room.id),
         "is_administrable": False,
         "is_public": True,
         "livekit": {
-            "room": "foo",
+            "room": expected_name,
             "token": "foo",
         },
         "name": room.name,
         "slug": room.slug,
     }
 
-    # todo - assert generate_token has been called
+    mock_token.assert_called_once_with(room=expected_name, user=user)
 
 
 def test_api_rooms_retrieve_authenticated():
@@ -217,7 +225,8 @@ def test_api_rooms_retrieve_authenticated():
     }
 
 
-def test_api_rooms_retrieve_members(django_assert_num_queries):
+@mock.patch("core.utils.generate_token", return_value="foo")
+def test_api_rooms_retrieve_members(mock_token, django_assert_num_queries):
     """
     Users who are members of a room should be allowed to see related users.
     """
@@ -265,22 +274,24 @@ def test_api_rooms_retrieve_members(django_assert_num_queries):
         key=lambda x: x["id"],
     )
 
+    expected_name = str(room.id).replace("-", "")
     assert content_dict == {
         "id": str(room.id),
         "is_administrable": False,
         "is_public": room.is_public,
         "livekit": {
-            "room": "foo",
+            "room": expected_name,
             "token": "foo",
         },
         "name": room.name,
         "slug": room.slug,
     }
 
-    # todo - assert generate_token has been called
+    mock_token.assert_called_once_with(room=expected_name, user=user)
 
 
-def test_api_rooms_retrieve_administrators(django_assert_num_queries):
+@mock.patch("core.utils.generate_token", return_value="foo")
+def test_api_rooms_retrieve_administrators(mock_token, django_assert_num_queries):
     """
     A user who is an administrator or owner of a room should be allowed
     to see related users.
@@ -327,18 +338,18 @@ def test_api_rooms_retrieve_administrators(django_assert_num_queries):
         ],
         key=lambda x: x["id"],
     )
-
+    expected_name = str(room.id).replace("-", "")
     assert content_dict == {
         "id": str(room.id),
         "is_administrable": True,
         "is_public": room.is_public,
         "configuration": {},
         "livekit": {
-            "room": "foo",
+            "room": expected_name,
             "token": "foo",
         },
         "name": room.name,
         "slug": room.slug,
     }
 
-    # todo - assert generate_token has been called
+    mock_token.assert_called_once_with(room=expected_name, user=user)

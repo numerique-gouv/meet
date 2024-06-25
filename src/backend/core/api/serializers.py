@@ -4,7 +4,7 @@ from django.utils.translation import gettext_lazy as _
 from rest_framework import serializers
 from rest_framework.exceptions import PermissionDenied
 
-from core import models
+from core import models, utils
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -119,11 +119,11 @@ class RoomSerializer(serializers.ModelSerializer):
             del output["configuration"]
 
         if role is not None or instance.is_public:
+            slug = f"{instance.id!s}".replace("-", "")
+
             output["livekit"] = {
-                # todo - generate a proper livekit name
-                "room": "foo",
-                # todo - generate a proper token
-                "token": "foo",
+                "room": slug,
+                "token": utils.generate_token(room=slug, user=request.user),
             }
 
         output["is_administrable"] = is_admin
