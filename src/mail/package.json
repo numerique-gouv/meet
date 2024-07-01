@@ -16,7 +16,7 @@
   "volta": {
     "node": "16.15.1"
   },
-  "repository": "https://github.com/numerique-gouv/impress",
+  "repository": "https://github.com/numerique-gouv/meet",
   "author": "DINUM",
   "license": "MIT"
 }

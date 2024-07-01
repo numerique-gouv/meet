@@ -1,14 +1,14 @@
 {
-  "name": "impress-openapi-client-ts",
+  "name": "meet-openapi-client-ts",
   "version": "0.1.0",
   "private": true,
-  "description": "Tool to generate Typescript API client for the impress application.",
+  "description": "Tool to generate Typescript API client for the Meet application.",
   "scripts": {
     "generate:api:client:local": "./scripts/openapi-typescript-codegen/generate_api_client_local.sh $1"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/numerique-gouv/impress.git"
+    "url": "git+https://github.com/numerique-gouv/meet.git"
   },
   "author": {
     "name": "DINUM",
@@ -16,9 +16,9 @@
   },
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/numerique-gouv/impress/issues"
+    "url": "https://github.com/numerique-gouv/meet/issues"
   },
-  "homepage": "https://github.com/numerique-gouv/impress#readme",
+  "homepage": "https://github.com/numerique-gouv/meet#readme",
   "devDependencies": {
     "openapi-typescript-codegen": "0.29.0"
   }
