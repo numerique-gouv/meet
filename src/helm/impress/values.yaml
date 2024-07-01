@@ -12,7 +12,7 @@
 ## @extra image.credentials.registry Registry url for which the credentials are specified
 ## @extra image.credentials.name Name of the generated secret for imagePullSecrets
 image:
-  repository: lasuite/impress-backend
+  repository: lasuite/meet-backend
   pullPolicy: IfNotPresent
   tag: "latest"
 
@@ -206,7 +206,7 @@ frontend:
   ## @param frontend.image.tag impress's frontend container tag
   ## @param frontend.image.pullPolicy frontend container image pull policy
   image:
-    repository: lasuite/impress-frontend
+    repository: lasuite/meet-frontend
     pullPolicy: IfNotPresent
     tag: "latest"
 

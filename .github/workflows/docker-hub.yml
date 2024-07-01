@@ -43,7 +43,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: lasuite/impress-backend
+          images: lasuite/meet-backend
       -
         name: Login to DockerHub
         if: github.event_name != 'pull_request'
@@ -87,7 +87,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: lasuite/impress-frontend
+          images: lasuite/meet-frontend
       -
         name: Login to DockerHub
         if: github.event_name != 'pull_request'
@@ -99,51 +99,6 @@ jobs:
           context: .
           file: ./src/frontend/Dockerfile
           target: frontend-production
-          build-args: DOCKER_USER=${{ env.DOCKER_USER }}:-1000
-          push: ${{ github.event_name != 'pull_request' }}
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
-
-  build-and-push-y-webrtc-signaling:
-    runs-on: ubuntu-latest
-    steps:
-      -
-        uses: actions/create-github-app-token@v1
-        id: app-token
-        with:
-          app-id: ${{ secrets.APP_ID }}
-          private-key: ${{ secrets.PRIVATE_KEY }}
-          owner: ${{ github.repository_owner }}
-          repositories: "impress,secrets"
-      -
-        name: Checkout repository
-        uses: actions/checkout@v2
-        with:
-          submodules: recursive
-          token: ${{ steps.app-token.outputs.token }}
-      -
-        name: Load sops secrets
-        uses: rouja/actions-sops@main
-        with:
-          secret-file: secrets/numerique-gouv/impress/secrets.enc.env
-          age-key: ${{ secrets.SOPS_PRIVATE }}
-      -
-        name: Docker meta
-        id: meta
-        uses: docker/metadata-action@v5
-        with:
-          images: lasuite/impress-y-webrtc-signaling
-      -
-        name: Login to DockerHub
-        if: github.event_name != 'pull_request'
-        run: echo "$DOCKER_HUB_PASSWORD" | docker login -u "$DOCKER_HUB_USER" --password-stdin
-      -
-        name: Build and push
-        uses: docker/build-push-action@v5
-        with:
-          context: .
-          file: ./src/frontend/Dockerfile
-          target: y-webrtc-signaling
           build-args: DOCKER_USER=${{ env.DOCKER_USER }}:-1000
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}

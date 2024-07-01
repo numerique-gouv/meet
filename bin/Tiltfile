@@ -3,7 +3,7 @@ load('ext://namespace', 'namespace_create', 'namespace_inject')
 namespace_create('impress')
 
 docker_build(
-    'localhost:5001/impress-backend:latest',
+    'localhost:5001/meet-backend:latest',
     context='..',
     dockerfile='../Dockerfile',
     only=['./src/backend', './src/mail', './docker'],
@@ -29,7 +29,7 @@ docker_build(
 )
 
 docker_build(
-    'localhost:5001/impress-frontend:latest',
+    'localhost:5001/meet-frontend:latest',
     context='..',
     dockerfile='../src/frontend/Dockerfile',
     only=['./src/frontend', './docker', './dockerignore'],
@@ -44,12 +44,12 @@ k8s_yaml(local('cd ../src/helm && helmfile -n impress -e dev template .'))
 migration = '''
 set -eu
 # get k8s pod name from tilt resource name
-POD_NAME="$(tilt get kubernetesdiscovery impress-backend -ojsonpath='{.status.pods[0].name}')"
+POD_NAME="$(tilt get kubernetesdiscovery meet-backend -ojsonpath='{.status.pods[0].name}')"
 kubectl -n impress exec "$POD_NAME" -- python manage.py makemigrations
 '''
 cmd_button('Make migration',
            argv=['sh', '-c', migration],
-           resource='impress-backend',
+           resource='meet-backend',
            icon_name='developer_board',
            text='Run makemigration',
 )
@@ -57,12 +57,12 @@ cmd_button('Make migration',
 pod_migrate = '''
 set -eu
 # get k8s pod name from tilt resource name
-POD_NAME="$(tilt get kubernetesdiscovery impress-backend -ojsonpath='{.status.pods[0].name}')"
+POD_NAME="$(tilt get kubernetesdiscovery meet-backend -ojsonpath='{.status.pods[0].name}')"
 kubectl -n impress exec "$POD_NAME" -- python manage.py migrate --no-input
 '''
 cmd_button('Migrate db',
            argv=['sh', '-c', pod_migrate],
-           resource='impress-backend',
+           resource='meet-backend',
            icon_name='developer_board',
            text='Run database migration',
 )
