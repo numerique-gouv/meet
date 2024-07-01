@@ -1,5 +1,5 @@
 """
-Test rooms API endpoints in the impress core app: retrieve.
+Test rooms API endpoints in the Meet core app: retrieve.
 """
 import random
 from unittest import mock

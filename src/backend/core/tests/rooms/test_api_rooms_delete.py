@@ -1,5 +1,5 @@
 """
-Test rooms API endpoints in the impress core app: delete.
+Test rooms API endpoints in the Meet core app: delete.
 """
 import pytest
 from rest_framework.test import APIClient

@@ -17,7 +17,7 @@ preserve_hierarchy: true
 files: [
  {
   source : "/backend/locale/django.pot",
-  dest: "/backend-impress.pot",
+  dest: "/backend-meet.pot",
   translation : "/backend/locale/%locale_with_underscore%/LC_MESSAGES/django.po"
  },
   {

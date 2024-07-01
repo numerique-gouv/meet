@@ -1,4 +1,4 @@
-"""Authentication Backends for the Impress core app."""
+"""Authentication Backends for the Meet core app."""
 
 from django.core.exceptions import SuspiciousOperation
 from django.utils.translation import gettext_lazy as _

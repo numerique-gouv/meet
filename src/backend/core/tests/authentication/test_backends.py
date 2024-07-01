@@ -64,7 +64,7 @@ def test_authentication_getter_new_user_with_email(monkeypatch):
     """
     klass = OIDCAuthenticationBackend()
 
-    email = "impress@example.com"
+    email = "meet@example.com"
 
     def get_userinfo_mocked(*args):
         return {"sub": "123", "email": email, "first_name": "John", "last_name": "Doe"}

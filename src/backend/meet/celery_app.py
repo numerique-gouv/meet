@@ -1,16 +1,16 @@
-"""Impress celery configuration file."""
+"""Meet celery configuration file."""
 import os
 
 from celery import Celery
 from configurations.importer import install
 
 # Set the default Django settings module for the 'celery' program.
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "impress.settings")
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "meet.settings")
 os.environ.setdefault("DJANGO_CONFIGURATION", "Development")
 
 install(check_options=True)
 
-app = Celery("impress")
+app = Celery("meet")
 
 # Using a string here means the worker doesn't have to serialize
 # the configuration object to child processes.

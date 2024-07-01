@@ -1,5 +1,5 @@
 """
-Test rooms API endpoints in the impress core app: list.
+Test rooms API endpoints in the Meet core app: list.
 """
 from unittest import mock
 

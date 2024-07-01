@@ -1,4 +1,4 @@
-"""Fixtures for tests in the impress core application"""
+"""Fixtures for tests in the Meet core application"""
 from unittest import mock
 
 import pytest

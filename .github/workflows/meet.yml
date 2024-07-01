@@ -1,4 +1,4 @@
-name: impress Workflow
+name: meet Workflow
 
 on:
   push:
@@ -21,7 +21,7 @@ jobs:
         run: git log
       - name: Enforce absence of print statements in code
         run: |
-          ! git diff origin/${{ github.event.pull_request.base.ref }}..HEAD -- . ':(exclude)**/impress.yml' | grep "print("
+          ! git diff origin/${{ github.event.pull_request.base.ref }}..HEAD -- . ':(exclude)**/meet.yml' | grep "print("
       - name: Check absence of fixup commits
         run: |
           ! git log | grep 'fixup!'
@@ -129,7 +129,7 @@ jobs:
       postgres:
         image: postgres:16
         env:
-          POSTGRES_DB: impress
+          POSTGRES_DB: meet
           POSTGRES_USER: dinum
           POSTGRES_PASSWORD: pass
         ports:
@@ -139,11 +139,11 @@ jobs:
 
     env:
       DJANGO_CONFIGURATION: Test
-      DJANGO_SETTINGS_MODULE: impress.settings
+      DJANGO_SETTINGS_MODULE: meet.settings
       DJANGO_SECRET_KEY: ThisIsAnExampleKeyForTestPurposeOnly
       OIDC_OP_JWKS_ENDPOINT: /endpoint-for-test-purpose-only
       DB_HOST: localhost
-      DB_NAME: impress
+      DB_NAME: meet
       DB_USER: dinum
       DB_PASSWORD: pass
       DB_PORT: 5432

@@ -1,4 +1,4 @@
-# Django impress
+# Django Meet
 
 # ---- base image to inherit from ----
 FROM python:3.10-slim-bullseye as base
@@ -36,7 +36,7 @@ RUN yarn install --frozen-lockfile && \
 
 # ---- static link collector ----
 FROM base as link-collector
-ARG IMPRESS_STATIC_ROOT=/data/static
+ARG MEET_STATIC_ROOT=/data/static
 
 # Install libpangocairo & rdfind
 RUN apt-get update && \
@@ -48,7 +48,7 @@ RUN apt-get update && \
 # Copy installed python dependencies
 COPY --from=back-builder /install /usr/local
 
-# Copy impress application (see .dockerignore)
+# Copy Meet application (see .dockerignore)
 COPY ./src/backend /app/
 
 WORKDIR /app
@@ -59,7 +59,7 @@ RUN DJANGO_CONFIGURATION=Build DJANGO_JWT_PRIVATE_SIGNING_KEY=Dummy \
 
 # Replace duplicated file by a symlink to decrease the overall size of the
 # final image
-RUN rdfind -makesymlinks true -followsymlinks true -makeresultsfile false ${IMPRESS_STATIC_ROOT}
+RUN rdfind -makesymlinks true -followsymlinks true -makeresultsfile false ${MEET_STATIC_ROOT}
 
 # ---- Core application image ----
 FROM base as core
@@ -89,7 +89,7 @@ RUN chmod g=u /etc/passwd
 # Copy installed python dependencies
 COPY --from=back-builder /install /usr/local
 
-# Copy impress application (see .dockerignore)
+# Copy Meet application (see .dockerignore)
 COPY ./src/backend /app/
 
 WORKDIR /app
@@ -110,9 +110,9 @@ RUN apt-get update && \
     apt-get install -y postgresql-client && \
     rm -rf /var/lib/apt/lists/*
 
-# Uninstall impress and re-install it in editable mode along with development
+# Uninstall Meet and re-install it in editable mode along with development
 # dependencies
-RUN pip uninstall -y impress
+RUN pip uninstall -y meet
 RUN pip install -e .[dev]
 
 # Restore the un-privileged user running the application
@@ -130,21 +130,21 @@ CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
 # ---- Production image ----
 FROM core as backend-production
 
-ARG IMPRESS_STATIC_ROOT=/data/static
+ARG MEET_STATIC_ROOT=/data/static
 
 # Gunicorn
 RUN mkdir -p /usr/local/etc/gunicorn
-COPY docker/files/usr/local/etc/gunicorn/impress.py /usr/local/etc/gunicorn/impress.py
+COPY docker/files/usr/local/etc/gunicorn/meet.py /usr/local/etc/gunicorn/meet.py
 
 # Un-privileged user running the application
 ARG DOCKER_USER
 USER ${DOCKER_USER}
 
 # Copy statics
-COPY --from=link-collector ${IMPRESS_STATIC_ROOT} ${IMPRESS_STATIC_ROOT}
+COPY --from=link-collector ${MEET_STATIC_ROOT} ${MEET_STATIC_ROOT}
 
-# Copy impress mails
+# Copy Meet mails
 COPY --from=mail-builder /mail/backend/core/templates/mail /app/core/templates/mail
 
-# The default command runs gunicorn WSGI server in impress's main module
-CMD ["gunicorn", "-c", "/usr/local/etc/gunicorn/impress.py", "impress.wsgi:application"]
+# The default command runs gunicorn WSGI server in Meet's main module
+CMD ["gunicorn", "-c", "/usr/local/etc/gunicorn/meet.py", "meet.wsgi:application"]

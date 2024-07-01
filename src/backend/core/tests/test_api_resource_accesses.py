@@ -1,5 +1,5 @@
 """
-Test resource accesses API endpoints in the impress core app.
+Test resource accesses API endpoints in the Meet core app.
 """
 import random
 from unittest import mock

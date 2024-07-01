@@ -199,10 +199,10 @@ msgstr ""
 msgid "Either user or team must be set, not both."
 msgstr ""
 
-#: impress/settings.py:134
+#: meet/settings.py:134
 msgid "English"
 msgstr ""
 
-#: impress/settings.py:135
+#: meet/settings.py:135
 msgid "French"
 msgstr ""

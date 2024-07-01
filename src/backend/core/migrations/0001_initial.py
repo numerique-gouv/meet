@@ -30,7 +30,7 @@ class Migration(migrations.Migration):
             options={
                 'verbose_name': 'Document',
                 'verbose_name_plural': 'Documents',
-                'db_table': 'impress_document',
+                'db_table': 'meet_document',
                 'ordering': ('title',),
             },
         ),
@@ -49,7 +49,7 @@ class Migration(migrations.Migration):
             options={
                 'verbose_name': 'Template',
                 'verbose_name_plural': 'Templates',
-                'db_table': 'impress_template',
+                'db_table': 'meet_template',
                 'ordering': ('title',),
             },
         ),
@@ -76,7 +76,7 @@ class Migration(migrations.Migration):
             options={
                 'verbose_name': 'user',
                 'verbose_name_plural': 'users',
-                'db_table': 'impress_user',
+                'db_table': 'meet_user',
             },
             managers=[
                 ('objects', django.contrib.auth.models.UserManager()),
@@ -96,7 +96,7 @@ class Migration(migrations.Migration):
             options={
                 'verbose_name': 'Document/user relation',
                 'verbose_name_plural': 'Document/user relations',
-                'db_table': 'impress_document_access',
+                'db_table': 'meet_document_access',
                 'ordering': ('-created_at',),
             },
         ),
@@ -114,7 +114,7 @@ class Migration(migrations.Migration):
             options={
                 'verbose_name': 'Document invitation',
                 'verbose_name_plural': 'Document invitations',
-                'db_table': 'impress_invitation',
+                'db_table': 'meet_invitation',
             },
         ),
         migrations.CreateModel(
@@ -131,7 +131,7 @@ class Migration(migrations.Migration):
             options={
                 'verbose_name': 'Template/user relation',
                 'verbose_name_plural': 'Template/user relations',
-                'db_table': 'impress_template_access',
+                'db_table': 'meet_template_access',
                 'ordering': ('-created_at',),
             },
         ),

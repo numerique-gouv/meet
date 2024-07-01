@@ -24,7 +24,7 @@ class Migration(migrations.Migration):
             options={
                 'verbose_name': 'Resource',
                 'verbose_name_plural': 'Resources',
-                'db_table': 'impress_resource',
+                'db_table': 'meet_resource',
             },
         ),
         migrations.RemoveField(
@@ -62,12 +62,12 @@ class Migration(migrations.Migration):
                 ('name', models.CharField(max_length=500)),
                 ('resource', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, parent_link=True, primary_key=True, serialize=False, to='core.resource')),
                 ('slug', models.SlugField(blank=True, max_length=100, null=True, unique=True)),
-                ('configuration', models.JSONField(blank=True, default={}, help_text='Values for Magnify parameters to configure the room.', verbose_name='Magnify room configuration')),
+                ('configuration', models.JSONField(blank=True, default={}, help_text='Values for Meet parameters to configure the room.', verbose_name='Meet room configuration')),
             ],
             options={
                 'verbose_name': 'Room',
                 'verbose_name_plural': 'Rooms',
-                'db_table': 'impress_room',
+                'db_table': 'meet_room',
                 'ordering': ('name',),
             },
             bases=('core.resource',),
@@ -85,7 +85,7 @@ class Migration(migrations.Migration):
             options={
                 'verbose_name': 'Resource access',
                 'verbose_name_plural': 'Resource accesses',
-                'db_table': 'impress_resource_access',
+                'db_table': 'meet_resource_access',
             },
         ),
         migrations.AddField(

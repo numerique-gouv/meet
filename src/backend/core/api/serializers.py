@@ -1,4 +1,4 @@
-"""Client serializers for the impress core app."""
+"""Client serializers for the Meet core app."""
 from django.utils.translation import gettext_lazy as _
 
 from rest_framework import serializers

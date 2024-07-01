@@ -14,40 +14,38 @@ def test_models_resource_accesses_user_str_member_room():
     """The str representation should consist in the room and usernames."""
     room = RoomFactory(name="my room")
     access = UserResourceAccessFactory(
-        resource=room, user__email="john.doe@impress.com", role="member"
+        resource=room, user__email="john.doe@meet.com", role="member"
     )
-    assert str(access) == "Member role for john.doe@impress.com on my room"
+    assert str(access) == "Member role for john.doe@meet.com on my room"
 
 
 def test_models_resource_accesses_user_str_member_resource():
     """The str representation should consist in the resource id and username."""
-    access = UserResourceAccessFactory(
-        user__email="john.doe@impress.com", role="member"
-    )
+    access = UserResourceAccessFactory(user__email="john.doe@meet.com", role="member")
     assert (
         str(access)
-        == f"Member role for john.doe@impress.com on resource {access.resource_id!s}"
+        == f"Member role for john.doe@meet.com on resource {access.resource_id!s}"
     )
 
 
 def test_models_resource_accesses_user_str_admin():
     """The str representation for an admin user should include the role."""
     access = UserResourceAccessFactory(
-        user__email="john.doe@impress.com", role="administrator"
+        user__email="john.doe@meet.com", role="administrator"
     )
 
     assert (
         str(access)
-        == f"Administrator role for john.doe@impress.com on resource {access.resource_id!s}"
+        == f"Administrator role for john.doe@meet.com on resource {access.resource_id!s}"
     )
 
 
 def test_models_resource_accesses_user_str_owner():
     """The str representation for an admin user should include the role."""
-    access = UserResourceAccessFactory(user__email="john.doe@impress.com", role="owner")
+    access = UserResourceAccessFactory(user__email="john.doe@meet.com", role="owner")
     assert (
         str(access)
-        == f"Owner role for john.doe@impress.com on resource {access.resource_id!s}"
+        == f"Owner role for john.doe@meet.com on resource {access.resource_id!s}"
     )
 
 

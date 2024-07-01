@@ -23,7 +23,7 @@ services:
       args:
         DOCKER_USER: ${DOCKER_USER:-1000}
     user: ${DOCKER_USER:-1000}
-    image: impress:backend-development
+    image: meet:backend-development
     environment:
       - PYLINTHOME=/app/.pylint.d
       - DJANGO_CONFIGURATION=Development
@@ -44,8 +44,8 @@ services:
   
   celery-dev:
     user: ${DOCKER_USER:-1000}
-    image: impress:backend-development
-    command: ["celery", "-A", "impress.celery_app", "worker", "-l", "DEBUG"]
+    image: meet:backend-development
+    command: ["celery", "-A", "meet.celery_app", "worker", "-l", "DEBUG"]
     environment:
       - DJANGO_CONFIGURATION=Development
     env_file:
@@ -64,7 +64,7 @@ services:
       args:
         DOCKER_USER: ${DOCKER_USER:-1000}
     user: ${DOCKER_USER:-1000}
-    image: impress:backend-production
+    image: meet:backend-production
     environment:
       - DJANGO_CONFIGURATION=Demo
     env_file:
@@ -77,8 +77,8 @@ services:
 
   celery:
     user: ${DOCKER_USER:-1000}
-    image: impress:backend-production
-    command: ["celery", "-A", "impress.celery_app", "worker", "-l", "INFO"]
+    image: meet:backend-production
+    command: ["celery", "-A", "meet.celery_app", "worker", "-l", "INFO"]
     environment:
       - DJANGO_CONFIGURATION=Demo
     env_file:

@@ -18,7 +18,7 @@ from demo import defaults
 
 fake = Faker()
 
-logger = logging.getLogger("impress.commands.demo.create_demo")
+logger = logging.getLogger("meet.commands.demo.create_demo")
 
 
 def random_true_with_probability(probability):

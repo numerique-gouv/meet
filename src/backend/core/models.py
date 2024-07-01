@@ -1,5 +1,5 @@
 """
-Declare and configure the models for the impress core application
+Declare and configure the models for the Meet core application
 """
 import uuid
 from logging import getLogger
@@ -142,7 +142,7 @@ class User(AbstractBaseUser, BaseModel, auth_models.PermissionsMixin):
     REQUIRED_FIELDS = []
 
     class Meta:
-        db_table = "impress_user"
+        db_table = "meet_user"
         verbose_name = _("user")
         verbose_name_plural = _("users")
 
@@ -175,7 +175,7 @@ class Resource(BaseModel):
     )
 
     class Meta:
-        db_table = "impress_resource"
+        db_table = "meet_resource"
         verbose_name = _("Resource")
         verbose_name_plural = _("Resources")
 
@@ -229,7 +229,7 @@ class ResourceAccess(BaseModel):
     )
 
     class Meta:
-        db_table = "impress_resource_access"
+        db_table = "meet_resource_access"
         verbose_name = _("Resource access")
         verbose_name_plural = _("Resource accesses")
         constraints = [
@@ -294,7 +294,7 @@ class Room(Resource):
     )
 
     class Meta:
-        db_table = "impress_room"
+        db_table = "meet_room"
         ordering = ("name",)
         verbose_name = _("Room")
         verbose_name_plural = _("Rooms")

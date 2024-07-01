@@ -159,14 +159,14 @@ test-back-parallel: ## run all back-end tests in parallel
 	bin/pytest -n auto $${args:-${1}}
 .PHONY: test-back-parallel
 
-makemigrations:  ## run django makemigrations for the impress project.
+makemigrations:  ## run django makemigrations for the Meet project.
 	@echo "$(BOLD)Running makemigrations$(RESET)"
 	@$(COMPOSE) up -d postgresql
 	@$(WAIT_DB)
 	@$(MANAGE) makemigrations
 .PHONY: makemigrations
 
-migrate:  ## run django migrations for the impress project.
+migrate:  ## run django migrations for the Meet project.
 	@echo "$(BOLD)Running migrations$(RESET)"
 	@$(COMPOSE) up -d postgresql
 	@$(WAIT_DB)
@@ -290,7 +290,7 @@ clean: ## restore repository state as it was freshly cloned
 .PHONY: clean
 
 help:
-	@echo "$(BOLD)impress Makefile"
+	@echo "$(BOLD)Meet Makefile"
 	@echo "Please use 'make $(BOLD)target$(RESET)' where $(BOLD)target$(RESET) is one of:"
 	@grep -E '^[a-zA-Z0-9_-]+:.*?## .*$$' $(firstword $(MAKEFILE_LIST)) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "$(GREEN)%-30s$(RESET) %s\n", $$1, $$2}'
 .PHONY: help

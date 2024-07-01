@@ -1,5 +1,5 @@
 """
-Test rooms API endpoints in the impress core app: update.
+Test rooms API endpoints in the Meet core app: update.
 """
 import random
 
