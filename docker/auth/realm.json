@@ -1,6 +1,6 @@
 {
   "id": "ccf4fd40-4286-474d-854a-4714282a8bec",
-  "realm": "impress",
+  "realm": "meet",
   "notBefore": 0,
   "defaultSignatureAlgorithm": "RS256",
   "revokeRefreshToken": false,
@@ -45,15 +45,15 @@
   "failureFactor": 30,
   "users": [
     {
-      "username": "impress",
-      "email": "impress@impress.world",
+      "username": "meet",
+      "email": "meet@meet.world",
       "firstName": "John",
       "lastName": "Doe",
       "enabled": true,
       "credentials": [
         {
           "type": "password",
-          "value": "impress"
+          "value": "meet"
         }
       ],
       "realmRoles": ["user"]
@@ -114,7 +114,7 @@
       },
       {
         "id": "1bfe401a-08fc-4d94-80e0-86c4f5195f99",
-        "name": "default-roles-impress",
+        "name": "default-roles-meet",
         "description": "${role_default-roles}",
         "composite": true,
         "composites": {
@@ -359,7 +359,7 @@
           "attributes": {}
         }
       ],
-      "impress": [],
+      "meet": [],
       "account": [
         {
           "id": "63b1a4e1-a594-4571-99c3-7c5c3efd61ce",
@@ -449,7 +449,7 @@
   "groups": [],
   "defaultRole": {
     "id": "1bfe401a-08fc-4d94-80e0-86c4f5195f99",
-    "name": "default-roles-impress",
+    "name": "default-roles-meet",
     "description": "${role_default-roles}",
     "composite": true,
     "clientRole": false,
@@ -504,12 +504,12 @@
       "clientId": "account",
       "name": "${client_account}",
       "rootUrl": "${authBaseUrl}",
-      "baseUrl": "/realms/impress/account/",
+      "baseUrl": "/realms/meet/account/",
       "surrogateAuthRequired": false,
       "enabled": true,
       "alwaysDisplayInConsole": false,
       "clientAuthenticatorType": "client-secret",
-      "redirectUris": ["/realms/impress/account/*"],
+      "redirectUris": ["/realms/meet/account/*"],
       "webOrigins": [],
       "notBefore": 0,
       "bearerOnly": false,
@@ -546,12 +546,12 @@
       "clientId": "account-console",
       "name": "${client_account-console}",
       "rootUrl": "${authBaseUrl}",
-      "baseUrl": "/realms/impress/account/",
+      "baseUrl": "/realms/meet/account/",
       "surrogateAuthRequired": false,
       "enabled": true,
       "alwaysDisplayInConsole": false,
       "clientAuthenticatorType": "client-secret",
-      "redirectUris": ["/realms/impress/account/*"],
+      "redirectUris": ["/realms/meet/account/*"],
       "webOrigins": [],
       "notBefore": 0,
       "bearerOnly": false,
@@ -676,7 +676,7 @@
     },
     {
       "id": "869481d0-5774-4e64-bc30-fedc7c58958f",
-      "clientId": "impress",
+      "clientId": "meet",
       "name": "",
       "description": "",
       "rootUrl": "",
@@ -791,12 +791,12 @@
       "clientId": "security-admin-console",
       "name": "${client_security-admin-console}",
       "rootUrl": "${authAdminUrl}",
-      "baseUrl": "/admin/impress/console/",
+      "baseUrl": "/admin/meet/console/",
       "surrogateAuthRequired": false,
       "enabled": true,
       "alwaysDisplayInConsole": false,
       "clientAuthenticatorType": "client-secret",
-      "redirectUris": ["/admin/impress/console/*"],
+      "redirectUris": ["/admin/meet/console/*"],
       "webOrigins": ["+"],
       "notBefore": 0,
       "bearerOnly": false,

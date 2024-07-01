@@ -143,7 +143,7 @@ services:
       KC_DB_URL_HOST: kc_postgresql
       KC_DB_URL_DATABASE: keycloak
       KC_DB_PASSWORD: pass
-      KC_DB_USERNAME: impress
+      KC_DB_USERNAME: meet
       KC_DB_SCHEMA: public
       PROXY_ADDRESS_FORWARDING: 'true'
     ports:

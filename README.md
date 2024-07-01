@@ -34,8 +34,8 @@ $ make bootstrap FLUSH_ARGS='--no-input'
 Then you can access to the project in development mode by going to http://localhost:3000.
 You will be prompted to log in, the default credentials are:
 ```bash
-username: impress
-password: impress
+username: meet
+password: meet
 ```
 ---
 

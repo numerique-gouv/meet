@@ -315,7 +315,7 @@ class Base(Configuration):
         "RS256", environ_name="OIDC_RP_SIGN_ALGO", environ_prefix=None
     )
     OIDC_RP_CLIENT_ID = values.Value(
-        "impress", environ_name="OIDC_RP_CLIENT_ID", environ_prefix=None
+        "meet", environ_name="OIDC_RP_CLIENT_ID", environ_prefix=None
     )
     OIDC_RP_CLIENT_SECRET = values.Value(
         None,
