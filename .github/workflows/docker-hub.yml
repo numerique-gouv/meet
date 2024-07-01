@@ -25,7 +25,7 @@ jobs:
           app-id: ${{ secrets.APP_ID }}
           private-key: ${{ secrets.PRIVATE_KEY }}
           owner: ${{ github.repository_owner }}
-          repositories: "impress,secrets"
+          repositories: "meet,secrets"
       -
         name: Checkout repository
         uses: actions/checkout@v2
@@ -36,7 +36,7 @@ jobs:
         name: Load sops secrets
         uses: rouja/actions-sops@main
         with:
-          secret-file: secrets/numerique-gouv/impress/secrets.enc.env
+          secret-file: secrets/numerique-gouv/meet/secrets.enc.env
           age-key: ${{ secrets.SOPS_PRIVATE }}
       -
         name: Docker meta
@@ -69,7 +69,7 @@ jobs:
           app-id: ${{ secrets.APP_ID }}
           private-key: ${{ secrets.PRIVATE_KEY }}
           owner: ${{ github.repository_owner }}
-          repositories: "impress,secrets"
+          repositories: "meet,secrets"
       -
         name: Checkout repository
         uses: actions/checkout@v2
@@ -80,7 +80,7 @@ jobs:
         name: Load sops secrets
         uses: rouja/actions-sops@main
         with:
-          secret-file: secrets/numerique-gouv/impress/secrets.enc.env
+          secret-file: secrets/numerique-gouv/meet/secrets.enc.env
           age-key: ${{ secrets.SOPS_PRIVATE }}
       -
         name: Docker meta
@@ -119,7 +119,7 @@ jobs:
           app-id: ${{ secrets.APP_ID }}
           private-key: ${{ secrets.PRIVATE_KEY }}
           owner: ${{ github.repository_owner }}
-          repositories: "impress,secrets"
+          repositories: "meet,secrets"
       -
         name: Checkout repository
         uses: actions/checkout@v2
@@ -130,7 +130,7 @@ jobs:
         name: Load sops secrets
         uses: rouja/actions-sops@main
         with:
-          secret-file: secrets/numerique-gouv/impress/secrets.enc.env
+          secret-file: secrets/numerique-gouv/meet/secrets.enc.env
           age-key: ${{ secrets.SOPS_PRIVATE }}
       -
         name: Call argocd github webhook
