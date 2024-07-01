@@ -12,6 +12,13 @@ export interface User {
   email: string;
 }
 
+export interface Room {
+  livekit?: {
+    token: string
+  };
+  is_public: boolean;
+}
+
 function getCSRFToken() {
   return document.cookie
     .split(';')
@@ -38,7 +45,7 @@ async function getMe() {
   return response.json() as Promise<User>;
 }
 
-function slugify(str) {
+function slugify(str: string) {
   return str
     .toLowerCase()
     .normalize('NFD')
@@ -49,7 +56,7 @@ function slugify(str) {
     .replace(/-+/g, '-')
 }
 
-async function fetchRoom(roomId) {
+async function fetchRoom(roomId: string) {
   const csrfToken = getCSRFToken();
   const response = await fetch(
     `${API_BASE_URL}rooms/${roomId}/`,
@@ -66,13 +73,13 @@ async function fetchRoom(roomId) {
     throw new Error(`Couldn't fetch room data: ${response.statusText}`);
   }
 
-  return response.json() as Promise<User>;
+  return response.json() as Promise<Room>;
 }
 
 
 function App() {
   const [authenticatedUser, setAuthenticatedUser] = useState<User | null>(null)
-  const [roomData, setRoomData] = useState(null)
+  const [roomData, setRoomData] = useState<Room | null>(null)
   const [isLoading, setIsLoading] = useState<boolean>(true)
 
   useEffect(() => {
@@ -86,7 +93,7 @@ function App() {
 
   const getRoom = async () => {
 
-    const roomName = document.getElementById('roomName')?.value || crypto.randomUUID()
+    const roomName = (document.getElementById('roomName')as HTMLInputElement)?.value || crypto.randomUUID()
     const roomData = await fetchRoom(slugify(roomName))
     setRoomData(roomData)
 
