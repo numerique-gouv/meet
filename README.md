@@ -1,8 +1,8 @@
-# Impress
+# Meet
 
-Impress prints your markdown to pdf from predefined templates with user and role based access rights.
+Meet is a simple video and phone conferencing tool, powered by [LiveKit](https://livekit.io/).
 
-Impress is built on top of [Django Rest
+Meet is built on top of [Django Rest
 Framework](https://www.django-rest-framework.org/) and [Vite.js](https://vitejs.dev/).
 
 ## Getting started
