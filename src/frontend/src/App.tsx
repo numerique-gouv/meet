@@ -4,8 +4,8 @@ import {LiveKitRoom, VideoConference} from "@livekit/components-react";
 
 import '@livekit/components-styles';
 
-const API_BASE_URL = 'http://localhost:8071/api/v1.0/'
-const LIVEKIT_SERVER_URL = 'http://localhost:7880'
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL
+const LIVEKIT_SERVER_URL = import.meta.env.VITE_LIVEKIT_SERVER_URL
 
 export interface User {
   id: string;
