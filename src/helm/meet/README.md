@@ -1,4 +1,4 @@
-# Impress helm chart
+# Meet helm chart
 
 ## Parameters
 

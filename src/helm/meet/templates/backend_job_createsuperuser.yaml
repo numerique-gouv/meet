@@ -1,18 +1,18 @@
-{{- $envVars := include "impress.common.env" (list . .Values.backend) -}}
-{{- $fullName := include "impress.backend.fullname" . -}}
+{{- $envVars := include "meet.common.env" (list . .Values.backend) -}}
+{{- $fullName := include "meet.backend.fullname" . -}}
 {{- $component := "backend" -}}
-apiVersion: apps/v1
-kind: Deployment
+apiVersion: batch/v1
+kind: Job
 metadata:
-  name: {{ $fullName }}
+  name: {{ $fullName }}-createsuperuser
   namespace: {{ .Release.Namespace | quote }}
+  {{- with .Values.backend.migrateJobAnnotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
   labels:
-    {{- include "impress.common.labels" (list . $component) | nindent 4 }}
+    {{- include "meet.common.labels" (list . $component) | nindent 4 }}
 spec:
-  replicas: {{ .Values.backend.replicas }}
-  selector:
-    matchLabels:
-      {{- include "impress.common.selectorLabels" (list . $component) | nindent 6 }}
   template:
     metadata:
       annotations:
@@ -20,11 +20,11 @@ spec:
         {{- toYaml . | nindent 8 }}
         {{- end }}
       labels:
-        {{- include "impress.common.selectorLabels" (list . $component) | nindent 8 }}
+        {{- include "meet.common.selectorLabels" (list . $component) | nindent 8 }}
     spec:
       {{- if $.Values.image.credentials }}
       imagePullSecrets:
-        - name: {{ include "impress.secret.dockerconfigjson.name" (dict "fullname" (include "impress.fullname" .) "imageCredentials" $.Values.image.credentials) }}
+        - name: {{ include "meet.secret.dockerconfigjson.name" (dict "fullname" (include "meet.fullname" .) "imageCredentials" $.Values.image.credentials) }}
       {{- end}}
       shareProcessNamespace: {{ .Values.backend.shareProcessNamespace }}
       containers:
@@ -34,7 +34,7 @@ spec:
         - name: {{ .Chart.Name }}
           image: "{{ (.Values.backend.image | default dict).repository | default .Values.image.repository }}:{{ (.Values.backend.image | default dict).tag | default .Values.image.tag }}"
           imagePullPolicy: {{ (.Values.backend.image | default dict).pullPolicy | default .Values.image.pullPolicy }}
-          {{- with .Values.backend.command }}
+          {{- with .Values.backend.createsuperuser.command }}
           command:
             {{- toYaml . | nindent 12 }}
           {{- end }}
@@ -49,22 +49,6 @@ spec:
           {{- with .Values.backend.securityContext }}
           securityContext:
             {{- toYaml . | nindent 12 }}
-          {{- end }}
-          ports:
-            - name: http
-              containerPort: {{ .Values.backend.service.targetPort }}
-              protocol: TCP
-          {{- if .Values.backend.probes.liveness }}
-          livenessProbe:
-            {{- include "impress.probes.abstract" (merge .Values.backend.probes.liveness (dict "targetPort" .Values.backend.service.targetPort )) | nindent 12 }}
-          {{- end }}
-          {{- if .Values.backend.probes.readiness }}
-          readinessProbe:
-            {{- include "impress.probes.abstract" (merge .Values.backend.probes.readiness (dict "targetPort" .Values.backend.service.targetPort )) | nindent 12 }}
-          {{- end }}
-          {{- if .Values.backend.probes.startup }}
-          startupProbe:
-            {{- include "impress.probes.abstract" (merge .Values.backend.probes.startup (dict "targetPort" .Values.backend.service.targetPort )) | nindent 12 }}
           {{- end }}
           {{- with .Values.backend.resources }}
           resources:
@@ -98,11 +82,12 @@ spec:
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
+      restartPolicy: {{ .Values.backend.createsuperuser.restartPolicy }}
       volumes:
         {{- range $index, $value := .Values.mountFiles }}
         - name: "files-{{ $index }}"
           configMap:
-            name: "{{ include "impress.fullname" $ }}-files-{{ $index }}"
+            name: "{{ include "meet.fullname" $ }}-files-{{ $index }}"
         {{- end }}
         {{- range $name, $volume := .Values.backend.persistence }}
         - name: "{{ $name }}"

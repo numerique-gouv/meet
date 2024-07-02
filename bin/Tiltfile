@@ -1,6 +1,6 @@
 load('ext://uibutton', 'cmd_button', 'bool_input', 'location')
 load('ext://namespace', 'namespace_create', 'namespace_inject')
-namespace_create('impress')
+namespace_create('meet')
 
 docker_build(
     'localhost:5001/meet-backend:latest',
@@ -18,34 +18,23 @@ docker_build(
 )
 
 docker_build(
-    'localhost:5001/impress-y-webrtc-signaling:latest',
-    context='..',
-    dockerfile='../src/frontend/Dockerfile',
-    only=['./src/frontend/', './docker/', './dockerignore'],
-    target = 'y-webrtc-signaling',
-    live_update=[
-        sync('../src/frontend/apps/y-webrtc-signaling/src', '/home/frontend/apps/y-webrtc-signaling/src'),
-    ]
-)
-
-docker_build(
     'localhost:5001/meet-frontend:latest',
     context='..',
     dockerfile='../src/frontend/Dockerfile',
-    only=['./src/frontend', './docker', './dockerignore'],
-    target = 'impress',
+    only=['./src/frontend', './docker', './.dockerignore'],
+    target = 'meet-dev',
     live_update=[
         sync('../src/frontend', '/home/frontend'),
     ]
 )
 
-k8s_yaml(local('cd ../src/helm && helmfile -n impress -e dev template .'))
+k8s_yaml(local('cd ../src/helm && helmfile -n meet -e dev template .'))
 
 migration = '''
 set -eu
 # get k8s pod name from tilt resource name
 POD_NAME="$(tilt get kubernetesdiscovery meet-backend -ojsonpath='{.status.pods[0].name}')"
-kubectl -n impress exec "$POD_NAME" -- python manage.py makemigrations
+kubectl -n meet exec "$POD_NAME" -- python manage.py makemigrations
 '''
 cmd_button('Make migration',
            argv=['sh', '-c', migration],
@@ -58,7 +47,7 @@ pod_migrate = '''
 set -eu
 # get k8s pod name from tilt resource name
 POD_NAME="$(tilt get kubernetesdiscovery meet-backend -ojsonpath='{.status.pods[0].name}')"
-kubectl -n impress exec "$POD_NAME" -- python manage.py migrate --no-input
+kubectl -n meet exec "$POD_NAME" -- python manage.py migrate --no-input
 '''
 cmd_button('Migrate db',
            argv=['sh', '-c', pod_migrate],

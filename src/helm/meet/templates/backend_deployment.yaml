@@ -1,44 +1,44 @@
-{{- $envVars := include "impress.common.env" (list . .Values.frontend) -}}
-{{- $fullName := include "impress.frontend.fullname" . -}}
-{{- $component := "frontend" -}}
+{{- $envVars := include "meet.common.env" (list . .Values.backend) -}}
+{{- $fullName := include "meet.backend.fullname" . -}}
+{{- $component := "backend" -}}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ $fullName }}
   namespace: {{ .Release.Namespace | quote }}
   labels:
-    {{- include "impress.common.labels" (list . $component) | nindent 4 }}
+    {{- include "meet.common.labels" (list . $component) | nindent 4 }}
 spec:
-  replicas: {{ .Values.frontend.replicas }}
+  replicas: {{ .Values.backend.replicas }}
   selector:
     matchLabels:
-      {{- include "impress.common.selectorLabels" (list . $component) | nindent 6 }}
+      {{- include "meet.common.selectorLabels" (list . $component) | nindent 6 }}
   template:
     metadata:
       annotations:
-        {{- with .Values.frontend.podAnnotations }}
+        {{- with .Values.backend.podAnnotations }}
         {{- toYaml . | nindent 8 }}
         {{- end }}
       labels:
-        {{- include "impress.common.selectorLabels" (list . $component) | nindent 8 }}
+        {{- include "meet.common.selectorLabels" (list . $component) | nindent 8 }}
     spec:
       {{- if $.Values.image.credentials }}
       imagePullSecrets:
-        - name: {{ include "impress.secret.dockerconfigjson.name" (dict "fullname" (include "impress.fullname" .) "imageCredentials" $.Values.image.credentials) }}
+        - name: {{ include "meet.secret.dockerconfigjson.name" (dict "fullname" (include "meet.fullname" .) "imageCredentials" $.Values.image.credentials) }}
       {{- end}}
-      shareProcessNamespace: {{ .Values.frontend.shareProcessNamespace }}
+      shareProcessNamespace: {{ .Values.backend.shareProcessNamespace }}
       containers:
-        {{- with .Values.frontend.sidecars }}
+        {{- with .Values.backend.sidecars }}
           {{- toYaml . | nindent 8 }}
         {{- end }}
         - name: {{ .Chart.Name }}
-          image: "{{ (.Values.frontend.image | default dict).repository | default .Values.image.repository }}:{{ (.Values.frontend.image | default dict).tag | default .Values.image.tag }}"
-          imagePullPolicy: {{ (.Values.frontend.image | default dict).pullPolicy | default .Values.image.pullPolicy }}
-          {{- with .Values.frontend.command }}
+          image: "{{ (.Values.backend.image | default dict).repository | default .Values.image.repository }}:{{ (.Values.backend.image | default dict).tag | default .Values.image.tag }}"
+          imagePullPolicy: {{ (.Values.backend.image | default dict).pullPolicy | default .Values.image.pullPolicy }}
+          {{- with .Values.backend.command }}
           command:
             {{- toYaml . | nindent 12 }}
           {{- end }}
-          {{- with .Values.frontend.args }}
+          {{- with .Values.backend.args }}
           args:
             {{- toYaml . | nindent 12 }}
           {{- end }}
@@ -46,27 +46,27 @@ spec:
             {{- if $envVars}}
             {{- $envVars | indent 12 }}
             {{- end }}
-          {{- with .Values.frontend.securityContext }}
+          {{- with .Values.backend.securityContext }}
           securityContext:
             {{- toYaml . | nindent 12 }}
           {{- end }}
           ports:
             - name: http
-              containerPort: {{ .Values.frontend.service.targetPort }}
+              containerPort: {{ .Values.backend.service.targetPort }}
               protocol: TCP
-          {{- if .Values.frontend.probes.liveness }}
+          {{- if .Values.backend.probes.liveness }}
           livenessProbe:
-            {{- include "impress.probes.abstract" (merge .Values.frontend.probes.liveness (dict "targetPort" .Values.frontend.service.targetPort )) | nindent 12 }}
+            {{- include "meet.probes.abstract" (merge .Values.backend.probes.liveness (dict "targetPort" .Values.backend.service.targetPort )) | nindent 12 }}
           {{- end }}
-          {{- if .Values.frontend.probes.readiness }}
+          {{- if .Values.backend.probes.readiness }}
           readinessProbe:
-            {{- include "impress.probes.abstract" (merge .Values.frontend.probes.readiness (dict "targetPort" .Values.frontend.service.targetPort )) | nindent 12 }}
+            {{- include "meet.probes.abstract" (merge .Values.backend.probes.readiness (dict "targetPort" .Values.backend.service.targetPort )) | nindent 12 }}
           {{- end }}
-          {{- if .Values.frontend.probes.startup }}
+          {{- if .Values.backend.probes.startup }}
           startupProbe:
-            {{- include "impress.probes.abstract" (merge .Values.frontend.probes.startup (dict "targetPort" .Values.frontend.service.targetPort )) | nindent 12 }}
+            {{- include "meet.probes.abstract" (merge .Values.backend.probes.startup (dict "targetPort" .Values.backend.service.targetPort )) | nindent 12 }}
           {{- end }}
-          {{- with .Values.frontend.resources }}
+          {{- with .Values.backend.resources }}
           resources:
             {{- toYaml . | nindent 12 }}
           {{- end }}
@@ -76,25 +76,25 @@ spec:
               mountPath: {{ $value.path }}
               subPath: content
             {{- end }}
-            {{- range $name, $volume := .Values.frontend.persistence }}
+            {{- range $name, $volume := .Values.backend.persistence }}
             - name: "{{ $name }}"
               mountPath: "{{ $volume.mountPath }}"
             {{- end }}
-            {{- range .Values.frontend.extraVolumeMounts }}
+            {{- range .Values.backend.extraVolumeMounts }}
             - name: {{ .name }}
               mountPath: {{ .mountPath }}
               subPath: {{ .subPath | default "" }}
               readOnly: {{ .readOnly }}
             {{- end }}
-      {{- with .Values.frontend.nodeSelector }}
+      {{- with .Values.backend.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- with .Values.frontend.affinity }}
+      {{- with .Values.backend.affinity }}
       affinity:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- with .Values.frontend.tolerations }}
+      {{- with .Values.backend.tolerations }}
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
@@ -102,9 +102,9 @@ spec:
         {{- range $index, $value := .Values.mountFiles }}
         - name: "files-{{ $index }}"
           configMap:
-            name: "{{ include "impress.fullname" $ }}-files-{{ $index }}"
+            name: "{{ include "meet.fullname" $ }}-files-{{ $index }}"
         {{- end }}
-        {{- range $name, $volume := .Values.frontend.persistence }}
+        {{- range $name, $volume := .Values.backend.persistence }}
         - name: "{{ $name }}"
           {{- if eq $volume.type "emptyDir" }}
           emptyDir: {}
@@ -113,7 +113,7 @@ spec:
             claimName: "{{ $fullName }}-{{ $name }}"
           {{- end }}
         {{- end }}
-        {{- range .Values.frontend.extraVolumes }}
+        {{- range .Values.backend.extraVolumes }}
         - name: {{ .name }}
           {{- if .existingClaim }}
           persistentVolumeClaim:
