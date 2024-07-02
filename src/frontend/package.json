@@ -4,18 +4,28 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "tsc -b && vite build",
+    "dev": "panda codegen && vite",
+    "build": "panda codegen && tsc -b && vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "prepare": "panda codegen"
   },
   "dependencies": {
-    "react": "18.2.0",
-    "react-dom": "18.2.0"
-  },
-  "devDependencies": {
     "@livekit/components-react": "2.3.3",
     "@livekit/components-styles": "1.0.12",
+    "@pandacss/preset-panda": "0.41.0",
+    "@tanstack/react-query": "5.49.2",
+    "classnames": "2.5.1",
+    "livekit-client": "2.3.1",
+    "react": "18.2.0",
+    "react-aria-components": "1.2.1",
+    "react-dom": "18.2.0",
+    "wouter": "^3.3.0"
+  },
+  "devDependencies": {
+    "@pandacss/dev": "0.41.0",
+    "@tanstack/eslint-plugin-query": "5.49.1",
+    "@tanstack/react-query-devtools": "5.49.2",
     "@types/node": "20.14.9",
     "@types/react": "18.3.3",
     "@types/react-dom": "18.3.0",
@@ -23,10 +33,12 @@
     "@typescript-eslint/parser": "7.13.1",
     "@vitejs/plugin-react": "4.3.1",
     "eslint": "8.57.0",
+    "eslint-plugin-jsx-a11y": "6.9.0",
     "eslint-plugin-react-hooks": "4.6.2",
     "eslint-plugin-react-refresh": "0.4.7",
-    "livekit-client": "2.3.1",
+    "postcss": "8.4.39",
     "typescript": "5.5.2",
-    "vite": "5.3.1"
+    "vite": "5.3.1",
+    "vite-tsconfig-paths": "4.3.2"
   }
 }

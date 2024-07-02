@@ -12,6 +12,10 @@ dist
 dist-ssr
 *.local
 
+# Panda CSS
+styled-system
+styled-system-studio
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

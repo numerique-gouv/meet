@@ -1,0 +1,7 @@
+@import './livekit.css';
+@layer reset, base, tokens, recipes, utilities;
+html,
+body,
+#root {
+  height: 100%;
+}
