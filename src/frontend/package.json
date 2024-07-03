@@ -19,7 +19,7 @@
     "react": "18.2.0",
     "react-aria-components": "1.2.1",
     "react-dom": "18.2.0",
-    "wouter": "^3.3.0"
+    "wouter": "3.3.0"
   },
   "devDependencies": {
     "@pandacss/dev": "0.41.0",
