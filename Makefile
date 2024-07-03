@@ -217,7 +217,7 @@ env.d/development/kc_postgresql:
 env.d/development/crowdin:
 	cp -n env.d/development/crowdin.dist env.d/development/crowdin
 
-crowdin-download: ## Download translated message from crowdin
+crowdin-download: ## Download translated message from Crowdin
 	@$(COMPOSE_RUN_CROWDIN) download -c crowdin/config.yml
 .PHONY: crowdin-download
 
@@ -225,7 +225,7 @@ crowdin-download-sources: ## Download sources from Crowdin
 	@$(COMPOSE_RUN_CROWDIN) download sources -c crowdin/config.yml
 .PHONY: crowdin-download-sources
 
-crowdin-upload: ## Upload source translations to crowdin
+crowdin-upload: ## Upload source translations to Crowdin
 	@$(COMPOSE_RUN_CROWDIN) upload sources -c crowdin/config.yml
 .PHONY: crowdin-upload
 
@@ -296,19 +296,19 @@ help:
 .PHONY: help
 
 # FIXME : adapt this command
-frontend-i18n-extract: ## Extract the frontend translation inside a json to be used for crowdin
+frontend-i18n-extract: ## Extract the frontend translation inside a json to be used for Crowdin
 	cd $(PATH_FRONT) && yarn i18n:extract
 .PHONY: frontend-i18n-extract
 
 # FIXME : adapt this command
-frontend-i18n-generate: ## Generate the frontend json files used for crowdin
+frontend-i18n-generate: ## Generate the frontend json files used for Crowdin
 frontend-i18n-generate: \
 	crowdin-download-sources \
 	frontend-i18n-extract
 .PHONY: frontend-i18n-generate
 
 # FIXME : adapt this command
-frontend-i18n-compile: ## Format the crowin json files used deploy to the apps
+frontend-i18n-compile: ## Format the Crowdin json files used deploy to the apps
 	cd $(PATH_FRONT) && yarn i18n:deploy
 .PHONY: frontend-i18n-compile
 
