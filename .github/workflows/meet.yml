@@ -208,11 +208,11 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: "18.x"
-          cache: "yarn"
-          cache-dependency-path: src/frontend/yarn.lock
+          cache: "npm"
+          cache-dependency-path: src/frontend/package-lock.json
 
       - name: Install dependencies
-        run: cd src/frontend/ && yarn install --frozen-lockfile
+        run: cd src/frontend/ && npm ci
 
       - name: Extract the frontend translation
         run: make frontend-i18n-extract
