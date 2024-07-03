@@ -7,8 +7,7 @@
     "dev": "panda codegen && vite",
     "build": "panda codegen && tsc -b && vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview",
-    "prepare": "panda codegen"
+    "preview": "vite preview"
   },
   "dependencies": {
     "@livekit/components-react": "2.3.3",
