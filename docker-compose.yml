@@ -10,6 +10,10 @@ services:
 
   redis:
     image: redis:5
+    ports:
+      - 6379:6379
+    volumes:
+      - redisdata:/data
 
   mailcatcher:
     image: sj26/mailcatcher:latest
@@ -158,3 +162,22 @@ services:
       - "7880:7880"
       - "7881:7881"
       - "7882:7882/udp"
+    depends_on:
+      - livekit_egress
+
+  livekit_egress:
+    image: livekit/egress
+    command: --security-opt seccomp=chrome-sandboxing-seccomp-profile.json
+    container_name: livekit_egress
+    restart: always
+    environment:
+      EGRESS_CONFIG_FILE: ./livekit-egress.yaml
+    depends_on:
+      - redis
+    volumes:
+      - ./livekit-egress.yaml:/livekit-egress.yaml
+      - /recording:/out
+
+
+volumes:
+  redisdata:

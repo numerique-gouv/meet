@@ -1,0 +1,8 @@
+# required fields
+log_level: debug
+api_key: devKey
+api_secret: secret
+ws_url: "ws://localhost:7880"
+insecure: true
+redis:
+  address: redis:6379
