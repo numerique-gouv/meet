@@ -55,6 +55,14 @@ releases:
     secrets:
       - env.d/{{ .Environment.Name }}/secrets.enc.yaml
 
+  - name: egress
+    installed: {{ eq .Environment.Name "dev" | toYaml }}
+    chart: livekit/egress
+    values:
+      - env.d/{{ .Environment.Name }}/values.egress.yaml.gotmpl
+    secrets:
+      - env.d/{{ .Environment.Name }}/secrets.enc.yaml
+
 environments:
   dev:
     values:
