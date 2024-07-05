@@ -157,13 +157,15 @@ services:
 
   livekit:
     image: livekit/livekit-server
-    entrypoint: /livekit-server --dev --bind 0.0.0.0
+    entrypoint: /livekit-server --dev --bind 0.0.0.0 --config ./livekit.yaml
     ports:
       - "7880:7880"
       - "7881:7881"
       - "7882:7882/udp"
     depends_on:
       - livekit_egress
+    volumes:
+      - ./livekit.yaml:/livekit.yaml
 
   livekit_egress:
     image: livekit/egress
