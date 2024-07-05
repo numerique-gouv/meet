@@ -9,6 +9,8 @@ Framework](https://www.django-rest-framework.org/) and [Vite.js](https://vitejs.
 
 ### Prerequisite
 
+#### Docker
+
 Make sure you have a recent version of Docker and [Docker
 Compose](https://docs.docker.com/compose/install) installed on your laptop:
 
@@ -22,6 +24,10 @@ $ docker compose -v
 
 > ⚠️ You may need to run the following commands with `sudo` but this can be
 > avoided by assigning your user to the `docker` group.
+
+#### LiveKit CLI
+
+Install LiveKit CLI, which provides utilities for interacting with the LiveKit ecosystem (including the server, egress, and more), please follow the instructions available in the [official repository](https://github.com/livekit/livekit-cli).
 
 ### Project bootstrap
 
@@ -48,11 +54,28 @@ Your Docker services should now be up and running 🎉
 
 [FIXME] Explain how to run the frontend project.
 
+### Configure LiveKit CLI
+
+For the optimal DX, create a default project named `meet` to use with `livekit-cli` commands:
+```bash
+$ livekit-cli project add
+URL: http://localhost:7880
+API Key: devkey
+API Secret: secret
+Give it a name for later reference: meet
+? Make this project default?? [y/N] y
+```
+
+Thus, you won't need to pass the project API Key and API Secret for each command.
+
+
 ### Adding content
 
 You can create a basic demo site by running:
 
-    $ make demo
+```bash
+$ make demo
+```
 
 Finally, you can check all available Make rules using:
 
