@@ -10,10 +10,6 @@ services:
 
   redis:
     image: redis:5
-    ports:
-      - 6379:6379
-    volumes:
-      - redisdata:/data
 
   mailcatcher:
     image: sj26/mailcatcher:latest
@@ -180,6 +176,3 @@ services:
       - ./livekit-egress.yaml:/livekit-egress.yaml
       - ./recording:/out
 
-
-volumes:
-  redisdata:
