@@ -1,0 +1,9 @@
+{
+  "room_name": "your-room-name",
+  "layout": "speaker-dark",
+  "file_outputs": [
+    {
+      "filepath": "/out/"
+    }
+  ]
+}
