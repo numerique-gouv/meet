@@ -79,3 +79,6 @@ db.sqlite3
 .vscode/
 *.iml
 .devcontainer
+
+# Egress output
+docker/livekit/out

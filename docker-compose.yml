@@ -162,3 +162,14 @@ services:
       - ./docker/livekit/config/livekit-server.yaml:/config.yaml
     depends_on:
       - redis
+      - livekit-egress
+
+  livekit-egress:
+      image: livekit/egress
+      environment:
+        EGRESS_CONFIG_FILE: ./livekit-egress.yaml
+      volumes:
+        - ./docker/livekit/config/livekit-egress.yaml:/livekit-egress.yaml
+        - ./docker/livekit/out:/out
+      depends_on:
+        - redis
