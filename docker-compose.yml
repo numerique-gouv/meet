@@ -153,8 +153,12 @@ services:
 
   livekit:
     image: livekit/livekit-server
-    entrypoint: /livekit-server --dev --bind 0.0.0.0
+    entrypoint: /livekit-server --dev --bind 0.0.0.0 --config ./config.yaml
     ports:
       - "7880:7880"
       - "7881:7881"
       - "7882:7882/udp"
+    volumes:
+      - ./docker/livekit/config/livekit-server.yaml:/config.yaml
+    depends_on:
+      - redis
