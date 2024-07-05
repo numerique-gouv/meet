@@ -2,6 +2,6 @@
   "room_name": "your-room-uuidv4",
   "track_id": "TR_XXXXXXXXXXXX",
   "file": {
-    "filepath": "recording/my-room-test.mp4"
+    "filepath": "/out/"
   }
 }

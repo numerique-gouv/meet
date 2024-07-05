@@ -178,7 +178,7 @@ services:
       - redis
     volumes:
       - ./livekit-egress.yaml:/livekit-egress.yaml
-      - /recording:/out
+      - ./recording:/out
 
 
 volumes:
