@@ -1,0 +1,5 @@
+log_level: debug
+redis:
+  address: redis:6379
+keys:
+  devkey: secret
