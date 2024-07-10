@@ -8,7 +8,7 @@ module.exports = {
     'plugin:@tanstack/eslint-plugin-query/recommended',
     'plugin:jsx-a11y/recommended',
   ],
-  ignorePatterns: ['dist', '.eslintrc.cjs'],
+  ignorePatterns: ['dist', '.eslintrc.cjs', 'styled-system'],
   parser: '@typescript-eslint/parser',
   plugins: ['react-refresh'],
   rules: {
