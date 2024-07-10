@@ -1,4 +1,5 @@
 """Client serializers for the Meet core app."""
+from django.conf import settings
 from django.utils.translation import gettext_lazy as _
 
 from rest_framework import serializers
@@ -122,6 +123,7 @@ class RoomSerializer(serializers.ModelSerializer):
             slug = f"{instance.id!s}".replace("-", "")
 
             output["livekit"] = {
+                "url": settings.LIVEKIT_CONFIGURATION["url"],
                 "room": slug,
                 "token": utils.generate_token(room=slug, user=request.user),
             }

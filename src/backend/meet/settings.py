@@ -372,6 +372,7 @@ class Base(Configuration):
         "api_secret": values.Value(
             environ_name="LIVEKIT_API_SECRET", environ_prefix=None
         ),
+        "url": values.Value(environ_name="LIVEKIT_API_URL", environ_prefix=None),
     }
     DEFAULT_ROOM_IS_PUBLIC = values.BooleanValue(
         True, environ_name="DEFAULT_ROOM_IS_PUBLIC", environ_prefix=None
