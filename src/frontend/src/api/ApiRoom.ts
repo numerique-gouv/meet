@@ -4,6 +4,7 @@ export type ApiRoom = {
   slug: string
   is_public: boolean
   livekit?: {
+    url: string
     room: string
     token: string
   }

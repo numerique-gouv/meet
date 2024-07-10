@@ -54,11 +54,11 @@ export const Conference = () => {
     return <ForbiddenScreen />
   }
 
-  if (data?.livekit?.token) {
+  if (data?.livekit?.token && data?.livekit?.url) {
     return (
       <Screen>
         <LiveKitRoom
-          serverUrl={import.meta.env.VITE_LIVEKIT_SERVER_URL}
+          serverUrl={data?.livekit?.url}
           token={data?.livekit?.token}
           connect={true}
           audio={{

@@ -191,6 +191,7 @@ class RoomViewSet(
             data = {
                 "id": None,
                 "livekit": {
+                    "url": settings.LIVEKIT_CONFIGURATION["url"],
                     "room": slug,
                     "token": utils.generate_token(room=slug, user=request.user),
                 },

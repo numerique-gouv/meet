@@ -85,6 +85,13 @@ def test_api_rooms_retrieve_anonymous_private_slug_not_normalized():
 
 
 @override_settings(ALLOW_UNREGISTERED_ROOMS=True)
+@override_settings(
+    LIVEKIT_CONFIGURATION={
+        "api_key": "key",
+        "api_secret": "secret",
+        "url": "test_url_value",
+    }
+)
 @mock.patch("core.utils.generate_token", return_value="foo")
 def test_api_rooms_retrieve_anonymous_unregistered_allowed(mock_token):
     """
@@ -98,6 +105,7 @@ def test_api_rooms_retrieve_anonymous_unregistered_allowed(mock_token):
     assert response.json() == {
         "id": None,
         "livekit": {
+            "url": "test_url_value",
             "room": "unregistered-room",
             "token": "foo",
         },
@@ -107,6 +115,13 @@ def test_api_rooms_retrieve_anonymous_unregistered_allowed(mock_token):
 
 
 @override_settings(ALLOW_UNREGISTERED_ROOMS=True)
+@override_settings(
+    LIVEKIT_CONFIGURATION={
+        "api_key": "key",
+        "api_secret": "secret",
+        "url": "test_url_value",
+    }
+)
 @mock.patch("core.utils.generate_token", return_value="foo")
 def test_api_rooms_retrieve_anonymous_unregistered_allowed_not_normalized(mock_token):
     """
@@ -120,6 +135,7 @@ def test_api_rooms_retrieve_anonymous_unregistered_allowed_not_normalized(mock_t
     assert response.json() == {
         "id": None,
         "livekit": {
+            "url": "test_url_value",
             "room": "reunion",
             "token": "foo",
         },
@@ -141,6 +157,13 @@ def test_api_rooms_retrieve_anonymous_unregistered_not_allowed():
 
 
 @mock.patch("core.utils.generate_token", return_value="foo")
+@override_settings(
+    LIVEKIT_CONFIGURATION={
+        "api_key": "key",
+        "api_secret": "secret",
+        "url": "test_url_value",
+    }
+)
 def test_api_rooms_retrieve_anonymous_public(mock_token):
     """
     Anonymous users should be able to retrieve a room with a token provided it is public.
@@ -156,6 +179,7 @@ def test_api_rooms_retrieve_anonymous_public(mock_token):
         "is_administrable": False,
         "is_public": True,
         "livekit": {
+            "url": "test_url_value",
             "room": expected_name,
             "token": "foo",
         },
@@ -167,6 +191,13 @@ def test_api_rooms_retrieve_anonymous_public(mock_token):
 
 
 @mock.patch("core.utils.generate_token", return_value="foo")
+@override_settings(
+    LIVEKIT_CONFIGURATION={
+        "api_key": "key",
+        "api_secret": "secret",
+        "url": "test_url_value",
+    }
+)
 def test_api_rooms_retrieve_authenticated_public(mock_token):
     """
     Authenticated users should be allowed to retrieve a room and get a token for a room to
@@ -190,6 +221,7 @@ def test_api_rooms_retrieve_authenticated_public(mock_token):
         "is_administrable": False,
         "is_public": True,
         "livekit": {
+            "url": "test_url_value",
             "room": expected_name,
             "token": "foo",
         },
@@ -226,6 +258,13 @@ def test_api_rooms_retrieve_authenticated():
 
 
 @mock.patch("core.utils.generate_token", return_value="foo")
+@override_settings(
+    LIVEKIT_CONFIGURATION={
+        "api_key": "key",
+        "api_secret": "secret",
+        "url": "test_url_value",
+    }
+)
 def test_api_rooms_retrieve_members(mock_token, django_assert_num_queries):
     """
     Users who are members of a room should be allowed to see related users.
@@ -280,6 +319,7 @@ def test_api_rooms_retrieve_members(mock_token, django_assert_num_queries):
         "is_administrable": False,
         "is_public": room.is_public,
         "livekit": {
+            "url": "test_url_value",
             "room": expected_name,
             "token": "foo",
         },
@@ -291,6 +331,13 @@ def test_api_rooms_retrieve_members(mock_token, django_assert_num_queries):
 
 
 @mock.patch("core.utils.generate_token", return_value="foo")
+@override_settings(
+    LIVEKIT_CONFIGURATION={
+        "api_key": "key",
+        "api_secret": "secret",
+        "url": "test_url_value",
+    }
+)
 def test_api_rooms_retrieve_administrators(mock_token, django_assert_num_queries):
     """
     A user who is an administrator or owner of a room should be allowed
@@ -345,6 +392,7 @@ def test_api_rooms_retrieve_administrators(mock_token, django_assert_num_queries
         "is_public": room.is_public,
         "configuration": {},
         "livekit": {
+            "url": "test_url_value",
             "room": expected_name,
             "token": "foo",
         },
