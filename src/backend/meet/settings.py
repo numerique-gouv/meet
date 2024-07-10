@@ -116,27 +116,6 @@ class Base(Configuration):
         },
     }
 
-    # Media
-    AWS_S3_ENDPOINT_URL = values.Value(
-        environ_name="AWS_S3_ENDPOINT_URL", environ_prefix=None
-    )
-    AWS_S3_ACCESS_KEY_ID = values.Value(
-        environ_name="AWS_S3_ACCESS_KEY_ID", environ_prefix=None
-    )
-    AWS_S3_SECRET_ACCESS_KEY = values.Value(
-        environ_name="AWS_S3_SECRET_ACCESS_KEY", environ_prefix=None
-    )
-    AWS_S3_REGION_NAME = values.Value(
-        environ_name="AWS_S3_REGION_NAME", environ_prefix=None
-    )
-    AWS_STORAGE_BUCKET_NAME = values.Value(
-        "meet-media-storage",
-        environ_name="AWS_STORAGE_BUCKET_NAME",
-        environ_prefix=None,
-    )
-
-    S3_VERSIONS_PAGE_SIZE = 50
-
     # Internationalization
     # https://docs.djangoproject.com/en/3.1/topics/i18n/
 
