@@ -101,6 +101,14 @@ backend:
         key: bucket
     AWS_S3_REGION_NAME: local
     STORAGES_STATICFILES_BACKEND: django.contrib.staticfiles.storage.StaticFilesStorage
+    LIVEKIT_API_SECRET:
+      secretKeyRef:
+        name: backend
+        key: LIVEKIT_API_SECRET
+    LIVEKIT_API_KEY:
+      secretKeyRef:
+        name: backend
+        key: LIVEKIT_API_KEY
 
   createsuperuser:
     command:
