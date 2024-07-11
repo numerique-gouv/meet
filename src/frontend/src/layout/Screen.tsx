@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react'
 import { css } from '@/styled-system/css'
-import { Header } from '@/layout/Header'
+import { Header } from './Header'
 
 export const Screen = ({ children }: { children: ReactNode }) => {
   return (
@@ -9,7 +9,8 @@ export const Screen = ({ children }: { children: ReactNode }) => {
         height: '100%',
         display: 'flex',
         flexDirection: 'column',
-        backgroundColor: 'slate.50',
+        backgroundColor: 'default.bg',
+        color: 'default.text',
       })}
     >
       <Header />

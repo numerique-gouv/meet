@@ -1,114 +1,57 @@
 /* based on https://github.com/livekit/components-js/blob/main/packages/styles/scss/themes/default.scss
-for now only "visio-light" is actually used
 */
-[data-lk-theme='visio-dark'] {
-  color-scheme: dark;
-  --lk-bg: #111;
-  --lk-bg2: #1e1e1e;
-  --lk-bg3: #2b2b2b;
-  --lk-bg4: #373737;
-  --lk-bg5: #444444;
-  --lk-fg: #fff;
-  --lk-fg2: whitesmoke;
-  --lk-fg3: #ebebeb;
-  --lk-fg4: #e0e0e0;
-  --lk-fg5: #d6d6d6;
-  --lk-border-color: rgba(255, 255, 255, 0.1);
-  --lk-accent-fg: #fff;
-  --lk-accent-bg: #1f8cf9;
-  --lk-accent2: #3396fa;
-  --lk-accent3: #47a0fa;
-  --lk-accent4: #5babfb;
-  --lk-danger-fg: #fff;
-  --lk-danger: #842029;
-  --lk-danger2: #b02a37;
-  --lk-danger3: #dc3545;
-  --lk-danger4: #e35d6a;
-  --lk-success-fg: #fff;
-  --lk-success: #146c43;
-  --lk-success2: #198754;
-  --lk-success3: #479f76;
-  --lk-success4: #75b798;
-  --lk-control-fg: var(--lk-fg);
-  --lk-control-bg: var(--lk-bg2);
-  --lk-control-hover-bg: var(--lk-bg3);
-  --lk-control-active-bg: var(--lk-bg4);
-  --lk-control-active-hover-bg: var(--lk-bg5);
-  --lk-connection-excellent: #198754;
-  --lk-connection-good: #fd7e14;
-  --lk-connection-poor: #dc3545;
-  --lk-font-family: system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica,
-    Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji';
-  --lk-font-size: 16px;
-  --lk-line-height: 1.5;
-  --lk-border-radius: 0.5rem;
-  --lk-box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.15);
-  --lk-grid-gap: 0.5rem;
-  --lk-control-bar-height: 69px;
-  --lk-chat-header-height: 69px;
-
-  --lk-bg6: #777;
-  --lk-control-border-width: 1px;
-  --lk-control-border-color: var(--lk-bg5);
-  --lk-control-border: var(--lk-control-border-color);
-  --lk-control-hover-border: var(--lk-bg6);
-}
-
 [data-lk-theme='visio-light'] {
   color-scheme: light;
-  --lk-bg: #fff;
-  --lk-bg2: #f3f4f6;
-  --lk-bg3: #e5e7eb;
-  --lk-bg4: #d1d5db;
-  --lk-bg5: #9ca3af;
-  --lk-fg: #111;
-  --lk-fg2: #18181b;
-  --lk-fg3: #27272a;
-  --lk-fg4: #3f3f46;
+  --lk-bg: var(--colors-white);
+  --lk-room-bg: var(--colors-default-bg);
+  --lk-bg2: var(--colors-gray-100);
+  --lk-bg3: var(--colors-gray-200);
+  --lk-bg4: var(--colors-gray-300);
+  --lk-bg5: var(--colors-gray-400);
+  --lk-fg: var(--colors-text);
   --lk-fg5: #52525b;
-  --lk-border-color: rgba(255, 255, 255, 0.1);
-  --lk-accent-fg: #fff;
-  --lk-accent-bg: #1f8cf9;
-  --lk-accent2: #3396fa;
-  --lk-accent3: #47a0fa;
-  --lk-accent4: #5babfb;
-  --lk-danger-fg: var(--lk-fg);
-  --lk-danger: #f8d7da;
-  --lk-danger2: #f1aeb5;
-  --lk-danger3: #ea868f;
-  --lk-danger4: #e35d6a;
-  --lk-success-fg: #fff;
-  --lk-success: #146c43;
-  --lk-success2: #198754;
-  --lk-success3: #479f76;
-  --lk-success4: #75b798;
-  --lk-control-fg: var(--lk-fg);
-  --lk-control-bg: var(--lk-bg2);
-  --lk-control-hover-bg: var(--lk-bg3);
-  --lk-control-active-bg: var(--lk-bg4);
-  --lk-control-active-hover-bg: var(--lk-bg5);
-  --lk-connection-excellent: #198754;
-  --lk-connection-good: #fd7e14;
-  --lk-connection-poor: #dc3545;
-  --lk-font-family: system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica,
-    Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji';
-  --lk-font-size: 16px;
-  --lk-line-height: 1.5;
-  --lk-border-radius: 0.5rem;
-  --lk-box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.15);
-  --lk-grid-gap: 0.5rem;
+  --lk-border-color: var(--colors-gray-400);
+  --lk-accent-fg: var(--colors-primary-text);
+  --lk-accent-bg: var(--colors-primary);
+  --lk-accent2: var(--colors-primary-hover);
+  --lk-accent3: var(--colors-primary-active);
+  --lk-accent4: var(--colors-primary-active);
+  --lk-danger-fg: var(--colors-danger-text);
+  --lk-danger: var(--colors-danger);
+  --lk-danger-hover-bg: var(--colors-danger-hover);
+  --lk-danger-active-bg: var(--colors-danger-active);
+  --lk-success-fg: var(--colors-success-text);
+  --lk-success: var(--colors-success);
+  --lk-control-fg: var(--colors-control-text);
+  --lk-control-bg: var(--colors-control);
+  --lk-control-hover-bg: var(--colors-control-hover);
+  --lk-control-toggled-on-bg: var(--colors-control-hover);
+  --lk-control-active-bg: var(--colors-control-active);
+  --lk-control-active-hover-bg: var(--colors-control-active);
+  --lk-connection-excellent: var(--colors-success);
+  --lk-connection-good: var(--colors-warning);
+  --lk-connection-poor: var(--colors-danger);
+  --lk-line-height: var(--line-heights-1\.5);
+  --lk-border-radius: var(--radii-8);
+  --lk-box-shadow: var(--shadows-sm);
+  --lk-grid-gap: 1.5rem;
   --lk-control-bar-height: 69px;
   --lk-chat-header-height: 69px;
 
+  --lk-font-family: var(--fonts-sans);
+  --lk-font-size: 1rem;
   --lk-bg6: #6b7280;
   --lk-control-border-width: 1px;
   --lk-control-border-color: var(--lk-bg5);
   --lk-control-border: var(--lk-control-border-color);
   --lk-control-hover-border: var(--lk-bg6);
+
+  --lk-controlbar-bg: var(--colors-gray-300);
+  --lk-participant-border: var(--colors-gray-400);
 }
 
-[data-lk-theme] {
-  background-color: var(--lk-bg);
+[data-lk-theme] .lk-room-container {
+  background-color: var(--lk-room-bg);
 }
 
 .lk-button,
@@ -133,14 +76,77 @@ for now only "visio-light" is actually used
   border-color: var(--lk-control-hover-border);
 }
 
-.lk-disconnect-button {
-  --lk-control-border: var(--lk-danger3);
+.lk-button:not(:disabled):active,
+.lk-start-audio-button:not(:disabled):active,
+.lk-close-button:not(:disabled):active,
+.lk-chat-toggle:not(:disabled):active,
+.lk-button:not(:disabled):is([data-pressed]) {
+  background-color: var(--lk-control-active-bg);
 }
 
-.lk-disconnect-button:not(:disabled):hover {
-  --lk-control-hover-bg: var(--lk-danger2);
+.lk-button[aria-pressed='true'],
+[aria-pressed='true'].lk-start-audio-button,
+[aria-pressed='true'].lk-chat-toggle,
+[aria-pressed='true'].lk-disconnect-button {
+  background-color: var(--lk-control-toggled-on-bg);
 }
 
-.lk-prejoin {
+[data-lk-theme] .lk-disconnect-button {
+  --lk-control-border: var(--colors-danger-hover);
+}
+
+[data-lk-theme] .lk-disconnect-button:not(:disabled):hover {
+  --lk-control-hover-bg: var(--lk-danger-hover-bg);
+}
+
+[data-lk-theme] .lk-disconnect-button:not(:disabled):active {
+  background-color: var(--lk-danger-active-bg);
+}
+
+[data-lk-theme='visio-light'] .lk-close-button path {
+  fill: var(--lk-fg);
+}
+
+[data-lk-theme='visio-light'] .lk-participant-metadata-item,
+[data-lk-theme='visio-light']
+  .lk-participant-tile
+  .lk-focus-toggle-button:not(:hover) {
+  color: white;
+}
+
+[data-lk-theme='visio-light']
+  .lk-chat-entry[data-lk-message-origin='local']
+  .lk-message-body {
+  align-self: flex-end;
+  background-color: var(--colors-primary-subtle);
+}
+[data-lk-theme='visio-light']
+  .lk-chat-entry[data-lk-message-origin='remote']
+  .lk-message-body {
+  background-color: var(--colors-blue-300);
+}
+
+[data-lk-theme] .lk-chat-header {
+  font-weight: bold;
+}
+
+[data-lk-theme] .lk-chat-messages {
+  padding: 0.5rem;
+}
+
+.lk-chat-entry .lk-meta-data {
+  padding-left: 0.75rem;
+  padding-right: 0.75rem;
+}
+
+[data-lk-theme] .lk-control-bar {
+  background-color: var(--lk-controlbar-bg);
+}
+
+[data-lk-theme] .lk-prejoin {
   padding-top: 0;
+}
+
+[data-lk-theme] .lk-participant-tile {
+  box-shadow: var(--lk-box-shadow);
 }

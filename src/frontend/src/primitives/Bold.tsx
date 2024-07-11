@@ -1,9 +1,5 @@
-import { css } from '@/styled-system/css'
+import { Text, type As } from './Text'
 
-const bold = css({
-  fontWeight: 'bold',
-})
-
-export const Bold = (props: React.HTMLAttributes<HTMLSpanElement>) => {
-  return <strong className={bold} {...props} />
+export const Bold = (props: React.HTMLAttributes<HTMLElement> & As) => {
+  return <Text as="strong" {...props} bold />
 }

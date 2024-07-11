@@ -1,24 +1,14 @@
-import type { HTMLAttributes } from 'react'
-import classNames from 'classnames'
-import { css } from '@/styled-system/css'
+import { Text } from './Text'
 
-export const H1 = ({
+export const H = ({
   children,
-  className,
+  lvl,
   ...props
-}: HTMLAttributes<HTMLHeadingElement>) => {
+}: React.HTMLAttributes<HTMLHeadingElement> & { lvl: 1 | 2 | 3 }) => {
+  const tag = `h${lvl}` as const
   return (
-    <h1
-      className={classNames(
-        css({
-          textStyle: '2xl',
-          marginBottom: '1',
-        }),
-        className
-      )}
-      {...props}
-    >
+    <Text as={tag} variant={tag} {...props}>
       {children}
-    </h1>
+    </Text>
   )
 }

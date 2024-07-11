@@ -1,8 +1,5 @@
-import { RecipeVariantProps, cva } from '@/styled-system/css'
-import {
-  Link as Link,
-  type LinkProps as LinksProps,
-} from 'react-aria-components'
+import { Link, type LinkProps } from 'react-aria-components'
+import { cva, type RecipeVariantProps } from '@/styled-system/css'
 
 const link = cva({
   base: {
@@ -10,25 +7,27 @@ const link = cva({
     textUnderlineOffset: '2',
     transition: 'all 200ms',
     cursor: 'pointer',
-    _hover: {
+    '_ra-hover': {
       textDecoration: 'none',
     },
-    _pressed: {
+    '_ra-pressed': {
       textDecoration: 'underline',
     },
   },
   variants: {
     size: {
       small: {
-        fontSize: 'sm',
+        textStyle: 'small',
       },
     },
   },
 })
 
-export const A = ({
-  size,
-  ...props
-}: LinksProps & RecipeVariantProps<typeof link>) => {
+export type AProps = LinkProps & RecipeVariantProps<typeof link>
+
+/**
+ * anchor component styled with underline
+ */
+export const A = ({ size, ...props }: AProps) => {
   return <Link {...props} className={link({ size })} />
 }
