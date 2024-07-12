@@ -1,0 +1,10 @@
+creation_rules:
+  - key_groups:
+    - age:
+      - age15fyxdwmg5mvldtqqus87xspuws2u0cpvwheehrtvkexj4tnsqqysw6re2x #jacques
+      - age16hnlml8yv4ynwy0seer57g8qww075crd0g7nsundz3pj4wk7m3vqftszg7 #github-repo
+      - age1plkp8td6zzfcavjusmsfrlk54t9vn8jjxm8zaz7cmnr7kzl2nfnsd54hwg #anthony
+      - age12g6f5fse25tgrwweleh4jls3qs52hey2edh759smulwmk5lnzadslu2cp3 #antoine
+      - age1tl80n23wq6zxegupwn70ew0yp225ua5v4dk800x7g2w6pvlxz46qk592pa #marie
+      - age1qy04neuzwpasmvljqrcvhwnf0kz5cpyteze38c8avp0czewskasszv9pyw #argocd
+      - age18fgn6j2vwwswqcpv9xpcehq8mrf9zs2sglwkamp3tzwx8d9jq9jsrskrk9 #manuuu
