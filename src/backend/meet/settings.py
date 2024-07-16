@@ -344,6 +344,9 @@ class Base(Configuration):
     ALLOW_LOGOUT_GET_METHOD = values.BooleanValue(
         default=True, environ_name="ALLOW_LOGOUT_GET_METHOD", environ_prefix=None
     )
+    OIDC_AUTHENTICATE_CLASS = "core.authentication.views.OIDCAuthenticationRequestView"
+    OIDC_CALLBACK_CLASS = "core.authentication.views.OIDCAuthenticationCallbackView"
+    OIDC_REDIRECT_FIELD_NAME = "returnTo"
 
     # Video conference configuration
     LIVEKIT_CONFIGURATION = {

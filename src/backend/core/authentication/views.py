@@ -1,15 +1,23 @@
 """Authentication Views for the People core app."""
 
+import copy
 from urllib.parse import urlencode
 
 from django.contrib import auth
 from django.core.exceptions import SuspiciousOperation
 from django.http import HttpResponseRedirect
+from django.shortcuts import resolve_url
 from django.urls import reverse
 from django.utils import crypto
 
 from mozilla_django_oidc.utils import (
     absolutify,
+)
+from mozilla_django_oidc.views import (
+    OIDCAuthenticationCallbackView as Wip,
+)
+from mozilla_django_oidc.views import (
+    OIDCAuthenticationRequestView as MozillaOIDCAuthenticationRequestView,
 )
 from mozilla_django_oidc.views import (
     OIDCLogoutView as MozillaOIDCOIDCLogoutView,
@@ -135,3 +143,22 @@ class OIDCLogoutCallbackView(MozillaOIDCOIDCLogoutView):
         auth.logout(request)
 
         return HttpResponseRedirect(self.redirect_url)
+
+
+class OIDCAuthenticationCallbackView(Wip):
+    @property
+    def failure_url(self):
+        next_url = self.request.session.get("oidc_login_next", None)
+        return next_url or resolve_url(
+            self.get_settings("LOGIN_REDIRECT_URL_FAILURE", "/")
+        )
+
+
+class OIDCAuthenticationRequestView(MozillaOIDCAuthenticationRequestView):
+    def get_extra_params(self, request):
+        extra_params = self.get_settings("OIDC_AUTH_REQUEST_EXTRA_PARAMS", {})
+        if request.GET.get("silent") == "true":
+            extra_params = copy.deepcopy(extra_params)
+            extra_params.update({"prompt": "none"})
+
+        return extra_params
