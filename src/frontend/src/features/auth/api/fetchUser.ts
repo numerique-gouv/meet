@@ -1,6 +1,26 @@
 import { ApiError } from '@/api/ApiError'
 import { fetchApi } from '@/api/fetchApi'
 import { type ApiUser } from './ApiUser'
+import { authUrl } from "@/features/auth";
+
+const SILENT_LOGIN_KEY = 'initiateSilentLogin';
+const SILENT_LOGIN_EXPIRY = 10000;
+
+const shouldInitiateSilentLogin = () => {
+  const silentLoginStr = localStorage.getItem(SILENT_LOGIN_KEY)
+  if (!silentLoginStr) {
+    return true
+  }
+  const { expiry } = JSON.parse(silentLoginStr)
+  const now = new Date()
+  return now.getTime() > expiry;
+};
+
+const initiateSilentLogin = () => {
+  const now = new Date()
+  localStorage.setItem(SILENT_LOGIN_KEY, JSON.stringify({expiry: now.getTime() + SILENT_LOGIN_EXPIRY}));
+  window.location.href = authUrl(true)
+}
 
 /**
  * fetch the logged-in user from the api.
@@ -16,6 +36,9 @@ export const fetchUser = (): Promise<ApiUser | false> => {
       .catch((error) => {
         // we assume that a 401 means the user is not logged in
         if (error instanceof ApiError && error.statusCode === 401) {
+          if (shouldInitiateSilentLogin()) {
+            initiateSilentLogin()
+          }
           resolve(false)
         } else {
           reject(error)
