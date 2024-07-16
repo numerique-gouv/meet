@@ -1,2 +1,2 @@
 export { useUser } from './api/useUser'
-export { authUrl } from './utils/authUrl'
+export { authUrl, logoutUrl } from './utils/authUrl'
