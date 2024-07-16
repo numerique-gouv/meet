@@ -3,7 +3,7 @@ import { fetchApi } from '@/api/fetchApi'
 import { type ApiUser } from './ApiUser'
 
 /**
- * fetch the logged in user from the api.
+ * fetch the logged-in user from the api.
  *
  * If the user is not logged in, the api returns a 401 error.
  * Here our wrapper just returns false in that case, without triggering an error:
