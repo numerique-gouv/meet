@@ -22,7 +22,6 @@ def generate_token(room: str, user, username: Optional[str] = None) -> str:
         str: The LiveKit JWT access token.
     """
 
-    # todo - define the video grants properly based on user and room.
     video_grants = VideoGrants(
         room=room,
         room_join=True,
