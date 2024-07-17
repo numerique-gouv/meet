@@ -1,7 +1,7 @@
 """
 Utils functions used in the core app
 """
-import string
+from typing import Optional
 from uuid import uuid4
 
 from django.conf import settings
@@ -9,12 +9,14 @@ from django.conf import settings
 from livekit.api import AccessToken, VideoGrants
 
 
-def generate_token(room: string, user) -> str:
+def generate_token(room: str, user, username: Optional[str] = None) -> str:
     """Generate a Livekit access token for a user in a specific room.
 
     Args:
         room (str): The name of the room.
         user (User): The user which request the access token.
+        username (Optional[str]): The username to be displayed in the room.
+                         If none, a default value will be used.
 
     Returns:
         str: The LiveKit JWT access token.
@@ -38,10 +40,12 @@ def generate_token(room: string, user) -> str:
     ).with_grants(video_grants)
 
     if user.is_anonymous:
-        # todo - allow passing a proper name for not logged-in user
         token.with_identity(str(uuid4()))
+        default_username = "Anonymous"
     else:
-        # todo - use user's fullname instead of its email for the displayed name
-        token.with_identity(user.sub).with_name(f"{user!s}")
+        token.with_identity(user.sub)
+        default_username = str(user)
+
+    token.with_name(username or default_username)
 
     return token.to_jwt()
