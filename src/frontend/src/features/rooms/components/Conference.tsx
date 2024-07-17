@@ -14,6 +14,7 @@ import {Box, Button, Div, H, P, Text} from "@/primitives";
 import { cva } from '@/styled-system/css'
 import {styled} from "@/styled-system/jsx";
 import {useRef, useState} from "react";
+import {inviteToRoom} from "@/features/rooms/api/inviteToRoom";
 
 
 const popin = cva({
@@ -192,7 +193,9 @@ export const Conference = ({
       }
       {
         isEmailModalOpened && (
-          <EmailModal onClose={() => setIsEmailModalOpened(false)} onSubmit={(ee) => console.log(ee)} closeOnSubmit />
+          <EmailModal onClose={() => setIsEmailModalOpened(false)} onSubmit={(email) => {
+            inviteToRoom(roomId, [email])
+          }} closeOnSubmit />
         )
       }
       <LiveKitRoom
