@@ -1,6 +1,5 @@
 import { A, Button, Italic, P, Div, H, Box } from '@/primitives'
-import { useUser } from '@/features/auth'
-import { apiUrl } from '@/api/apiUrl'
+import { authUrl, useUser } from '@/features/auth'
 import { navigateToNewRoom } from '@/features/rooms'
 import { Screen } from '@/layout/Screen'
 
@@ -19,7 +18,7 @@ export const Home = () => {
               </Button>
             ) : (
               <p>
-                <A href={apiUrl('/authenticate')}>
+                <A href={authUrl()}>
                   Login to create a conference call
                 </A>
               </p>
