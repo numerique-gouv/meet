@@ -210,9 +210,7 @@ class RoomViewSet(
 
         if user.is_authenticated:
             queryset = (
-                self.filter_queryset(self.get_queryset())
-                .filter(Q(users=user))
-                .distinct()
+                self.filter_queryset(self.get_queryset()).filter(users=user).distinct()
             )
         else:
             queryset = self.get_queryset().none()
