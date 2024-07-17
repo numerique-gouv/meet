@@ -134,6 +134,4 @@ class RoomSerializer(serializers.ModelSerializer):
 
         output["is_administrable"] = is_admin
 
-        # todo - pass properly livekit configuration
-
         return output
