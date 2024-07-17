@@ -1,8 +1,7 @@
 import { css } from '@/styled-system/css'
 import { flex } from '@/styled-system/patterns'
-import { apiUrl } from '@/api/apiUrl'
 import { A, Badge, Text } from '@/primitives'
-import { authUrl, useUser } from '@/features/auth'
+import { authUrl, logoutUrl, useUser } from '@/features/auth'
 
 export const Header = () => {
   const { user, isLoggedIn } = useUser()
@@ -35,7 +34,7 @@ export const Header = () => {
           {!!user && (
             <p className={flex({ gap: 1, align: 'center' })}>
               <Badge>{user.email}</Badge>
-              <A href={apiUrl('/logout')} size="small">
+              <A href={logoutUrl()} size="small">
                 Logout
               </A>
             </p>
