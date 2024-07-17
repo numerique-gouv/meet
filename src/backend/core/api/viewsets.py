@@ -1,11 +1,17 @@
 """API endpoints"""
+import json
+import smtplib
 import uuid
 
 from django.conf import settings
+from django.contrib.sites.models import Site
+from django.core import mail
 from django.db.models import Q
-from django.http import Http404
+from django.http import Http404, JsonResponse
 from django.shortcuts import get_object_or_404
+from django.template.loader import render_to_string
 from django.utils.text import slugify
+from django.utils.translation import gettext_lazy as _
 
 from rest_framework import (
     decorators,
@@ -276,3 +282,43 @@ class ResourceAccessViewSet(
     permission_classes = [permissions.ResourceAccessPermission]
     queryset = models.ResourceAccess.objects.all()
     serializer_class = serializers.ResourceAccessSerializer
+
+
+def invite(request):
+    """PoC of sending email invitation."""
+
+    if request.method != "POST":
+        return JsonResponse({"error": "Method not allowed"}, status=405)
+    if not request.user.is_authenticated:
+        return JsonResponse({"error": "Authentication required"}, status=401)
+
+    data = json.loads(request.body)
+    emails = data.get("emails")
+    room = data.get("room")
+
+    if not emails or not room:
+        return JsonResponse(
+            {"error": "Emails and room are required fields."}, status=400
+        )
+
+    try:
+        template_vars = {
+            "title": _("Invitation to join a room!"),
+            "site": Site.objects.get_current(),
+            "room": room,
+            "sender": str(request.user),
+        }
+        msg_html = render_to_string("mail/html/invitation.html", template_vars)
+        msg_plain = render_to_string("mail/text/invitation.txt", template_vars)
+        mail.send_mail(
+            _("Invitation to join a room!"),
+            msg_plain,
+            settings.EMAIL_FROM,
+            emails,
+            html_message=msg_html,
+            fail_silently=False,
+        )
+    except smtplib.SMTPException:
+        return JsonResponse({"error": "Failed to send invitation emails"}, status=500)
+
+    return JsonResponse({"msg": "invitation sent."}, status=200)

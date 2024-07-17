@@ -22,6 +22,7 @@ urlpatterns = [
             [
                 *router.urls,
                 *oidc_urls,
+                path("invite/", viewsets.invite, name="invite")
             ]
         ),
     ),
