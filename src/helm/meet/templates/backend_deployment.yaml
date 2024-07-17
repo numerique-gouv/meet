@@ -19,6 +19,7 @@ spec:
         {{- with .Values.backend.podAnnotations }}
         {{- toYaml . | nindent 8 }}
         {{- end }}
+        checksum/config: {{ include (print $.Template.BasePath "/secrets.yaml") . | sha256sum }}
       labels:
         {{- include "meet.common.selectorLabels" (list . $component) | nindent 8 }}
     spec:
