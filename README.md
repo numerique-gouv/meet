@@ -94,6 +94,56 @@ You first need to create a superuser account:
 $ make superuser
 ```
 
+### Run application on local Kubernetes
+
+The application is deployed across staging, preprod, and production environments using Kubernetes (K8s).
+Reproducing environment conditions locally is crucial for developing new features or debugging issues.
+
+This is facilitated by [Tilt](https://tilt.dev/) ("Kubernetes for Prod, Tilt for Dev").  Tilt enables smart rebuilds and live updates for services running locally in Kubernetes.  We defined our services in a Tiltfile located at `bin/Tiltfile`.
+
+
+#### Getting Started
+
+Make sure you have installed:
+- kubectl
+- helm
+- helmfile
+- tilt
+
+To build and start the Kubernetes cluster using Kind:
+```shell
+$ make build-k8s-cluster 
+```
+
+Once the Kubernetes cluster is ready, start the application stack locally:
+```shell
+$ make start-tilt
+```
+These commands set up and run your application environment using Tilt for local Kubernetes development.
+
+You can monitor Tilt's at `http://localhost:10350/`. After Tilt actions finish, you can access the app at `https://meet.127.0.0.1.nip.io/`.
+
+#### Debugging frontend
+
+Tilt deploys the `meet-dev` for the frontend by default, to benefit from Vite.js hot reloading while developing. 
+To troubleshoot production issues, please modify the Tiltfile, switch frontend's target to `frontend-production`:
+
+```yaml
+...
+
+docker_build(
+    'localhost:5001/meet-frontend:latest',
+    context='..',
+    dockerfile='../src/frontend/Dockerfile',
+    only=['./src/frontend', './docker', './.dockerignore'],
+    target='frontend-production',  # Update this line when needed
+    live_update=[
+        sync('../src/frontend', '/home/frontend'),
+    ]
+)
+...
+```
+
 ## Contributing
 
 This project is intended to be community-driven, so please, do not hesitate to
