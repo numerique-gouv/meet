@@ -9,11 +9,11 @@ import { keys } from '@/api/queryKeys'
 import { QueryAware } from '@/layout/QueryAware'
 import { navigateToHome } from '@/navigation/navigateToHome'
 import { fetchRoom } from '../api/fetchRoom'
-import {Button, Div, H, P, Text} from "@/primitives";
+import {Box, Button, Div, H, P, Text} from "@/primitives";
 
 import { cva } from '@/styled-system/css'
 import {styled} from "@/styled-system/jsx";
-import {useState} from "react";
+import {useRef, useState} from "react";
 
 
 const popin = cva({
@@ -70,7 +70,7 @@ const CloseIcon = ({size = 16}) => (
   </svg>
 )
 
-const Invitation = ({onClose}) => (
+const Invitation = ({onClose, onOpenEmailModal}) => (
   <Popin style={{ bottom: "100px", left: "24px", maxWidth: "350px" }}>
     <Div style={{display: "flex", justifyContent: "space-between", width: '100%'}}>
       <H lvl={2} style={{ marginBottom: "0.75rem"}}>Votre réunion est prête</H>
@@ -78,7 +78,7 @@ const Invitation = ({onClose}) => (
         <CloseIcon size={25} />
       </Div>
     </Div>
-    <Button variant="primary">Ajouter des participants</Button>
+    <Button variant="primary" onClick={onOpenEmailModal}>Ajouter des participants</Button>
     <P style={{fontSize: "14px", marginBottom: "0", marginTop: "0.5rem"}}>
       Ou partagez ce lien avec les personnes que vous souhaitez inviter à la réunion
     </P>
@@ -92,6 +92,78 @@ const Invitation = ({onClose}) => (
   </Popin>
 )
 
+
+const modalContainer = cva({
+ base: {
+   display: "flex",
+   flexDirection: "row",
+   alignItems: "center",
+   justifyContent: "center",
+   backgroundColor: 'rgba(0, 0, 0, 0.5)',
+   height: "100%",
+   width: "100%",
+   position: "absolute",
+   top: 0,
+   bottom: 0,
+   zIndex: 200,
+ }
+})
+
+const ModalContainer = styled('div', modalContainer)
+
+const EmailModal = ({onClose, onSubmit, closeOnSubmit = false}) => {
+  const emailRef = useRef(null);
+  return (
+    <ModalContainer>
+      <InnerModal>
+        <Div style={{display: "flex", justifyContent: "space-between", width: '100%'}}>
+          <H lvl={2} style={{ marginBottom: "0.75rem"}}>Inviter des participants</H>
+          <Div style={{cursor: "pointer"}} onClick={onClose}>
+            <CloseIcon size={25} />
+          </Div>
+        </Div>
+        <P>
+          Inviter un participant par email.
+        </P>
+        <Div style={{width: "100%"}}>
+          <input ref={emailRef} type="email" placeholder="sam@meet.co" name="email" style={{border: '1px solid black', borderRadius: '4px', minWidth: '250px', padding: '0 .5rem'}}/>
+          <Button onClick={() => {
+            const emailValue = emailRef.current.value;
+            if(!emailValue || !/\S+@\S+\.\S+/.test(emailValue)) {
+              return
+            }
+            onSubmit(emailValue)
+            if (closeOnSubmit) {
+              onClose()
+            }
+          }}>inviter</Button>
+        </Div>
+      </InnerModal>
+    </ModalContainer>
+  )
+}
+
+
+const innerModal = cva({
+  base: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "start",
+    justifyContent: "space-between",
+    borderWidth: '1px',
+    borderStyle: 'solid',
+    borderColor: 'box.border',
+    backgroundColor: 'box.bg',
+    color: 'box.text',
+    boxShadow: 'box',
+    borderRadius: 8,
+    padding: 'boxPadding',
+    flex: 1,
+    maxWidth: "400px"
+  }
+})
+
+const InnerModal = styled('div', innerModal)
 
 export const Conference = ({
   userConfig,
@@ -109,12 +181,18 @@ export const Conference = ({
   })
 
   const [isInvitationOpened, setIsInvitationOpened] = useState(true)
+  const [isEmailModalOpened, setIsEmailModalOpened] = useState(false)
 
   return (
     <QueryAware status={status}>
       {
         isInvitationOpened && (
-          <Invitation onClose={() => setIsInvitationOpened(false)} />
+          <Invitation onClose={() => setIsInvitationOpened(false)} onOpenEmailModal={() => setIsEmailModalOpened(true)} />
+        )
+      }
+      {
+        isEmailModalOpened && (
+          <EmailModal onClose={() => setIsEmailModalOpened(false)} onSubmit={(ee) => console.log(ee)} closeOnSubmit />
         )
       }
       <LiveKitRoom
