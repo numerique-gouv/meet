@@ -188,12 +188,15 @@ class RoomViewSet(
             if not settings.ALLOW_UNREGISTERED_ROOMS:
                 raise
             slug = slugify(self.kwargs["pk"])
+            username = request.query_params.get("username", None)
             data = {
                 "id": None,
                 "livekit": {
                     "url": settings.LIVEKIT_CONFIGURATION["url"],
                     "room": slug,
-                    "token": utils.generate_token(room=slug, user=request.user),
+                    "token": utils.generate_token(
+                        room=slug, user=request.user, username=username
+                    ),
                 },
             }
         else:

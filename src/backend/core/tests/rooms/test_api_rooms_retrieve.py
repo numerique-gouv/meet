@@ -111,7 +111,9 @@ def test_api_rooms_retrieve_anonymous_unregistered_allowed(mock_token):
         },
     }
 
-    mock_token.assert_called_once_with(room="unregistered-room", user=AnonymousUser())
+    mock_token.assert_called_once_with(
+        room="unregistered-room", user=AnonymousUser(), username=None
+    )
 
 
 @override_settings(ALLOW_UNREGISTERED_ROOMS=True)
@@ -141,7 +143,9 @@ def test_api_rooms_retrieve_anonymous_unregistered_allowed_not_normalized(mock_t
         },
     }
 
-    mock_token.assert_called_once_with(room="reunion", user=AnonymousUser())
+    mock_token.assert_called_once_with(
+        room="reunion", user=AnonymousUser(), username=None
+    )
 
 
 @override_settings(ALLOW_UNREGISTERED_ROOMS=False)
@@ -229,7 +233,7 @@ def test_api_rooms_retrieve_authenticated_public(mock_token):
         "slug": room.slug,
     }
 
-    mock_token.assert_called_once_with(room=expected_name, user=user)
+    mock_token.assert_called_once_with(room=expected_name, user=user, username=None)
 
 
 def test_api_rooms_retrieve_authenticated():
@@ -327,7 +331,7 @@ def test_api_rooms_retrieve_members(mock_token, django_assert_num_queries):
         "slug": room.slug,
     }
 
-    mock_token.assert_called_once_with(room=expected_name, user=user)
+    mock_token.assert_called_once_with(room=expected_name, user=user, username=None)
 
 
 @mock.patch("core.utils.generate_token", return_value="foo")
@@ -400,4 +404,4 @@ def test_api_rooms_retrieve_administrators(mock_token, django_assert_num_queries
         "slug": room.slug,
     }
 
-    mock_token.assert_called_once_with(room=expected_name, user=user)
+    mock_token.assert_called_once_with(room=expected_name, user=user, username=None)

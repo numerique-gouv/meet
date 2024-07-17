@@ -122,10 +122,14 @@ class RoomSerializer(serializers.ModelSerializer):
         if role is not None or instance.is_public:
             slug = f"{instance.id!s}".replace("-", "")
 
+            username = request.GET.get("username", None)
+
             output["livekit"] = {
                 "url": settings.LIVEKIT_CONFIGURATION["url"],
                 "room": slug,
-                "token": utils.generate_token(room=slug, user=request.user),
+                "token": utils.generate_token(
+                    room=slug, user=request.user, username=username
+                ),
             }
 
         output["is_administrable"] = is_admin
