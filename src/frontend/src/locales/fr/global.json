@@ -1,0 +1,24 @@
+{
+  "backToHome": "Retour à l'accueil",
+  "error": {
+    "heading": "Une erreur est survenue lors du chargement de la page"
+  },
+  "forbidden": {
+    "heading": "Accès interdit"
+  },
+  "app": "Meet",
+  "login": "Se connecter",
+  "logout": "Se déconnecter",
+  "loading": "Chargement…",
+  "notFound": {
+    "heading": "Page introuvable"
+  },
+  "homepage": {
+    "heading": "Bienvenue dans Meet",
+    "intro": "Que voulez vous faire ? Vous pouvez :",
+    "createMeeting": "Créer une conférence",
+    "login": "Vous connecter pour créer une conférence",
+    "or": "Ou",
+    "copyMeetingUrl": "copier une URL de conférence dans votre barre d'adresse pour rejoindre une conférence existante"
+  }
+}

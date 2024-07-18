@@ -1,5 +1,7 @@
+import { useTranslation } from 'react-i18next'
 import { BoxScreen } from './BoxScreen'
 
 export const NotFoundScreen = () => {
-  return <BoxScreen title="Page not found" withBackButton />
+  const { t } = useTranslation()
+  return <BoxScreen title={t('notFound.heading')} withBackButton />
 }

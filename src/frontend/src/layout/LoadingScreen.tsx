@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 import { BoxScreen } from './BoxScreen'
 import { Screen } from './Screen'
 
 export const LoadingScreen = ({ asBox = false }: { asBox?: boolean }) => {
+  const { t } = useTranslation()
   // show the loading screen only after a little while to prevent flash of texts
   const [show, setShow] = useState(false)
   useEffect(() => {
@@ -15,7 +17,7 @@ export const LoadingScreen = ({ asBox = false }: { asBox?: boolean }) => {
   const Container = asBox ? BoxScreen : Screen
   return (
     <Container>
-      <p>Loading…</p>
+      <p>{t('loading')}</p>
     </Container>
   )
 }

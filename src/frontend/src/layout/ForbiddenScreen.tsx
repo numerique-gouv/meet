@@ -1,10 +1,7 @@
 import { BoxScreen } from './BoxScreen'
+import { useTranslation } from 'react-i18next'
 
 export const ForbiddenScreen = () => {
-  return (
-    <BoxScreen
-      title="You don't have the permission to view this page"
-      withBackButton
-    />
-  )
+  const { t } = useTranslation()
+  return <BoxScreen title={t('forbidden.heading')} withBackButton />
 }
