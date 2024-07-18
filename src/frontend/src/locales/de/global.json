@@ -1,0 +1,24 @@
+{
+  "backToHome": "",
+  "error": {
+    "heading": ""
+  },
+  "forbidden": {
+    "heading": ""
+  },
+  "app": "Meet",
+  "login": "Anmelden",
+  "logout": "",
+  "loading": "",
+  "notFound": {
+    "heading": ""
+  },
+  "homepage": {
+    "heading": "",
+    "intro": "",
+    "createMeeting": "",
+    "login": "",
+    "or": "",
+    "copyMeetingUrl": ""
+  }
+}

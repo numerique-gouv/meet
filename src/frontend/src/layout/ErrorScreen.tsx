@@ -1,7 +1,7 @@
 import { BoxScreen } from './BoxScreen'
+import { useTranslation } from 'react-i18next'
 
 export const ErrorScreen = () => {
-  return (
-    <BoxScreen title="An error occured while loading the page" withBackButton />
-  )
+  const { t } = useTranslation()
+  return <BoxScreen title={t('error.heading')} withBackButton />
 }

@@ -1,0 +1,24 @@
+{
+  "backToHome": "Back to homescreen",
+  "error": {
+    "heading": "An error occured while loading the page"
+  },
+  "forbidden": {
+    "heading": "You don't have the permission to view this page"
+  },
+  "app": "Meet",
+  "login": "Login",
+  "logout": "Logout",
+  "loading": "Loading…",
+  "notFound": {
+    "heading": ""
+  },
+  "homepage": {
+    "heading": "Welcome in Meet",
+    "intro": "What do you want to do? You can either:",
+    "createMeeting": "Create a conference call",
+    "login": "Login to create a conference call",
+    "or": "Or",
+    "copyMeetingUrl": "copy a meeting URL in your browser address bar to join an existing conference call"
+  }
+}

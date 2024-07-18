@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Box as BoxDiv, H, Link } from '@/primitives'
 
 export type BoxProps = {
@@ -12,6 +13,7 @@ export const Box = ({
   title = '',
   withBackButton = false,
 }: BoxProps) => {
+  const { t } = useTranslation()
   return (
     <BoxDiv asScreen>
       {!!title && <H lvl={1}>{title}</H>}
@@ -19,7 +21,7 @@ export const Box = ({
       {!!withBackButton && (
         <p>
           <Link to="/" size="small">
-            Back to homescreen
+            {t('backToHome')}
           </Link>
         </p>
       )}
