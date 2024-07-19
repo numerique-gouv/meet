@@ -1,0 +1,90 @@
+#
+# Transcribe package
+#
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "transcribe"
+version = "0.1.0"
+authors = [{ "name" = "DINUM", "email" = "dev@mail.numerique.gouv.fr" }]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Framework :: Django",
+    "Framework :: Django :: 5",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Natural Language :: English",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+]
+description = ""
+keywords = ["Django", "Contacts", "Templates", "RBAC"]
+license = { file = "LICENSE" }
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "fastapi==0.111.0",
+    "importlib-metadata==7.2.1",
+    "pydantic[dotenv]==1.10.16",
+    "python-jose[cryptography]==3.3.0",
+    "uvicorn[standard]==0.30.1",
+]
+
+[project.urls]
+"Bug Tracker" = "https://github.com/numerique-gouv/meet/issues/new"
+"Changelog" = "https://github.com/numerique-gouv/meet/blob/main/CHANGELOG.md"
+"Homepage" = "https://github.com/numerique-gouv/meet"
+"Repository" = "https://github.com/numerique-gouv/meet"
+
+[project.optional-dependencies]
+dev = [
+    "ipdb==0.13.13",
+    "ipython==8.18.1",
+    "pyfakefs==5.3.2",
+    "pylint==3.0.3",
+    "responses==0.24.1",
+    "ruff==0.1.6",
+    "types-requests==2.31.0.10",
+]
+
+[tool.setuptools]
+packages = { find = { where = ["."], exclude = ["tests"] } }
+zip-safe = true
+
+[tool.distutils.bdist_wheel]
+universal = true
+
+[tool.ruff]
+exclude = [
+    ".git",
+    ".venv",
+    "build",
+    "venv",
+    "__pycache__",
+]
+ignore= ["DJ001", "PLR2004"]
+line-length = 88
+
+
+[tool.ruff.lint]
+select = [
+    "B", # flake8-bugbear
+    "BLE", # flake8-blind-except
+    "C4", # flake8-comprehensions
+    "DJ", # flake8-django
+    "I", # isort
+    "PLC", # pylint-convention
+    "PLE", # pylint-error
+    "PLR", # pylint-refactoring
+    "PLW", # pylint-warning
+    "RUF100", # Ruff unused-noqa
+    "RUF200", # Ruff check pyproject.toml
+    "S", # flake8-bandit
+    "SLF", # flake8-self
+    "T20", # flake8-print
+]
+
+[tool.ruff.lint.isort]
+section-order = ["future","standard-library","third-party","first-party","local-folder"]
