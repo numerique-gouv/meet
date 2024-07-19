@@ -218,12 +218,14 @@ jobs:
         run: make frontend-i18n-extract
 
       - name: Upload files to Crowdin
-        run: |
-          docker run \
-          --rm \
-          -e CROWDIN_API_TOKEN=$CROWDIN_API_TOKEN \
-          -e CROWDIN_PROJECT_ID=$CROWDIN_PROJECT_ID \
-          -e CROWDIN_BASE_PATH=$CROWDIN_BASE_PATH \
-          -v "${{ github.workspace }}:/app" \
-          crowdin/cli:3.16.0 \
-          crowdin upload sources -c /app/crowdin/config.yml
+        uses: crowdin/github-action@v2
+        with:
+          config: crowdin/config.yml
+          upload_sources: true
+          upload_translations: true
+          download_translations: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          CROWDIN_PROJECT_ID: ${{ secrets.CROWDIN_PROJECT_ID }}
+          CROWDIN_BASE_PATH: ${{ github.workspace }}
+          CROWDIN_PERSONAL_TOKEN: ${{ secrets.CROWDIN_PERSONAL_TOKEN }}

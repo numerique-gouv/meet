@@ -8,7 +8,7 @@
     "build": "panda codegen && tsc -b && vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
-    "i18n:extract": "i18next -c i18next-parser.config.json"
+    "i18n:extract": "npx i18next -c i18next-parser.config.json"
   },
   "dependencies": {
     "@livekit/components-react": "2.3.3",
