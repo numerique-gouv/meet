@@ -1,0 +1,81 @@
+# -- Base image --
+FROM python:3.10-slim-bullseye as base
+
+# Upgrade pip to its latest release to speed up dependencies installation
+RUN python -m pip install --upgrade pip
+
+# Upgrade system packages to install security updates
+RUN apt-get update && \
+  apt-get -y upgrade && \
+  rm -rf /var/lib/apt/lists/*
+
+
+# ---- Back-end builder image ----
+FROM base as builder
+
+WORKDIR /builder
+
+# Copy required python dependencies
+COPY ./src/data/transcribe /builder
+
+RUN mkdir /install && \
+  pip install --prefix=/install .
+
+
+# ---- Core application image ----
+FROM base as core
+
+ENV PYTHONUNBUFFERED=1
+
+# Install required system libs
+RUN apt-get update && \
+    apt-get install -y \
+      gettext \
+      libcairo2 \
+      libffi-dev \
+      libgdk-pixbuf2.0-0 \
+      libpango-1.0-0 \
+      libpangocairo-1.0-0 \
+      shared-mime-info && \
+  rm -rf /var/lib/apt/lists/*
+
+# Copy entrypoint
+COPY ./docker/files/usr/local/bin/entrypoint /usr/local/bin/entrypoint
+
+# Give the "root" group the same permissions as the "root" user on /etc/passwd
+# to allow a user belonging to the root group to add new users; typically the
+# docker user (see entrypoint).
+RUN chmod g=u /etc/passwd
+
+# Copy installed python dependencies
+COPY --from=builder /install /usr/local
+
+# Copy Meet application (see .dockerignore)
+COPY ./src/data/transcribe /app/
+
+WORKDIR /app
+
+# We wrap commands run in this container by the following entrypoint that
+# creates a user on-the-fly with the container user ID (see USER) and root group
+# ID.
+ENTRYPOINT [ "/usr/local/bin/entrypoint" ]
+
+
+# ---- Production image ----
+FROM core as production
+
+# Un-privileged user running the application
+ARG DOCKER_USER
+USER ${DOCKER_USER}
+
+# Un-privileged user running the application
+ARG DOCKER_USER=1000
+USER ${DOCKER_USER}
+
+CMD ["uvicorn", \
+     "transcribe.main:app", \
+     "--proxy-headers", \
+     "--host", \
+     "0.0.0.0", \
+     "--port", \
+     "8000"]
