@@ -229,10 +229,13 @@ crowdin-upload: ## Upload source translations to Crowdin
 	@$(COMPOSE_RUN_CROWDIN) upload sources -c crowdin/config.yml
 .PHONY: crowdin-upload
 
+crowdin-upload-translations: ## Upload translations to Crowdin
+	@$(COMPOSE_RUN_CROWDIN) upload translations -c crowdin/config.yml
+.PHONY: crowdin-upload-translations
+
 i18n-compile: ## compile all translations
 i18n-compile: \
-	back-i18n-compile \
-	frontend-i18n-compile
+	back-i18n-compile
 .PHONY: i18n-compile
 
 i18n-generate: ## create the .pot files and extract frontend messages
@@ -295,22 +298,15 @@ help:
 	@grep -E '^[a-zA-Z0-9_-]+:.*?## .*$$' $(firstword $(MAKEFILE_LIST)) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "$(GREEN)%-30s$(RESET) %s\n", $$1, $$2}'
 .PHONY: help
 
-# FIXME : adapt this command
-frontend-i18n-extract: ## Extract the frontend translation inside a json to be used for Crowdin
-	cd $(PATH_FRONT) && yarn i18n:extract
+frontend-i18n-extract: ## Check the frontend code and generate missing translations keys in translation files
+	cd $(PATH_FRONT) && npm run i18n:extract
 .PHONY: frontend-i18n-extract
 
-# FIXME : adapt this command
 frontend-i18n-generate: ## Generate the frontend json files used for Crowdin
 frontend-i18n-generate: \
 	crowdin-download-sources \
 	frontend-i18n-extract
 .PHONY: frontend-i18n-generate
-
-# FIXME : adapt this command
-frontend-i18n-compile: ## Format the Crowdin json files used deploy to the apps
-	cd $(PATH_FRONT) && yarn i18n:deploy
-.PHONY: frontend-i18n-compile
 
 # -- K8S
 build-k8s-cluster: ## build the kubernetes cluster using kind
