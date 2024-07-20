@@ -30,6 +30,10 @@ dependencies = [
     "pydantic[dotenv]==1.10.16",
     "python-jose[cryptography]==3.3.0",
     "uvicorn[standard]==0.30.1",
+    "torch==2.3.1",
+    "transformers==4.42.4",
+    "optimum==1.21.2",
+    "accelerate==0.32.1"
 ]
 
 [project.urls]
