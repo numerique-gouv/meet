@@ -7,7 +7,7 @@ import {
 } from '@livekit/components-react'
 import { keys } from '@/api/queryKeys'
 import { QueryAware } from '@/layout/QueryAware'
-import { navigateToHome } from '@/navigation/navigateToHome'
+import { navigateToHome } from '@/features/home'
 import { fetchRoom } from '../api/fetchRoom'
 
 export const Conference = ({
