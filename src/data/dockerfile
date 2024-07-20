@@ -65,10 +65,6 @@ ENTRYPOINT [ "/usr/local/bin/entrypoint" ]
 FROM core as production
 
 # Un-privileged user running the application
-ARG DOCKER_USER
-USER ${DOCKER_USER}
-
-# Un-privileged user running the application
 ARG DOCKER_USER=1000
 USER ${DOCKER_USER}
 
