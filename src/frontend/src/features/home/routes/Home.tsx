@@ -5,11 +5,11 @@ import { navigateToNewRoom } from '@/features/rooms'
 import { Screen } from '@/layout/Screen'
 
 export const Home = () => {
-  const { t } = useTranslation(undefined, { keyPrefix: 'homepage' })
+  const { t } = useTranslation('home')
   const { isLoggedIn } = useUser()
   return (
     <Screen>
-      <Box asScreen>
+      <Box type="screen">
         <H lvl={1}>{t('heading')}</H>
         <P>{t('intro')}</P>
         <Div marginBottom="gutter">

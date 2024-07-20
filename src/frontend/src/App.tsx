@@ -5,7 +5,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { useTranslation } from 'react-i18next'
 import { useLang } from 'hoofd'
 import { Route, Switch } from 'wouter'
-import { Home } from './routes/Home'
+import { HomeRoute } from '@/features/home'
 import { NotFound } from './routes/NotFound'
 import { RoomRoute } from '@/features/rooms'
 import './i18n/init'
@@ -18,7 +18,7 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <Switch>
-        <Route path="/" component={Home} />
+        <Route path="/" component={HomeRoute} />
         <Route path="/:roomId" component={RoomRoute} />
         <Route component={NotFound} />
       </Switch>
