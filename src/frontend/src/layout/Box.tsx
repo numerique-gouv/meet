@@ -15,7 +15,7 @@ export const Box = ({
 }: BoxProps) => {
   const { t } = useTranslation()
   return (
-    <BoxDiv asScreen>
+    <BoxDiv type="screen">
       {!!title && <H lvl={1}>{title}</H>}
       {children}
       {!!withBackButton && (

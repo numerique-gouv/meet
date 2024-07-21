@@ -9,13 +9,17 @@ const box = cva({
     flex: 1,
   },
   variants: {
-    asScreen: {
-      true: {
+    type: {
+      screen: {
         margin: 'auto',
         width: '38rem',
         maxWidth: '100%',
         marginTop: '6rem',
         textAlign: 'center',
+      },
+      popover: {
+        padding: 'boxPadding.xs',
+        minWidth: '10rem',
       },
     },
     variant: {
@@ -42,7 +46,6 @@ const box = cva({
     },
   },
   defaultVariants: {
-    asScreen: false,
     variant: 'default',
     size: 'default',
   },

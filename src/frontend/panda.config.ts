@@ -146,6 +146,7 @@ const config: Config = {
         2: { value: '2' },
       },
       radii: {
+        4: { value: '0.25rem' },
         6: { value: '0.375rem' },
         8: { value: '0.5rem' },
         16: { value: '1rem' },
@@ -187,7 +188,7 @@ const config: Config = {
           text: { value: '{colors.white}' },
           warm: { value: '{colors.blue.300}' },
           subtle: { value: '{colors.blue.100}' },
-          'subtle-text': { value: '{colors.sky.700}' },
+          'subtle-text': { value: '{colors.blue.700}' },
         },
         danger: {
           DEFAULT: { value: '{colors.red.600}' },
