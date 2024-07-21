@@ -1,30 +1,16 @@
+// Google Meet uses only letters in a room identifier
+const ROOM_ID_ALLOWED_CHARACTERS = 'abcdefghijklmnopqrstuvwxyz'
 
-const getRandomChar = () => {
-  // Google Meet uses only letters in a room identifier
-  const characters = 'abcdefghijklmnopqrstuvwxyz';
-  const charactersLength = characters.length;
-  return characters.charAt(Math.floor(Math.random() * charactersLength))
-}
+const getRandomChar = () =>
+  ROOM_ID_ALLOWED_CHARACTERS[
+    Math.floor(Math.random() * ROOM_ID_ALLOWED_CHARACTERS.length)
+  ]
 
-const generateSegment = (length: number): string => {
-  let segment = '';
-  for (let i = 0; i < length; i++) {
-    segment += getRandomChar();
-  }
-  return segment;
-};
+const generateSegment = (length: number): string =>
+  Array.from(Array(length), getRandomChar).join('')
 
-export const generateRoomId = () => {
-  // Generates a unique room identifier following the Google Meet format
-  const shortLength = 3;
-  const longLength = 4;
-  const parts = [
-    generateSegment(shortLength),
-    generateSegment(longLength),
-    generateSegment(shortLength)
-  ];
-  return parts.join('-');
-}
+// Generates a unique room identifier following the Google Meet format
+export const generateRoomId = () =>
+  [generateSegment(3), generateSegment(4), generateSegment(3)].join('-')
 
-export const roomIdRegex = /^[/](?<roomId>[a-z]{3}-[a-z]{4}-[a-z]{3})$/;
-
+export const roomIdRegex = /^[/](?<roomId>[a-z]{3}-[a-z]{4}-[a-z]{3})$/
