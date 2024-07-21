@@ -1,4 +1,3 @@
-import { useParams } from 'wouter'
 import { useQuery } from '@tanstack/react-query'
 import {
   LiveKitRoom,
@@ -11,11 +10,12 @@ import { navigateToHome } from '@/features/home'
 import { fetchRoom } from '../api/fetchRoom'
 
 export const Conference = ({
+  roomId,
   userConfig,
 }: {
+  roomId: string
   userConfig: LocalUserChoices
 }) => {
-  const { roomId } = useParams()
   const { status, data } = useQuery({
     queryKey: [keys.room, roomId, userConfig.username],
     queryFn: () =>
