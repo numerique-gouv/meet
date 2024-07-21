@@ -9,44 +9,69 @@ import { cva, type RecipeVariantProps } from '@/styled-system/css'
 const button = cva({
   base: {
     display: 'inline-block',
-    paddingX: '1',
-    paddingY: '0.625',
-    transition: 'all 200ms',
-    borderRadius: 8,
+    transition: 'background 200ms',
     cursor: 'pointer',
+    border: '1px solid transparent',
+    color: 'colorPalette.text',
+    backgroundColor: 'colorPalette',
+    '_ra-hover': {
+      backgroundColor: 'colorPalette.hover',
+    },
+    '_ra-pressed': {
+      backgroundColor: 'colorPalette.active',
+    },
   },
   variants: {
+    size: {
+      default: {
+        borderRadius: 8,
+        paddingX: '1',
+        paddingY: '0.625',
+      },
+      sm: {
+        borderRadius: 4,
+        paddingX: '0.5',
+        paddingY: '0.25',
+      },
+    },
     variant: {
       default: {
-        color: 'control.text',
-        backgroundColor: 'control',
-        '_ra-hover': {
-          backgroundColor: 'control.hover',
-        },
-        '_ra-pressed': {
-          backgroundColor: 'control.active',
-        },
+        colorPalette: 'control',
       },
       primary: {
-        color: 'primary.text',
-        backgroundColor: 'primary',
+        colorPalette: 'primary',
+      },
+    },
+    outline: {
+      true: {
+        color: 'colorPalette',
+        backgroundColor: 'transparent!',
+        borderColor: 'currentcolor!',
         '_ra-hover': {
-          backgroundColor: 'primary.hover',
+          backgroundColor: 'colorPalette.subtle!',
         },
         '_ra-pressed': {
-          backgroundColor: 'primary.active',
+          backgroundColor: 'colorPalette.subtle!',
         },
       },
     },
   },
+  defaultVariants: {
+    size: 'default',
+    variant: 'default',
+    outline: false,
+  },
 })
 
-type ButtonProps = RecipeVariantProps<typeof button> &
-  (RACButtonsProps | LinkProps)
+export type ButtonProps = RecipeVariantProps<typeof button> & RACButtonsProps
 
-export const Button = (props: ButtonProps) => {
+type LinkButtonProps = RecipeVariantProps<typeof button> & LinkProps
+
+type ButtonOrLinkProps = ButtonProps | LinkButtonProps
+
+export const Button = (props: ButtonOrLinkProps) => {
   const [variantProps, componentProps] = button.splitVariantProps(props)
-  if ((props as LinkProps).href !== undefined) {
+  if ((props as LinkButtonProps).href !== undefined) {
     return <Link className={button(variantProps)} {...componentProps} />
   }
   return (

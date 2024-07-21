@@ -9,6 +9,10 @@
   "app": "Meet",
   "login": "Anmelden",
   "logout": "",
+  "languageSelector": {
+    "popoverLabel": "",
+    "buttonLabel": ""
+  },
   "loading": "",
   "notFound": {
     "heading": ""
