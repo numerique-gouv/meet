@@ -5,8 +5,8 @@ const link = cva({
   base: {
     textDecoration: 'underline',
     textUnderlineOffset: '2',
-    transition: 'all 200ms',
     cursor: 'pointer',
+    borderRadius: 2,
     '_ra-hover': {
       textDecoration: 'none',
     },
@@ -26,7 +26,7 @@ const link = cva({
 export type AProps = LinkProps & RecipeVariantProps<typeof link>
 
 /**
- * anchor component styled with underline
+ * anchor component styled with underline. Used mostly for external links. Use Link for internal links
  */
 export const A = ({ size, ...props }: AProps) => {
   return <Link {...props} className={link({ size })} />

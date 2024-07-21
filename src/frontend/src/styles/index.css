@@ -6,3 +6,15 @@ body,
 #root {
   height: 100%;
 }
+
+* {
+  outline: none;
+}
+
+[data-rac][data-focus-visible],
+:is(a, button, input, select, textarea):not([data-rac]):focus-visible {
+  outline: 2px solid black;
+  outline-offset: 1px;
+  outline-color: Highlight;
+  outline-color: -webkit-focus-ring-color;
+}
