@@ -7,7 +7,7 @@ import { useLang } from 'hoofd'
 import { Route, Switch } from 'wouter'
 import { HomeRoute } from '@/features/home'
 import { NotFound } from './routes/NotFound'
-import { RoomRoute } from '@/features/rooms'
+import { RoomRoute, roomIdRegex } from '@/features/rooms'
 import './i18n/init'
 
 const queryClient = new QueryClient()
@@ -19,7 +19,7 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <Switch>
         <Route path="/" component={HomeRoute} />
-        <Route path="/:roomId" component={RoomRoute} />
+        <Route path={roomIdRegex} component={RoomRoute} />
         <Route component={NotFound} />
       </Switch>
       <ReactQueryDevtools initialIsOpen={false} />

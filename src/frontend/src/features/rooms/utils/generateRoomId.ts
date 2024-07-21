@@ -25,3 +25,6 @@ export const generateRoomId = () => {
   ];
   return parts.join('-');
 }
+
+export const roomIdRegex = /^[/](?<roomId>[a-z]{3}-[a-z]{4}-[a-z]{3})$/;
+
