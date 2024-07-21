@@ -9,6 +9,10 @@
   "app": "Meet",
   "login": "Login",
   "logout": "Logout",
+  "languageSelector": {
+    "popoverLabel": "Choose language",
+    "buttonLabel": "Change language (currently {{currentLanguage}})"
+  },
   "loading": "Loading…",
   "notFound": {
     "heading": ""
