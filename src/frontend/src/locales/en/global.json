@@ -1,4 +1,5 @@
 {
+  "app": "Meet",
   "backToHome": "Back to homescreen",
   "error": {
     "heading": "An error occured while loading the page"
@@ -6,14 +7,13 @@
   "forbidden": {
     "heading": "You don't have the permission to view this page"
   },
-  "app": "Meet",
-  "login": "Login",
-  "logout": "Logout",
   "languageSelector": {
-    "popoverLabel": "Choose language",
-    "buttonLabel": "Change language (currently {{currentLanguage}})"
+    "buttonLabel": "Change language (currently {{currentLanguage}})",
+    "popoverLabel": "Choose language"
   },
   "loading": "Loading…",
+  "login": "Login",
+  "logout": "Logout",
   "notFound": {
     "heading": ""
   }

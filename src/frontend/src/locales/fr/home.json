@@ -1,8 +1,8 @@
 {
+  "copyMeetingUrl": "copier une URL de conférence dans votre barre d'adresse pour rejoindre une conférence existante",
+  "createMeeting": "Créer une conférence",
   "heading": "Bienvenue dans Meet",
   "intro": "Que voulez vous faire ? Vous pouvez :",
-  "createMeeting": "Créer une conférence",
   "login": "Vous connecter pour créer une conférence",
-  "or": "Ou",
-  "copyMeetingUrl": "copier une URL de conférence dans votre barre d'adresse pour rejoindre une conférence existante"
+  "or": "Ou"
 }

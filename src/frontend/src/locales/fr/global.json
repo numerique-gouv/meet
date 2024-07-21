@@ -1,4 +1,5 @@
 {
+  "app": "Meet",
   "backToHome": "Retour à l'accueil",
   "error": {
     "heading": "Une erreur est survenue lors du chargement de la page"
@@ -6,14 +7,13 @@
   "forbidden": {
     "heading": "Accès interdit"
   },
-  "app": "Meet",
-  "login": "Se connecter",
-  "logout": "Se déconnecter",
   "languageSelector": {
-    "popoverLabel": "Choix de la langue",
-    "buttonLabel": "Changer de langue (actuellement {{currentLanguage}})"
+    "buttonLabel": "Changer de langue (actuellement {{currentLanguage}})",
+    "popoverLabel": "Choix de la langue"
   },
   "loading": "Chargement…",
+  "login": "Se connecter",
+  "logout": "Se déconnecter",
   "notFound": {
     "heading": "Page introuvable"
   }

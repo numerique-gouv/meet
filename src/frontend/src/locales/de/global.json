@@ -1,4 +1,5 @@
 {
+  "app": "Meet",
   "backToHome": "",
   "error": {
     "heading": ""
@@ -6,14 +7,13 @@
   "forbidden": {
     "heading": ""
   },
-  "app": "Meet",
-  "login": "Anmelden",
-  "logout": "",
   "languageSelector": {
-    "popoverLabel": "",
-    "buttonLabel": ""
+    "buttonLabel": "",
+    "popoverLabel": ""
   },
   "loading": "",
+  "login": "Anmelden",
+  "logout": "",
   "notFound": {
     "heading": ""
   }
