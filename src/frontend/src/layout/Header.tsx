@@ -20,7 +20,6 @@ export const Header = () => {
         borderBottomStyle: 'solid',
         padding: 1,
         flexShrink: 0,
-        boxShadow: 'box',
       })}
     >
       <Stack direction="row" justify="space-between" align="center">
@@ -36,7 +35,7 @@ export const Header = () => {
             {!!user && (
               <p className={flex({ gap: 1, align: 'center' })}>
                 <Badge>{user.email}</Badge>
-                <A href={logoutUrl()} size="small">
+                <A href={logoutUrl()} size="sm">
                   {t('logout')}
                 </A>
               </p>

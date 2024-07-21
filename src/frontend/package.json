@@ -14,6 +14,7 @@
     "@livekit/components-react": "2.3.3",
     "@livekit/components-styles": "1.0.12",
     "@pandacss/preset-panda": "0.41.0",
+    "@remixicon/react": "4.2.0",
     "@tanstack/react-query": "5.49.2",
     "hoofd": "1.7.1",
     "i18next": "23.12.1",

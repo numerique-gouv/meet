@@ -1,6 +1,8 @@
 {
   "app": "Meet",
   "backToHome": "Retour à l'accueil",
+  "cancel": "Annuler",
+  "closeDialog": "Fermer la fenêtre modale",
   "error": {
     "heading": "Une erreur est survenue lors du chargement de la page"
   },

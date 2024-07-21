@@ -1,8 +1,13 @@
 {
-  "copyMeetingUrl": "copier une URL de conférence dans votre barre d'adresse pour rejoindre une conférence existante",
   "createMeeting": "Créer une conférence",
-  "heading": "Bienvenue dans Meet",
-  "intro": "Que voulez vous faire ? Vous pouvez :",
-  "login": "Vous connecter pour créer une conférence",
-  "or": "Ou"
+  "heading": "Meet",
+  "intro": "Collaborez en toute simplicité, où que vous soyez.",
+  "joinInputError": "Saisissez un lien de conférence valide ou uniquement son code. Exemples : \"https://meet.numerique.gouv.fr/aze-rtyu-iop\" ou \"aze-rtyu-iop\".",
+  "joinInputExample": "Lien complet ou code de 10 lettres",
+  "joinInputLabel": "Lien de la conférence",
+  "joinInputSubmit": "Rejoindre la conférence",
+  "joinMeeting": "Rejoindre une conférence",
+  "joinMeetingTipContent": "Vous pouvez rejoindre une conférence en copiant directement son lien complet dans la barre d'adresse du navigateur.",
+  "joinMeetingTipHeading": "Astuce",
+  "loginToCreateMeeting": "Connectez-vous pour créer une conférence"
 }

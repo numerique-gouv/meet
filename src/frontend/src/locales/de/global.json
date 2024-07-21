@@ -1,6 +1,8 @@
 {
   "app": "Meet",
   "backToHome": "",
+  "cancel": "",
+  "closeDialog": "",
   "error": {
     "heading": ""
   },

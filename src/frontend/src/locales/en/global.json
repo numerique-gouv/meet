@@ -1,6 +1,8 @@
 {
   "app": "Meet",
   "backToHome": "Back to homescreen",
+  "cancel": "Cancel",
+  "closeDialog": "Close dialog",
   "error": {
     "heading": "An error occured while loading the page"
   },
@@ -15,6 +17,6 @@
   "login": "Login",
   "logout": "Logout",
   "notFound": {
-    "heading": ""
+    "heading": "Page not found"
   }
 }

@@ -33,6 +33,9 @@ const button = cva({
         paddingX: '0.5',
         paddingY: '0.25',
       },
+      xs: {
+        borderRadius: 4,
+      },
     },
     variant: {
       default: {
@@ -53,6 +56,12 @@ const button = cva({
         '_ra-pressed': {
           backgroundColor: 'colorPalette.subtle!',
         },
+      },
+    },
+    invisible: {
+      true: {
+        borderColor: 'none!',
+        backgroundColor: 'none!',
       },
     },
   },
