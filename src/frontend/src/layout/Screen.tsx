@@ -2,7 +2,7 @@ import type { ReactNode } from 'react'
 import { css } from '@/styled-system/css'
 import { Header } from './Header'
 
-export const Screen = ({ children }: { children: ReactNode }) => {
+export const Screen = ({ children }: { children?: ReactNode }) => {
   return (
     <div
       className={css({
