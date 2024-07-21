@@ -10,7 +10,7 @@ const badge = cva({
   },
   variants: {
     size: {
-      small: {
+      sm: {
         textStyle: 'badge',
       },
       normal: {},

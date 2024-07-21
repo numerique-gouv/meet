@@ -1,8 +1,13 @@
 {
-  "copyMeetingUrl": "copy a meeting URL in your browser address bar to join an existing conference call",
-  "createMeeting": "Create a conference call",
+  "createMeeting": "Create a meeting",
   "heading": "Welcome in Meet",
-  "intro": "What do you want to do? You can either:",
-  "login": "Login to create a conference call",
-  "or": "Or"
+  "intro": "Work easily, from anywhere.",
+  "joinInputError": "Use a meeting link or its code. Examples: \"https://meet.numerique.gouv.fr/aze-rtyu-iop\" or \"aze-rtyu-iop\".",
+  "joinInputExample": "URL or 10-letter code",
+  "joinInputLabel": "Meeting link",
+  "joinInputSubmit": "Join meeting",
+  "joinMeeting": "Join a meeting",
+  "joinMeetingTipContent": "You can join a meeting by pasting its full link in the browser's address bar.",
+  "joinMeetingTipHeading": "Did you know?",
+  "loginToCreateMeeting": "Login to create a meeting"
 }

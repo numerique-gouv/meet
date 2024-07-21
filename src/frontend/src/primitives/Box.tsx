@@ -3,6 +3,7 @@ import { styled } from '../styled-system/jsx'
 
 const box = cva({
   base: {
+    position: 'relative',
     gap: 'gutter',
     borderRadius: 8,
     padding: 'boxPadding',
@@ -14,12 +15,15 @@ const box = cva({
         margin: 'auto',
         width: '38rem',
         maxWidth: '100%',
-        marginTop: '6rem',
         textAlign: 'center',
       },
       popover: {
         padding: 'boxPadding.xs',
         minWidth: '10rem',
+      },
+      dialog: {
+        width: '30rem',
+        maxWidth: '100%',
       },
     },
     variant: {
@@ -29,7 +33,6 @@ const box = cva({
         borderColor: 'box.border',
         backgroundColor: 'box.bg',
         color: 'box.text',
-        boxShadow: 'box',
       },
       subtle: {
         color: 'default.subtle-text',

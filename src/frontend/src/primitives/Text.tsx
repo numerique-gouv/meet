@@ -1,21 +1,30 @@
 import type { HTMLAttributes } from 'react'
 import { RecipeVariantProps, cva, cx } from '@/styled-system/css'
 
-const text = cva({
+export const text = cva({
   base: {},
   variants: {
     variant: {
       h1: {
         textStyle: 'h1',
         marginBottom: 'heading',
+        '&:not(:first-child)': {
+          paddingTop: 'heading',
+        },
       },
       h2: {
         textStyle: 'h2',
         marginBottom: 'heading',
+        '&:not(:first-child)': {
+          paddingTop: 'heading',
+        },
       },
       h3: {
         textStyle: 'h3',
         marginBottom: 'heading',
+        '&:not(:first-child)': {
+          paddingTop: 'heading',
+        },
       },
       body: {
         textStyle: 'body',
@@ -24,8 +33,15 @@ const text = cva({
         textStyle: 'body',
         marginBottom: 'paragraph',
       },
-      small: {
-        textStyle: 'small',
+      display: {
+        textStyle: 'display',
+        marginBottom: 'heading',
+      },
+      sm: {
+        textStyle: 'sm',
+      },
+      note: {
+        color: 'default.subtle-text',
       },
       inherits: {},
     },
@@ -45,6 +61,14 @@ const text = cva({
     margin: {
       false: {
         margin: '0!',
+      },
+      sm: {
+        marginBottom: 0.5,
+      },
+    },
+    last: {
+      true: {
+        marginBottom: '0!',
       },
     },
   },

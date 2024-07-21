@@ -179,7 +179,7 @@ const config: Config = {
           hover: { value: '{colors.gray.200}' },
           active: { value: '{colors.gray.300}' },
           text: { value: '{colors.default.text}' },
-          border: { value: '{colors.gray.300}' },
+          border: { value: '{colors.gray.500}' },
         },
         primary: {
           DEFAULT: { value: '{colors.blue.700}' },
@@ -232,9 +232,17 @@ const config: Config = {
         paragraph: { value: '{spacing.1}' },
         heading: { value: '{spacing.1}' },
         gutter: { value: '{spacing.1}' },
+        textfield: { value: '{spacing.0.5}' },
       },
     }),
     textStyles: defineTextStyles({
+      display: {
+        value: {
+          fontSize: '3rem',
+          lineHeight: '2rem',
+          fontWeight: 700,
+        },
+      },
       h1: {
         value: {
           fontSize: '1.5rem',
@@ -253,7 +261,6 @@ const config: Config = {
         value: {
           fontSize: '1.125rem',
           lineHeight: '1.75rem',
-          fontWeight: 700,
         },
       },
       body: {
@@ -262,7 +269,7 @@ const config: Config = {
           lineHeight: '1.5',
         },
       },
-      small: {
+      sm: {
         value: {
           fontSize: '0.875rem',
           lineHeight: '1.25rem',

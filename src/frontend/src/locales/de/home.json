@@ -1,8 +1,13 @@
 {
-  "copyMeetingUrl": "",
   "createMeeting": "",
   "heading": "",
   "intro": "",
-  "login": "",
-  "or": ""
+  "joinInputError": "",
+  "joinInputExample": "",
+  "joinInputLabel": "",
+  "joinInputSubmit": "",
+  "joinMeeting": "",
+  "joinMeetingTipContent": "",
+  "joinMeetingTipHeading": "",
+  "loginToCreateMeeting": ""
 }

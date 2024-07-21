@@ -16,8 +16,8 @@ const link = cva({
   },
   variants: {
     size: {
-      small: {
-        textStyle: 'small',
+      sm: {
+        textStyle: 'sm',
       },
     },
   },
