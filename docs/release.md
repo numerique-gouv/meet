@@ -1,39 +1,57 @@
-# Releasing new version
+# Releasing a new version
 
 Whenever we are cooking a new release (e.g. `4.18.1`) we should follow a standard procedure described below:
 
-1. Create a new branch named: `release/4.18.1`.
-2. Bump the release number in the appropriate file, i.e. for backend in the `pyproject.toml` and `package.json` for node-based projects (tips:  find and replace all occurrences of the previous version number to ensure consistency across files).
-3. Update the project's `Changelog` following the [keepachangelog](https://keepachangelog.com/en/0.3.0/) recommendations.
-4. Update Docker image tag in Helm values files located at `src/helm/env.d` for both `preprod` and `production` environments:
-    ```yaml
-    image:
-      repository: lasuite/meet-backend
-      pullPolicy: Always
-      tag: "v4.18.1" # Replace with the latest Docker image tag.
-    ```
-5. Commit your changes with a structured message:
-   - Add a title including the version of the release and respecting the above described format using the 🔖 release emoji.
-   - Paste in the body all changes from the changelog concerned by this release, removing only the Markdown tags and making sure that lines are shorter than 74 characters.
+1.  Create a new branch named: `release/4.18.1`.
+2.  Bump the release number for backend project, frontend projects, and Helm files:
 
-    ```
+    - for backend, update the version number by hand in `pyproject.toml`,
+    - for each frontend projects (`src/frontend`, `src/mail` and `src/tsclient`), run `npm version 4.18.1` in their directory. This will update both their `package.json` and `package-lock.json` for you,
+    - for Helm, update Docker image tag in files located at `src/helm/env.d` for both `preprod` and `production` environments:
+
+      ```yaml
+      image:
+        repository: lasuite/meet-backend
+        pullPolicy: Always
+        tag: "v4.18.1" # Replace with your new version number, without forgetting the "v" prefix
+      ```
+
+      The new images don't exist _yet_: they will be created automatically later in the process.
+
+3.  ~~Update the project's `Changelog` following the [keepachangelog](https://keepachangelog.com/en/0.3.0/) recommendations~~ _we don't keep a changelog yet for now as the project is still in its infancy. Soon™!_
+4.  Commit your changes with the following format: the 🔖 release emoji, the type of release (patch/minor/patch) and the release version:
+
+    ```text
     🔖(minor) bump release to 4.18.0
-    
-    Added:
-    
-    - Implement base CLI commands (list, extract, fetch & push) for supported backends
-    - Support for ElasticSearch database backend
-    
-    Changed:
-    
-    - Replace LDP storage backend by FS storage backend`
     ```
 
-6. Open a pull request. 
-7. Wait for an approval from your peers. 
-8. Merge your pull request. 
-9. Checkout and pull changes from the `main` branch to ensure you have the latest updates. 
-10. Tag & push your commit: `git tag v4.18.1 && git push origin --tags`
-11. Manually release your version on GitHub.
-12. Ensure that the CI Docker job has successfully pushed the newly built Docker images to Docker Hub with the appropriate tags.
-13. To deploy using ArgoCD, you need to update the `production` or `pre-production` tags. ArgoCD will automatically detect and deploy the new tag.
+5.  Open a pull request, wait for an approval from your peers and merge it.
+6.  Checkout and pull changes from the `main` branch to ensure you have the latest updates.
+7.  Tag and push your commit:
+
+    ```bash
+    git tag v4.18.1 && git push origin --tags
+    ```
+
+    Doing this triggers the CI and tells it to build the new Docker image versions that you targeted earlier in the Helm files.
+
+8.  Ensure the new [backend](https://hub.docker.com/r/lasuite/meet-frontend/tags) and [frontend](https://hub.docker.com/r/lasuite/meet-frontend/tags) image tags are on Docker Hub.
+9.  The release is now done!
+
+# Deploying
+
+> [!TIP]
+> The `staging` platform is deployed automatically with every update of the `main` branch.
+
+Making a new release doesn't publish it automatically in production.
+
+Deployment is done by ArgoCD. ArgoCD checks for the `production` tag and automatically deploys the production platform with the targeted commit.
+
+To publish, we mark the commit we want with the `production` tag. ArgoCD is then notified that the tag has changed. It then deploys the Docker image tags specified in the Helm files of the targeted commit.
+
+To publish the release you just made:
+
+```bash
+git tag --force production v4.18.1
+git push --force origin production
+```
