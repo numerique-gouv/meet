@@ -62,11 +62,16 @@ words=wip
 # For example, use the following regex if you only want to allow email addresses from foo.com
 # regex=[^@]+@foo.com
 
-[ignore-by-title]
+[ignore-by-title:bots]
 # Allow empty body & wrong title pattern only when bots (pyup/greenkeeper)
 # upgrade dependencies
 regex=^(⬆️.*|Update (.*) from (.*) to (.*)|(chore|fix)\(package\): update .*)$
 ignore=B6,UC1
+
+[ignore-by-title:releases]
+# Allow empty body for release commits
+regex=^🔖.*$
+ignore=B6
 
 # [ignore-by-body]
 # Ignore certain rules for commits of which the body has a line that matches a regex
