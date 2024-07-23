@@ -7,7 +7,7 @@ import { useTranslation } from 'react-i18next'
 import { useLang } from 'hoofd'
 import { Route, Switch } from 'wouter'
 import { HomeRoute } from '@/features/home'
-import { RoomRoute, roomIdRegex } from '@/features/rooms'
+import { RoomRoute, roomRouteRegex } from '@/features/rooms'
 import { NotFound } from './routes/NotFound'
 import './i18n/init'
 import { RenderIfUserFetched } from './features/auth'
@@ -23,7 +23,7 @@ function App() {
         <RenderIfUserFetched>
           <Switch>
             <Route path="/" component={HomeRoute} />
-            <Route path={roomIdRegex} component={RoomRoute} />
+            <Route path={roomRouteRegex} component={RoomRoute} />
             <Route component={NotFound} />
           </Switch>
         </RenderIfUserFetched>
