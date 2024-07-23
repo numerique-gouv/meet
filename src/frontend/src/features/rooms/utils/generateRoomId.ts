@@ -12,5 +12,3 @@ const generateSegment = (length: number): string =>
 // Generates a unique room identifier following the Google Meet format
 export const generateRoomId = () =>
   [generateSegment(3), generateSegment(4), generateSegment(3)].join('-')
-
-export const roomIdRegex = /^[/](?<roomId>[a-z]{3}-[a-z]{4}-[a-z]{3})$/
