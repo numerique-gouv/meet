@@ -233,7 +233,7 @@ const config: Config = {
         paragraph: { value: '{spacing.1}' },
         heading: { value: '{spacing.1}' },
         gutter: { value: '{spacing.1}' },
-        textfield: { value: '{spacing.0.5}' },
+        textfield: { value: '{spacing.1}' },
       },
     }),
     textStyles: defineTextStyles({

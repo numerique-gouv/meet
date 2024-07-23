@@ -1,7 +1,5 @@
 import { useTranslation } from 'react-i18next'
 import { navigate } from 'wouter/use-browser-location'
-import { Form } from 'react-aria-components'
-import { HStack } from '@/styled-system/jsx'
 import {
   Button,
   P,
@@ -10,11 +8,13 @@ import {
   H,
   VerticallyOffCenter,
   Dialog,
-  TextField,
+  Form,
+  Field,
+  Ul,
 } from '@/primitives'
-import { useCloseDialog } from '@/primitives/Dialog'
+import { HStack } from '@/styled-system/jsx'
 import { authUrl, useUser } from '@/features/auth'
-import { navigateToNewRoom } from '@/features/rooms'
+import { isRoomValid, navigateToNewRoom } from '@/features/rooms'
 import { Screen } from '@/layout/Screen'
 
 export const Home = () => {
@@ -59,44 +59,33 @@ export const Home = () => {
 
 const JoinMeetingDialogContent = () => {
   const { t } = useTranslation('home')
-  const closeDialog = useCloseDialog()
-  const fieldOk = /^.*([a-z]{3}-[a-z]{4}-[a-z]{3})$/
   return (
     <Div>
       <Form
-        onSubmit={(event) => {
-          event.preventDefault()
-          const roomInput = document.getElementById(
-            'join-meeting-input'
-          ) as HTMLInputElement
-          const value = roomInput.value
-          const matches = value.match(fieldOk)
-          if (matches) {
-            navigate(`/${matches[1]}`)
-          }
+        onSubmit={(data) => {
+          navigate(`/${(data.roomId as string).trim()}`)
         }}
+        submitLabel={t('joinInputSubmit')}
       >
-        <TextField
-          id="join-meeting-input"
+        <Field
+          type="text"
+          name="roomId"
           label={t('joinInputLabel')}
           description={t('joinInputExample', {
             example: 'https://meet.numerique.gouv.fr/azer-tyu-qsdf',
           })}
           validate={(value) => {
-            if (!fieldOk.test(value)) {
-              return t('joinInputError')
-            }
-            return null
+            return !isRoomValid(value.trim()) ? (
+              <>
+                <p>{t('joinInputError')}</p>
+                <Ul>
+                  <li>{window.location.origin}/uio-azer-jkl</li>
+                  <li>uio-azer-jkl</li>
+                </Ul>
+              </>
+            ) : null
           }}
         />
-        <HStack gap="gutter">
-          <Button type="submit" variant="primary">
-            {t('joinInputSubmit')}
-          </Button>
-          <Button variant="primary" outline onPress={closeDialog}>
-            {t('cancel', { ns: 'global' })}
-          </Button>
-        </HStack>
       </Form>
       <H lvl={2}>{t('joinMeetingTipHeading')}</H>
       <P last>{t('joinMeetingTipContent')}</P>

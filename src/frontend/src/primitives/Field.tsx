@@ -1,0 +1,187 @@
+import { styled } from '@/styled-system/jsx'
+import { type ReactNode } from 'react'
+import {
+  Label,
+  TextField as RACTextField,
+  FieldError as RACFieldError,
+  CheckboxGroup,
+  RadioGroup,
+  type TextFieldProps,
+  type CheckboxProps,
+  type CheckboxGroupProps,
+  type RadioGroupProps,
+} from 'react-aria-components'
+import { FieldDescription } from './FieldDescription'
+import { FieldErrors } from './FieldErrors'
+import { Input } from './Input'
+import { Radio } from './Radio'
+import { Checkbox } from './Checkbox'
+import { Div } from './Div'
+
+const FieldWrapper = styled('div', {
+  base: {
+    marginBottom: 'textfield',
+  },
+})
+
+const StyledLabel = styled(Label, {
+  base: {
+    display: 'block',
+  },
+})
+
+type OmittedRACProps = 'type' | 'label' | 'items' | 'description' | 'validate'
+type Items = { items: Array<{ value: string; label: ReactNode }> }
+type PartialTextFieldProps = Omit<TextFieldProps, OmittedRACProps>
+type PartialCheckboxProps = Omit<CheckboxProps, OmittedRACProps>
+type PartialCheckboxGroupProps = Omit<CheckboxGroupProps, OmittedRACProps>
+type PartialRadioGroupProps = Omit<RadioGroupProps, OmittedRACProps>
+type FieldProps = (
+  | ({
+      type: 'text'
+      items?: never
+      validate?: (
+        value: string
+      ) => ReactNode | ReactNode[] | true | null | undefined
+    } & PartialTextFieldProps)
+  | ({
+      type: 'checkbox'
+      validate?: (
+        value: boolean
+      ) => ReactNode | ReactNode[] | true | null | undefined
+      items?: never
+    } & PartialCheckboxProps)
+  | ({
+      type: 'checkboxGroup'
+      validate?: (
+        value: string[]
+      ) => ReactNode | ReactNode[] | true | null | undefined
+    } & Items &
+      PartialCheckboxGroupProps)
+  | ({
+      type: 'radioGroup'
+      validate?: (
+        value: string | null
+      ) => ReactNode | ReactNode[] | true | null | undefined
+    } & Items &
+      PartialRadioGroupProps)
+) & {
+  label: string
+  description?: string
+}
+
+/**
+ * Form field.
+ *
+ * This is the only component you should need when creating forms, besides the wrapping Form component.
+ *
+ * It has a specific type: a text input, a select, a checkbox, a checkbox group or a radio group.
+ * It can have a `description`, a help text shown below the label.
+ * On submit, it shows the errors that the `validate` prop returns based on the field value.
+ * You can render React nodes as error messages if needed, but you usually return strings.
+ *
+ * You can directly pass HTML input props if needed (like required, pattern, etc)
+ */
+export const Field = ({
+  type,
+  label,
+  description,
+  items,
+  validate,
+  ...props
+}: FieldProps) => {
+  const LabelAndDescription = (
+    <>
+      <StyledLabel>{label}</StyledLabel>
+      <FieldDescription slot="description">{description}</FieldDescription>
+    </>
+  )
+  const RACFieldErrors = (
+    <RACFieldError>
+      {({ validationErrors }) => {
+        return <FieldErrors errors={validationErrors} />
+      }}
+    </RACFieldError>
+  )
+
+  if (type === 'text') {
+    return (
+      <FieldWrapper>
+        <RACTextField
+          validate={validate as unknown as TextFieldProps['validate']}
+          {...(props as PartialTextFieldProps)}
+        >
+          {LabelAndDescription}
+          <Input />
+          {RACFieldErrors}
+        </RACTextField>
+      </FieldWrapper>
+    )
+  }
+
+  if (type === 'checkbox') {
+    return (
+      <FieldWrapper>
+        <Checkbox
+          validate={validate as unknown as CheckboxProps['validate']}
+          description={description}
+          {...(props as PartialCheckboxProps)}
+        >
+          {label}
+        </Checkbox>
+      </FieldWrapper>
+    )
+  }
+
+  if (type === 'checkboxGroup') {
+    return (
+      <FieldWrapper>
+        <CheckboxGroup
+          validate={validate as unknown as CheckboxGroupProps['validate']}
+          {...(props as PartialCheckboxGroupProps)}
+        >
+          {LabelAndDescription}
+          <Div marginTop={0.25}>
+            {items.map((item, index) => (
+              <FieldItem last={index === items.length - 1} key={item.value}>
+                <Checkbox size="sm" value={item.value}>
+                  {item.label}
+                </Checkbox>
+              </FieldItem>
+            ))}
+          </Div>
+          {RACFieldErrors}
+        </CheckboxGroup>
+      </FieldWrapper>
+    )
+  }
+
+  if (type === 'radioGroup') {
+    return (
+      <FieldWrapper>
+        <RadioGroup
+          validate={validate as unknown as RadioGroupProps['validate']}
+          {...(props as PartialRadioGroupProps)}
+        >
+          {LabelAndDescription}
+          {items.map((item, index) => (
+            <FieldItem last={index === items.length - 1} key={item.value}>
+              <Radio value={item.value}>{item.label}</Radio>
+            </FieldItem>
+          ))}
+          {RACFieldErrors}
+        </RadioGroup>
+      </FieldWrapper>
+    )
+  }
+}
+
+const FieldItem = ({
+  children,
+  last,
+}: {
+  children: ReactNode
+  last?: boolean
+}) => {
+  return <Div {...(!last ? { marginBottom: 0.25 } : {})}>{children}</Div>
+}
