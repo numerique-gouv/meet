@@ -6,11 +6,11 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { useTranslation } from 'react-i18next'
 import { useLang } from 'hoofd'
 import { Route, Switch } from 'wouter'
-import { Screen } from './layout/Screen'
 import { HomeRoute } from '@/features/home'
 import { RoomRoute, roomIdRegex } from '@/features/rooms'
 import { NotFound } from './routes/NotFound'
 import './i18n/init'
+import { RenderIfUserFetched } from './features/auth'
 
 const queryClient = new QueryClient()
 
@@ -19,12 +19,14 @@ function App() {
   useLang(i18n.language)
   return (
     <QueryClientProvider client={queryClient}>
-      <Suspense fallback={<Screen />}>
-        <Switch>
-          <Route path="/" component={HomeRoute} />
-          <Route path={roomIdRegex} component={RoomRoute} />
-          <Route component={NotFound} />
-        </Switch>
+      <Suspense fallback={null}>
+        <RenderIfUserFetched>
+          <Switch>
+            <Route path="/" component={HomeRoute} />
+            <Route path={roomIdRegex} component={RoomRoute} />
+            <Route component={NotFound} />
+          </Switch>
+        </RenderIfUserFetched>
         <ReactQueryDevtools initialIsOpen={false} />
       </Suspense>
     </QueryClientProvider>
