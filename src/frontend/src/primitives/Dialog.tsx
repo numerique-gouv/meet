@@ -118,6 +118,9 @@ export const Dialog = ({ title, children, ...dialogProps }: DialogProps) => {
 }
 
 export const useCloseDialog = () => {
-  const dialogState = useContext(OverlayTriggerStateContext)!
-  return dialogState.close
+  const dialogState = useContext(OverlayTriggerStateContext)
+  if (dialogState) {
+    return dialogState.close
+  }
+  return null
 }
