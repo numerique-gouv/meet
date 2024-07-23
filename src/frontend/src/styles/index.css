@@ -11,10 +11,11 @@ body,
   outline: none;
 }
 
-[data-rac][data-focus-visible],
-:is(a, button, input, select, textarea):not([data-rac]):focus-visible {
+[data-rac][data-focus-visible]:not(label),
+:is(a, button, input[type='text'], select, textarea):not(
+    [data-rac]
+  ):focus-visible {
   outline: 2px solid black;
   outline-offset: 1px;
-  outline-color: Highlight;
-  outline-color: -webkit-focus-ring-color;
+  outline-color: var(--colors-focus-ring);
 }

@@ -214,6 +214,7 @@ const config: Config = {
           subtle: { value: '{colors.amber.100}' },
           'subtle-text': { value: '{colors.amber.700}' },
         },
+        focusRing: { value: 'rgb(74, 121, 199)' },
       },
       shadows: {
         box: { value: '{shadows.sm}' },
