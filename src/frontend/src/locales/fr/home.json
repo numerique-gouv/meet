@@ -1,13 +1,13 @@
 {
-  "createMeeting": "Créer une conférence",
+  "createMeeting": "Créer une réunion",
   "heading": "Meet",
   "intro": "Collaborez en toute simplicité, où que vous soyez.",
-  "joinInputError": "Saisissez un lien de conférence valide ou uniquement son code. Exemples : \"https://meet.numerique.gouv.fr/aze-rtyu-iop\" ou \"aze-rtyu-iop\".",
-  "joinInputExample": "Lien complet ou code de 10 lettres",
-  "joinInputLabel": "Lien de la conférence",
-  "joinInputSubmit": "Rejoindre la conférence",
-  "joinMeeting": "Rejoindre une conférence",
-  "joinMeetingTipContent": "Vous pouvez rejoindre une conférence en copiant directement son lien complet dans la barre d'adresse du navigateur.",
+  "joinInputError": "Saisissez un lien ou un code de réunion. Exemples :",
+  "joinInputExample": "Un code de réunion ressemble à ceci : abc-defg-hij",
+  "joinInputLabel": "Lien complet ou code de la réunion",
+  "joinInputSubmit": "Rejoindre la réunion",
+  "joinMeeting": "Rejoindre une réunion",
+  "joinMeetingTipContent": "Vous pouvez rejoindre une réunion en copiant directement son lien complet dans la barre d'adresse du navigateur.",
   "joinMeetingTipHeading": "Astuce",
-  "loginToCreateMeeting": "Connectez-vous pour créer une conférence"
+  "loginToCreateMeeting": "Connectez-vous pour créer une réunion"
 }
