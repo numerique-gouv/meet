@@ -14,10 +14,10 @@ const button = cva({
     border: '1px solid transparent',
     color: 'colorPalette.text',
     backgroundColor: 'colorPalette',
-    '_ra-hover': {
+    '&[data-hovered]': {
       backgroundColor: 'colorPalette.hover',
     },
-    '_ra-pressed': {
+    '&[data-pressed]': {
       backgroundColor: 'colorPalette.active',
     },
   },

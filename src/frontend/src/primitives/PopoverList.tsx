@@ -15,7 +15,7 @@ const ListItem = styled(Button, {
     borderRadius: 4,
     cursor: 'pointer',
     color: 'primary',
-    '_ra-hover': {
+    '&[data-hovered]': {
       color: 'primary.subtle-text',
       backgroundColor: 'primary.subtle',
     },
