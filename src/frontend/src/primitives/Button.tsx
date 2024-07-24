@@ -9,7 +9,7 @@ import { cva, type RecipeVariantProps } from '@/styled-system/css'
 const button = cva({
   base: {
     display: 'inline-block',
-    transition: 'background 200ms',
+    transition: 'background 200ms, outline 200ms',
     cursor: 'pointer',
     border: '1px solid transparent',
     color: 'colorPalette.text',
