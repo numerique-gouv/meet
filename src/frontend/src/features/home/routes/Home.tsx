@@ -1,21 +1,10 @@
 import { useTranslation } from 'react-i18next'
-import { navigate } from 'wouter/use-browser-location'
-import {
-  Button,
-  P,
-  Div,
-  Text,
-  H,
-  VerticallyOffCenter,
-  Dialog,
-  Form,
-  Field,
-  Ul,
-} from '@/primitives'
+import { Button, Div, Text, VerticallyOffCenter, Dialog } from '@/primitives'
 import { HStack } from '@/styled-system/jsx'
 import { authUrl, useUser } from '@/features/auth'
-import { isRoomValid, navigateToNewRoom } from '@/features/rooms'
+import { navigateToNewRoom } from '@/features/rooms'
 import { Screen } from '@/layout/Screen'
+import { JoinMeetingDialog } from '../components/JoinMeetingDialog'
 
 export const Home = () => {
   const { t } = useTranslation('home')
@@ -48,47 +37,11 @@ export const Home = () => {
               <Button variant="primary" outline>
                 {t('joinMeeting')}
               </Button>
-              <JoinMeetingDialogContent />
+              <JoinMeetingDialog />
             </Dialog>
           </HStack>
         </Div>
       </VerticallyOffCenter>
     </Screen>
-  )
-}
-
-const JoinMeetingDialogContent = () => {
-  const { t } = useTranslation('home')
-  return (
-    <Div>
-      <Form
-        onSubmit={(data) => {
-          navigate(`/${(data.roomId as string).trim()}`)
-        }}
-        submitLabel={t('joinInputSubmit')}
-      >
-        <Field
-          type="text"
-          name="roomId"
-          label={t('joinInputLabel')}
-          description={t('joinInputExample', {
-            example: 'https://meet.numerique.gouv.fr/azer-tyu-qsdf',
-          })}
-          validate={(value) => {
-            return !isRoomValid(value.trim()) ? (
-              <>
-                <p>{t('joinInputError')}</p>
-                <Ul>
-                  <li>{window.location.origin}/uio-azer-jkl</li>
-                  <li>uio-azer-jkl</li>
-                </Ul>
-              </>
-            ) : null
-          }}
-        />
-      </Form>
-      <H lvl={2}>{t('joinMeetingTipHeading')}</H>
-      <P last>{t('joinMeetingTipContent')}</P>
-    </Div>
   )
 }
