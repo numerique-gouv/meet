@@ -16,6 +16,8 @@ const box = cva({
         width: '38rem',
         maxWidth: '100%',
         textAlign: 'center',
+        borderColor: 'transparent',
+        paddingY: 0,
       },
       popover: {
         padding: 'boxPadding.xs',

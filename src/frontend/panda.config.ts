@@ -166,7 +166,7 @@ const config: Config = {
       colors: {
         default: {
           text: { value: '{colors.gray.900}' },
-          bg: { value: '{colors.slate.50}' },
+          bg: { value: 'white' },
           subtle: { value: '{colors.gray.100}' },
           'subtle-text': { value: '{colors.gray.600}' },
         },
