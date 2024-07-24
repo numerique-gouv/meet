@@ -284,6 +284,8 @@ class Base(Configuration):
     SESSION_COOKIE_AGE = 60 * 60 * 12
 
     # OIDC - Authorization Code Flow
+    OIDC_AUTHENTICATE_CLASS = "core.authentication.views.OIDCAuthenticationRequestView"
+    OIDC_CALLBACK_CLASS = "core.authentication.views.OIDCAuthenticationCallbackView"
     OIDC_CREATE_USER = values.BooleanValue(
         default=True,
         environ_name="OIDC_CREATE_USER",

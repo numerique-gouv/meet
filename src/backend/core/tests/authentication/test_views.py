@@ -15,7 +15,13 @@ import pytest
 from rest_framework.test import APIClient
 
 from core import factories
-from core.authentication.views import OIDCLogoutCallbackView, OIDCLogoutView
+from core.authentication.views import (
+    MozillaOIDCAuthenticationCallbackView,
+    OIDCAuthenticationCallbackView,
+    OIDCAuthenticationRequestView,
+    OIDCLogoutCallbackView,
+    OIDCLogoutView,
+)
 
 pytestmark = pytest.mark.django_db
 
@@ -229,3 +235,125 @@ def test_view_logout_callback():
 
     assert response.status_code == 302
     assert response.url == "/example-logout"
+
+
+@pytest.mark.parametrize("mocked_extra_params_setting", [{"foo": 123}, {}, None])
+def test_view_authentication_default(settings, mocked_extra_params_setting):
+    """By default, authentication request should not trigger silent login."""
+
+    settings.OIDC_AUTH_REQUEST_EXTRA_PARAMS = mocked_extra_params_setting
+
+    user = factories.UserFactory()
+
+    request = RequestFactory().request()
+    request.user = user
+    request.GET = {}
+
+    view = OIDCAuthenticationRequestView()
+    extra_params = view.get_extra_params(request)
+
+    assert extra_params == (mocked_extra_params_setting or {})
+
+
+@pytest.mark.parametrize("mocked_extra_params_setting", [{"foo": 123}, {}, None])
+def test_view_authentication_silent_false(settings, mocked_extra_params_setting):
+    """Ensure setting 'silent' parameter to a random value doesn't trigger the silent login flow."""
+
+    settings.OIDC_AUTH_REQUEST_EXTRA_PARAMS = mocked_extra_params_setting
+
+    user = factories.UserFactory()
+
+    request = RequestFactory().request()
+    request.user = user
+    request.GET = {"silent": "foo"}
+
+    middleware = SessionMiddleware(get_response=lambda x: x)
+    middleware.process_request(request)
+
+    view = OIDCAuthenticationRequestView()
+    extra_params = view.get_extra_params(request)
+
+    assert extra_params == (mocked_extra_params_setting or {})
+    assert not request.session.get("silent")
+
+
+@pytest.mark.parametrize("mocked_extra_params_setting", [{"foo": 123}, {}, None])
+def test_view_authentication_silent_true(settings, mocked_extra_params_setting):
+    """If 'silent' parameter is set to True, the silent login should be triggered."""
+    settings.OIDC_AUTH_REQUEST_EXTRA_PARAMS = mocked_extra_params_setting
+
+    user = factories.UserFactory()
+
+    request = RequestFactory().request()
+    request.user = user
+    request.GET = {"silent": "true"}
+
+    middleware = SessionMiddleware(get_response=lambda x: x)
+    middleware.process_request(request)
+
+    view = OIDCAuthenticationRequestView()
+    extra_params = view.get_extra_params(request)
+    expected_params = {"prompt": "none"}
+
+    assert (
+        extra_params == {**mocked_extra_params_setting, **expected_params}
+        if mocked_extra_params_setting
+        else expected_params
+    )
+    assert request.session.get("silent") is True
+
+
+@mock.patch.object(
+    MozillaOIDCAuthenticationCallbackView,
+    "failure_url",
+    new_callable=mock.PropertyMock,
+    return_value="foo",
+)
+def test_view_callback_failure_url(mocked_failure_url):
+    """Test default behavior of the 'failure_url' property"""
+
+    user = factories.UserFactory()
+
+    request = RequestFactory().request()
+    request.user = user
+
+    middleware = SessionMiddleware(get_response=lambda x: x)
+    middleware.process_request(request)
+
+    view = OIDCAuthenticationCallbackView()
+    view.request = request
+
+    returned_url = view.failure_url
+
+    mocked_failure_url.assert_called_once()
+    assert returned_url == "foo"
+
+
+@mock.patch.object(
+    OIDCAuthenticationCallbackView,
+    "success_url",
+    new_callable=mock.PropertyMock,
+    return_value="foo",
+)
+def test_view_callback_failure_url_silent_login(mocked_success_url):
+    """If a silent login was initiated and failed, it should not be treated as a failure."""
+
+    user = factories.UserFactory()
+
+    request = RequestFactory().request()
+    request.user = user
+
+    middleware = SessionMiddleware(get_response=lambda x: x)
+    middleware.process_request(request)
+
+    request.session["silent"] = True
+    request.session.save()
+
+    view = OIDCAuthenticationCallbackView()
+    view.request = request
+
+    returned_url = view.failure_url
+
+    mocked_success_url.assert_called_once()
+    assert returned_url == "foo"
+    assert not request.session.get("silent")
