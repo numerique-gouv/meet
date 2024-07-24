@@ -1,6 +1,7 @@
 import { ApiError } from '@/api/ApiError'
 import { fetchApi } from '@/api/fetchApi'
 import { type ApiUser } from './ApiUser'
+import { attemptSilentLogin } from "@/features/auth";
 
 /**
  * fetch the logged-in user from the api.
@@ -16,6 +17,7 @@ export const fetchUser = (): Promise<ApiUser | false> => {
       .catch((error) => {
         // we assume that a 401 means the user is not logged in
         if (error instanceof ApiError && error.statusCode === 401) {
+          attemptSilentLogin(3600)
           resolve(false)
         } else {
           reject(error)
