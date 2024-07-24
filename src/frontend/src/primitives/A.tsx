@@ -7,10 +7,10 @@ const link = cva({
     textUnderlineOffset: '2',
     cursor: 'pointer',
     borderRadius: 2,
-    '_ra-hover': {
+    '&[data-hovered]': {
       textDecoration: 'none',
     },
-    '_ra-pressed': {
+    '&[data-pressed]': {
       textDecoration: 'underline',
     },
   },

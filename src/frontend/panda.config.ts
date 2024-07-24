@@ -35,18 +35,6 @@ const config: Config = {
   exclude: [],
   jsxFramework: 'react',
   outdir: 'src/styled-system',
-  conditions: {
-    extend: {
-      // React Aria builds upon data attributes instead of css pseudo-classes, in case we style a React Aria component
-      // we dont want to trigger pseudo class related styles
-      'ra-hover': '&:is([data-hovered])',
-      'ra-focus': '&:is([data-focused])',
-      'ra-focusVisible': '&:is([data-focus-visible])',
-      'ra-disabled': '&:is([data-disabled])',
-      pressed: '&:is([data-pressed])',
-      'ra-pressed': '&:is([data-pressed])',
-    },
-  },
   theme: {
     ...pandaPreset.theme,
     // media queries are defined in em so that zooming with text-only mode triggers breakpoints
