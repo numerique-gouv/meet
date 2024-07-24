@@ -8,16 +8,16 @@ body,
 }
 
 * {
-  outline: none;
+  outline: 2px solid transparent;
 }
 
-[data-rac][data-focus-visible]:not(label),
+[data-rac][data-focus-visible]:not(label, .react-aria-Select),
 :is(a, button, input[type='text'], select, textarea):not(
     [data-rac]
   ):focus-visible {
-  outline: 2px solid black;
+  outline: 2px solid var(--colors-focus-ring);
   outline-offset: 1px;
-  outline-color: var(--colors-focus-ring);
+}
 
 @media (prefers-reduced-motion: reduce) {
   * {
