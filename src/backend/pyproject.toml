@@ -19,7 +19,7 @@ classifiers = [
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.10",
 ]
-description = "An application to print markdown to pdf from a set of managed templates."
+description = "A simple video and phone conferencing tool, powered by LiveKit"
 keywords = ["Django", "Contacts", "Templates", "RBAC"]
 license = { file = "LICENSE" }
 readme = "README.md"
