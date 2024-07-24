@@ -5,17 +5,12 @@ import {
   Modal,
   type DialogProps as RACDialogProps,
   ModalOverlay,
-  Heading,
   OverlayTriggerStateContext,
 } from 'react-aria-components'
 import { RiCloseLine } from '@remixicon/react'
-import { styled } from '@/styled-system/jsx'
-import { Box } from './Box'
-import { Div } from './Div'
-import { VerticallyOffCenter } from './VerticallyOffCenter'
-import { text } from './Text'
-import { Button } from './Button'
 import { useTranslation } from 'react-i18next'
+import { styled } from '@/styled-system/jsx'
+import { Button, Box, Div, VerticallyOffCenter } from '@/primitives'
 
 const StyledModalOverlay = styled(ModalOverlay, {
   base: {
@@ -54,7 +49,6 @@ const StyledRACDialog = styled(RACDialog, {
 })
 
 export type DialogProps = {
-  title: string
   children: [
     trigger: ReactNode,
     dialogContent:
@@ -64,9 +58,9 @@ export type DialogProps = {
 } & RACDialogProps
 
 /**
- * a Dialog is a tuple of a trigger component (most usually a Button) that toggles some interactive content in a Dialog on top of the app
+ * a Dialog is a tuple of a trigger component (most usually a Button) that toggles some interactive content in a Dialog on top of the app. You should mostly use a DialogContent as second child.
  */
-export const Dialog = ({ title, children, ...dialogProps }: DialogProps) => {
+export const Dialog = ({ children, ...dialogProps }: DialogProps) => {
   const { t } = useTranslation()
   const isAlert = dialogProps['role'] === 'alertdialog'
   const [trigger, dialogContent] = children
@@ -88,13 +82,6 @@ export const Dialog = ({ title, children, ...dialogProps }: DialogProps) => {
                   pointerEvents="auto"
                 >
                   <Box size="sm" type="dialog">
-                    <Heading
-                      slot="title"
-                      level={1}
-                      className={text({ variant: 'h1' })}
-                    >
-                      {title}
-                    </Heading>
                     {typeof dialogContent === 'function'
                       ? dialogContent({ close })
                       : dialogContent}
