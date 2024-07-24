@@ -96,6 +96,10 @@ export type CheckboxProps = StyledVariantProps<typeof StyledCheckbox> &
  * the error message with the `validate` prop like other fields.
  *
  * Used internally by checkbox fields and checkbox group fields.
+ *
+ * note: this could be split in two components, one to render dumb, styled checkboxes,
+ * like Input or Radio, and another to behave as an actual "CheckboxField", that
+ * handles the error and description messages. No need for now though!
  */
 export const Checkbox = ({
   isInvalid,

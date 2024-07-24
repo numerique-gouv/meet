@@ -18,4 +18,10 @@ body,
   outline: 2px solid black;
   outline-offset: 1px;
   outline-color: var(--colors-focus-ring);
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
+    transition: none !important;
+  }
 }
