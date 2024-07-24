@@ -24,8 +24,8 @@ const StyledModalOverlay = styled(ModalOverlay, {
     justifyContent: 'center',
     alignItems: 'center',
     zIndex: 1000,
-    '&[data-entering]': { animation: 'modalFade 200ms' },
-    '&[data-exiting]': { animation: 'modalFade 150ms reverse ease-in' },
+    '&[data-entering]': { animation: 'fade 200ms' },
+    '&[data-exiting]': { animation: 'fade 150ms reverse ease-in' },
   },
 })
 
@@ -36,7 +36,7 @@ const StyledModal = styled(Modal, {
     height: 'full',
     pointerEvents: 'none',
     '--origin': 'translateY(32px)',
-    '&[data-entering]': { animation: 'popoverSlide 300ms' },
+    '&[data-entering]': { animation: 'slide 300ms' },
   },
 })
 

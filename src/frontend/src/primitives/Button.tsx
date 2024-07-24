@@ -1,10 +1,13 @@
+import { type ReactNode } from 'react'
 import {
   Button as RACButton,
   type ButtonProps as RACButtonsProps,
+  TooltipTrigger,
   Link,
   LinkProps,
 } from 'react-aria-components'
 import { cva, type RecipeVariantProps } from '@/styled-system/css'
+import { Tooltip, TooltipArrow } from './Tooltip'
 
 const button = cva({
   base: {
@@ -88,21 +91,52 @@ const button = cva({
   },
 })
 
-export type ButtonProps = RecipeVariantProps<typeof button> & RACButtonsProps
+type Tooltip = {
+  tooltip?: string
+}
+export type ButtonProps = RecipeVariantProps<typeof button> &
+  RACButtonsProps &
+  Tooltip
 
-type LinkButtonProps = RecipeVariantProps<typeof button> & LinkProps
+type LinkButtonProps = RecipeVariantProps<typeof button> & LinkProps & Tooltip
 
 type ButtonOrLinkProps = ButtonProps | LinkButtonProps
 
-export const Button = (props: ButtonOrLinkProps) => {
+export const Button = ({ tooltip, ...props }: ButtonOrLinkProps) => {
   const [variantProps, componentProps] = button.splitVariantProps(props)
   if ((props as LinkButtonProps).href !== undefined) {
-    return <Link className={button(variantProps)} {...componentProps} />
+    return (
+      <TooltipWrapper tooltip={tooltip}>
+        <Link className={button(variantProps)} {...componentProps} />
+      </TooltipWrapper>
+    )
   }
   return (
-    <RACButton
-      className={button(variantProps)}
-      {...(componentProps as RACButtonsProps)}
-    />
+    <TooltipWrapper tooltip={tooltip}>
+      <RACButton
+        className={button(variantProps)}
+        {...(componentProps as RACButtonsProps)}
+      />
+    </TooltipWrapper>
+  )
+}
+
+const TooltipWrapper = ({
+  tooltip,
+  children,
+}: {
+  tooltip?: string
+  children: ReactNode
+}) => {
+  return tooltip ? (
+    <TooltipTrigger delay={300}>
+      {children}
+      <Tooltip>
+        <TooltipArrow />
+        {tooltip}
+      </Tooltip>
+    </TooltipTrigger>
+  ) : (
+    children
   )
 }

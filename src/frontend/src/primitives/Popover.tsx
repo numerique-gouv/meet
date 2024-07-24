@@ -13,10 +13,10 @@ export const StyledPopover = styled(RACPopover, {
   base: {
     minWidth: 'var(--trigger-width)',
     '&[data-entering]': {
-      animation: 'popoverSlide 200ms',
+      animation: 'slide 200ms',
     },
     '&[data-exiting]': {
-      animation: 'popoverSlide 200ms reverse ease-in',
+      animation: 'slide 200ms reverse ease-in',
     },
     '&[data-placement="bottom"]': {
       marginTop: 0.25,
@@ -67,11 +67,11 @@ export const Popover = ({
     <DialogTrigger>
       {trigger}
       <StyledPopover>
-          <StyledOverlayArrow>
-            <svg width={12} height={12} viewBox="0 0 12 12">
-              <path d="M0 0 L6 6 L12 0" />
-            </svg>
-          </StyledOverlayArrow>
+        <StyledOverlayArrow>
+          <svg width={12} height={12} viewBox="0 0 12 12">
+            <path d="M0 0 L6 6 L12 0" />
+          </svg>
+        </StyledOverlayArrow>
         <Dialog {...dialogProps}>
           {({ close }) => (
             <Box size="sm" type="popover">

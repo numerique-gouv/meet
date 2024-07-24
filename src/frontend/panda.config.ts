@@ -47,7 +47,7 @@ const config: Config = {
       '2xl': '96em', // 1536px
     },
     keyframes: {
-      popoverSlide: {
+      slide: {
         from: {
           transform: 'var(--origin)',
           opacity: 0,
@@ -57,7 +57,7 @@ const config: Config = {
           opacity: 1,
         },
       },
-      modalFade: { from: { opacity: 0 }, to: { opacity: 1 } },
+      fade: { from: { opacity: 0 }, to: { opacity: 1 } },
     },
     tokens: defineTokens({
       /* we take a few things from the panda preset but for now we clear out some stuff.
