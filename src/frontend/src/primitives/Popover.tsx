@@ -9,7 +9,7 @@ import {
 import { styled } from '@/styled-system/jsx'
 import { Box } from './Box'
 
-const StyledPopover = styled(RACPopover, {
+export const StyledPopover = styled(RACPopover, {
   base: {
     '&[data-placement="bottom"]': {
       marginTop: 0.25,

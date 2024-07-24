@@ -10,12 +10,14 @@ import {
   type CheckboxProps,
   type CheckboxGroupProps,
   type RadioGroupProps,
+  type SelectProps,
 } from 'react-aria-components'
 import { FieldDescription } from './FieldDescription'
 import { FieldErrors } from './FieldErrors'
 import { Input } from './Input'
 import { Radio } from './Radio'
 import { Checkbox } from './Checkbox'
+import { Select } from './Select'
 import { Div } from './Div'
 
 const FieldWrapper = styled('div', {
@@ -31,12 +33,16 @@ const StyledLabel = styled(Label, {
 })
 
 type OmittedRACProps = 'type' | 'label' | 'items' | 'description' | 'validate'
-type Items = { items: Array<{ value: string; label: ReactNode }> }
+type Items<T = ReactNode> = { items: Array<{ value: string; label: T }> }
 type PartialTextFieldProps = Omit<TextFieldProps, OmittedRACProps>
 type PartialCheckboxProps = Omit<CheckboxProps, OmittedRACProps>
 type PartialCheckboxGroupProps = Omit<CheckboxGroupProps, OmittedRACProps>
 type PartialRadioGroupProps = Omit<RadioGroupProps, OmittedRACProps>
-type FieldProps = (
+type PartialSelectProps<T extends object> = Omit<
+  SelectProps<T>,
+  OmittedRACProps
+>
+type FieldProps<T extends object> = (
   | ({
       type: 'text'
       items?: never
@@ -65,6 +71,11 @@ type FieldProps = (
       ) => ReactNode | ReactNode[] | true | null | undefined
     } & Items &
       PartialRadioGroupProps)
+  | ({
+      type: 'select'
+      validate?: (value: T) => ReactNode | ReactNode[] | true | null | undefined
+    } & Items<string> &
+      PartialSelectProps<T>)
 ) & {
   label: string
   description?: string
@@ -82,14 +93,14 @@ type FieldProps = (
  *
  * You can directly pass HTML input props if needed (like required, pattern, etc)
  */
-export const Field = ({
+export const Field = <T extends object>({
   type,
   label,
   description,
   items,
   validate,
   ...props
-}: FieldProps) => {
+}: FieldProps<T>) => {
   const LabelAndDescription = (
     <>
       <StyledLabel>{label}</StyledLabel>
@@ -171,6 +182,20 @@ export const Field = ({
           ))}
           {RACFieldErrors}
         </RadioGroup>
+      </FieldWrapper>
+    )
+  }
+
+  if (type === 'select') {
+    return (
+      <FieldWrapper>
+        <Select
+          validate={validate as unknown as SelectProps<T>['validate']}
+          {...(props as PartialSelectProps<T>)}
+          label={LabelAndDescription}
+          errors={RACFieldErrors}
+          items={items}
+        />
       </FieldWrapper>
     )
   }

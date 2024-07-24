@@ -20,6 +20,7 @@ const box = cva({
       popover: {
         padding: 'boxPadding.xs',
         minWidth: '10rem',
+        boxShadow: '0 8px 20px #0000001a',
       },
       dialog: {
         width: '30rem',
@@ -37,6 +38,11 @@ const box = cva({
       subtle: {
         color: 'default.subtle-text',
         backgroundColor: 'default.subtle',
+      },
+      control: {
+        border: '1px solid {colors.control.border}',
+        backgroundColor: 'box.bg',
+        color: 'control.text',
       },
     },
     size: {
