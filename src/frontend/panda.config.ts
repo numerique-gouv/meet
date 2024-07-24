@@ -231,7 +231,7 @@ const config: Config = {
           DEFAULT: { value: '{spacing.1}' },
           lg: { value: '{spacing.2}' },
         },
-        paragraph: { value: '{spacing.1}' },
+        paragraph: { value: '{spacing.0.5}' },
         heading: { value: '{spacing.1}' },
         gutter: { value: '{spacing.1}' },
         textfield: { value: '{spacing.1}' },

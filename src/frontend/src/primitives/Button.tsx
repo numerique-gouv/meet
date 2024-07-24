@@ -9,7 +9,7 @@ import { cva, type RecipeVariantProps } from '@/styled-system/css'
 const button = cva({
   base: {
     display: 'inline-block',
-    transition: 'background 200ms, outline 200ms',
+    transition: 'background 200ms, outline 200ms, border-color 200ms',
     cursor: 'pointer',
     border: '1px solid transparent',
     color: 'colorPalette.text',
@@ -27,14 +27,23 @@ const button = cva({
         borderRadius: 8,
         paddingX: '1',
         paddingY: '0.625',
+        '--square-padding': '{spacing.0.625}',
       },
       sm: {
         borderRadius: 4,
         paddingX: '0.5',
         paddingY: '0.25',
+        '--square-padding': '{spacing.0.25}',
       },
       xs: {
         borderRadius: 4,
+        '--square-padding': '0',
+      },
+    },
+    square: {
+      true: {
+        paddingX: 'var(--square-padding)',
+        paddingY: 'var(--square-padding)',
       },
     },
     variant: {
@@ -50,10 +59,10 @@ const button = cva({
         color: 'colorPalette',
         backgroundColor: 'transparent!',
         borderColor: 'currentcolor!',
-        '_ra-hover': {
+        '&[data-hovered]': {
           backgroundColor: 'colorPalette.subtle!',
         },
-        '_ra-pressed': {
+        '&[data-pressed]': {
           backgroundColor: 'colorPalette.subtle!',
         },
       },
@@ -62,6 +71,13 @@ const button = cva({
       true: {
         borderColor: 'none!',
         backgroundColor: 'none!',
+        '&[data-hovered]': {
+          backgroundColor: 'none!',
+          borderColor: 'currentcolor',
+        },
+        '&[data-pressed]': {
+          borderColor: 'currentcolor',
+        },
       },
     },
   },

@@ -9,7 +9,7 @@ export const LanguageSelector = () => {
     <Popover aria-label={t('languageSelector.popoverLabel')}>
       <Button
         aria-label={t('languageSelector.buttonLabel', {
-          currentLanguage,
+          currentLanguage: currentLanguage.label,
         })}
         size="sm"
         variant="primary"

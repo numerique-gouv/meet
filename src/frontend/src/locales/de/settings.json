@@ -1,0 +1,15 @@
+{
+  "account": {
+    "currentlyLoggedAs": "",
+    "heading": "",
+    "youAreNotLoggedIn": ""
+  },
+  "dialog": {
+    "heading": ""
+  },
+  "language": {
+    "heading": "",
+    "label": ""
+  },
+  "settingsButtonLabel": ""
+}

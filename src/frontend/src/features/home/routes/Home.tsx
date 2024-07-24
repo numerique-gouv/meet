@@ -5,6 +5,7 @@ import { authUrl, useUser } from '@/features/auth'
 import { navigateToNewRoom } from '@/features/rooms'
 import { Screen } from '@/layout/Screen'
 import { JoinMeetingDialogContent } from '../components/JoinMeetingDialogContent'
+import { SettingsButton } from '@/features/settings'
 
 export const Home = () => {
   const { t } = useTranslation('home')
@@ -39,6 +40,8 @@ export const Home = () => {
               </Button>
               <JoinMeetingDialogContent />
             </Dialog>
+
+            <SettingsButton />
           </HStack>
         </Div>
       </VerticallyOffCenter>
