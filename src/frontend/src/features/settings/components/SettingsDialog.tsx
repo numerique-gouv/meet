@@ -1,6 +1,6 @@
 import { Trans, useTranslation } from 'react-i18next'
 import { useLanguageLabels } from '@/i18n/useLanguageLabels'
-import { A, Badge, DialogContent, Field, H, P } from '@/primitives'
+import { A, Badge, Dialog, Field, H, P } from '@/primitives'
 import { authUrl, logoutUrl, useUser } from '@/features/auth'
 
 export const SettingsDialog = () => {
@@ -8,7 +8,7 @@ export const SettingsDialog = () => {
   const { user, isLoggedIn } = useUser()
   const { languagesList, currentLanguage } = useLanguageLabels()
   return (
-    <DialogContent title={t('dialog.heading')}>
+    <Dialog title={t('dialog.heading')}>
       <H lvl={2}>{t('account.heading')}</H>
       {isLoggedIn ? (
         <>
@@ -41,6 +41,6 @@ export const SettingsDialog = () => {
           i18n.changeLanguage(lang as string)
         }}
       />
-    </DialogContent>
+    </Dialog>
   )
 }

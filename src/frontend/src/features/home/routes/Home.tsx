@@ -1,11 +1,12 @@
 import { useTranslation } from 'react-i18next'
-import { Button, Div, Text, VerticallyOffCenter, Dialog } from '@/primitives'
+import { DialogTrigger } from 'react-aria-components'
+import { Button, Div, Text, VerticallyOffCenter } from '@/primitives'
 import { HStack } from '@/styled-system/jsx'
 import { authUrl, useUser } from '@/features/auth'
 import { navigateToNewRoom } from '@/features/rooms'
-import { Screen } from '@/layout/Screen'
-import { JoinMeetingDialogContent } from '../components/JoinMeetingDialogContent'
 import { SettingsButton } from '@/features/settings'
+import { Screen } from '@/layout/Screen'
+import { JoinMeetingDialog } from '../components/JoinMeetingDialog'
 
 export const Home = () => {
   const { t } = useTranslation('home')
@@ -34,12 +35,12 @@ export const Home = () => {
               {isLoggedIn ? t('createMeeting') : t('login', { ns: 'global' })}
             </Button>
 
-            <Dialog>
+            <DialogTrigger>
               <Button variant="primary" outline>
                 {t('joinMeeting')}
               </Button>
-              <JoinMeetingDialogContent />
-            </Dialog>
+              <JoinMeetingDialog />
+            </DialogTrigger>
 
             <SettingsButton />
           </HStack>
