@@ -1,11 +1,13 @@
 import { useTranslation } from 'react-i18next'
+import { DialogTrigger } from 'react-aria-components'
 import { RiSettings3Line } from '@remixicon/react'
-import { Dialog, Button } from '@/primitives'
+import { Button } from '@/primitives'
 import { SettingsDialog } from './SettingsDialog'
+
 export const SettingsButton = () => {
   const { t } = useTranslation('settings')
   return (
-    <Dialog>
+    <DialogTrigger>
       <Button
         square
         invisible
@@ -15,6 +17,6 @@ export const SettingsButton = () => {
         <RiSettings3Line />
       </Button>
       <SettingsDialog />
-    </Dialog>
+    </DialogTrigger>
   )
 }
