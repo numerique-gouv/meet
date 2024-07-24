@@ -1,5 +1,6 @@
 """Authentication Views for the People core app."""
 
+import copy
 from urllib.parse import urlencode
 
 from django.contrib import auth
@@ -10,6 +11,12 @@ from django.utils import crypto
 
 from mozilla_django_oidc.utils import (
     absolutify,
+)
+from mozilla_django_oidc.views import (
+    OIDCAuthenticationCallbackView as MozillaOIDCAuthenticationCallbackView,
+)
+from mozilla_django_oidc.views import (
+    OIDCAuthenticationRequestView as MozillaOIDCAuthenticationRequestView,
 )
 from mozilla_django_oidc.views import (
     OIDCLogoutView as MozillaOIDCOIDCLogoutView,
@@ -135,3 +142,40 @@ class OIDCLogoutCallbackView(MozillaOIDCOIDCLogoutView):
         auth.logout(request)
 
         return HttpResponseRedirect(self.redirect_url)
+
+
+class OIDCAuthenticationCallbackView(MozillaOIDCAuthenticationCallbackView):
+    """Custom callback view for handling the silent loging flow."""
+
+    @property
+    def failure_url(self):
+        """Override the failure URL property to handle silent login flow
+
+        A silent login failure (e.g., no active user session) should not be
+        considered as an authentication failure.
+        """
+        if self.request.session.get("silent", None):
+            del self.request.session["silent"]
+            self.request.session.save()
+            return self.success_url
+        return super().failure_url
+
+
+class OIDCAuthenticationRequestView(MozillaOIDCAuthenticationRequestView):
+    """Custom authentication view for handling the silent loging flow."""
+
+    def get_extra_params(self, request):
+        """Handle 'prompt' extra parameter for the silent login flow
+
+        This extra parameter is necessary to distinguish between a standard
+        authentication flow and the silent login flow.
+        """
+        extra_params = self.get_settings("OIDC_AUTH_REQUEST_EXTRA_PARAMS", None)
+        if extra_params is None:
+            extra_params = {}
+        if request.GET.get("silent") == "true":
+            extra_params = copy.deepcopy(extra_params)
+            extra_params.update({"prompt": "none"})
+            request.session["silent"] = True
+            request.session.save()
+        return extra_params
