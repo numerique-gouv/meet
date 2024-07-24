@@ -4,7 +4,7 @@ import { HStack } from '@/styled-system/jsx'
 import { authUrl, useUser } from '@/features/auth'
 import { navigateToNewRoom } from '@/features/rooms'
 import { Screen } from '@/layout/Screen'
-import { JoinMeetingDialog } from '../components/JoinMeetingDialog'
+import { JoinMeetingDialogContent } from '../components/JoinMeetingDialogContent'
 
 export const Home = () => {
   const { t } = useTranslation('home')
@@ -33,11 +33,11 @@ export const Home = () => {
               {isLoggedIn ? t('createMeeting') : t('login', { ns: 'global' })}
             </Button>
 
-            <Dialog title={t('joinMeeting')}>
+            <Dialog>
               <Button variant="primary" outline>
                 {t('joinMeeting')}
               </Button>
-              <JoinMeetingDialog />
+              <JoinMeetingDialogContent />
             </Dialog>
           </HStack>
         </Div>
