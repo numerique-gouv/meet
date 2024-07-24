@@ -2,7 +2,7 @@
   "createMeeting": "Create a meeting",
   "heading": "Welcome in Meet",
   "intro": "Work easily, from anywhere.",
-  "joinInputError": "Use a meeting link or its code. Examples: \"https://meet.numerique.gouv.fr/aze-rtyu-iop\" or \"aze-rtyu-iop\".",
+  "joinInputError": "Use a meeting link or code. Examples:",
   "joinInputExample": "URL or 10-letter code",
   "joinInputLabel": "Meeting link",
   "joinInputSubmit": "Join meeting",
