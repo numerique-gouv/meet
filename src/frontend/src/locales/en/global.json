@@ -14,6 +14,7 @@
     "popoverLabel": "Choose language"
   },
   "loading": "Loading…",
+  "loggedInUserTooltip": "Logged in as…",
   "login": "Login",
   "logout": "Logout",
   "notFound": {

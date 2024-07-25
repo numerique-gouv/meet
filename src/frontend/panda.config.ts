@@ -181,6 +181,7 @@ const config: Config = {
           active: { value: '{colors.gray.300}' },
           text: { value: '{colors.default.text}' },
           border: { value: '{colors.gray.500}' },
+          subtle: { value: '{colors.gray.400}' },
         },
         primary: {
           DEFAULT: { value: '{colors.blue.700}' },

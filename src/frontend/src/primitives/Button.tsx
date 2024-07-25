@@ -7,7 +7,7 @@ import {
   LinkProps,
 } from 'react-aria-components'
 import { cva, type RecipeVariantProps } from '@/styled-system/css'
-import { Tooltip, TooltipArrow } from './Tooltip'
+import { Tooltip } from './Tooltip'
 
 const button = cva({
   base: {
@@ -76,7 +76,7 @@ const button = cva({
         backgroundColor: 'none!',
         '&[data-hovered]': {
           backgroundColor: 'none!',
-          borderColor: 'currentcolor',
+          borderColor: 'colorPalette.active!',
         },
         '&[data-pressed]': {
           borderColor: 'currentcolor',
@@ -93,6 +93,7 @@ const button = cva({
 
 type Tooltip = {
   tooltip?: string
+  tooltipType?: 'instant' | 'delayed'
 }
 export type ButtonProps = RecipeVariantProps<typeof button> &
   RACButtonsProps &
@@ -102,17 +103,21 @@ type LinkButtonProps = RecipeVariantProps<typeof button> & LinkProps & Tooltip
 
 type ButtonOrLinkProps = ButtonProps | LinkButtonProps
 
-export const Button = ({ tooltip, ...props }: ButtonOrLinkProps) => {
+export const Button = ({
+  tooltip,
+  tooltipType = 'instant',
+  ...props
+}: ButtonOrLinkProps) => {
   const [variantProps, componentProps] = button.splitVariantProps(props)
   if ((props as LinkButtonProps).href !== undefined) {
     return (
-      <TooltipWrapper tooltip={tooltip}>
+      <TooltipWrapper tooltip={tooltip} tooltipType={tooltipType}>
         <Link className={button(variantProps)} {...componentProps} />
       </TooltipWrapper>
     )
   }
   return (
-    <TooltipWrapper tooltip={tooltip}>
+    <TooltipWrapper tooltip={tooltip} tooltipType={tooltipType}>
       <RACButton
         className={button(variantProps)}
         {...(componentProps as RACButtonsProps)}
@@ -123,18 +128,15 @@ export const Button = ({ tooltip, ...props }: ButtonOrLinkProps) => {
 
 const TooltipWrapper = ({
   tooltip,
+  tooltipType,
   children,
 }: {
-  tooltip?: string
   children: ReactNode
-}) => {
+} & Tooltip) => {
   return tooltip ? (
-    <TooltipTrigger delay={300}>
+    <TooltipTrigger delay={tooltipType === 'instant' ? 300 : 1000}>
       {children}
-      <Tooltip>
-        <TooltipArrow />
-        {tooltip}
-      </Tooltip>
+      <Tooltip>{tooltip}</Tooltip>
     </TooltipTrigger>
   ) : (
     children

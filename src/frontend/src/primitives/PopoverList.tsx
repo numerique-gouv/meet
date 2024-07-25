@@ -14,10 +14,20 @@ const ListItem = styled(Button, {
     width: 'full',
     borderRadius: 4,
     cursor: 'pointer',
-    color: 'primary',
+    color: 'box.text',
+    border: '1px solid transparent',
+    '&[data-selected]': {
+      fontWeight: 'bold',
+    },
+    '&[data-focused]': {
+      color: 'primary.text',
+      backgroundColor: 'primary',
+      outline: 'none!',
+    },
     '&[data-hovered]': {
-      color: 'primary.subtle-text',
-      backgroundColor: 'primary.subtle',
+      color: 'primary.text',
+      backgroundColor: 'primary',
+      outline: 'none!',
     },
   },
 })

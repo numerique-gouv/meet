@@ -11,7 +11,14 @@ export const Join = ({
 
   return (
     <Box title={t('join.heading')} withBackButton>
-      <PreJoin persistUserChoices onSubmit={onSubmit} />
+      <PreJoin
+        persistUserChoices
+        onSubmit={onSubmit}
+        micLabel={t('join.micLabel')}
+        camLabel={t('join.camlabel')}
+        joinLabel={t('join.joinLabel')}
+        userLabel={t('join.userLabel')}
+      />
     </Box>
   )
 }

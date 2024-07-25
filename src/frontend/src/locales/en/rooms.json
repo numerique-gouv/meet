@@ -1,5 +1,9 @@
 {
   "join": {
-    "heading": "Verify your settings before joining"
+    "camlabel": "Camera",
+    "heading": "Join the meeting",
+    "joinLabel": "Join",
+    "micLabel": "Microphone",
+    "userLabel": "Your name"
   }
 }

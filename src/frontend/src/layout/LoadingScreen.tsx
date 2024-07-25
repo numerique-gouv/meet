@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next'
 import { BoxScreen } from './BoxScreen'
 import { Screen } from './Screen'
 import { VerticallyOffCenter } from '@/primitives'
-import { Center, Container } from '@/styled-system/jsx'
+import { Center } from '@/styled-system/jsx'
 
 export const LoadingScreen = ({
   asBox = false,

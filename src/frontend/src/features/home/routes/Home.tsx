@@ -4,7 +4,6 @@ import { Button, Div, Text, VerticallyOffCenter } from '@/primitives'
 import { HStack } from '@/styled-system/jsx'
 import { authUrl, useUser } from '@/features/auth'
 import { navigateToNewRoom } from '@/features/rooms'
-import { SettingsButton } from '@/features/settings'
 import { Screen } from '@/layout/Screen'
 import { JoinMeetingDialog } from '../components/JoinMeetingDialog'
 
@@ -12,7 +11,7 @@ export const Home = () => {
   const { t } = useTranslation('home')
   const { isLoggedIn } = useUser()
   return (
-    <Screen type="splash">
+    <Screen>
       <VerticallyOffCenter>
         <Div margin="auto" width="fit-content">
           <Text as="h1" variant="display">
@@ -41,8 +40,6 @@ export const Home = () => {
               </Button>
               <JoinMeetingDialog />
             </DialogTrigger>
-
-            <SettingsButton />
           </HStack>
         </Div>
       </VerticallyOffCenter>
