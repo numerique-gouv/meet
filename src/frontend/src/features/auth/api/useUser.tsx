@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 import { keys } from '@/api/queryKeys'
 import { fetchUser } from './fetchUser'
+import { type ApiUser } from './ApiUser'
 
 /**
  * returns info about currently logged in user
@@ -13,14 +14,13 @@ export const useUser = () => {
     queryFn: fetchUser,
   })
 
-  let isLoggedIn = undefined
-  if (query.data !== undefined) {
-    isLoggedIn = query.data !== false
-  }
+  const isLoggedIn =
+    query.status === 'success' ? query.data !== false : undefined
+  const isLoggedOut = isLoggedIn === false
+
   return {
     ...query,
-    // if fetchUser returns false, it means the user is not logged in: expose that
-    user: query.data === false ? undefined : query.data,
+    user: isLoggedOut ? undefined : (query.data as ApiUser | undefined),
     isLoggedIn,
   }
 }

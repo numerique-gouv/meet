@@ -18,7 +18,11 @@ const setNextRetryTime = (retryIntervalInSeconds: number) => {
 }
 
 const initiateSilentLogin = () => {
-  window.location.href = authUrl(true)
+  window.location.href = authUrl({ silent: true })
+}
+
+export const canAttemptSilentLogin = () => {
+  return isRetryAllowed()
 }
 
 export const attemptSilentLogin = (retryIntervalInSeconds: number) => {
