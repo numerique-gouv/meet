@@ -5,5 +5,6 @@
     "joinLabel": "Rejoindre",
     "micLabel": "Micro",
     "userLabel": "Votre nom"
-  }
+  },
+  "leaveRoomPrompt": "Revenir à l'accueil vous fera quitter la réunion."
 }

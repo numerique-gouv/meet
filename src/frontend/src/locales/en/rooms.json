@@ -5,5 +5,6 @@
     "joinLabel": "Join",
     "micLabel": "Microphone",
     "userLabel": "Your name"
-  }
+  },
+  "leaveRoomPrompt": "This will make you leave the meeting."
 }

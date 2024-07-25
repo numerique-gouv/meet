@@ -5,10 +5,12 @@ import { useTranslation } from 'react-i18next'
 import { A, Button, Popover, PopoverList, Text } from '@/primitives'
 import { SettingsButton } from '@/features/settings'
 import { authUrl, logoutUrl, useUser } from '@/features/auth'
+import { useMatchesRoute } from '@/utils/useMatchesRoute'
 
 export const Header = () => {
   const { t } = useTranslation()
-  const isHome = window.location.pathname === '/'
+  const isHome = useMatchesRoute('home')
+  const isRoom = useMatchesRoute('room')
   const { user, isLoggedIn } = useUser()
 
   return (
@@ -25,7 +27,19 @@ export const Header = () => {
       <Stack direction="row" justify="space-between" align="center">
         <header>
           <Text bold variant="h1" margin={false}>
-            <Link to="/">{t('app')}</Link>
+            <Link
+              onClick={(event) => {
+                if (
+                  isRoom &&
+                  !window.confirm(t('leaveRoomPrompt', { ns: 'rooms' }))
+                ) {
+                  event.preventDefault()
+                }
+              }}
+              to="/"
+            >
+              {t('app')}
+            </Link>
           </Text>
         </header>
         <nav>
