@@ -1,9 +1,11 @@
+import { useMemo } from "react";
 import { useQuery } from '@tanstack/react-query'
 import {
   LiveKitRoom,
   VideoConference,
   type LocalUserChoices,
 } from '@livekit/components-react'
+import { Room, RoomOptions } from "livekit-client";
 import { keys } from '@/api/queryKeys'
 import { QueryAware } from '@/layout/QueryAware'
 import { navigateToHome } from '@/features/home'
@@ -25,18 +27,28 @@ export const Conference = ({
       }),
   })
 
+  const roomOptions = useMemo((): RoomOptions => {
+    return {
+      videoCaptureDefaults: {
+        deviceId: userConfig.videoDeviceId ?? undefined,
+      },
+      audioCaptureDefaults: {
+        deviceId: userConfig.audioDeviceId ?? undefined,
+      },
+    };
+  }, [userConfig]);
+
+  const room = useMemo(() => new Room(roomOptions), [roomOptions]);
+
   return (
     <QueryAware status={status}>
       <LiveKitRoom
+        room={room}
         serverUrl={data?.livekit?.url}
         token={data?.livekit?.token}
         connect={true}
-        audio={{
-          deviceId: userConfig.audioDeviceId,
-        }}
-        video={{
-          deviceId: userConfig.videoDeviceId,
-        }}
+        audio={userConfig.audioEnabled}
+        video={userConfig.videoEnabled}
         onDisconnected={() => {
           navigateToHome()
         }}
