@@ -201,12 +201,13 @@ const config: Config = {
           'subtle-text': { value: '{colors.red.700}' },
         },
         success: {
-          DEFAULT: { value: '{colors.emerald.700}' },
-          hover: { value: '{colors.emerald.800}' },
-          active: { value: '{colors.emerald.900}' },
+          DEFAULT: { value: '{colors.green.700}' },
+          hover: { value: '{colors.green.800}' },
+          active: { value: '{colors.green.900}' },
           text: { value: '{colors.white}' },
-          subtle: { value: '{colors.emerald.100}' },
-          'subtle-text': { value: '{colors.emerald.700}' },
+          subtle: { value: '{colors.green.100}' },
+          'subtle-text': { value: '{colors.green.800}' },
+          ...pandaPreset.theme.tokens.colors.green,
         },
         warning: {
           DEFAULT: { value: '{colors.amber.700}' },

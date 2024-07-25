@@ -6,6 +6,7 @@
   "error": {
     "heading": "Une erreur est survenue lors du chargement de la page"
   },
+  "feedbackAlert": "Donnez-nous votre avis sur Meet",
   "forbidden": {
     "heading": "Accès interdit"
   },
