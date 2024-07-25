@@ -2,20 +2,23 @@ import { Link } from 'wouter'
 import { css } from '@/styled-system/css'
 import { Stack } from '@/styled-system/jsx'
 import { useTranslation } from 'react-i18next'
-import { Text } from '@/primitives'
+import { A, Button, Popover, PopoverList, Text } from '@/primitives'
 import { SettingsButton } from '@/features/settings'
+import { authUrl, logoutUrl, useUser } from '@/features/auth'
 
 export const Header = () => {
   const { t } = useTranslation()
+  const isHome = window.location.pathname === '/'
+  const { user, isLoggedIn } = useUser()
+
   return (
     <div
       className={css({
-        backgroundColor: 'primary.text',
-        color: 'primary',
         borderBottomColor: 'box.border',
         borderBottomWidth: 1,
         borderBottomStyle: 'solid',
-        padding: 1,
+        paddingY: 1,
+        paddingX: 1,
         flexShrink: 0,
       })}
     >
@@ -26,7 +29,32 @@ export const Header = () => {
           </Text>
         </header>
         <nav>
-          <SettingsButton />
+          <Stack gap={1} direction="row" align="center">
+            {isLoggedIn === false && !isHome && (
+              <A href={authUrl()}>{t('login')}</A>
+            )}
+            {!!user && (
+              <Popover aria-label={t('logout')}>
+                <Button
+                  size="sm"
+                  invisible
+                  tooltip={t('loggedInUserTooltip')}
+                  tooltipType="delayed"
+                >
+                  {user.email}
+                </Button>
+                <PopoverList
+                  items={[{ value: 'logout', label: t('logout') }]}
+                  onAction={(value) => {
+                    if (value === 'logout') {
+                      window.location.href = logoutUrl()
+                    }
+                  }}
+                />
+              </Popover>
+            )}
+            <SettingsButton />
+          </Stack>
         </nav>
       </Stack>
     </div>

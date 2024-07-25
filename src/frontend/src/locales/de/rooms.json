@@ -1,5 +1,9 @@
 {
   "join": {
-    "heading": ""
+    "camlabel": "",
+    "heading": "",
+    "joinLabel": "",
+    "micLabel": "",
+    "userLabel": ""
   }
 }

@@ -1,4 +1,9 @@
-import { OverlayArrow, Tooltip as RACTooltip } from 'react-aria-components'
+import { type ReactNode } from 'react'
+import {
+  OverlayArrow,
+  Tooltip as RACTooltip,
+  TooltipProps,
+} from 'react-aria-components'
 import { styled } from '@/styled-system/jsx'
 
 /**
@@ -9,7 +14,7 @@ import { styled } from '@/styled-system/jsx'
  *
  * Style taken from example at https://react-spectrum.adobe.com/react-aria/Tooltip.html
  */
-export const Tooltip = styled(RACTooltip, {
+const StyledTooltip = styled(RACTooltip, {
   base: {
     boxShadow: '0 8px 20px rgba(0 0 0 / 0.1)',
     borderRadius: '4px',
@@ -18,7 +23,9 @@ export const Tooltip = styled(RACTooltip, {
     forcedColorAdjust: 'none',
     outline: 'none',
     padding: '2px 8px',
-    maxWidth: '150px',
+    maxWidth: '200px',
+    textAlign: 'center',
+    fontSize: 14,
     transform: 'translate3d(0, 0, 0)',
     '&[data-placement=top]': {
       marginBottom: '8px',
@@ -63,12 +70,24 @@ const StyledOverlayArrow = styled(OverlayArrow, {
   },
 })
 
-export const TooltipArrow = () => {
+const TooltipArrow = () => {
   return (
     <StyledOverlayArrow>
       <svg width={8} height={8} viewBox="0 0 8 8">
         <path d="M0 0 L4 4 L8 0" />
       </svg>
     </StyledOverlayArrow>
+  )
+}
+
+export const Tooltip = ({
+  children,
+  ...props
+}: Omit<TooltipProps, 'children'> & { children: ReactNode }) => {
+  return (
+    <StyledTooltip {...props}>
+      <TooltipArrow />
+      {children}
+    </StyledTooltip>
   )
 }

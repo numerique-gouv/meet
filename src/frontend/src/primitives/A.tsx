@@ -7,6 +7,7 @@ const link = cva({
     textUnderlineOffset: '2',
     cursor: 'pointer',
     borderRadius: 2,
+    transition: 'all 0.2s',
     '&[data-hovered]': {
       textDecoration: 'none',
     },

@@ -14,6 +14,7 @@
     "popoverLabel": ""
   },
   "loading": "",
+  "loggedInUserTooltip": "",
   "login": "Anmelden",
   "logout": "",
   "notFound": {

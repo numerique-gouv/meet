@@ -1,11 +1,6 @@
 {
-  "account": {
-    "currentlyLoggedAs": "Vous êtes actuellement connecté en tant que <0>{{user}}</0>",
-    "heading": "Compte",
-    "youAreNotLoggedIn": "Vous n'êtes pas connecté."
-  },
   "dialog": {
-    "heading": "Compte et paramètres"
+    "heading": "Paramètres"
   },
   "language": {
     "heading": "Langue",

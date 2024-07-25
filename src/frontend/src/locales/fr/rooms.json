@@ -1,5 +1,9 @@
 {
   "join": {
-    "heading": "Vérifiez vos paramètres"
+    "camlabel": "Webcam",
+    "heading": "Rejoindre la réunion",
+    "joinLabel": "Rejoindre",
+    "micLabel": "Micro",
+    "userLabel": "Votre nom"
   }
 }

@@ -14,6 +14,7 @@
     "popoverLabel": "Choix de la langue"
   },
   "loading": "Chargement…",
+  "loggedInUserTooltip": "Connecté en tant que…",
   "login": "Se connecter",
   "logout": "Se déconnecter",
   "notFound": {

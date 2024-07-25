@@ -1,9 +1,4 @@
 {
-  "account": {
-    "currentlyLoggedAs": "",
-    "heading": "",
-    "youAreNotLoggedIn": ""
-  },
   "dialog": {
     "heading": ""
   },
