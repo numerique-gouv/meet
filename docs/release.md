@@ -6,7 +6,7 @@ Whenever we are cooking a new release (e.g. `4.18.1`) we should follow a standar
 2.  Bump the release number for backend project, frontend projects, and Helm files:
 
     - for backend, update the version number by hand in `pyproject.toml`,
-    - for each frontend projects (`src/frontend`, `src/mail` and `src/tsclient`), run `npm version 4.18.1` in their directory. This will update both their `package.json` and `package-lock.json` for you,
+    - for each frontend projects (`src/frontend`, `src/mail`), run `npm version 4.18.1` in their directory. This will update both their `package.json` and `package-lock.json` for you,
     - for Helm, update Docker image tag in files located at `src/helm/env.d` for both `preprod` and `production` environments:
 
       ```yaml
