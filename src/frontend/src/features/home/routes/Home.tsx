@@ -2,8 +2,9 @@ import { useTranslation } from 'react-i18next'
 import { DialogTrigger } from 'react-aria-components'
 import { Button, Div, Text, VerticallyOffCenter } from '@/primitives'
 import { HStack } from '@/styled-system/jsx'
+import { navigateTo } from '@/navigation/navigateTo'
+import { generateRoomId } from '@/features/rooms'
 import { authUrl, useUser } from '@/features/auth'
-import { navigateToNewRoom } from '@/features/rooms'
 import { Screen } from '@/layout/Screen'
 import { JoinMeetingDialog } from '../components/JoinMeetingDialog'
 
@@ -28,7 +29,11 @@ export const Home = () => {
           <HStack gap="gutter">
             <Button
               variant="primary"
-              onPress={isLoggedIn ? () => navigateToNewRoom() : undefined}
+              onPress={
+                isLoggedIn
+                  ? () => navigateTo('room', generateRoomId())
+                  : undefined
+              }
               href={isLoggedIn ? undefined : authUrl()}
             >
               {isLoggedIn ? t('createMeeting') : t('login', { ns: 'global' })}
