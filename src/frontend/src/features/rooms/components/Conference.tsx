@@ -35,8 +35,9 @@ export const Conference = ({
       audioCaptureDefaults: {
         deviceId: userConfig.audioDeviceId ?? undefined,
       },
-    };
-  }, [userConfig]);
+    }
+    // do not rely on the userConfig object directly as its reference may change on every render
+  }, [userConfig.videoDeviceId, userConfig.audioDeviceId])
 
   const room = useMemo(() => new Room(roomOptions), [roomOptions]);
 
