@@ -157,7 +157,7 @@ def test_api_rooms_retrieve_anonymous_unregistered_not_allowed():
     response = client.get("/api/v1.0/rooms/unregistered-room/")
 
     assert response.status_code == 404
-    assert response.json() == {"detail": "Not found."}
+    assert response.json() == {"detail": "No Room matches the given query."}
 
 
 @mock.patch("core.utils.generate_token", return_value="foo")
