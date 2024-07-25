@@ -31,7 +31,10 @@ export const Home = () => {
               variant="primary"
               onPress={
                 isLoggedIn
-                  ? () => navigateTo('room', generateRoomId())
+                  ? () =>
+                      navigateTo('room', generateRoomId(), {
+                        state: { create: true },
+                      })
                   : undefined
               }
               href={isLoggedIn ? undefined : authUrl()}
