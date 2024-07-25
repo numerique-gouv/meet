@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { BoxScreen } from './BoxScreen'
 import { Screen } from './Screen'
+import { VerticallyOffCenter } from '@/primitives'
+import { Center, Container } from '@/styled-system/jsx'
 
 export const LoadingScreen = ({
   asBox = false,
@@ -23,7 +25,11 @@ export const LoadingScreen = ({
   const Container = asBox ? BoxScreen : Screen
   return (
     <Container>
-      <p>{t('loading')}</p>
+      <VerticallyOffCenter>
+        <Center>
+          <p>{t('loading')}</p>
+        </Center>
+      </VerticallyOffCenter>
     </Container>
   )
 }
