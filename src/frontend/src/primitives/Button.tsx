@@ -11,7 +11,8 @@ import { Tooltip } from './Tooltip'
 
 const button = cva({
   base: {
-    display: 'inline-block',
+    display: 'flex',
+    alignItems: 'center',
     transition: 'background 200ms, outline 200ms, border-color 200ms',
     cursor: 'pointer',
     border: '1px solid transparent',
@@ -55,6 +56,19 @@ const button = cva({
       },
       primary: {
         colorPalette: 'primary',
+      },
+      // @TODO: better handling of colors… this is a mess
+      success: {
+        colorPalette: 'success',
+        borderColor: 'success.300',
+        color: 'success.subtle-text',
+        backgroundColor: 'success.subtle',
+        '&[data-hovered]': {
+          backgroundColor: 'success.200',
+        },
+        '&[data-pressed]': {
+          backgroundColor: 'success.subtle!',
+        },
       },
     },
     outline: {

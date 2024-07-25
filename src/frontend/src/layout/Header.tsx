@@ -6,6 +6,7 @@ import { A, Button, Popover, PopoverList, Text } from '@/primitives'
 import { SettingsButton } from '@/features/settings'
 import { authUrl, logoutUrl, useUser } from '@/features/auth'
 import { useMatchesRoute } from '@/utils/useMatchesRoute'
+import { Feedback } from '@/components/Feedback'
 
 export const Header = () => {
   const { t } = useTranslation()
@@ -26,21 +27,24 @@ export const Header = () => {
     >
       <Stack direction="row" justify="space-between" align="center">
         <header>
-          <Text bold variant="h1" margin={false}>
-            <Link
-              onClick={(event) => {
-                if (
-                  isRoom &&
-                  !window.confirm(t('leaveRoomPrompt', { ns: 'rooms' }))
-                ) {
-                  event.preventDefault()
-                }
-              }}
-              to="/"
-            >
-              {t('app')}
-            </Link>
-          </Text>
+          <Stack gap={1} direction="row" align="center">
+            <Text bold variant="h1" margin={false}>
+              <Link
+                onClick={(event) => {
+                  if (
+                    isRoom &&
+                    !window.confirm(t('leaveRoomPrompt', { ns: 'rooms' }))
+                  ) {
+                    event.preventDefault()
+                  }
+                }}
+                to="/"
+              >
+                {t('app')}
+              </Link>
+            </Text>
+            <Feedback />
+          </Stack>
         </header>
         <nav>
           <Stack gap={1} direction="row" align="center">

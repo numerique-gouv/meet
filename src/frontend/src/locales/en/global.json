@@ -6,6 +6,7 @@
   "error": {
     "heading": "An error occured while loading the page"
   },
+  "feedbackAlert": "Give us feedback on Meet",
   "forbidden": {
     "heading": "You don't have the permission to view this page"
   },
