@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next'
 import { A, Button, Popover, PopoverList, Text } from '@/primitives'
 import { SettingsButton } from '@/features/settings'
 import { authUrl, logoutUrl, useUser } from '@/features/auth'
-import { useMatchesRoute } from '@/utils/useMatchesRoute'
+import { useMatchesRoute } from '@/navigation/useMatchesRoute'
 import { Feedback } from '@/components/Feedback'
 
 export const Header = () => {

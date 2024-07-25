@@ -1,6 +1,7 @@
 import { useTranslation } from 'react-i18next'
 import { Field, Ul, H, P, Form, Dialog } from '@/primitives'
-import { isRoomValid, navigateToRoom } from '@/features/rooms'
+import { navigateTo } from '@/navigation/navigateTo'
+import { isRoomValid } from '@/features/rooms'
 
 export const JoinMeetingDialog = () => {
   const { t } = useTranslation('home')
@@ -8,7 +9,7 @@ export const JoinMeetingDialog = () => {
     <Dialog title={t('joinMeeting')}>
       <Form
         onSubmit={(data) => {
-          navigateToRoom((data.roomId as string).trim())
+          navigateTo('room', data.roomId as string)
         }}
         submitLabel={t('joinInputSubmit')}
       >

@@ -7,8 +7,8 @@ import {
 } from '@livekit/components-react'
 import { Room, RoomOptions } from "livekit-client";
 import { keys } from '@/api/queryKeys'
+import { navigateTo } from '@/navigation/navigateTo'
 import { QueryAware } from '@/layout/QueryAware'
-import { navigateToHome } from '@/features/home'
 import { fetchRoom } from '../api/fetchRoom'
 
 export const Conference = ({
@@ -50,7 +50,7 @@ export const Conference = ({
         audio={userConfig.audioEnabled}
         video={userConfig.videoEnabled}
         onDisconnected={() => {
-          navigateToHome()
+          navigateTo('home')
         }}
       >
         <VideoConference />

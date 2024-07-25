@@ -5,12 +5,11 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { useTranslation } from 'react-i18next'
 import { useLang } from 'hoofd'
-import { Route, Switch } from 'wouter'
-import { HomeRoute } from '@/features/home'
-import { RoomRoute, roomRouteRegex } from '@/features/rooms'
-import { NotFound } from './routes/NotFound'
-import './i18n/init'
+import { Switch, Route } from 'wouter'
+import { NotFoundScreen } from './layout/NotFoundScreen'
 import { RenderIfUserFetched } from './features/auth'
+import { routes } from './routes'
+import './i18n/init'
 
 const queryClient = new QueryClient()
 
@@ -22,9 +21,10 @@ function App() {
       <Suspense fallback={null}>
         <RenderIfUserFetched>
           <Switch>
-            <Route path="/" component={HomeRoute} />
-            <Route path={roomRouteRegex} component={RoomRoute} />
-            <Route component={NotFound} />
+            {Object.entries(routes).map(([, route], i) => (
+              <Route key={i} path={route.path} component={route.Component} />
+            ))}
+            <Route component={NotFoundScreen} />
           </Switch>
         </RenderIfUserFetched>
         <ReactQueryDevtools initialIsOpen={false} />
