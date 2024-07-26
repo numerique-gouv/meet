@@ -9,7 +9,12 @@ export const JoinMeetingDialog = () => {
     <Dialog title={t('joinMeeting')}>
       <Form
         onSubmit={(data) => {
-          navigateTo('room', data.roomId as string)
+          navigateTo(
+            'room',
+            (data.roomId as string)
+              .trim()
+              .replace(`${window.location.origin}/`, '')
+          )
         }}
         submitLabel={t('joinInputSubmit')}
       >
