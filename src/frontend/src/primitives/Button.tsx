@@ -97,6 +97,11 @@ const button = cva({
         },
       },
     },
+    fullWidth: {
+      true: {
+        width: 'full',
+      },
+    },
   },
   defaultVariants: {
     size: 'default',

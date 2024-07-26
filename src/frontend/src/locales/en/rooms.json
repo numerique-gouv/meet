@@ -6,5 +6,11 @@
     "micLabel": "Microphone",
     "userLabel": "Your name"
   },
-  "leaveRoomPrompt": "This will make you leave the meeting."
+  "leaveRoomPrompt": "This will make you leave the meeting.",
+  "shareDialog": {
+    "copy": "Copy",
+    "copied": "Copied",
+    "heading": "Share the meeting link",
+    "inputLabel": "Meeting link"
+  }
 }

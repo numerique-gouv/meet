@@ -35,6 +35,7 @@ export const Room = () => {
     <Screen>
       <Conference
         roomId={roomId}
+        mode={mode}
         userConfig={{
           ...existingUserChoices,
           ...(skipJoinScreen ? { username: user?.email as string } : {}),
