@@ -6,5 +6,10 @@
     "micLabel": "",
     "userLabel": ""
   },
-  "leaveRoomPrompt": ""
+  "leaveRoomPrompt": "",
+  "shareDialog": {
+    "copy": "",
+    "heading": "",
+    "inputLabel": ""
+  }
 }

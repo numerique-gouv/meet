@@ -1,22 +1,25 @@
-import { useMemo } from "react";
+import { useMemo, useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import {
   LiveKitRoom,
   VideoConference,
   type LocalUserChoices,
 } from '@livekit/components-react'
-import { Room, RoomOptions } from "livekit-client";
+import { Room, RoomOptions } from 'livekit-client'
 import { keys } from '@/api/queryKeys'
 import { navigateTo } from '@/navigation/navigateTo'
 import { QueryAware } from '@/layout/QueryAware'
 import { fetchRoom } from '../api/fetchRoom'
+import { InviteDialog } from './InviteDialog'
 
 export const Conference = ({
   roomId,
   userConfig,
+  mode = 'join',
 }: {
   roomId: string
   userConfig: LocalUserChoices
+  mode?: 'join' | 'create'
 }) => {
   const { status, data } = useQuery({
     queryKey: [keys.room, roomId, userConfig.username],
@@ -39,7 +42,9 @@ export const Conference = ({
     // do not rely on the userConfig object directly as its reference may change on every render
   }, [userConfig.videoDeviceId, userConfig.audioDeviceId])
 
-  const room = useMemo(() => new Room(roomOptions), [roomOptions]);
+  const room = useMemo(() => new Room(roomOptions), [roomOptions])
+
+  const [showInviteDialog, setShowInviteDialog] = useState(mode === 'create')
 
   return (
     <QueryAware status={status}>
@@ -55,6 +60,14 @@ export const Conference = ({
         }}
       >
         <VideoConference />
+        {showInviteDialog && (
+          <InviteDialog
+            isOpen={showInviteDialog}
+            onOpenChange={setShowInviteDialog}
+            roomId={roomId}
+            onClose={() => setShowInviteDialog(false)}
+          />
+        )}
       </LiveKitRoom>
     </QueryAware>
   )

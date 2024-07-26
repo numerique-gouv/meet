@@ -6,5 +6,11 @@
     "micLabel": "Micro",
     "userLabel": "Votre nom"
   },
-  "leaveRoomPrompt": "Revenir à l'accueil vous fera quitter la réunion."
+  "leaveRoomPrompt": "Revenir à l'accueil vous fera quitter la réunion.",
+  "shareDialog": {
+    "copy": "Copier le lien",
+    "copied": "Lien copié",
+    "heading": "Partager le lien vers la réunion",
+    "inputLabel": "Lien vers la réunion"
+  }
 }

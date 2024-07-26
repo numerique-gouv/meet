@@ -5,7 +5,7 @@ import {
   Dialog as RACDialog,
   ModalOverlay,
   Modal,
-  type DialogProps,
+  type DialogProps as RACDialogProps,
   Heading,
 } from 'react-aria-components'
 import { Div, Button, Box, VerticallyOffCenter } from '@/primitives'
@@ -46,16 +46,44 @@ const StyledRACDialog = styled(RACDialog, {
     pointerEvents: 'none',
   },
 })
+
+export type DialogProps = RACDialogProps & {
+  title: string
+  onClose?: () => void
+  /**
+   * use the Dialog as a controlled component
+   */
+  isOpen?: boolean
+  /**
+   * use the Dialog as a controlled component:
+   * this is called when isOpen should be updated
+   * after user interaction
+   */
+  onOpenChange?: (isOpen: boolean) => void
+}
+
 export const Dialog = ({
   title,
   children,
+  onClose,
+  isOpen,
+  onOpenChange,
   ...dialogProps
-}: DialogProps & { title: string }) => {
+}: DialogProps) => {
   const isAlert = dialogProps['role'] === 'alertdialog'
   return (
     <StyledModalOverlay
       isKeyboardDismissDisabled={isAlert}
       isDismissable={!isAlert}
+      isOpen={isOpen}
+      onOpenChange={(isOpen) => {
+        if (onOpenChange) {
+          onOpenChange(isOpen)
+        }
+        if (!isOpen && onClose) {
+          onClose()
+        }
+      }}
     >
       <StyledModal>
         <StyledRACDialog {...dialogProps}>
