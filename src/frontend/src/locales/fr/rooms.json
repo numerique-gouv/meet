@@ -1,4 +1,8 @@
 {
+  "feedback": {
+    "body": "Remplissez le formulaire disponible dans l'entête du site pour nous donner votre avis sur l'outil. Vos retours sont précieux ! Merci.",
+    "heading": "Aidez-nous à améliorer Meet"
+  },
   "join": {
     "camlabel": "Webcam",
     "heading": "Rejoindre la réunion",

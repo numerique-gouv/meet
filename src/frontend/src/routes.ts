@@ -1,8 +1,8 @@
-import { RoomRoute, roomIdPattern } from '@/features/rooms'
+import { FeedbackRoute, RoomRoute, roomIdPattern } from '@/features/rooms'
 import { HomeRoute } from '@/features/home'
 
 export const routes: Record<
-  'home' | 'room',
+  'home' | 'room' | 'feedback',
   {
     name: RouteName
     path: RegExp | string
@@ -21,6 +21,11 @@ export const routes: Record<
     path: new RegExp(`^[/](?<roomId>${roomIdPattern})$`),
     to: (roomId: string) => `/${roomId.trim()}`,
     Component: RoomRoute,
+  },
+  feedback: {
+    name: 'feedback',
+    path: '/feedback',
+    Component: FeedbackRoute,
   },
 }
 

@@ -56,7 +56,7 @@ export const Conference = ({
         audio={userConfig.audioEnabled}
         video={userConfig.videoEnabled}
         onDisconnected={() => {
-          navigateTo('home')
+          navigateTo('feedback')
         }}
       >
         <VideoConference />
