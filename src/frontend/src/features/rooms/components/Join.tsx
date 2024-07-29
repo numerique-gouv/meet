@@ -1,6 +1,7 @@
 import { useTranslation } from 'react-i18next'
-import { Box } from '@/layout/Box'
 import { PreJoin, type LocalUserChoices } from '@livekit/components-react'
+import { Screen } from '@/layout/Screen'
+import { CenteredContent } from '@/layout/CenteredContent'
 
 export const Join = ({
   onSubmit,
@@ -10,15 +11,17 @@ export const Join = ({
   const { t } = useTranslation('rooms')
 
   return (
-    <Box title={t('join.heading')} withBackButton>
-      <PreJoin
-        persistUserChoices
-        onSubmit={onSubmit}
-        micLabel={t('join.micLabel')}
-        camLabel={t('join.camlabel')}
-        joinLabel={t('join.joinLabel')}
-        userLabel={t('join.userLabel')}
-      />
-    </Box>
+    <Screen layout="centered">
+      <CenteredContent title={t('join.heading')}>
+        <PreJoin
+          persistUserChoices
+          onSubmit={onSubmit}
+          micLabel={t('join.micLabel')}
+          camLabel={t('join.camlabel')}
+          joinLabel={t('join.joinLabel')}
+          userLabel={t('join.userLabel')}
+        />
+      </CenteredContent>
+    </Screen>
   )
 }
