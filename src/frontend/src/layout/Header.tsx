@@ -25,9 +25,21 @@ export const Header = () => {
         flexShrink: 0,
       })}
     >
-      <Stack direction="row" justify="space-between" align="center">
+      <div
+        className={css({
+          display: 'flex',
+          flexDirection: 'column',
+          rowGap: 1,
+          md: {
+            rowGap: 0,
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+          },
+        })}
+      >
         <header>
-          <Stack gap={1} direction="row" align="center">
+          <Stack gap={2.25} direction="row" align="center">
             <Text bold variant="h1" margin={false}>
               <Link
                 onClick={(event) => {
@@ -74,7 +86,7 @@ export const Header = () => {
             <SettingsButton />
           </Stack>
         </nav>
-      </Stack>
+      </div>
     </div>
   )
 }
