@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import {
   LiveKitRoom,
@@ -46,6 +46,25 @@ export const Conference = ({
 
   const [showInviteDialog, setShowInviteDialog] = useState(mode === 'create')
 
+  /**
+   * checks for actual click on the leave button instead of
+   * relying on LiveKitRoom onDisconnected because onDisconnected
+   * triggers even on page reload, it's not a user "onLeave" event really.
+   * Here we want to react to the user actually deciding to leave.
+   */
+  useEffect(() => {
+    const checkOnLeaveClick = (event: MouseEvent) => {
+      const target = event.target as HTMLElement
+      if (target.classList.contains('lk-disconnect-button')) {
+        navigateTo('feedback')
+      }
+    }
+    document.body.addEventListener('click', checkOnLeaveClick)
+    return () => {
+      document.body.removeEventListener('click', checkOnLeaveClick)
+    }
+  }, [])
+
   return (
     <QueryAware status={status}>
       <LiveKitRoom
@@ -55,9 +74,6 @@ export const Conference = ({
         connect={true}
         audio={userConfig.audioEnabled}
         video={userConfig.videoEnabled}
-        onDisconnected={() => {
-          navigateTo('feedback')
-        }}
       >
         <VideoConference />
         {showInviteDialog && (
