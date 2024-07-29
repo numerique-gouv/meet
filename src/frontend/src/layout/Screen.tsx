@@ -1,35 +1,30 @@
-import type { ReactNode } from 'react'
-import { css } from '@/styled-system/css'
-import { Header } from './Header'
+import { layoutStore } from '@/stores/layout'
+import { Layout } from './Layout'
+import { useEffect } from 'react'
+import { Centered } from './Centered'
+
+export type ScreenProps = {
+  /**
+   * 'fullpage' by default.
+   */
+  layout?: Layout
+  /**
+   * Show header or not.
+   * True by default. Pass undefined to render the screen without modifying current header visibility
+   */
+  header?: boolean
+  children: React.ReactNode
+}
 
 export const Screen = ({
-  type,
+  layout = 'fullpage',
+  header = true,
   children,
-}: {
-  type?: 'splash'
-  children?: ReactNode
-}) => {
-  return (
-    <div
-      className={css({
-        height: '100%',
-        display: 'flex',
-        flexDirection: 'column',
-        backgroundColor: type === 'splash' ? 'white' : 'default.bg',
-        color: 'default.text',
-      })}
-    >
-      {type !== 'splash' && <Header />}
-      <main
-        className={css({
-          flexGrow: 1,
-          overflow: 'auto',
-          display: 'flex',
-          flexDirection: 'column',
-        })}
-      >
-        {children}
-      </main>
-    </div>
-  )
+}: ScreenProps) => {
+  useEffect(() => {
+    if (header !== undefined) {
+      layoutStore.showHeader = header
+    }
+  }, [header])
+  return layout === 'centered' ? <Centered>{children}</Centered> : children
 }

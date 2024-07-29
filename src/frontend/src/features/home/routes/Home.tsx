@@ -1,20 +1,21 @@
 import { useTranslation } from 'react-i18next'
 import { DialogTrigger } from 'react-aria-components'
-import { Button, Div, Text, VerticallyOffCenter } from '@/primitives'
+import { Button, Text } from '@/primitives'
 import { HStack } from '@/styled-system/jsx'
 import { navigateTo } from '@/navigation/navigateTo'
-import { generateRoomId } from '@/features/rooms'
-import { authUrl, useUser } from '@/features/auth'
 import { Screen } from '@/layout/Screen'
+import { Centered } from '@/layout/Centered'
+import { generateRoomId } from '@/features/rooms'
+import { authUrl, useUser, UserAware } from '@/features/auth'
 import { JoinMeetingDialog } from '../components/JoinMeetingDialog'
 
 export const Home = () => {
   const { t } = useTranslation('home')
   const { isLoggedIn } = useUser()
   return (
-    <Screen>
-      <VerticallyOffCenter>
-        <Div margin="auto" width="fit-content">
+    <UserAware>
+      <Screen>
+        <Centered width="fit-content">
           <Text as="h1" variant="display">
             {t('heading')}
           </Text>
@@ -49,8 +50,8 @@ export const Home = () => {
               <JoinMeetingDialog />
             </DialogTrigger>
           </HStack>
-        </Div>
-      </VerticallyOffCenter>
-    </Screen>
+        </Centered>
+      </Screen>
+    </UserAware>
   )
 }

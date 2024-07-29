@@ -4,9 +4,8 @@ import {
   type LocalUserChoices,
 } from '@livekit/components-react'
 import { useParams } from 'wouter'
-import { Screen } from '@/layout/Screen'
-import { ErrorScreen } from '@/layout/ErrorScreen'
-import { useUser } from '@/features/auth'
+import { ErrorScreen } from '@/components/ErrorScreen'
+import { useUser, UserAware } from '@/features/auth'
 import { Conference } from '../components/Conference'
 import { Join } from '../components/Join'
 
@@ -25,21 +24,23 @@ export const Room = () => {
 
   if (!userConfig && !skipJoinScreen) {
     return (
-      <Screen>
+      <UserAware>
         <Join onSubmit={setUserConfig} />
-      </Screen>
+      </UserAware>
     )
   }
 
   return (
-    <Conference
-      roomId={roomId}
-      mode={mode}
-      userConfig={{
-        ...existingUserChoices,
-        ...(skipJoinScreen ? { username: user?.email as string } : {}),
-        ...userConfig,
-      }}
-    />
+    <UserAware>
+      <Conference
+        roomId={roomId}
+        mode={mode}
+        userConfig={{
+          ...existingUserChoices,
+          ...(skipJoinScreen ? { username: user?.email as string } : {}),
+          ...userConfig,
+        }}
+      />
+    </UserAware>
   )
 }

@@ -6,8 +6,8 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { useTranslation } from 'react-i18next'
 import { useLang } from 'hoofd'
 import { Switch, Route } from 'wouter'
-import { NotFoundScreen } from './layout/NotFoundScreen'
-import { RenderIfUserFetched } from './features/auth'
+import { Layout } from './layout/Layout'
+import { NotFoundScreen } from './components/NotFoundScreen'
 import { routes } from './routes'
 import './i18n/init'
 
@@ -19,14 +19,14 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <Suspense fallback={null}>
-        <RenderIfUserFetched>
+        <Layout>
           <Switch>
             {Object.entries(routes).map(([, route], i) => (
               <Route key={i} path={route.path} component={route.Component} />
             ))}
             <Route component={NotFoundScreen} />
           </Switch>
-        </RenderIfUserFetched>
+        </Layout>
         <ReactQueryDevtools initialIsOpen={false} />
       </Suspense>
     </QueryClientProvider>

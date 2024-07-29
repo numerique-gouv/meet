@@ -1,19 +1,15 @@
 import { useTranslation } from 'react-i18next'
-import { BoxScreen } from '@/layout/BoxScreen'
-import { Div, Link, P } from '@/primitives'
+import { P } from '@/primitives'
+import { Screen } from '@/layout/Screen'
+import { CenteredContent } from '@/layout/CenteredContent'
 
 export const FeedbackRoute = () => {
   const { t } = useTranslation('rooms')
   return (
-    <BoxScreen title={t('feedback.heading')}>
-      <Div textAlign="left">
+    <Screen layout="centered">
+      <CenteredContent title={t('feedback.heading')} withBackButton>
         <P>{t('feedback.body')}</P>
-      </Div>
-      <Div marginTop={1}>
-        <P>
-          <Link to="/">{t('backToHome', { ns: 'global' })}</Link>
-        </P>
-      </Div>
-    </BoxScreen>
+      </CenteredContent>
+    </Screen>
   )
 }

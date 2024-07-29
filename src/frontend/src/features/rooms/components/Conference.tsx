@@ -8,7 +8,8 @@ import {
 import { Room, RoomOptions } from 'livekit-client'
 import { keys } from '@/api/queryKeys'
 import { navigateTo } from '@/navigation/navigateTo'
-import { QueryAware } from '@/layout/QueryAware'
+import { Screen } from '@/layout/Screen'
+import { QueryAware } from '@/components/QueryAware'
 import { fetchRoom } from '../api/fetchRoom'
 import { InviteDialog } from './InviteDialog'
 
@@ -67,24 +68,26 @@ export const Conference = ({
 
   return (
     <QueryAware status={status}>
-      <LiveKitRoom
-        room={room}
-        serverUrl={data?.livekit?.url}
-        token={data?.livekit?.token}
-        connect={true}
-        audio={userConfig.audioEnabled}
-        video={userConfig.videoEnabled}
-      >
-        <VideoConference />
-        {showInviteDialog && (
-          <InviteDialog
-            isOpen={showInviteDialog}
-            onOpenChange={setShowInviteDialog}
-            roomId={roomId}
-            onClose={() => setShowInviteDialog(false)}
-          />
-        )}
-      </LiveKitRoom>
+      <Screen>
+        <LiveKitRoom
+          room={room}
+          serverUrl={data?.livekit?.url}
+          token={data?.livekit?.token}
+          connect={true}
+          audio={userConfig.audioEnabled}
+          video={userConfig.videoEnabled}
+        >
+          <VideoConference />
+          {showInviteDialog && (
+            <InviteDialog
+              isOpen={showInviteDialog}
+              onOpenChange={setShowInviteDialog}
+              roomId={roomId}
+              onClose={() => setShowInviteDialog(false)}
+            />
+          )}
+        </LiveKitRoom>
+      </Screen>
     </QueryAware>
   )
 }
