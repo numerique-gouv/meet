@@ -1,5 +1,6 @@
 import { ErrorScreen } from './ErrorScreen'
 import { LoadingScreen } from './LoadingScreen'
+import { Screen } from './Screen'
 
 export const QueryAware = ({
   status,
@@ -16,5 +17,5 @@ export const QueryAware = ({
     return <LoadingScreen />
   }
 
-  return children
+  return <Screen>{children}</Screen>
 }
