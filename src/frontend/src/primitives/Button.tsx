@@ -12,6 +12,7 @@ import { Tooltip } from './Tooltip'
 const button = cva({
   base: {
     display: 'flex',
+    justifyContent: 'center',
     alignItems: 'center',
     transition: 'background 200ms, outline 200ms, border-color 200ms',
     cursor: 'pointer',
