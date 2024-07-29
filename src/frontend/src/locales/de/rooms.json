@@ -8,6 +8,7 @@
   },
   "leaveRoomPrompt": "",
   "shareDialog": {
+    "copied": "",
     "copy": "",
     "heading": "",
     "inputLabel": ""

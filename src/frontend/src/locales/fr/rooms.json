@@ -8,8 +8,8 @@
   },
   "leaveRoomPrompt": "Revenir à l'accueil vous fera quitter la réunion.",
   "shareDialog": {
-    "copy": "Copier le lien",
     "copied": "Lien copié",
+    "copy": "Copier le lien",
     "heading": "Partager le lien vers la réunion",
     "inputLabel": "Lien vers la réunion"
   }
