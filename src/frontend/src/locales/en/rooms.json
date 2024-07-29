@@ -8,8 +8,8 @@
   },
   "leaveRoomPrompt": "This will make you leave the meeting.",
   "shareDialog": {
-    "copy": "Copy",
     "copied": "Copied",
+    "copy": "Copy",
     "heading": "Share the meeting link",
     "inputLabel": "Meeting link"
   }
