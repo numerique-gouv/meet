@@ -1,6 +1,7 @@
 """
 Test rooms API endpoints in the Meet core app: retrieve.
 """
+
 import random
 from unittest import mock
 

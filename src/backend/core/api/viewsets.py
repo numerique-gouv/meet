@@ -1,4 +1,5 @@
 """API endpoints"""
+
 import uuid
 
 from django.conf import settings

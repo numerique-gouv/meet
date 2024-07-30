@@ -1,6 +1,7 @@
 """
 Test rooms API endpoints in the Meet core app: create.
 """
+
 import pytest
 from rest_framework.test import APIClient
 

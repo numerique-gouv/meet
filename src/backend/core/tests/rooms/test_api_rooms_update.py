@@ -1,6 +1,7 @@
 """
 Test rooms API endpoints in the Meet core app: update.
 """
+
 import random
 
 import pytest

@@ -1,6 +1,7 @@
 """
 Utils functions used in the core app
 """
+
 from typing import Optional
 from uuid import uuid4
 

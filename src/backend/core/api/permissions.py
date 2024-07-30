@@ -1,4 +1,5 @@
 """Permission handlers for the Meet core app."""
+
 from rest_framework import permissions
 
 from ..models import RoleChoices
