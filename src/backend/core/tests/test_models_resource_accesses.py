@@ -1,6 +1,7 @@
 """
 Unit tests for the ResourceAccess model with user
 """
+
 from django.core.exceptions import ValidationError
 
 import pytest

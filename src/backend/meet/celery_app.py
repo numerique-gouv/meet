@@ -1,4 +1,5 @@
 """Meet celery configuration file."""
+
 import os
 
 from celery import Celery

@@ -1,6 +1,7 @@
 """
 Test rooms API endpoints in the Meet core app: list.
 """
+
 from unittest import mock
 
 import pytest

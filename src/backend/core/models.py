@@ -1,6 +1,7 @@
 """
 Declare and configure the models for the Meet core application
 """
+
 import uuid
 from logging import getLogger
 
