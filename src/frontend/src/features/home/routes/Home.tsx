@@ -8,10 +8,20 @@ import { Centered } from '@/layout/Centered'
 import { generateRoomId } from '@/features/rooms'
 import { authUrl, useUser, UserAware } from '@/features/auth'
 import { JoinMeetingDialog } from '../components/JoinMeetingDialog'
+import { useCreateRoom } from '@/features/rooms'
 
 export const Home = () => {
   const { t } = useTranslation('home')
   const { isLoggedIn } = useUser()
+
+  const { mutateAsync: createRoom } = useCreateRoom({
+    onSuccess: (data) => {
+      navigateTo('room', data.slug, {
+        state: { create: true, initialRoomData: data },
+      })
+    }
+  });
+
   return (
     <UserAware>
       <Screen>
@@ -32,10 +42,10 @@ export const Home = () => {
               variant="primary"
               onPress={
                 isLoggedIn
-                  ? () =>
-                      navigateTo('room', generateRoomId(), {
-                        state: { create: true },
-                      })
+                  ? async () => {
+                    const slug = generateRoomId()
+                    await createRoom({slug})
+                  }
                   : undefined
               }
               href={isLoggedIn ? undefined : authUrl()}
