@@ -141,7 +141,7 @@ lint-ruff-check: ## lint back-end python sources with ruff
 
 lint-pylint: ## lint back-end python sources with pylint only on changed files from main
 	@echo 'lint:pylint started…'
-	bin/pylint --diff-only=origin/main
+	@$(COMPOSE_RUN_APP) pylint meet demo core
 .PHONY: lint-pylint
 
 test: ## run project tests

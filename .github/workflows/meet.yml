@@ -89,7 +89,7 @@ jobs:
       - name: Lint code with ruff
         run: ~/.local/bin/ruff check .
       - name: Lint code with pylint
-        run: ~/.local/bin/pylint .
+        run: ~/.local/bin/pylint meet demo core
 
   test-back:
     runs-on: ubuntu-latest
