@@ -8,4 +8,7 @@ export type ApiRoom = {
     room: string
     token: string
   }
+  configuration?: {
+    [key: string]: string | number | boolean;
+  }
 }

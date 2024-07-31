@@ -11,24 +11,30 @@ import { navigateTo } from '@/navigation/navigateTo'
 import { Screen } from '@/layout/Screen'
 import { QueryAware } from '@/components/QueryAware'
 import { fetchRoom } from '../api/fetchRoom'
+import { ApiRoom } from '../api/ApiRoom'
 import { InviteDialog } from './InviteDialog'
 
 export const Conference = ({
   roomId,
   userConfig,
+  initialRoomData,
   mode = 'join',
 }: {
   roomId: string
   userConfig: LocalUserChoices
   mode?: 'join' | 'create'
+  initialRoomData?: ApiRoom
 }) => {
   const { status, data } = useQuery({
     queryKey: [keys.room, roomId, userConfig.username],
+    enabled: !initialRoomData,
+    initialData: initialRoomData,
     queryFn: () =>
       fetchRoom({
         roomId: roomId as string,
         username: userConfig.username,
       }),
+    retry: false,
   })
 
   const roomOptions = useMemo((): RoomOptions => {

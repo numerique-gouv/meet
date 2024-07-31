@@ -15,6 +15,7 @@ export const Room = () => {
   const [userConfig, setUserConfig] = useState<LocalUserChoices | null>(null)
 
   const { roomId } = useParams()
+  const initialRoomData = history.state?.initialRoomData
   const mode = isLoggedIn && history.state?.create ? 'create' : 'join'
   const skipJoinScreen = isLoggedIn && mode === 'create'
 
@@ -33,6 +34,7 @@ export const Room = () => {
   return (
     <UserAware>
       <Conference
+        initialRoomData={initialRoomData}
         roomId={roomId}
         mode={mode}
         userConfig={{
