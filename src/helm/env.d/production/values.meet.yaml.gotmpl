@@ -16,6 +16,7 @@ backend:
         name: backend
         key: DJANGO_SECRET_KEY
     DJANGO_SETTINGS_MODULE: meet.settings
+    DJANGO_SILENCED_SYSTEM_CHECKS: security.W004, security.W008
     DJANGO_SUPERUSER_EMAIL:
       secretKeyRef:
         name: backend

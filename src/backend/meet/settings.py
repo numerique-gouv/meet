@@ -71,6 +71,7 @@ class Base(Configuration):
     # Security
     ALLOWED_HOSTS = values.ListValue([])
     SECRET_KEY = values.Value(None)
+    SILENCED_SYSTEM_CHECKS = values.ListValue([])
 
     # Application definition
     ROOT_URLCONF = "meet.urls"
