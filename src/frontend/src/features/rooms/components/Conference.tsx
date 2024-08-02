@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import {
+  formatChatMessageLinks,
   LiveKitRoom,
   VideoConference,
   type LocalUserChoices,
@@ -83,7 +84,9 @@ export const Conference = ({
           audio={userConfig.audioEnabled}
           video={userConfig.videoEnabled}
         >
-          <VideoConference />
+          <VideoConference
+            chatMessageFormatter={formatChatMessageLinks}
+          />
           {showInviteDialog && (
             <InviteDialog
               isOpen={showInviteDialog}
