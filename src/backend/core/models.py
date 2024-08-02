@@ -289,7 +289,7 @@ class Room(Resource):
 
     configuration = models.JSONField(
         blank=True,
-        default={},
+        default=dict,
         verbose_name=_("Visio room configuration"),
         help_text=_("Values for Visio parameters to configure the room."),
     )
