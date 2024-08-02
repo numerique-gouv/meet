@@ -11,6 +11,7 @@ backend:
     DJANGO_ALLOWED_HOSTS: "*"
     DJANGO_SECRET_KEY: {{ .Values.djangoSecretKey }}
     DJANGO_SETTINGS_MODULE: meet.settings
+    DJANGO_SILENCED_SYSTEM_CHECKS: security.W004, security.W008
     DJANGO_SUPERUSER_PASSWORD: admin
     DJANGO_EMAIL_HOST: "mailcatcher"
     DJANGO_EMAIL_PORT: 1025
