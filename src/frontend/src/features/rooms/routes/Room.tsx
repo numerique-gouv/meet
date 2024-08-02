@@ -10,7 +10,7 @@ import { Conference } from '../components/Conference'
 import { Join } from '../components/Join'
 
 export const Room = () => {
-  const { user, isLoggedIn } = useUser()
+  const { isLoggedIn } = useUser()
   const { userChoices: existingUserChoices } = usePersistentUserChoices()
   const [userConfig, setUserConfig] = useState<LocalUserChoices | null>(null)
 
@@ -39,7 +39,6 @@ export const Room = () => {
         mode={mode}
         userConfig={{
           ...existingUserChoices,
-          ...(skipJoinScreen ? { username: user?.email as string } : {}),
           ...userConfig,
         }}
       />
