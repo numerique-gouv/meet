@@ -10,12 +10,17 @@ import { Layout } from './layout/Layout'
 import { NotFoundScreen } from './components/NotFoundScreen'
 import { routes } from './routes'
 import './i18n/init'
+import { silenceLiveKitLogs } from "@/utils/livekit.ts";
 
 const queryClient = new QueryClient()
 
 function App() {
   const { i18n } = useTranslation()
   useLang(i18n.language)
+
+  const isProduction = import.meta.env.PROD
+  silenceLiveKitLogs(isProduction)
+
   return (
     <QueryClientProvider client={queryClient}>
       <Suspense fallback={null}>
