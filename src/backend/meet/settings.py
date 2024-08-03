@@ -365,6 +365,9 @@ class Base(Configuration):
     ALLOW_UNREGISTERED_ROOMS = values.BooleanValue(
         True, environ_name="ALLOW_UNREGISTERED_ROOMS", environ_prefix=None
     )
+    ANALYTICS_KEY = values.Value(
+        None, environ_name="ANALYTICS_KEY", environ_prefix=None
+    )
 
     # pylint: disable=invalid-name
     @property
@@ -484,6 +487,8 @@ class Test(Base):
     USE_SWAGGER = True
 
     CELERY_TASK_ALWAYS_EAGER = values.BooleanValue(True)
+
+    ANALYTICS_KEY = None
 
     def __init__(self):
         # pylint: disable=invalid-name
