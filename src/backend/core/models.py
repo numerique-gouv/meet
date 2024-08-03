@@ -163,6 +163,13 @@ class User(AbstractBaseUser, BaseModel, auth_models.PermissionsMixin):
         """
         return []
 
+    @property
+    def email_anonymized(self):
+        """Anonymize the email address by replacing the local part with asterisks."""
+        if not self.email:
+            return ""
+        return f"***@{self.email.split('@')[1]}"
+
 
 class Resource(BaseModel):
     """Model to define access control"""
