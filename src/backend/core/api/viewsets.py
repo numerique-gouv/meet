@@ -20,6 +20,7 @@ from rest_framework import (
 
 from core import models, utils
 
+from ..analytics import analytics
 from . import permissions, serializers
 
 # pylint: disable=too-many-ancestors
@@ -185,6 +186,13 @@ class RoomViewSet(
         """
         try:
             instance = self.get_object()
+
+            analytics.track(
+                user=self.request.user,
+                event="Get Room",
+                properties={"slug": instance.slug},
+            )
+
         except Http404:
             if not settings.ALLOW_UNREGISTERED_ROOMS:
                 raise
@@ -231,6 +239,14 @@ class RoomViewSet(
             resource=room,
             user=self.request.user,
             role=models.RoleChoices.OWNER,
+        )
+
+        analytics.track(
+            user=self.request.user,
+            event="Create Room",
+            properties={
+                "slug": room.slug,
+            },
         )
 
 
