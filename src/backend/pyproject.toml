@@ -45,6 +45,7 @@ dependencies = [
     "freezegun==1.5.1",
     "gunicorn==22.0.0",
     "jsonschema==4.23.0",
+    "june-analytics-python==2.3.0",
     "markdown==3.6",
     "nested-multipart-parser==1.5.0",
     "psycopg[binary]==3.2.1",
