@@ -13,7 +13,7 @@ export const QueryAware = ({
   status,
   children,
 }: {
-  status: 'error' | 'pending' | 'success'
+  status: 'error' | 'idle' | 'pending' | 'success'
   children: React.ReactNode
 }) => {
   if (status === 'error') {
