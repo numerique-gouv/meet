@@ -5,7 +5,8 @@ import {
   VideoConference,
   type LocalUserChoices,
 } from '@livekit/components-react'
-import { Room, RoomOptions } from 'livekit-client'
+import {createLocalVideoTrack, Room, RoomOptions} from 'livekit-client'
+import { BackgroundBlur } from '@livekit/track-processors'
 import { keys } from '@/api/queryKeys'
 import { navigateTo } from '@/navigation/navigateTo'
 import { Screen } from '@/layout/Screen'
@@ -68,9 +69,28 @@ export const Conference = ({
 
   room.localParticipant.setName('antoine')
 
+  const blurTrack = async () => {
+    const blur = BackgroundBlur(10);
+    const track = room.localParticipant.videoTrackPublications.values().next().value;
+    if(!track) {
+      return
+    }
+    await track.videoTrack.setProcessor(blur);
+  }
+
+  const unBlurTrack = async () => {
+    const track = room.localParticipant.videoTrackPublications.values().next().value;
+    if(!track) {
+      return
+    }
+    await track.videoTrack.stopProcessor();
+  }
+
   return (
     <QueryAware status={status}>
       <Screen>
+        <button onClick={() => blurTrack()}>blur</button>
+        <button onClick={() => unBlurTrack()}>unblur</button>
         <LiveKitRoom
           room={room}
           serverUrl={data?.livekit?.url}
