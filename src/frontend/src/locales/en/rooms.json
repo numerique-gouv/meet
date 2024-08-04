@@ -16,5 +16,11 @@
     "copy": "Copy",
     "heading": "Share the meeting link",
     "inputLabel": "Meeting link"
+  },
+  "error": {
+    "createRoom": {
+      "heading": "Authentication Required",
+      "body": "This room has not been created yet. Please authenticate to create it or wait for an authenticated user to do so."
+    }
   }
 }

@@ -16,5 +16,11 @@
     "copy": "",
     "heading": "",
     "inputLabel": ""
+  },
+  "error": {
+    "createRoom": {
+      "heading": "",
+      "body": ""
+    }
   }
 }

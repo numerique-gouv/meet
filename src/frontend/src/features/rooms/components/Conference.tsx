@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
+import { useTranslation } from 'react-i18next'
 import {
   formatChatMessageLinks,
   LiveKitRoom,
@@ -12,6 +13,7 @@ import { queryClient } from '@/api/queryClient'
 import { navigateTo } from '@/navigation/navigateTo'
 import { Screen } from '@/layout/Screen'
 import { QueryAware } from '@/components/QueryAware'
+import { ErrorScreen } from '@/components/ErrorScreen'
 import { fetchRoom } from '../api/fetchRoom'
 import { ApiRoom } from '../api/ApiRoom'
 import { useCreateRoom } from '../api/createRoom'
@@ -30,7 +32,7 @@ export const Conference = ({
 }) => {
   const fetchKey = [keys.room, roomId, userConfig.username]
 
-  const { mutateAsync: createRoom, status: createStatus} = useCreateRoom({
+  const { mutateAsync: createRoom, status: createStatus, isError: isCreateError} = useCreateRoom({
     onSuccess: (data) => {
       queryClient.setQueryData(fetchKey, data)
     },
@@ -86,6 +88,12 @@ export const Conference = ({
       document.body.removeEventListener('click', checkOnLeaveClick)
     }
   }, [])
+
+  const { t } = useTranslation('rooms')
+  if (isCreateError) {
+    // this error screen should be replaced by a proper waiting room for anonymous user.
+    return <ErrorScreen title={t('error.createRoom.heading')} body={t('error.createRoom.body')} />
+  }
 
   return (
     <QueryAware status={isFetchError ? createStatus : fetchStatus}>
