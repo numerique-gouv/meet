@@ -2,7 +2,7 @@ import '@livekit/components-styles'
 import '@/styles/index.css'
 import { Suspense } from 'react'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { QueryClientProvider } from '@tanstack/react-query'
 import { useTranslation } from 'react-i18next'
 import { useLang } from 'hoofd'
 import { Switch, Route } from 'wouter'
@@ -11,8 +11,8 @@ import { NotFoundScreen } from './components/NotFoundScreen'
 import { routes } from './routes'
 import './i18n/init'
 import { silenceLiveKitLogs } from "@/utils/livekit.ts";
+import { queryClient } from "@/api/queryClient";
 
-const queryClient = new QueryClient()
 
 function App() {
   const { i18n } = useTranslation()
