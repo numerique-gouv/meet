@@ -45,6 +45,14 @@ export const text = cva({
       },
       inherits: {},
     },
+    centered: {
+      true: {
+        textAlign: 'center',
+      },
+      false: {
+        textAlign: 'inherit',
+      },
+    },
     bold: {
       true: {
         fontWeight: 'bold',
