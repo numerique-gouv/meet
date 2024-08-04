@@ -14,7 +14,7 @@ export const ErrorScreen = ({ title, body }: {
       <CenteredContent title={title || t('error.heading')} withBackButton>
         {!!body && (
           <Center>
-            <Text as="p" variant="h3">
+            <Text as="p" variant="h3" centered>
               {body}
             </Text>
           </Center>
