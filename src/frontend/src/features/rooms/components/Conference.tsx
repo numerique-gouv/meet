@@ -66,6 +66,8 @@ export const Conference = ({
     }
   }, [])
 
+  room.localParticipant.setName('antoine')
+
   return (
     <QueryAware status={status}>
       <Screen>
