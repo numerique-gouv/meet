@@ -26,8 +26,9 @@ export const Conference = ({
   mode?: 'join' | 'create'
   initialRoomData?: ApiRoom
 }) => {
+  const fetchKey = [keys.room, roomId, userConfig.username]
   const { status, data } = useQuery({
-    queryKey: [keys.room, roomId, userConfig.username],
+    queryKey: fetchKey,
     enabled: !initialRoomData,
     initialData: initialRoomData,
     queryFn: () =>
