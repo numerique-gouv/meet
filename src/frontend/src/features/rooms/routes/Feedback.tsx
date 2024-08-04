@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next'
-import { P } from '@/primitives'
+import { Text } from '@/primitives'
 import { Screen } from '@/layout/Screen'
 import { CenteredContent } from '@/layout/CenteredContent'
 
@@ -8,7 +8,7 @@ export const FeedbackRoute = () => {
   return (
     <Screen layout="centered">
       <CenteredContent title={t('feedback.heading')} withBackButton>
-        <P>{t('feedback.body')}</P>
+        <Text as="p" variant="h3" centered>{t('feedback.body')}</Text>
       </CenteredContent>
     </Screen>
   )
