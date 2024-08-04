@@ -42,7 +42,7 @@ export const PopoverList = <T extends string | number = string>({
 }: {
   closeOnAction?: boolean
   onAction: (key: T) => void
-  items: Array<string | { value: T; label: ReactNode }>
+  items: Array<string | { key: string, value: T; label: ReactNode }>
 } & ButtonProps) => {
   const popoverState = useContext(OverlayTriggerStateContext)!
   return (
@@ -50,8 +50,9 @@ export const PopoverList = <T extends string | number = string>({
       {items.map((item) => {
         const value = typeof item === 'string' ? item : item.value
         const label = typeof item === 'string' ? item : item.label
+        const key = typeof item === 'string' ? item : item.key
         return (
-          <li>
+          <li key={key}>
             <ListItem
               key={value}
               onPress={() => {
