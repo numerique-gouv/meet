@@ -13,6 +13,7 @@ export const useLanguageLabels = () => {
     (lang) => lang !== 'cimode'
   )
   const languagesList = supportedLanguages.map((lang) => ({
+    key: lang,
     value: lang,
     label: languageLabels[lang],
   }))
