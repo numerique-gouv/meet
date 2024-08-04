@@ -8,11 +8,13 @@ import {
 } from '@livekit/components-react'
 import { Room, RoomOptions } from 'livekit-client'
 import { keys } from '@/api/queryKeys'
+import { queryClient } from '@/api/queryClient'
 import { navigateTo } from '@/navigation/navigateTo'
 import { Screen } from '@/layout/Screen'
 import { QueryAware } from '@/components/QueryAware'
 import { fetchRoom } from '../api/fetchRoom'
 import { ApiRoom } from '../api/ApiRoom'
+import { useCreateRoom } from '../api/createRoom'
 import { InviteDialog } from './InviteDialog'
 
 export const Conference = ({
@@ -27,7 +29,14 @@ export const Conference = ({
   initialRoomData?: ApiRoom
 }) => {
   const fetchKey = [keys.room, roomId, userConfig.username]
-  const { status, data } = useQuery({
+
+  const { mutateAsync: createRoom, status: createStatus} = useCreateRoom({
+    onSuccess: (data) => {
+      queryClient.setQueryData(fetchKey, data)
+    },
+  });
+
+  const { status: fetchStatus, isError: isFetchError, data } = useQuery({
     queryKey: fetchKey,
     enabled: !initialRoomData,
     initialData: initialRoomData,
@@ -35,6 +44,10 @@ export const Conference = ({
       fetchRoom({
         roomId: roomId as string,
         username: userConfig.username,
+      }).catch((error) => {
+        if (error.statusCode == '404') {
+          createRoom({slug: roomId})
+        }
       }),
     retry: false,
   })
@@ -75,7 +88,7 @@ export const Conference = ({
   }, [])
 
   return (
-    <QueryAware status={status}>
+    <QueryAware status={isFetchError ? createStatus : fetchStatus}>
       <Screen>
         <LiveKitRoom
           room={room}
