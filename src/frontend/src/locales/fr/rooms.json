@@ -16,5 +16,11 @@
     "copy": "Copier le lien",
     "heading": "Partager le lien vers la réunion",
     "inputLabel": "Lien vers la réunion"
+  },
+  "error": {
+    "createRoom": {
+      "heading": "Authentification requise",
+      "body": "Cette réunion n'a pas encore été créée. Veuillez vous authentifier pour la créer ou attendre qu'un utilisateur authentifié le fasse."
+    }
   }
 }
