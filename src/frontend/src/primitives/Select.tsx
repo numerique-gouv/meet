@@ -11,6 +11,7 @@ import {
 } from 'react-aria-components'
 import { Box } from './Box'
 import { StyledPopover } from './Popover'
+import { menuItemStyles } from './menuItemStyles'
 
 const StyledButton = styled(Button, {
   base: {
@@ -43,26 +44,7 @@ const StyledSelectValue = styled(SelectValue, {
   },
 })
 
-const StyledListBoxItem = styled(ListBoxItem, {
-  base: {
-    paddingY: 0.125,
-    paddingX: 0.5,
-    textAlign: 'left',
-    width: 'full',
-    borderRadius: 4,
-    cursor: 'pointer',
-    color: 'box.text',
-    border: '1px solid transparent',
-    '&[data-selected]': {
-      fontWeight: 'bold',
-    },
-    '&[data-focused]': {
-      color: 'primary.text',
-      backgroundColor: 'primary',
-      outline: 'none!',
-    },
-  },
-})
+const StyledListBoxItem = styled(ListBoxItem, menuItemStyles)
 
 export const Select = <T extends string | number>({
   label,
