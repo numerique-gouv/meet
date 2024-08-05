@@ -14,7 +14,7 @@
     "build": "yarn build-mjml-to-html && yarn build-html-to-plain-text"
   },
   "volta": {
-    "node": "16.15.1"
+    "node": "20.16.0"
   },
   "repository": "https://github.com/numerique-gouv/meet",
   "author": "DINUM",
