@@ -143,10 +143,10 @@ backend:
   probes:
     liveness:
       path: /__heartbeat__
-      initialDelaySeconds: 10
+      initialDelaySeconds: 30
     readiness:
       path: /__lbheartbeat__
-      initialDelaySeconds: 10
+      initialDelaySeconds: 30
 
   ## @param backend.resources Resource requirements for the backend container
   resources: {}
