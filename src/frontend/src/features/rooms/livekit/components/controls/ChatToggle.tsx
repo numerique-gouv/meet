@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next'
 import { RiChat1Line } from '@remixicon/react'
-import { Button } from '@/primitives'
+import { ToggleButton } from '@/primitives'
 import { css } from '@/styled-system/css'
 import { useLayoutContext } from '@livekit/components-react'
 import { useSnapshot } from 'valtio'
@@ -22,8 +22,7 @@ export const ChatToggle = () => {
         display: 'inline-block',
       })}
     >
-      <Button
-        toggle
+      <ToggleButton
         square
         legacyStyle
         aria-label={t(`controls.chat.${tooltipLabel}`)}
@@ -35,7 +34,7 @@ export const ChatToggle = () => {
         }}
       >
         <RiChat1Line />
-      </Button>
+      </ToggleButton>
       {!!state?.unreadMessages && (
         <div
           className={css({

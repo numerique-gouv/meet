@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next'
 import { RiGroupLine, RiInfinityLine } from '@remixicon/react'
-import { Button } from '@/primitives'
+import { ToggleButton } from '@/primitives'
 import { css } from '@/styled-system/css'
 import { useLayoutContext, useParticipants } from '@livekit/components-react'
 import { useSnapshot } from 'valtio'
@@ -31,8 +31,7 @@ export const ParticipantsToggle = () => {
         display: 'inline-block',
       })}
     >
-      <Button
-        toggle
+      <ToggleButton
         square
         legacyStyle
         aria-label={t(`controls.participants.${tooltipLabel}`)}
@@ -44,7 +43,7 @@ export const ParticipantsToggle = () => {
         }}
       >
         <RiGroupLine />
-      </Button>
+      </ToggleButton>
       <div
         className={css({
           position: 'absolute',
