@@ -5,7 +5,8 @@ import {
   VideoConference,
   type LocalUserChoices,
 } from '@livekit/components-react'
-import { Room, RoomOptions } from 'livekit-client'
+import {createLocalVideoTrack, Room, RoomOptions} from 'livekit-client'
+import { BackgroundBlur } from '@livekit/track-processors'
 import { keys } from '@/api/queryKeys'
 import { navigateTo } from '@/navigation/navigateTo'
 import { Screen } from '@/layout/Screen'
@@ -66,9 +67,47 @@ export const Conference = ({
     }
   }, [])
 
+  room.localParticipant.setName('antoine')
+
+  const blurTrack = async () => {
+    const blur = BackgroundBlur(10);
+    const track = room.localParticipant.videoTrackPublications.values().next().value;
+    if(!track) {
+      return
+    }
+    await track.videoTrack.setProcessor(blur);
+  }
+
+  const unBlurTrack = async () => {
+    const track = room.localParticipant.videoTrackPublications.values().next().value;
+    if(!track) {
+      return
+    }
+    await track.videoTrack.stopProcessor();
+  }
+
+
+  room.on('dataReceived', (payload, participant) => {
+    const message = new TextDecoder().decode(payload);
+    console.log(`Received message from ${participant?.identity}: ${message}`);
+  });
+
+  const sendMessage = async (message) =>  {
+    // Convert message to a Uint8Array
+
+    console.log('clicked')
+    const payload = new TextEncoder().encode(message);
+
+    // Send the message to all participants in the room
+    await room.localParticipant.publishData(payload, 'text/plain');
+  }
+
   return (
     <QueryAware status={status}>
       <Screen>
+        <button onClick={() => blurTrack()}>blur</button>
+        <button onClick={() => unBlurTrack()}>unblur</button>
+        <button onClick={() => sendMessage('raise hand')}>raise hand</button>
         <LiveKitRoom
           room={room}
           serverUrl={data?.livekit?.url}
