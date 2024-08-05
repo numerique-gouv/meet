@@ -10,7 +10,7 @@ backend:
   envVars:
     DJANGO_CSRF_TRUSTED_ORIGINS: https://meet.numerique.gouv.fr
     DJANGO_CONFIGURATION: Production
-    DJANGO_ALLOWED_HOSTS: "*"
+    DJANGO_ALLOWED_HOSTS: meet.numerique.gouv.fr
     DJANGO_SECRET_KEY:
       secretKeyRef:
         name: backend
