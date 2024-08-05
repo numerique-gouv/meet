@@ -2,15 +2,40 @@ import { type ReactNode } from 'react'
 import {
   OverlayArrow,
   Tooltip as RACTooltip,
-  TooltipProps,
+  TooltipTrigger,
+  type TooltipProps,
 } from 'react-aria-components'
 import { styled } from '@/styled-system/jsx'
 
+export type TooltipWrapperProps = {
+  tooltip?: string
+  tooltipType?: 'instant' | 'delayed'
+}
+
+/**
+ * Wrap a component you want to apply a tooltip on (for example a Button)
+ *
+ * If no tooltip is given, just returns children
+ */
+export const TooltipWrapper = ({
+  tooltip,
+  tooltipType,
+  children,
+}: {
+  children: ReactNode
+} & TooltipWrapperProps) => {
+  return tooltip ? (
+    <TooltipTrigger delay={tooltipType === 'instant' ? 300 : 1000}>
+      {children}
+      <Tooltip>{tooltip}</Tooltip>
+    </TooltipTrigger>
+  ) : (
+    children
+  )
+}
+
 /**
  * Styled react aria Tooltip component.
- *
- * Note that tooltips are directly handled by Buttons via the `tooltip` prop,
- * so you should not need to use this component directly.
  *
  * Style taken from example at https://react-spectrum.adobe.com/react-aria/Tooltip.html
  */
@@ -80,7 +105,7 @@ const TooltipArrow = () => {
   )
 }
 
-export const Tooltip = ({
+const Tooltip = ({
   children,
   ...props
 }: Omit<TooltipProps, 'children'> & { children: ReactNode }) => {

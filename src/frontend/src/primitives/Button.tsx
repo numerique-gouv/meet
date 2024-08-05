@@ -1,125 +1,20 @@
-import { type ReactNode } from 'react'
 import {
   Button as RACButton,
   type ButtonProps as RACButtonsProps,
-  TooltipTrigger,
   Link,
   LinkProps,
 } from 'react-aria-components'
-import { cva, type RecipeVariantProps } from '@/styled-system/css'
-import { Tooltip } from './Tooltip'
+import { type RecipeVariantProps } from '@/styled-system/css'
+import { buttonRecipe, type ButtonRecipe } from './buttonRecipe'
+import { TooltipWrapper, type TooltipWrapperProps } from './TooltipWrapper'
 
-const button = cva({
-  base: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    transition: 'background 200ms, outline 200ms, border-color 200ms',
-    cursor: 'pointer',
-    border: '1px solid transparent',
-    color: 'colorPalette.text',
-    backgroundColor: 'colorPalette',
-    '&[data-hovered]': {
-      backgroundColor: 'colorPalette.hover',
-    },
-    '&[data-pressed]': {
-      backgroundColor: 'colorPalette.active',
-    },
-  },
-  variants: {
-    size: {
-      default: {
-        borderRadius: 8,
-        paddingX: '1',
-        paddingY: '0.625',
-        '--square-padding': '{spacing.0.625}',
-      },
-      sm: {
-        borderRadius: 4,
-        paddingX: '0.5',
-        paddingY: '0.25',
-        '--square-padding': '{spacing.0.25}',
-      },
-      xs: {
-        borderRadius: 4,
-        '--square-padding': '0',
-      },
-    },
-    square: {
-      true: {
-        paddingX: 'var(--square-padding)',
-        paddingY: 'var(--square-padding)',
-      },
-    },
-    variant: {
-      default: {
-        colorPalette: 'control',
-      },
-      primary: {
-        colorPalette: 'primary',
-      },
-      // @TODO: better handling of colors… this is a mess
-      success: {
-        colorPalette: 'success',
-        borderColor: 'success.300',
-        color: 'success.subtle-text',
-        backgroundColor: 'success.subtle',
-        '&[data-hovered]': {
-          backgroundColor: 'success.200',
-        },
-        '&[data-pressed]': {
-          backgroundColor: 'success.subtle!',
-        },
-      },
-    },
-    outline: {
-      true: {
-        color: 'colorPalette',
-        backgroundColor: 'transparent!',
-        borderColor: 'currentcolor!',
-        '&[data-hovered]': {
-          backgroundColor: 'colorPalette.subtle!',
-        },
-        '&[data-pressed]': {
-          backgroundColor: 'colorPalette.subtle!',
-        },
-      },
-    },
-    invisible: {
-      true: {
-        borderColor: 'none!',
-        backgroundColor: 'none!',
-        '&[data-hovered]': {
-          backgroundColor: 'none!',
-          borderColor: 'colorPalette.active!',
-        },
-        '&[data-pressed]': {
-          borderColor: 'currentcolor',
-        },
-      },
-    },
-    fullWidth: {
-      true: {
-        width: 'full',
-      },
-    },
-  },
-  defaultVariants: {
-    size: 'default',
-    variant: 'default',
-    outline: false,
-  },
-})
-
-type Tooltip = {
-  tooltip?: string
-  tooltipType?: 'instant' | 'delayed'
-}
-export type ButtonProps = RecipeVariantProps<typeof button> &
+export type ButtonProps = RecipeVariantProps<ButtonRecipe> &
   RACButtonsProps &
-  Tooltip
+  TooltipWrapperProps
 
-type LinkButtonProps = RecipeVariantProps<typeof button> & LinkProps & Tooltip
+type LinkButtonProps = RecipeVariantProps<ButtonRecipe> &
+  LinkProps &
+  TooltipWrapperProps
 
 type ButtonOrLinkProps = ButtonProps | LinkButtonProps
 
@@ -128,37 +23,20 @@ export const Button = ({
   tooltipType = 'instant',
   ...props
 }: ButtonOrLinkProps) => {
-  const [variantProps, componentProps] = button.splitVariantProps(props)
+  const [variantProps, componentProps] = buttonRecipe.splitVariantProps(props)
   if ((props as LinkButtonProps).href !== undefined) {
     return (
       <TooltipWrapper tooltip={tooltip} tooltipType={tooltipType}>
-        <Link className={button(variantProps)} {...componentProps} />
+        <Link className={buttonRecipe(variantProps)} {...componentProps} />
       </TooltipWrapper>
     )
   }
   return (
     <TooltipWrapper tooltip={tooltip} tooltipType={tooltipType}>
       <RACButton
-        className={button(variantProps)}
+        className={buttonRecipe(variantProps)}
         {...(componentProps as RACButtonsProps)}
       />
     </TooltipWrapper>
-  )
-}
-
-const TooltipWrapper = ({
-  tooltip,
-  tooltipType,
-  children,
-}: {
-  children: ReactNode
-} & Tooltip) => {
-  return tooltip ? (
-    <TooltipTrigger delay={tooltipType === 'instant' ? 300 : 1000}>
-      {children}
-      <Tooltip>{tooltip}</Tooltip>
-    </TooltipTrigger>
-  ) : (
-    children
   )
 }
