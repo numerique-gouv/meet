@@ -2,11 +2,13 @@ import { Link } from 'wouter'
 import { css } from '@/styled-system/css'
 import { Stack } from '@/styled-system/jsx'
 import { useTranslation } from 'react-i18next'
-import { A, Button, Popover, PopoverList, Text } from '@/primitives'
+import { A, Text, Button } from '@/primitives'
 import { SettingsButton } from '@/features/settings'
 import { authUrl, logoutUrl, useUser } from '@/features/auth'
 import { useMatchesRoute } from '@/navigation/useMatchesRoute'
 import { Feedback } from '@/components/Feedback'
+import { Menu } from '@/primitives/Menu'
+import { MenuList } from '@/primitives/MenuList'
 
 export const Header = () => {
   const { t } = useTranslation()
@@ -64,7 +66,7 @@ export const Header = () => {
               <A href={authUrl()}>{t('login')}</A>
             )}
             {!!user && (
-              <Popover aria-label={t('logout')}>
+              <Menu>
                 <Button
                   size="sm"
                   invisible
@@ -73,17 +75,15 @@ export const Header = () => {
                 >
                   {user.email}
                 </Button>
-                <PopoverList
-                  items={[
-                    { key: 'logout', value: 'logout', label: t('logout') },
-                  ]}
+                <MenuList
+                  items={[{ value: 'logout', label: t('logout') }]}
                   onAction={(value) => {
                     if (value === 'logout') {
                       window.location.href = logoutUrl()
                     }
                   }}
                 />
-              </Popover>
+              </Menu>
             )}
             <SettingsButton />
           </Stack>
