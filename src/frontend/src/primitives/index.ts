@@ -1,3 +1,9 @@
+/**
+ * exposes all primitives we want to use in other parts of the app.
+ *
+ * It's intended not everything is exported: some primitives are meant as building-blocks
+ * for other primitives and don't have any value being exposed.
+ */
 export { A } from './A'
 export { Badge } from './Badge'
 export { Bold } from './Bold'
@@ -13,9 +19,10 @@ export { Hr } from './Hr'
 export { Italic } from './Italic'
 export { Input } from './Input'
 export { Link } from './Link'
+export { Menu } from './Menu'
+export { MenuList } from './MenuList'
 export { P } from './P'
 export { Popover } from './Popover'
-export { PopoverList } from './PopoverList'
 export { Text } from './Text'
 export { Ul } from './Ul'
 export { VerticallyOffCenter } from './VerticallyOffCenter'
