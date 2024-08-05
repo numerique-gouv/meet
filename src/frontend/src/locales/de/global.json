@@ -10,10 +10,6 @@
   "forbidden": {
     "heading": ""
   },
-  "languageSelector": {
-    "buttonLabel": "",
-    "popoverLabel": ""
-  },
   "loading": "",
   "loggedInUserTooltip": "",
   "login": "Anmelden",
