@@ -10,7 +10,7 @@ backend:
   envVars:
     DJANGO_CSRF_TRUSTED_ORIGINS: http://meet-preprod.beta.numerique.gouv.fr,https://meet-preprod.beta.numerique.gouv.fr
     DJANGO_CONFIGURATION: Production
-    DJANGO_ALLOWED_HOSTS: "*"
+    DJANGO_ALLOWED_HOSTS: meet-preprod.beta.numerique.gouv.fr
     DJANGO_SUPERUSER_EMAIL:
       secretKeyRef:
         name: backend

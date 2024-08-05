@@ -8,7 +8,7 @@ backend:
   envVars:
     DJANGO_CSRF_TRUSTED_ORIGINS: https://meet.127.0.0.1.nip.io,http://meet.127.0.0.1.nip.io
     DJANGO_CONFIGURATION: Production
-    DJANGO_ALLOWED_HOSTS: "*"
+    DJANGO_ALLOWED_HOSTS: meet.127.0.0.1.nip.io
     DJANGO_SECRET_KEY: {{ .Values.djangoSecretKey }}
     DJANGO_SETTINGS_MODULE: meet.settings
     DJANGO_SILENCED_SYSTEM_CHECKS: security.W004, security.W008
