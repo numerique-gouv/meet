@@ -3,20 +3,28 @@
 Whenever we are cooking a new release (e.g. `4.18.1`) we should follow a standard procedure described below:
 
 1.  Create a new branch named: `release/4.18.1`.
-2.  Bump the release number for backend project, frontend projects, and Helm files:
+   2.  Bump the release number for backend project, frontend projects, and Helm files:
 
-    - for backend, update the version number by hand in `pyproject.toml`,
-    - for each frontend projects (`src/frontend`, `src/mail`), run `npm version 4.18.1` in their directory. This will update both their `package.json` and `package-lock.json` for you,
-    - for Helm, update Docker image tag in files located at `src/helm/env.d` for both `preprod` and `production` environments:
+       - for backend, update the version number by hand in `pyproject.toml`,
+       - for each frontend projects (`src/frontend`, `src/mail`), run `npm version 4.18.1` in their directory. This will update both their `package.json` and `package-lock.json` for you,
+       - for Helm, update Docker image tag in files located at `src/helm/env.d` for both `preprod` and `production` environments:
 
-      ```yaml
-      image:
-        repository: lasuite/meet-backend
-        pullPolicy: Always
-        tag: "v4.18.1" # Replace with your new version number, without forgetting the "v" prefix
-      ```
+         ```yaml
+         image:
+           repository: lasuite/meet-backend
+           pullPolicy: Always
+           tag: "v4.18.1" # Replace with your new version number, without forgetting the "v" prefix
+      
+         ...
+      
+         frontend:
+           image:
+             repository: lasuite/meet-frontend
+             pullPolicy: Always
+             tag: "v4.18.1" # Replace with your new version number, without forgetting the "v" prefix
+         ```
 
-      The new images don't exist _yet_: they will be created automatically later in the process.
+         The new images don't exist _yet_: they will be created automatically later in the process.
 
 3.  ~~Update the project's `Changelog` following the [keepachangelog](https://keepachangelog.com/en/0.3.0/) recommendations~~ _we don't keep a changelog yet for now as the project is still in its infancy. Soon™!_
 4.  Commit your changes with the following format: the 🔖 release emoji, the type of release (patch/minor/patch) and the release version:
