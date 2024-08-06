@@ -65,7 +65,6 @@ export function VideoConference({
   chatMessageFormatter,
   chatMessageDecoder,
   chatMessageEncoder,
-  SettingsComponent,
   ...props
 }: VideoConferenceProps) {
   const [widgetState, setWidgetState] = React.useState<WidgetState>({
@@ -180,9 +179,7 @@ export function VideoConference({
                 </FocusLayoutContainer>
               </div>
             )}
-            <ControlBar
-              controls={{ chat: true, settings: !!SettingsComponent }}
-            />
+            <ControlBar />
           </div>
           <Chat
             style={{ display: widgetState.showChat ? 'grid' : 'none' }}
