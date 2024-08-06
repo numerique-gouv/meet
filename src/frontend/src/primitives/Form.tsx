@@ -13,6 +13,7 @@ import { Button, useCloseDialog } from '@/primitives'
 export const Form = ({
   onSubmit,
   submitLabel,
+  withSubmitButton = true,
   withCancelButton = true,
   onCancelButtonPress,
   children,
@@ -25,6 +26,7 @@ export const Form = ({
     event: FormEvent<HTMLFormElement>
   ) => void
   submitLabel: string
+  withSubmitButton?: boolean
   withCancelButton?: boolean
   onCancelButtonPress?: () => void
 }) => {
@@ -46,16 +48,18 @@ export const Form = ({
       }}
     >
       {children}
-      <HStack gap="gutter">
-        <Button type="submit" variant="primary">
-          {submitLabel}
-        </Button>
-        {!!onCancel && (
-          <Button variant="primary" outline onPress={() => onCancel()}>
-            {t('cancel')}
+      {withSubmitButton && (
+        <HStack gap="gutter">
+          <Button type="submit" variant="primary">
+            {submitLabel}
           </Button>
-        )}
-      </HStack>
+          {!!onCancel && (
+            <Button variant="primary" outline onPress={() => onCancel()}>
+              {t('cancel')}
+            </Button>
+          )}
+        </HStack>
+      )}
     </RACForm>
   )
 }

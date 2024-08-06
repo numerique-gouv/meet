@@ -4,11 +4,23 @@
     "heading": "Help us improve Meet"
   },
   "join": {
-    "camlabel": "Camera",
-    "heading": "Join the meeting",
-    "joinLabel": "Join",
-    "micLabel": "Microphone",
-    "userLabel": "Your name"
+    "cameraIsOff": "Camera is off.",
+    "cameraIsOn": "Camera is on.",
+    "cameraPlaceholder": "Turn on the camera to see the preview",
+    "camlabel": "",
+    "chooseCamera": "Select camera",
+    "chooseMic": "Select microphone",
+    "heading": "Verify your settings",
+    "joinLabel": "",
+    "joinMeeting": "Join meeting",
+    "micIsOff": "Microphone is off.",
+    "micIsOn": "Microphone is on.",
+    "micLabel": "",
+    "toggleOff": "Click to turn off",
+    "toggleOn": "Click to turn on",
+    "userLabel": "",
+    "usernameHint": "Shown to other participants",
+    "usernameLabel": "Your name"
   },
   "leaveRoomPrompt": "This will make you leave the meeting.",
   "shareDialog": {

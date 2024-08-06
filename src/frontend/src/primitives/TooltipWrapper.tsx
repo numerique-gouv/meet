@@ -8,7 +8,7 @@ import {
 import { styled } from '@/styled-system/jsx'
 
 export type TooltipWrapperProps = {
-  tooltip?: string
+  tooltip?: ReactNode
   tooltipType?: 'instant' | 'delayed'
 }
 

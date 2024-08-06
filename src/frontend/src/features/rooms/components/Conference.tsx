@@ -5,7 +5,6 @@ import {
   formatChatMessageLinks,
   LiveKitRoom,
   VideoConference,
-  type LocalUserChoices,
 } from '@livekit/components-react'
 import { Room, RoomOptions } from 'livekit-client'
 import { keys } from '@/api/queryKeys'
@@ -18,6 +17,7 @@ import { fetchRoom } from '../api/fetchRoom'
 import { ApiRoom } from '../api/ApiRoom'
 import { useCreateRoom } from '../api/createRoom'
 import { InviteDialog } from './InviteDialog'
+import { type SettingsState } from '@/features/settings'
 
 export const Conference = ({
   roomId,
@@ -26,7 +26,10 @@ export const Conference = ({
   mode = 'join',
 }: {
   roomId: string
-  userConfig: LocalUserChoices
+  userConfig: {
+    devices: SettingsState['devices']
+    username: SettingsState['username']
+  }
   mode?: 'join' | 'create'
   initialRoomData?: ApiRoom
 }) => {
@@ -65,14 +68,14 @@ export const Conference = ({
   const roomOptions = useMemo((): RoomOptions => {
     return {
       videoCaptureDefaults: {
-        deviceId: userConfig.videoDeviceId ?? undefined,
+        deviceId: userConfig.devices.cameraDeviceId ?? undefined,
       },
       audioCaptureDefaults: {
-        deviceId: userConfig.audioDeviceId ?? undefined,
+        deviceId: userConfig.devices.micDeviceId ?? undefined,
       },
     }
     // do not rely on the userConfig object directly as its reference may change on every render
-  }, [userConfig.videoDeviceId, userConfig.audioDeviceId])
+  }, [userConfig.devices.cameraDeviceId, userConfig.devices.micDeviceId])
 
   const room = useMemo(() => new Room(roomOptions), [roomOptions])
 
@@ -116,8 +119,8 @@ export const Conference = ({
           serverUrl={data?.livekit?.url}
           token={data?.livekit?.token}
           connect={true}
-          audio={userConfig.audioEnabled}
-          video={userConfig.videoEnabled}
+          audio={userConfig.devices.enableMic}
+          video={userConfig.devices.enableCamera}
         >
           <VideoConference chatMessageFormatter={formatChatMessageLinks} />
           {showInviteDialog && (

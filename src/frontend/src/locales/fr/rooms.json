@@ -4,11 +4,23 @@
     "heading": "Aidez-nous à améliorer Meet"
   },
   "join": {
-    "camlabel": "Webcam",
-    "heading": "Rejoindre la réunion",
-    "joinLabel": "Rejoindre",
-    "micLabel": "Micro",
-    "userLabel": "Votre nom"
+    "cameraIsOff": "Webcam coupée.",
+    "cameraIsOn": "Webcam activée.",
+    "cameraPlaceholder": "Activez la webcam pour prévisualiser l'affichage",
+    "camlabel": "",
+    "chooseCamera": "Choisir la webcam",
+    "chooseMic": "Choisir le micro",
+    "heading": "Vérifiez vos paramètres",
+    "joinLabel": "",
+    "joinMeeting": "Rejoindre la réjoindre",
+    "micIsOff": "Micro coupé.",
+    "micIsOn": "Micro activé.",
+    "micLabel": "",
+    "toggleOff": "Cliquez pour désactiver",
+    "toggleOn": "Cliquez pour activer",
+    "userLabel": "",
+    "usernameHint": "Affiché aux autres participants",
+    "usernameLabel": "Votre nom"
   },
   "leaveRoomPrompt": "Revenir à l'accueil vous fera quitter la réunion.",
   "shareDialog": {
