@@ -29,7 +29,14 @@
     "shareScreen": "Partager l'écran",
     "stopScreenShare": "Arrêter le partage",
     "chat": "Chat",
-    "settings": "Paramètres",
     "leave": "Quitter"
+  },
+  "options": {
+    "buttonLabel": "Plus d'options",
+    "items": {
+      "feedbacks": "Partager votre avis",
+      "support": "Obtenir de l'aide sur Tchap",
+      "settings": "Paramètres"
+    }
   }
 }

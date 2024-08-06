@@ -103,6 +103,17 @@ const button = cva({
         width: 'full',
       },
     },
+    legacyStyle: {
+      true: {
+        borderColor: 'gray.400',
+        '&[data-hovered]': {
+          borderColor: 'gray.500',
+        },
+        '&[data-pressed]': {
+          borderColor: 'gray.500',
+        },
+      },
+    },
   },
   defaultVariants: {
     size: 'default',
