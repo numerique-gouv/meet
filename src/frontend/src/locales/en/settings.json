@@ -1,4 +1,9 @@
 {
+  "account": {
+    "currentlyLoggedAs": "You are currently logged in as <0>{{user}}</0>",
+    "heading": "Account",
+    "youAreNotLoggedIn": "You are not logged in."
+  },
   "dialog": {
     "heading": "Settings"
   },
