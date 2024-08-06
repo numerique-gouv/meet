@@ -11,7 +11,7 @@ import {
 } from 'react-aria-components'
 import { Box } from './Box'
 import { StyledPopover } from './Popover'
-import { menuItemStyles } from './menuItemStyles'
+import { menuItemRecipe } from './menuItemRecipe'
 
 const StyledButton = styled(Button, {
   base: {
@@ -44,8 +44,6 @@ const StyledSelectValue = styled(SelectValue, {
   },
 })
 
-const StyledListBoxItem = styled(ListBoxItem, menuItemStyles)
-
 export const Select = <T extends string | number>({
   label,
   items,
@@ -67,9 +65,13 @@ export const Select = <T extends string | number>({
         <Box size="sm" type="popover" variant="control">
           <ListBox>
             {items.map((item) => (
-              <StyledListBoxItem id={item.value} key={item.value}>
+              <ListBoxItem
+                className={menuItemRecipe()}
+                id={item.value}
+                key={item.value}
+              >
                 {item.label}
-              </StyledListBoxItem>
+              </ListBoxItem>
             ))}
           </ListBox>
         </Box>
