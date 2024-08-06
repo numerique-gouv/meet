@@ -199,6 +199,7 @@ const config: Config = {
           text: { value: '{colors.white}' },
           subtle: { value: '{colors.red.100}' },
           'subtle-text': { value: '{colors.red.700}' },
+          ...pandaPreset.theme.tokens.colors.red,
         },
         success: {
           DEFAULT: { value: '{colors.green.700}' },
