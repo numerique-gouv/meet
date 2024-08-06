@@ -160,6 +160,21 @@ jobs:
       - name: Run tests
         run: ~/.local/bin/pytest -n 2
 
+  lint-front:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: cd src/frontend/ && npm ci
+
+      - name: Check linting
+        run: cd src/frontend/ && npm run lint
+
+      - name: Check format
+        run: cd src/frontend/ && npm run check
+
   i18n-crowdin:
     runs-on: ubuntu-latest
     steps:
