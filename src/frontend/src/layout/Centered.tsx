@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react'
 import { Div, VerticallyOffCenter } from '@/primitives'
-import type { SystemStyleObject } from '../styled-system/types'
+import type { SystemStyleObject } from '@/styled-system/types'
 
 export const Centered = ({
   width = '38rem',

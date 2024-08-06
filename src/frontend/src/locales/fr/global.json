@@ -7,13 +7,6 @@
     "heading": "Une erreur est survenue lors du chargement de la page"
   },
   "feedbackAlert": "Donnez-nous votre avis",
-  "forbidden": {
-    "heading": "Accès interdit"
-  },
-  "languageSelector": {
-    "buttonLabel": "Changer de langue (actuellement {{currentLanguage}})",
-    "popoverLabel": "Choix de la langue"
-  },
   "loading": "Chargement…",
   "loggedInUserTooltip": "Connecté en tant que…",
   "login": "Se connecter",

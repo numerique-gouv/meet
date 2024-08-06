@@ -1,18 +1,23 @@
 import { useState } from 'react'
-import {
-  usePersistentUserChoices,
-  type LocalUserChoices,
-} from '@livekit/components-react'
 import { useParams } from 'wouter'
 import { ErrorScreen } from '@/components/ErrorScreen'
 import { useUser, UserAware } from '@/features/auth'
 import { Conference } from '../components/Conference'
-import { Join } from '../components/Join'
+import { HomemadeJoin } from '../components/HomemadeJoin'
+import { settingsStore, type SettingsState } from '@/features/settings'
+import { useSnapshot } from 'valtio'
 
 export const Room = () => {
   const { isLoggedIn } = useUser()
-  const { userChoices: existingUserChoices } = usePersistentUserChoices()
-  const [userConfig, setUserConfig] = useState<LocalUserChoices | null>(null)
+  const settingsSnap = useSnapshot(settingsStore)
+  const existingUserConfig = {
+    username: settingsSnap.username,
+    devices: settingsSnap.devices,
+  }
+  const [userConfig, setUserConfig] = useState<null | {
+    username: SettingsState['username']
+    devices: SettingsState['devices']
+  }>(null)
 
   const { roomId } = useParams()
   const initialRoomData = history.state?.initialRoomData
@@ -26,7 +31,7 @@ export const Room = () => {
   if (!userConfig && !skipJoinScreen) {
     return (
       <UserAware>
-        <Join onSubmit={setUserConfig} />
+        <HomemadeJoin onSubmit={setUserConfig} />
       </UserAware>
     )
   }
@@ -38,7 +43,7 @@ export const Room = () => {
         roomId={roomId}
         mode={mode}
         userConfig={{
-          ...existingUserChoices,
+          ...existingUserConfig,
           ...userConfig,
         }}
       />

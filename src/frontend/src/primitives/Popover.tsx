@@ -49,7 +49,10 @@ const StyledOverlayArrow = styled(OverlayArrow, {
 })
 
 /**
- * a Popover is a tuple of a trigger component (most usually a Button) that toggles some interactive content in a tooltip around the trigger
+ * a Popover is a tuple of a trigger component (most usually a Button) that toggles some content in a tooltip around the trigger
+ *
+ * Note: to show a list of actionable items, like a dropdown menu, prefer using a <Menu> or <Select>.
+ * This is here when needing to show unrestricted content in a box.
  */
 export const Popover = ({
   children,
