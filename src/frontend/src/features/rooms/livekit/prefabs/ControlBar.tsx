@@ -7,7 +7,6 @@ import {
   ChatIcon,
   ChatToggle,
   DisconnectButton,
-  GearIcon,
   LeaveIcon,
   MediaDeviceMenu,
   TrackToggle,
@@ -15,12 +14,11 @@ import {
   usePersistentUserChoices,
 } from '@livekit/components-react'
 
-import { SettingsMenuToggle } from '../components/controls/SettingsMenuToggle'
 import { mergeProps } from '@/utils/mergeProps.ts'
 import { StartMediaButton } from '../components/controls/StartMediaButton'
 import { useMediaQuery } from '../hooks/useMediaQuery'
 import { useTranslation } from 'react-i18next'
-import { SettingsButton } from '@/features/settings'
+import { OptionsButton } from '../components/controls/Options/OptionsButton'
 
 /** @public */
 export type ControlBarControls = {
@@ -189,10 +187,7 @@ export function ControlBar({
         {showIcon && <ChatIcon />}
         {showText && t('controls.chat')}
       </ChatToggle>
-      <SettingsMenuToggle>
-        {showIcon && <GearIcon />}
-        {showText && t('controls.settings')}
-      </SettingsMenuToggle>
+      <OptionsButton />
       <DisconnectButton>
         {showIcon && <LeaveIcon />}
         {showText && t('controls.leave')}
