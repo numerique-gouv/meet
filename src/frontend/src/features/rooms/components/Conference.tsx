@@ -111,7 +111,7 @@ export const Conference = ({
 
   return (
     <QueryAware status={isFetchError ? createStatus : fetchStatus}>
-      <Screen>
+      <Screen header={false}>
         <LiveKitRoom
           room={room}
           serverUrl={data?.livekit?.url}
