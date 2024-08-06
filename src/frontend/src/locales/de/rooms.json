@@ -22,5 +22,14 @@
       "heading": "",
       "body": ""
     }
+  },
+  "controls": {
+    "microphone": "",
+    "camera": "",
+    "shareScreen": "",
+    "stopScreenShare": "",
+    "chat": "",
+    "settings": "",
+    "leave": ""
   }
 }

@@ -22,5 +22,14 @@
       "heading": "Authentification requise",
       "body": "Cette réunion n'a pas encore été créée. Veuillez vous authentifier pour la créer ou attendre qu'un utilisateur authentifié le fasse."
     }
+  },
+  "controls": {
+    "microphone": "Microphone",
+    "camera": "Camera",
+    "shareScreen": "Partager l'écran",
+    "stopScreenShare": "Arrêter le partage",
+    "chat": "Chat",
+    "settings": "Paramètres",
+    "leave": "Quitter"
   }
 }
