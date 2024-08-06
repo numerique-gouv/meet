@@ -1,9 +1,6 @@
 import { ReactNode } from 'react'
-import { Menu, MenuProps, MenuItem as RACMenuItem } from 'react-aria-components'
-import { styled } from '@/styled-system/jsx'
-import { menuItemStyles } from './menuItemStyles'
-
-const MenuItem = styled(RACMenuItem, menuItemStyles)
+import { Menu, MenuProps, MenuItem } from 'react-aria-components'
+import { menuItemRecipe } from './menuItemRecipe'
 
 /**
  * render a Button primitive that shows a popover showing a list of pressable items
@@ -29,6 +26,7 @@ export const MenuList = <T extends string | number = string>({
         const label = typeof item === 'string' ? item : item.label
         return (
           <MenuItem
+            className={menuItemRecipe()}
             key={value}
             id={value as string}
             onAction={() => {
