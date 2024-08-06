@@ -27,7 +27,10 @@ import { Track, LocalVideoTrack, LocalAudioTrack } from 'livekit-client'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSnapshot } from 'valtio'
-import { usePersistedMediaDeviceSelect } from '@/features/devices'
+import {
+  usePersistedMediaDeviceSelect,
+  useAudioOutputs,
+} from '@/features/devices'
 import { settingsStore, type SettingsState } from '@/features/settings'
 import { css } from '@/styled-system/css'
 
@@ -102,6 +105,7 @@ export const HomemadeJoin = ({
     track: videoTrack,
     requestPermissions: true,
   })
+  const speakerDevices = useAudioOutputs()
 
   useEffect(() => {
     if (settingsStore.devices.micDeviceId) {
@@ -171,6 +175,27 @@ export const HomemadeJoin = ({
               )}
             </Center>
             <HStack gap={1} justify="center" flexWrap={'wrap'}>
+              {/* audio output dropdown */}
+              <Menu>
+                <Button
+                  tooltip={t('chooseSpeaker')}
+                  aria-label={t('chooseSpeaker')}
+                >
+                  <RiVolumeUpLine />
+                  <RiArrowDropDownLine />
+                </Button>
+                <MenuList
+                  items={speakerDevices.map((d) => ({
+                    value: d.deviceId,
+                    label: d.label,
+                  }))}
+                  selectedItem={settingsSnap.devices.speakerDeviceId}
+                  onAction={(value) => {
+                    settingsStore.devices.speakerDeviceId = value as string
+                  }}
+                />
+              </Menu>
+
               {/* audio input toggle + dropdown */}
               <HStack gap={0}>
                 <ToggleButton

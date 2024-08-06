@@ -7,6 +7,10 @@ export type SettingsState = {
     /**
      * MediaDeviceInfo id
      */
+    speakerDeviceId: string | undefined
+    /**
+     * MediaDeviceInfo id
+     */
     micDeviceId: string | undefined
     /**
      * MediaDeviceInfo id
@@ -28,6 +32,7 @@ export const settingsStore = proxy<SettingsState>(
     : {
         username: undefined,
         devices: {
+          speakerDeviceId: undefined,
           micDeviceId: undefined,
           cameraDeviceId: undefined,
           enableMic: false,
