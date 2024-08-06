@@ -26,9 +26,10 @@ import {
   usePinnedTracks,
   useTracks,
   useCreateLayoutContext,
-  ControlBar,
   Chat,
 } from '@livekit/components-react'
+
+import { ControlBar } from './ControlBar'
 
 /**
  * @public
