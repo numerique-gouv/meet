@@ -20,6 +20,7 @@ import { SettingsMenuToggle } from '../components/controls/SettingsMenuToggle'
 import { mergeProps } from '@/utils/mergeProps.ts'
 import { StartMediaButton } from '../components/controls/StartMediaButton'
 import { useMediaQuery } from '../hooks/useMediaQuery'
+import { useTranslation } from 'react-i18next'
 
 /** @public */
 export type ControlBarControls = {
@@ -68,6 +69,7 @@ export function ControlBar({
   onDeviceError,
   ...props
 }: ControlBarProps) {
+  const { t } = useTranslation('rooms')
   const [isChatOpen, setIsChatOpen] = React.useState(false)
   const layoutContext = useMaybeLayoutContext()
   React.useEffect(() => {
@@ -152,7 +154,7 @@ export function ControlBar({
               onDeviceError?.({ source: Track.Source.Microphone, error })
             }
           >
-            {showText && 'Microphone'}
+            {showText && t('controls.microphone')}
           </TrackToggle>
           <div className="lk-button-group-menu">
             <MediaDeviceMenu
@@ -174,7 +176,7 @@ export function ControlBar({
               onDeviceError?.({ source: Track.Source.Camera, error })
             }
           >
-            {showText && 'Camera'}
+            {showText && t('controls.camera')}
           </TrackToggle>
           <div className="lk-button-group-menu">
             <MediaDeviceMenu
@@ -197,25 +199,29 @@ export function ControlBar({
           }
         >
           {showText &&
-            (isScreenShareEnabled ? 'Stop screen share' : 'Share screen')}
+            t(
+              isScreenShareEnabled
+                ? 'controls.stopScreenShare'
+                : 'controls.shareScreen'
+            )}
         </TrackToggle>
       )}
       {visibleControls.chat && (
         <ChatToggle>
           {showIcon && <ChatIcon />}
-          {showText && 'Chat'}
+          {showText && t('controls.chat')}
         </ChatToggle>
       )}
       {visibleControls.settings && (
         <SettingsMenuToggle>
           {showIcon && <GearIcon />}
-          {showText && 'Settings'}
+          {showText && t('controls.settings')}
         </SettingsMenuToggle>
       )}
       {visibleControls.leave && (
         <DisconnectButton>
           {showIcon && <LeaveIcon />}
-          {showText && 'Leave'}
+          {showText && t('controls.leave')}
         </DisconnectButton>
       )}
       <StartMediaButton />

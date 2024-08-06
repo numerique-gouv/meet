@@ -22,5 +22,14 @@
       "heading": "Authentication Required",
       "body": "This room has not been created yet. Please authenticate to create it or wait for an authenticated user to do so."
     }
+  },
+  "controls": {
+    "microphone": "Microphone",
+    "camera": "Camera",
+    "shareScreen": "Share screen",
+    "stopScreenShare": "Stop screen share",
+    "chat": "Chat",
+    "settings": "Settings",
+    "leave": "Leave"
   }
 }
