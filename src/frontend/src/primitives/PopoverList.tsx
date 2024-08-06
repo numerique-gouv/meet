@@ -42,7 +42,7 @@ export const PopoverList = <T extends string | number = string>({
 }: {
   closeOnAction?: boolean
   onAction: (key: T) => void
-  items: Array<string | { key: string, value: T; label: ReactNode }>
+  items: Array<string | { key: string; value: T; label: ReactNode }>
 } & ButtonProps) => {
   const popoverState = useContext(OverlayTriggerStateContext)!
   return (

@@ -4,7 +4,10 @@ import { useTranslation } from 'react-i18next'
 import { Center } from '@/styled-system/jsx'
 import { Text } from '@/primitives'
 
-export const ErrorScreen = ({ title, body }: {
+export const ErrorScreen = ({
+  title,
+  body,
+}: {
   title?: string
   body?: string
 }) => {

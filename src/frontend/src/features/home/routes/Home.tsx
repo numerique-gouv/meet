@@ -19,8 +19,8 @@ export const Home = () => {
       navigateTo('room', data.slug, {
         state: { create: true, initialRoomData: data },
       })
-    }
-  });
+    },
+  })
 
   return (
     <UserAware>
@@ -43,9 +43,9 @@ export const Home = () => {
               onPress={
                 isLoggedIn
                   ? async () => {
-                    const slug = generateRoomId()
-                    await createRoom({slug})
-                  }
+                      const slug = generateRoomId()
+                      await createRoom({ slug })
+                    }
                   : undefined
               }
               href={isLoggedIn ? undefined : authUrl()}

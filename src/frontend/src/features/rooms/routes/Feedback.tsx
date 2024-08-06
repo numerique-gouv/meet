@@ -8,7 +8,9 @@ export const FeedbackRoute = () => {
   return (
     <Screen layout="centered">
       <CenteredContent title={t('feedback.heading')} withBackButton>
-        <Text as="p" variant="h3" centered>{t('feedback.body')}</Text>
+        <Text as="p" variant="h3" centered>
+          {t('feedback.body')}
+        </Text>
       </CenteredContent>
     </Screen>
   )
