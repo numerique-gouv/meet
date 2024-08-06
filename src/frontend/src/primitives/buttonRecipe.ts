@@ -20,6 +20,9 @@ export const buttonRecipe = cva({
     '&[data-pressed]': {
       backgroundColor: 'colorPalette.active',
     },
+    '&[data-selected]': {
+      backgroundColor: 'colorPalette.active',
+    },
   },
   variants: {
     size: {
@@ -49,6 +52,7 @@ export const buttonRecipe = cva({
     variant: {
       default: {
         colorPalette: 'control',
+        borderColor: 'control.subtle',
       },
       primary: {
         colorPalette: 'primary',
@@ -64,6 +68,18 @@ export const buttonRecipe = cva({
         },
         '&[data-pressed]': {
           backgroundColor: 'success.subtle!',
+        },
+      },
+      danger: {
+        colorPalette: 'danger',
+        borderColor: 'danger.600',
+        color: 'danger.subtle-text',
+        backgroundColor: 'danger.subtle',
+        '&[data-hovered]': {
+          backgroundColor: 'danger.200',
+        },
+        '&[data-pressed]': {
+          backgroundColor: 'danger.subtle!',
         },
       },
     },
@@ -98,10 +114,36 @@ export const buttonRecipe = cva({
         width: 'full',
       },
     },
+    /**
+     * if the button is next to other ones to make a "button group", tell where the button is to handle radius
+     */
+    groupPosition: {
+      left: {
+        borderTopRightRadius: 0,
+        borderBottomRightRadius: 0,
+      },
+      right: {
+        borderTopLeftRadius: 0,
+        borderBottomLeftRadius: 0,
+        borderLeft: 0,
+      },
+      center: {
+        borderRadius: 0,
+      },
+    },
+    // some toggle buttons make more sense without a "pushed button" style when enabled because their content changes to mark the state
+    toggledStyles: {
+      false: {
+        '&[data-selected]': {
+          backgroundColor: 'colorPalette',
+        },
+      },
+    },
   },
   defaultVariants: {
     size: 'default',
     variant: 'default',
     outline: false,
+    toggledStyles: true,
   },
 })
