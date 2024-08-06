@@ -74,7 +74,9 @@ export const Header = () => {
                   {user.email}
                 </Button>
                 <PopoverList
-                  items={[{ key: 'logout', value: 'logout', label: t('logout') }]}
+                  items={[
+                    { key: 'logout', value: 'logout', label: t('logout') },
+                  ]}
                   onAction={(value) => {
                     if (value === 'logout') {
                       window.location.href = logoutUrl()

@@ -32,13 +32,21 @@ export const Conference = ({
 }) => {
   const fetchKey = [keys.room, roomId, userConfig.username]
 
-  const { mutateAsync: createRoom, status: createStatus, isError: isCreateError} = useCreateRoom({
+  const {
+    mutateAsync: createRoom,
+    status: createStatus,
+    isError: isCreateError,
+  } = useCreateRoom({
     onSuccess: (data) => {
       queryClient.setQueryData(fetchKey, data)
     },
-  });
+  })
 
-  const { status: fetchStatus, isError: isFetchError, data } = useQuery({
+  const {
+    status: fetchStatus,
+    isError: isFetchError,
+    data,
+  } = useQuery({
     queryKey: fetchKey,
     enabled: !initialRoomData,
     initialData: initialRoomData,
@@ -48,7 +56,7 @@ export const Conference = ({
         username: userConfig.username,
       }).catch((error) => {
         if (error.statusCode == '404') {
-          createRoom({slug: roomId})
+          createRoom({ slug: roomId })
         }
       }),
     retry: false,
@@ -92,7 +100,12 @@ export const Conference = ({
   const { t } = useTranslation('rooms')
   if (isCreateError) {
     // this error screen should be replaced by a proper waiting room for anonymous user.
-    return <ErrorScreen title={t('error.createRoom.heading')} body={t('error.createRoom.body')} />
+    return (
+      <ErrorScreen
+        title={t('error.createRoom.heading')}
+        body={t('error.createRoom.body')}
+      />
+    )
   }
 
   return (
@@ -106,9 +119,7 @@ export const Conference = ({
           audio={userConfig.audioEnabled}
           video={userConfig.videoEnabled}
         >
-          <VideoConference
-            chatMessageFormatter={formatChatMessageLinks}
-          />
+          <VideoConference chatMessageFormatter={formatChatMessageLinks} />
           {showInviteDialog && (
             <InviteDialog
               isOpen={showInviteDialog}

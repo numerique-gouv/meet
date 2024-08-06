@@ -9,6 +9,6 @@ export type ApiRoom = {
     token: string
   }
   configuration?: {
-    [key: string]: string | number | boolean;
+    [key: string]: string | number | boolean
   }
 }

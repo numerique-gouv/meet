@@ -10,9 +10,8 @@ import { Layout } from './layout/Layout'
 import { NotFoundScreen } from './components/NotFoundScreen'
 import { routes } from './routes'
 import './i18n/init'
-import { silenceLiveKitLogs } from "@/utils/livekit.ts";
-import { queryClient } from "@/api/queryClient";
-
+import { silenceLiveKitLogs } from '@/utils/livekit.ts'
+import { queryClient } from '@/api/queryClient'
 
 function App() {
   const { i18n } = useTranslation()
