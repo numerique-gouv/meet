@@ -4,7 +4,6 @@ import { useTranslation } from 'react-i18next'
 import {
   formatChatMessageLinks,
   LiveKitRoom,
-  VideoConference,
   type LocalUserChoices,
 } from '@livekit/components-react'
 import { Room, RoomOptions } from 'livekit-client'
@@ -18,6 +17,8 @@ import { fetchRoom } from '../api/fetchRoom'
 import { ApiRoom } from '../api/ApiRoom'
 import { useCreateRoom } from '../api/createRoom'
 import { InviteDialog } from './InviteDialog'
+
+import { VideoConference } from '../livekit/prefabs/VideoConference'
 
 export const Conference = ({
   roomId,
