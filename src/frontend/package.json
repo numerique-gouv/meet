@@ -9,7 +9,8 @@
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "i18n:extract": "npx i18next -c i18next-parser.config.json",
-    "format": "prettier --write ./src"
+    "format": "prettier --write ./src",
+    "check": "prettier --check ./src"
   },
   "dependencies": {
     "@livekit/components-react": "2.3.3",
