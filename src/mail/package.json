@@ -11,7 +11,7 @@
   "scripts": {
     "build-mjml-to-html": "bash ./bin/mjml-to-html",
     "build-html-to-plain-text": "bash ./bin/html-to-plain-text",
-    "build": "yarn build-mjml-to-html && yarn build-html-to-plain-text"
+    "build": "npm run build-mjml-to-html && npm run build-html-to-plain-text"
   },
   "volta": {
     "node": "16.15.1"

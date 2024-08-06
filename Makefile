@@ -48,7 +48,7 @@ WAIT_DB             = @$(COMPOSE_RUN) dockerize -wait tcp://$(DB_HOST):$(DB_PORT
 
 # -- Backend
 MANAGE              = $(COMPOSE_RUN_APP) python manage.py
-MAIL_YARN           = $(COMPOSE_RUN) -w /app/src/mail node yarn # FIXME : use npm
+MAIL_NPM            = $(COMPOSE_RUN) -w /app/src/mail node npm
 
 # -- Frontend
 PATH_FRONT          = ./src/frontend
@@ -259,19 +259,19 @@ i18n-generate-and-upload: \
 # -- Mail generator
 
 mails-build: ## Convert mjml files to html and text
-	@$(MAIL_YARN) build
+	@$(MAIL_NPM) run build
 .PHONY: mails-build
 
 mails-build-html-to-plain-text: ## Convert html files to text
-	@$(MAIL_YARN) build-html-to-plain-text
+	@$(MAIL_NPM) run build-html-to-plain-text
 .PHONY: mails-build-html-to-plain-text
 
 mails-build-mjml-to-html:	## Convert mjml files to html and text
-	@$(MAIL_YARN) build-mjml-to-html
+	@$(MAIL_NPM) run build-mjml-to-html
 .PHONY: mails-build-mjml-to-html
 
 mails-install: ## install the mail generator
-	@$(MAIL_YARN) install
+	@$(MAIL_NPM) install
 .PHONY: mails-install
 
 
