@@ -4,12 +4,14 @@ import {
   RiQuestionLine,
   RiSettings3Line,
 } from '@remixicon/react'
+import { useState } from 'react'
 import { styled } from '@/styled-system/jsx'
 import {
   Menu as RACMenu,
   MenuItem as RACMenuItem,
   Popover as RACPopover,
 } from 'react-aria-components'
+import { SettingsDialog } from '@/features/settings'
 
 // Styled components to be refactored
 const StyledMenu = styled(RACMenu, {
@@ -60,29 +62,35 @@ const StyledPopover = styled(RACPopover, {
 
 export const OptionsMenu = () => {
   const { t } = useTranslation('rooms')
-
+  const [isSettingsDialogOpen, setIsSettingsDialogOpen] = useState(false)
   return (
-    <StyledPopover>
-      <StyledMenu>
-        <StyledMenuItem
-          href="https://tchap.gouv.fr/#/room/!aGImQayAgBLjSBycpm:agent.dinum.tchap.gouv.fr?via=agent.dinum.tchap.gouv.fr"
-          target="_blank"
-        >
-          <RiQuestionLine size={18} />
-          {t('options.items.support')}
-        </StyledMenuItem>
-        <StyledMenuItem
-          href="https://grist.incubateur.net/o/docs/forms/1YrfNP1QSSy8p2gCxMFnSf/4"
-          target="_blank"
-        >
-          <RiFeedbackLine size={18} />
-          {t('options.items.feedbacks')}
-        </StyledMenuItem>
-        <StyledMenuItem onAction={() => alert('delete')}>
-          <RiSettings3Line size={18} />
-          {t('options.items.settings')}
-        </StyledMenuItem>
-      </StyledMenu>
-    </StyledPopover>
+    <>
+      <StyledPopover>
+        <StyledMenu>
+          <StyledMenuItem
+            href="https://tchap.gouv.fr/#/room/!aGImQayAgBLjSBycpm:agent.dinum.tchap.gouv.fr?via=agent.dinum.tchap.gouv.fr"
+            target="_blank"
+          >
+            <RiQuestionLine size={18} />
+            {t('options.items.support')}
+          </StyledMenuItem>
+          <StyledMenuItem
+            href="https://grist.incubateur.net/o/docs/forms/1YrfNP1QSSy8p2gCxMFnSf/4"
+            target="_blank"
+          >
+            <RiFeedbackLine size={18} />
+            {t('options.items.feedbacks')}
+          </StyledMenuItem>
+          <StyledMenuItem onAction={() => setIsSettingsDialogOpen(true)}>
+            <RiSettings3Line size={18} />
+            {t('options.items.settings')}
+          </StyledMenuItem>
+        </StyledMenu>
+      </StyledPopover>
+      <SettingsDialog
+        isOpen={isSettingsDialogOpen}
+        onOpenChange={(v) => setIsSettingsDialogOpen(v)}
+      />
+    </>
   )
 }
