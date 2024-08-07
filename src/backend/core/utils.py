@@ -11,7 +11,7 @@ from livekit.api import AccessToken, VideoGrants
 
 
 def generate_token(room: str, user, username: Optional[str] = None) -> str:
-    """Generate a Livekit access token for a user in a specific room.
+    """Generate a LiveKit access token for a user in a specific room.
 
     Args:
         room (str): The name of the room.
@@ -22,7 +22,6 @@ def generate_token(room: str, user, username: Optional[str] = None) -> str:
     Returns:
         str: The LiveKit JWT access token.
     """
-
     video_grants = VideoGrants(
         room=room,
         room_join=True,
@@ -35,18 +34,21 @@ def generate_token(room: str, user, username: Optional[str] = None) -> str:
         ],
     )
 
-    token = AccessToken(
-        api_key=settings.LIVEKIT_CONFIGURATION["api_key"],
-        api_secret=settings.LIVEKIT_CONFIGURATION["api_secret"],
-    ).with_grants(video_grants)
-
     if user.is_anonymous:
-        token.with_identity(str(uuid4()))
+        identity = str(uuid4())
         default_username = "Anonymous"
     else:
-        token.with_identity(user.sub)
+        identity = str(user.sub)
         default_username = str(user)
 
-    token.with_name(username or default_username)
+    token = (
+        AccessToken(
+            api_key=settings.LIVEKIT_CONFIGURATION["api_key"],
+            api_secret=settings.LIVEKIT_CONFIGURATION["api_secret"],
+        )
+        .with_grants(video_grants)
+        .with_identity(identity)
+        .with_name(username or default_username)
+    )
 
     return token.to_jwt()

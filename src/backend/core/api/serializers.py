@@ -123,7 +123,7 @@ class RoomSerializer(serializers.ModelSerializer):
         if role is not None or instance.is_public:
             slug = f"{instance.id!s}".replace("-", "")
 
-            username = request.GET.get("username", None)
+            username = request.query_params.get("username", None)
 
             output["livekit"] = {
                 "url": settings.LIVEKIT_CONFIGURATION["url"],
