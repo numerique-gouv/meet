@@ -1,18 +1,24 @@
 import { useTranslation } from 'react-i18next'
 import { Field, Form, Dialog, DialogProps } from '@/primitives'
-import { useRoomContext } from '@livekit/components-react'
+import {
+  usePersistentUserChoices,
+  useRoomContext,
+} from '@livekit/components-react'
 
 export type UsernameDialogProps = Pick<DialogProps, 'isOpen' | 'onOpenChange'>
 
 export const UsernameDialog = (props: UsernameDialogProps) => {
   const { t } = useTranslation('rooms')
+  const { saveUsername } = usePersistentUserChoices()
 
   const ctx = useRoomContext()
   return (
     <Dialog title={t('options.username.heading')} {...props}>
       <Form
         onSubmit={(data) => {
-          ctx.localParticipant.setName(data.username as string)
+          const { username } = data as { username: string }
+          ctx.localParticipant.setName(username)
+          saveUsername(username)
           const { onOpenChange } = props
           if (onOpenChange) {
             onOpenChange(false)
