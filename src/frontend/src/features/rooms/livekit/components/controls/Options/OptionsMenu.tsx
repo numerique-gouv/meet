@@ -3,6 +3,7 @@ import {
   RiFeedbackLine,
   RiQuestionLine,
   RiSettings3Line,
+  RiUser5Line,
 } from '@remixicon/react'
 import { useState } from 'react'
 import { styled } from '@/styled-system/jsx'
@@ -10,8 +11,10 @@ import {
   Menu as RACMenu,
   MenuItem as RACMenuItem,
   Popover as RACPopover,
+  Separator as RACSeparator,
 } from 'react-aria-components'
 import { SettingsDialog } from '@/features/settings'
+import { UsernameDialog } from '../../dialogs/UsernameDialog'
 
 // Styled components to be refactored
 const StyledMenu = styled(RACMenu, {
@@ -60,13 +63,28 @@ const StyledPopover = styled(RACPopover, {
   },
 })
 
+const StyledSeparator = styled(RACSeparator, {
+  base: {
+    height: '1px',
+    background: '#9ca3af',
+    margin: '2px 4px',
+  },
+})
+
+type DialogState = 'username' | 'settings' | null
+
 export const OptionsMenu = () => {
   const { t } = useTranslation('rooms')
-  const [isSettingsDialogOpen, setIsSettingsDialogOpen] = useState(false)
+  const [dialogOpen, setDialogOpen] = useState<DialogState>(null)
   return (
     <>
       <StyledPopover>
         <StyledMenu>
+          <StyledMenuItem onAction={() => setDialogOpen('username')}>
+            <RiUser5Line size={18} />
+            {t('options.items.username')}
+          </StyledMenuItem>
+          <StyledSeparator />
           <StyledMenuItem
             href="https://tchap.gouv.fr/#/room/!aGImQayAgBLjSBycpm:agent.dinum.tchap.gouv.fr?via=agent.dinum.tchap.gouv.fr"
             target="_blank"
@@ -81,15 +99,19 @@ export const OptionsMenu = () => {
             <RiFeedbackLine size={18} />
             {t('options.items.feedbacks')}
           </StyledMenuItem>
-          <StyledMenuItem onAction={() => setIsSettingsDialogOpen(true)}>
+          <StyledMenuItem onAction={() => setDialogOpen('settings')}>
             <RiSettings3Line size={18} />
             {t('options.items.settings')}
           </StyledMenuItem>
         </StyledMenu>
       </StyledPopover>
+      <UsernameDialog
+        isOpen={dialogOpen === 'username'}
+        onOpenChange={(v) => !v && setDialogOpen(null)}
+      />
       <SettingsDialog
-        isOpen={isSettingsDialogOpen}
-        onOpenChange={(v) => setIsSettingsDialogOpen(v)}
+        isOpen={dialogOpen === 'settings'}
+        onOpenChange={(v) => !v && setDialogOpen(null)}
       />
     </>
   )
