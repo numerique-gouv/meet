@@ -36,7 +36,15 @@
     "items": {
       "feedbacks": "",
       "support": "",
-      "settings": ""
+      "settings": "",
+      "username": ""
+    },
+    "username": {
+      "heading": "",
+      "label": "",
+      "description": "",
+      "validationError": "",
+      "submitLabel": ""
     }
   }
 }

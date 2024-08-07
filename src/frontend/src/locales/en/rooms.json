@@ -36,7 +36,15 @@
     "items": {
       "feedbacks": "Give us feedbacks",
       "support": "Get Help on Tchap",
-      "settings": "Settings"
+      "settings": "Settings",
+      "username": "Update Your Name"
+    },
+    "username": {
+      "heading": "Update Your Name",
+      "label": "Your Name",
+      "description": "All other participants will see this name.",
+      "validationError": "Name cannot be empty.",
+      "submitLabel": "Save"
     }
   }
 }
