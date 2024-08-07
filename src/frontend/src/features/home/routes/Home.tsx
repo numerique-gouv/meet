@@ -9,10 +9,15 @@ import { generateRoomId } from '@/features/rooms'
 import { authUrl, useUser, UserAware } from '@/features/auth'
 import { JoinMeetingDialog } from '../components/JoinMeetingDialog'
 import { useCreateRoom } from '@/features/rooms'
+import { usePersistentUserChoices } from '@livekit/components-react'
 
 export const Home = () => {
   const { t } = useTranslation('home')
   const { isLoggedIn } = useUser()
+
+  const {
+    userChoices: { username },
+  } = usePersistentUserChoices()
 
   const { mutateAsync: createRoom } = useCreateRoom({
     onSuccess: (data) => {
@@ -44,7 +49,7 @@ export const Home = () => {
                 isLoggedIn
                   ? async () => {
                       const slug = generateRoomId()
-                      await createRoom({ slug })
+                      await createRoom({ slug, username })
                     }
                   : undefined
               }
