@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import {
   usePersistentUserChoices,
   type LocalUserChoices,
@@ -18,6 +18,12 @@ export const Room = () => {
   const initialRoomData = history.state?.initialRoomData
   const mode = isLoggedIn && history.state?.create ? 'create' : 'join'
   const skipJoinScreen = isLoggedIn && mode === 'create'
+
+  useEffect(() => {
+    if (window.history.state) {
+      window.history.replaceState({}, '')
+    }
+  }, [])
 
   if (!roomId) {
     return <ErrorScreen />
