@@ -30,6 +30,20 @@ import {
 } from '@livekit/components-react'
 
 import { ControlBar } from './ControlBar'
+import { styled } from '@/styled-system/jsx'
+import { cva } from '@/styled-system/css'
+
+const LayoutWrapper = styled(
+  'div',
+  cva({
+    base: {
+      position: 'relative',
+      display: 'flex',
+      width: '100%',
+      height: 'calc(100% - var(--lk-control-bar-height))',
+    },
+  })
+)
 
 /**
  * @public
@@ -163,30 +177,35 @@ export function VideoConference({
           onWidgetChange={widgetUpdate}
         >
           <div className="lk-video-conference-inner">
-            {!focusTrack ? (
-              <div className="lk-grid-layout-wrapper">
-                <GridLayout tracks={tracks}>
-                  <ParticipantTile />
-                </GridLayout>
-              </div>
-            ) : (
-              <div className="lk-focus-layout-wrapper">
-                <FocusLayoutContainer>
-                  <CarouselLayout tracks={carouselTracks}>
+            <LayoutWrapper>
+              {!focusTrack ? (
+                <div
+                  className="lk-grid-layout-wrapper"
+                  style={{ height: 'auto' }}
+                >
+                  <GridLayout tracks={tracks}>
                     <ParticipantTile />
-                  </CarouselLayout>
-                  {focusTrack && <FocusLayout trackRef={focusTrack} />}
-                </FocusLayoutContainer>
-              </div>
-            )}
+                  </GridLayout>
+                </div>
+              ) : (
+                <div className="lk-focus-layout-wrapper">
+                  <FocusLayoutContainer>
+                    <CarouselLayout tracks={carouselTracks}>
+                      <ParticipantTile />
+                    </CarouselLayout>
+                    {focusTrack && <FocusLayout trackRef={focusTrack} />}
+                  </FocusLayoutContainer>
+                </div>
+              )}
+              <Chat
+                style={{ display: widgetState.showChat ? 'grid' : 'none' }}
+                messageFormatter={chatMessageFormatter}
+                messageEncoder={chatMessageEncoder}
+                messageDecoder={chatMessageDecoder}
+              />
+            </LayoutWrapper>
             <ControlBar />
           </div>
-          <Chat
-            style={{ display: widgetState.showChat ? 'grid' : 'none' }}
-            messageFormatter={chatMessageFormatter}
-            messageEncoder={chatMessageEncoder}
-            messageDecoder={chatMessageDecoder}
-          />
         </LayoutContextProvider>
       )}
       <RoomAudioRenderer />
