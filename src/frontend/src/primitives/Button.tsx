@@ -1,10 +1,12 @@
 import { type ReactNode } from 'react'
 import {
   Button as RACButton,
+  ToggleButton as RACToggleButton,
   type ButtonProps as RACButtonsProps,
   TooltipTrigger,
   Link,
   LinkProps,
+  ToggleButtonProps as RACToggleButtonProps,
 } from 'react-aria-components'
 import { cva, type RecipeVariantProps } from '@/styled-system/css'
 import { Tooltip } from './Tooltip'
@@ -19,6 +21,9 @@ const button = cva({
     border: '1px solid transparent',
     color: 'colorPalette.text',
     backgroundColor: 'colorPalette',
+    '&[data-selected]': {
+      background: 'colorPalette.active',
+    },
     '&[data-hovered]': {
       backgroundColor: 'colorPalette.hover',
     },
@@ -112,6 +117,13 @@ const button = cva({
         '&[data-pressed]': {
           borderColor: 'gray.500',
         },
+        '&[data-selected]': {
+          background: '#e5e7eb',
+          borderColor: 'gray.400',
+          '&[data-hovered]': {
+            backgroundColor: 'gray.300',
+          },
+        },
       },
     },
   },
@@ -128,7 +140,9 @@ type Tooltip = {
 }
 export type ButtonProps = RecipeVariantProps<typeof button> &
   RACButtonsProps &
-  Tooltip
+  Tooltip & {
+    toggle?: boolean
+  }
 
 type LinkButtonProps = RecipeVariantProps<typeof button> & LinkProps & Tooltip
 
@@ -147,6 +161,18 @@ export const Button = ({
       </TooltipWrapper>
     )
   }
+
+  if ((props as ButtonProps).toggle) {
+    return (
+      <TooltipWrapper tooltip={tooltip} tooltipType={tooltipType}>
+        <RACToggleButton
+          className={button(variantProps)}
+          {...(componentProps as RACToggleButtonProps)}
+        />
+      </TooltipWrapper>
+    )
+  }
+
   return (
     <TooltipWrapper tooltip={tooltip} tooltipType={tooltipType}>
       <RACButton
