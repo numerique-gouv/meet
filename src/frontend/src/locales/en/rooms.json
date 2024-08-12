@@ -29,7 +29,11 @@
     "shareScreen": "Share screen",
     "stopScreenShare": "Stop screen share",
     "chat": "Chat",
-    "leave": "Leave"
+    "leave": "Leave",
+    "participants": {
+      "open": "Hide everyone",
+      "closed": "See everyone"
+    }
   },
   "options": {
     "buttonLabel": "More Options",

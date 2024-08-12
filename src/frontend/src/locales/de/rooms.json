@@ -29,7 +29,11 @@
     "shareScreen": "",
     "stopScreenShare": "",
     "chat": "",
-    "leave": ""
+    "leave": "",
+    "participants": {
+      "open": "",
+      "closed": ""
+    }
   },
   "options": {
     "buttonLabel": "",
