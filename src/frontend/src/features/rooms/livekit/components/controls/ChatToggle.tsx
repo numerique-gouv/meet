@@ -3,12 +3,17 @@ import { RiChat1Line } from '@remixicon/react'
 import { Button } from '@/primitives'
 import { css } from '@/styled-system/css'
 import { useLayoutContext } from '@livekit/components-react'
+import { useSnapshot } from 'valtio'
+import { participantsStore } from '@/stores/participants'
 
 export const ChatToggle = () => {
   const { t } = useTranslation('rooms')
 
   const { dispatch, state } = useLayoutContext().widget
   const tooltipLabel = state?.showChat ? 'open' : 'closed'
+
+  const participantsSnap = useSnapshot(participantsStore)
+  const showParticipants = participantsSnap.showParticipants
 
   return (
     <div
@@ -25,6 +30,7 @@ export const ChatToggle = () => {
         tooltip={t(`controls.chat.${tooltipLabel}`)}
         isSelected={state?.showChat}
         onPress={() => {
+          if (showParticipants) participantsStore.showParticipants = false
           if (dispatch) dispatch({ msg: 'toggle_chat' })
         }}
       >
