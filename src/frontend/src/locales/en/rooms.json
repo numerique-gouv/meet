@@ -28,7 +28,10 @@
     "camera": "Camera",
     "shareScreen": "Share screen",
     "stopScreenShare": "Stop screen share",
-    "chat": "Chat",
+    "chat": {
+      "open": "Close the chat",
+      "closed": "Open the chat"
+    },
     "leave": "Leave",
     "participants": {
       "open": "Hide everyone",

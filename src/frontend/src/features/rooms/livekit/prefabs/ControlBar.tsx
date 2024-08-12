@@ -4,8 +4,6 @@ import * as React from 'react'
 import { supportsScreenSharing } from '@livekit/components-core'
 
 import {
-  ChatIcon,
-  ChatToggle,
   DisconnectButton,
   LeaveIcon,
   MediaDeviceMenu,
@@ -19,7 +17,8 @@ import { StartMediaButton } from '../components/controls/StartMediaButton'
 import { useMediaQuery } from '../hooks/useMediaQuery'
 import { useTranslation } from 'react-i18next'
 import { OptionsButton } from '../components/controls/Options/OptionsButton'
-import { ParticipantsToggle } from '@/features/rooms/livekit/components/controls/Participants/ParticipantsToggle.tsx'
+import { ParticipantsToggle } from '@/features/rooms/livekit/components/controls/Participants/ParticipantsToggle'
+import { ChatToggle } from '@/features/rooms/livekit/components/controls/ChatToggle'
 
 /** @public */
 export type ControlBarControls = {
@@ -184,10 +183,7 @@ export function ControlBar({
             )}
         </TrackToggle>
       )}
-      <ChatToggle>
-        {showIcon && <ChatIcon />}
-        {showText && t('controls.chat')}
-      </ChatToggle>
+      <ChatToggle />
       <ParticipantsToggle />
       <OptionsButton />
       <DisconnectButton>
