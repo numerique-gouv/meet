@@ -28,7 +28,10 @@
     "camera": "",
     "shareScreen": "",
     "stopScreenShare": "",
-    "chat": "",
+    "chat": {
+      "open": "",
+      "closed": ""
+    },
     "leave": "",
     "participants": {
       "open": "",
