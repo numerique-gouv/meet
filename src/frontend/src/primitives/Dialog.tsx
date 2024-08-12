@@ -107,7 +107,7 @@ export const Dialog = ({
                     ? children({ close })
                     : children}
                   {!isAlert && (
-                    <Div position="absolute" top="0" right="0">
+                    <Div position="absolute" top="5" right="5">
                       <Button
                         invisible
                         size="xs"
