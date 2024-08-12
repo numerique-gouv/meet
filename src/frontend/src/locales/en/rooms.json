@@ -50,5 +50,10 @@
       "validationError": "Name cannot be empty.",
       "submitLabel": "Save"
     }
+  },
+  "participants": {
+    "heading": "Participants",
+    "closeButton": "Hide participants",
+    "you": "You"
   }
 }

@@ -19,6 +19,7 @@ import { StartMediaButton } from '../components/controls/StartMediaButton'
 import { useMediaQuery } from '../hooks/useMediaQuery'
 import { useTranslation } from 'react-i18next'
 import { OptionsButton } from '../components/controls/Options/OptionsButton'
+import { ParticipantsToggle } from '@/features/rooms/livekit/components/controls/Participants/ParticipantsToggle.tsx'
 
 /** @public */
 export type ControlBarControls = {
@@ -187,6 +188,7 @@ export function ControlBar({
         {showIcon && <ChatIcon />}
         {showText && t('controls.chat')}
       </ChatToggle>
+      <ParticipantsToggle />
       <OptionsButton />
       <DisconnectButton>
         {showIcon && <LeaveIcon />}

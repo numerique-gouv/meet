@@ -50,5 +50,10 @@
       "validationError": "",
       "submitLabel": ""
     }
+  },
+  "participants": {
+    "heading": "",
+    "closeButton": "",
+    "you": ""
   }
 }

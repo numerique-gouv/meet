@@ -50,5 +50,10 @@
       "validationError": "Le nom ne peut pas être vide.",
       "submitLabel": "Enregistrer"
     }
+  },
+  "participants": {
+    "heading": "Participants",
+    "closeButton": "Masquer les participants",
+    "you": "Vous"
   }
 }

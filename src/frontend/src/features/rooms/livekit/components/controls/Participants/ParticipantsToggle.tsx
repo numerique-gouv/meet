@@ -3,7 +3,8 @@ import { RiGroupLine, RiInfinityLine } from '@remixicon/react'
 import { Button } from '@/primitives'
 import { css } from '@/styled-system/css'
 import { useParticipants } from '@livekit/components-react'
-import { useState } from 'react'
+import { useSnapshot } from 'valtio'
+import { participantsStore } from '@/stores/participants'
 
 export const ParticipantsToggle = () => {
   const { t } = useTranslation('rooms')
@@ -16,8 +17,10 @@ export const ParticipantsToggle = () => {
   const participants = useParticipants()
   const numParticipants = participants?.length
 
-  const [isOpen, setIsOpen] = useState(false)
-  const tooltipLabel = isOpen ? 'open' : 'closed'
+  const participantsSnap = useSnapshot(participantsStore)
+  const showParticipants = participantsSnap.showParticipants
+
+  const tooltipLabel = showParticipants ? 'open' : 'closed'
 
   return (
     <div
@@ -32,7 +35,8 @@ export const ParticipantsToggle = () => {
         legacyStyle
         aria-label={t(`controls.participants.${tooltipLabel}`)}
         tooltip={t(`controls.participants.${tooltipLabel}`)}
-        onPress={() => setIsOpen(!isOpen)}
+        isSelected={showParticipants}
+        onPress={() => (participantsStore.showParticipants = !showParticipants)}
       >
         <RiGroupLine />
       </Button>
