@@ -32,6 +32,9 @@ import {
 import { ControlBar } from './ControlBar'
 import { styled } from '@/styled-system/jsx'
 import { cva } from '@/styled-system/css'
+import { ParticipantsList } from '@/features/rooms/livekit/components/controls/Participants/ParticipantsList'
+import { useSnapshot } from 'valtio'
+import { participantsStore } from '@/stores/participants'
 
 const LayoutWrapper = styled(
   'div',
@@ -168,6 +171,9 @@ export function VideoConference({
   ])
   /* eslint-enable react-hooks/exhaustive-deps */
 
+  const participantsSnap = useSnapshot(participantsStore)
+  const showParticipants = participantsSnap.showParticipants
+
   return (
     <div className="lk-video-conference" {...props}>
       {isWeb() && (
@@ -203,6 +209,7 @@ export function VideoConference({
                 messageEncoder={chatMessageEncoder}
                 messageDecoder={chatMessageDecoder}
               />
+              {showParticipants && <ParticipantsList />}
             </LayoutWrapper>
             <ControlBar />
           </div>

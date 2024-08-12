@@ -142,6 +142,7 @@ export type ButtonProps = RecipeVariantProps<typeof button> &
   RACButtonsProps &
   Tooltip & {
     toggle?: boolean
+    isSelected?: boolean
   }
 
 type LinkButtonProps = RecipeVariantProps<typeof button> & LinkProps & Tooltip
