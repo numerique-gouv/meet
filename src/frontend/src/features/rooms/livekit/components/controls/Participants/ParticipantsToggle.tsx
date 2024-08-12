@@ -2,12 +2,14 @@ import { useTranslation } from 'react-i18next'
 import { RiGroupLine, RiInfinityLine } from '@remixicon/react'
 import { Button } from '@/primitives'
 import { css } from '@/styled-system/css'
-import { useParticipants } from '@livekit/components-react'
+import { useLayoutContext, useParticipants } from '@livekit/components-react'
 import { useSnapshot } from 'valtio'
 import { participantsStore } from '@/stores/participants'
 
 export const ParticipantsToggle = () => {
   const { t } = useTranslation('rooms')
+
+  const { dispatch, state } = useLayoutContext().widget
 
   /**
    * Context could not be used due to inconsistent refresh behavior.
@@ -36,7 +38,10 @@ export const ParticipantsToggle = () => {
         aria-label={t(`controls.participants.${tooltipLabel}`)}
         tooltip={t(`controls.participants.${tooltipLabel}`)}
         isSelected={showParticipants}
-        onPress={() => (participantsStore.showParticipants = !showParticipants)}
+        onPress={() => {
+          if (dispatch && state?.showChat) dispatch({ msg: 'toggle_chat' })
+          participantsStore.showParticipants = !showParticipants
+        }}
       >
         <RiGroupLine />
       </Button>
