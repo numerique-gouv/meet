@@ -48,7 +48,7 @@ const StyledRACDialog = styled(RACDialog, {
 })
 
 export type DialogProps = RACDialogProps & {
-  title: string
+  title?: string
   onClose?: () => void
   /**
    * use the Dialog as a controlled component
@@ -96,13 +96,15 @@ export const Dialog = ({
                 pointerEvents="auto"
               >
                 <Box size="sm" type="dialog">
-                  <Heading
-                    slot="title"
-                    level={1}
-                    className={text({ variant: 'h1' })}
-                  >
-                    {title}
-                  </Heading>
+                  {!!title && (
+                    <Heading
+                      slot="title"
+                      level={1}
+                      className={text({ variant: 'h1' })}
+                    >
+                      {title}
+                    </Heading>
+                  )}
                   {typeof children === 'function'
                     ? children({ close })
                     : children}
