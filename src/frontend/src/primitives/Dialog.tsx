@@ -28,7 +28,7 @@ const StyledModalOverlay = styled(ModalOverlay, {
   },
 })
 
-// disabled pointerEvents on the stuff surrouding the overlay is there so that clicking on the overlay to close the modal still works
+// disabled pointerEvents on the stuff surrounding the overlay is there so that clicking on the overlay to close the modal still works
 const StyledModal = styled(Modal, {
   base: {
     width: 'full',
