@@ -8,9 +8,8 @@ import { cva } from '@/styled-system/css'
  */
 export const menuItemRecipe = cva({
   base: {
-    paddingY: 0.125,
+    paddingY: '0.4rem',
     paddingX: 0.5,
-    paddingLeft: 1.5,
     textAlign: 'left',
     width: 'full',
     borderRadius: 4,
@@ -35,6 +34,15 @@ export const menuItemRecipe = cva({
       color: 'primary.text',
       backgroundColor: 'primary',
       outline: 'none!',
+    },
+  },
+  variants: {
+    icon: {
+      true: {
+        display: 'flex',
+        alignItems: 'center',
+        gap: '1rem',
+      },
     },
   },
 })
