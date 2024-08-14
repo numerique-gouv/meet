@@ -150,7 +150,6 @@ export const TabList = ({ children, border, ...props }: TabListProps) => {
 const StyledTabPanel = styled(RACTabPanel, {
   base: {
     marginTop: '4px',
-    padding: '10px',
     borderRadius: '4px',
     outline: 'none',
     '&[data-focus-visible]': {
@@ -165,6 +164,18 @@ const StyledTabPanel = styled(RACTabPanel, {
         overflow: 'auto',
       },
     },
+    padding: {
+      sm: {
+        padding: '10px',
+      },
+      md: {
+        padding: '2rem',
+      },
+    },
+  },
+  defaultVariants: {
+    padding: 'sm',
+    flex: false,
   },
 })
 
