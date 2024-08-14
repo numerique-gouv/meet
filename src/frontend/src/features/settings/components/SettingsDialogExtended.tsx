@@ -4,6 +4,11 @@ import { css } from '@/styled-system/css'
 import { text } from '@/primitives/Text.tsx'
 import { Heading } from 'react-aria-components'
 import { useTranslation } from 'react-i18next'
+import {
+  RiAccountCircleLine,
+  RiSettings3Line,
+  RiSpeakerLine,
+} from '@remixicon/react'
 
 const tabsStyle = css({
   maxHeight: '40.625rem', // fixme size copied from meet settings modal
@@ -45,13 +50,16 @@ export const SettingsDialogExtended = (props: SettingsDialogExtended) => {
             {t('dialog.heading')}
           </Heading>
           <TabList border={false} aria-label="Chat log orientation example">
-            <Tab highlight id="1">
+            <Tab icon highlight id="1">
+              <RiAccountCircleLine />
               {t('tabs.account')}
             </Tab>
-            <Tab highlight id="2">
+            <Tab icon highlight id="2">
+              <RiSpeakerLine />
               {t('tabs.audio')}
             </Tab>
-            <Tab highlight id="3">
+            <Tab icon highlight id="3">
+              <RiSettings3Line />
               {t('tabs.general')}
             </Tab>
           </TabList>
