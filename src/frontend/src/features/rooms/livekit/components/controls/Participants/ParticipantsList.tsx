@@ -1,5 +1,4 @@
 import { css } from '@/styled-system/css'
-import * as React from 'react'
 import { useParticipants } from '@livekit/components-react'
 
 import { Heading } from 'react-aria-components'
@@ -11,32 +10,7 @@ import { capitalize } from '@/utils/capitalize'
 import { participantsStore } from '@/stores/participants'
 import { useTranslation } from 'react-i18next'
 import { allParticipantRoomEvents } from '@/features/rooms/livekit/constants/events'
-
-export type AvatarProps = React.HTMLAttributes<HTMLSpanElement> & {
-  name: string
-  size?: number
-}
-
-// TODO - extract inline styling in a centralized styling file, and avoid magic numbers
-export const Avatar = ({ name, size = 32 }: AvatarProps) => (
-  <div
-    className={css({
-      minWidth: `${size}px`,
-      minHeight: `${size}px`,
-      backgroundColor: '#3498db',
-      borderRadius: '50%',
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-      fontSize: '1.25rem',
-      userSelect: 'none',
-      cursor: 'default',
-      color: 'white',
-    })}
-  >
-    {name?.trim()?.charAt(0).toUpperCase()}
-  </div>
-)
+import { Avatar } from '@/components/Avatar'
 
 // TODO: Optimize rendering performance, especially for longer participant lists, even though they are generally short.
 export const ParticipantsList = () => {
