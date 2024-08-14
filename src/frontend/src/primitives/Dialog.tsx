@@ -91,38 +91,35 @@ export const Dialog = ({
         <StyledRACDialog {...dialogProps}>
           {({ close }) => (
             <VerticallyOffCenter>
-              <Div
-                width="fit-content"
-                maxWidth="full"
-                margin="auto"
-                pointerEvents="auto"
-              >
-                <Box size="sm" type={boxType}>
-                  {!!title && (
-                    <Heading
-                      slot="title"
-                      level={1}
-                      className={text({ variant: 'h1' })}
-                    >
-                      {title}
-                    </Heading>
-                  )}
-                  {typeof children === 'function'
-                    ? children({ close })
-                    : children}
-                  {!isAlert && (
-                    <Div position="absolute" top="5" right="5">
-                      <Button
-                        invisible
-                        size="xs"
-                        onPress={() => close()}
-                        aria-label={t('closeDialog')}
+              <Div margin="auto" width="fit-content" maxWidth="full">
+                <Div margin="1rem" pointerEvents="auto">
+                  <Box size="sm" type={boxType}>
+                    {!!title && (
+                      <Heading
+                        slot="title"
+                        level={1}
+                        className={text({ variant: 'h1' })}
                       >
-                        <RiCloseLine />
-                      </Button>
-                    </Div>
-                  )}
-                </Box>
+                        {title}
+                      </Heading>
+                    )}
+                    {typeof children === 'function'
+                      ? children({ close })
+                      : children}
+                    {!isAlert && (
+                      <Div position="absolute" top="5" right="5">
+                        <Button
+                          invisible
+                          size="xs"
+                          onPress={() => close()}
+                          aria-label={t('closeDialog')}
+                        >
+                          <RiCloseLine />
+                        </Button>
+                      </Div>
+                    )}
+                  </Box>
+                </Div>
               </Div>
             </VerticallyOffCenter>
           )}
