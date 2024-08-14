@@ -11,5 +11,10 @@
     "heading": "",
     "label": ""
   },
-  "settingsButtonLabel": ""
+  "settingsButtonLabel": "",
+  "tabs": {
+    "account": "",
+    "audio": "",
+    "general": ""
+  }
 }

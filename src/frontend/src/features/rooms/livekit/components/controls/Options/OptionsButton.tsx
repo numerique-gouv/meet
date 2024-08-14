@@ -4,8 +4,8 @@ import { Button, Menu } from '@/primitives'
 
 import { useState } from 'react'
 import { UsernameDialog } from '@/features/rooms/livekit/components/dialogs/UsernameDialog'
-import { SettingsDialog } from '@/features/settings'
 import { OptionsMenuItems } from '@/features/rooms/livekit/components/controls/Options/OptionsMenuItems'
+import { SettingsDialogExtended } from '@/features/settings/components/SettingsDialogExtended'
 
 export type DialogState = 'username' | 'settings' | null
 
@@ -29,7 +29,7 @@ export const OptionsButton = () => {
         isOpen={dialogOpen === 'username'}
         onOpenChange={(v) => !v && setDialogOpen(null)}
       />
-      <SettingsDialog
+      <SettingsDialogExtended
         isOpen={dialogOpen === 'settings'}
         onOpenChange={(v) => !v && setDialogOpen(null)}
       />

@@ -11,5 +11,10 @@
     "heading": "Language",
     "label": "Language"
   },
-  "settingsButtonLabel": "Settings"
+  "settingsButtonLabel": "Settings",
+  "tabs": {
+    "account": "Profile",
+    "audio": "Audio",
+    "general": "General"
+  }
 }

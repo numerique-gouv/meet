@@ -11,5 +11,10 @@
     "heading": "Langue",
     "label": "Langue de l'application"
   },
-  "settingsButtonLabel": "Paramètres"
+  "settingsButtonLabel": "Paramètres",
+  "tabs": {
+    "account": "Profile",
+    "audio": "Audio",
+    "general": "Général"
+  }
 }
