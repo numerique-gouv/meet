@@ -98,7 +98,7 @@ export const ParticipantsList = () => {
           <RiCloseLine />
         </Button>
       </Div>
-      {participants?.length && (
+      {participants?.length > 0 && (
         <VStack
           role="list"
           className={css({
