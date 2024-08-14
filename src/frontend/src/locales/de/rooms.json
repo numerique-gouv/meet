@@ -45,13 +45,6 @@
       "support": "",
       "settings": "",
       "username": ""
-    },
-    "username": {
-      "heading": "",
-      "label": "",
-      "description": "",
-      "validationError": "",
-      "submitLabel": ""
     }
   },
   "participants": {

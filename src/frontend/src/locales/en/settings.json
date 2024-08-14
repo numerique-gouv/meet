@@ -2,7 +2,9 @@
   "account": {
     "currentlyLoggedAs": "You are currently logged in as <0>{{user}}</0>",
     "heading": "Account",
-    "youAreNotLoggedIn": "You are not logged in."
+    "youAreNotLoggedIn": "You are not logged in.",
+    "nameLabel": "Votre Nom",
+    "authentication": "Authentication"
   },
   "dialog": {
     "heading": "Settings"

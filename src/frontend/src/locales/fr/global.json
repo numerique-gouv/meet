@@ -16,5 +16,6 @@
   "logout": "Se déconnecter",
   "notFound": {
     "heading": "Page introuvable"
-  }
+  },
+  "submit": "OK"
 }

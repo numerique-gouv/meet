@@ -16,5 +16,6 @@
   "logout": "Logout",
   "notFound": {
     "heading": "Page not found"
-  }
+  },
+  "submit": "OK"
 }

@@ -162,6 +162,7 @@ const StyledTabPanel = styled(RACTabPanel, {
         display: 'flex',
         flexGrow: 1,
         overflow: 'auto',
+        flexDirection: 'column', //fixme should be parameterizable
       },
     },
     padding: {

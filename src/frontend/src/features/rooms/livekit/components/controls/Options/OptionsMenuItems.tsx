@@ -3,25 +3,11 @@ import {
   RiFeedbackLine,
   RiQuestionLine,
   RiSettings3Line,
-  RiUser5Line,
 } from '@remixicon/react'
-import { styled } from '@/styled-system/jsx'
-import {
-  MenuItem,
-  Menu as RACMenu,
-  Separator as RACSeparator,
-} from 'react-aria-components'
+import { MenuItem, Menu as RACMenu } from 'react-aria-components'
 import { useTranslation } from 'react-i18next'
 import { Dispatch, SetStateAction } from 'react'
 import { DialogState } from '@/features/rooms/livekit/components/controls/Options/OptionsButton'
-
-const StyledSeparator = styled(RACSeparator, {
-  base: {
-    height: '1px',
-    background: 'gray.300',
-    margin: '4px 0',
-  },
-})
 
 // @todo try refactoring it to use MenuList component
 export const OptionsMenuItems = ({
@@ -38,14 +24,6 @@ export const OptionsMenuItems = ({
         width: '300px',
       }}
     >
-      <MenuItem
-        className={menuItemRecipe({ icon: true })}
-        onAction={() => onOpenDialog('username')}
-      >
-        <RiUser5Line size={18} />
-        {t('options.items.username')}
-      </MenuItem>
-      <StyledSeparator />
       <MenuItem
         href="https://tchap.gouv.fr/#/room/!aGImQayAgBLjSBycpm:agent.dinum.tchap.gouv.fr?via=agent.dinum.tchap.gouv.fr"
         target="_blank"

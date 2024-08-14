@@ -3,7 +3,6 @@ import { RiMore2Line } from '@remixicon/react'
 import { Button, Menu } from '@/primitives'
 
 import { useState } from 'react'
-import { UsernameDialog } from '@/features/rooms/livekit/components/dialogs/UsernameDialog'
 import { OptionsMenuItems } from '@/features/rooms/livekit/components/controls/Options/OptionsMenuItems'
 import { SettingsDialogExtended } from '@/features/settings/components/SettingsDialogExtended'
 
@@ -25,10 +24,6 @@ export const OptionsButton = () => {
         </Button>
         <OptionsMenuItems onOpenDialog={setDialogOpen} />
       </Menu>
-      <UsernameDialog
-        isOpen={dialogOpen === 'username'}
-        onOpenChange={(v) => !v && setDialogOpen(null)}
-      />
       <SettingsDialogExtended
         isOpen={dialogOpen === 'settings'}
         onOpenChange={(v) => !v && setDialogOpen(null)}
