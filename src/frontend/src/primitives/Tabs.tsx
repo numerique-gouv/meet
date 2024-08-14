@@ -40,7 +40,6 @@ const StyledTab = styled(RACTab, {
     outline: 'none',
     position: 'relative',
     color: 'box.text',
-    transition: 'color 200ms ease, backgroundColor 200ms ease',
     borderColor: 'transparent',
     forcedColorAdjust: 'none',
   },
@@ -55,6 +54,25 @@ const StyledTab = styled(RACTab, {
       },
       false: {
         border: 'none',
+      },
+    },
+    highlight: {
+      true: {
+        borderRadius: 4,
+        backgroundColor: 'colorPalette.active',
+        transition: 'background 200ms, color 200ms',
+        '&[data-hovered]': {
+          backgroundColor: 'gray.100',
+          color: 'box.text',
+        },
+        '&[data-selected]': {
+          backgroundColor: 'primary',
+          color: 'white',
+          '&[data-hovered]': {
+            backgroundColor: 'primary',
+            color: 'white',
+          },
+        },
       },
     },
   },
