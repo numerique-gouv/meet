@@ -75,9 +75,17 @@ const StyledTab = styled(RACTab, {
         },
       },
     },
+    icon: {
+      true: {
+        display: 'flex',
+        gap: '1rem',
+        alignItems: 'center',
+      },
+    },
   },
   defaultVariants: {
     border: true,
+    icon: false,
   },
 })
 
