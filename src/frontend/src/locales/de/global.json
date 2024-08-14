@@ -16,5 +16,6 @@
   "logout": "",
   "notFound": {
     "heading": ""
-  }
+  },
+  "submit": "OK"
 }

@@ -2,7 +2,9 @@
   "account": {
     "currentlyLoggedAs": "",
     "heading": "",
-    "youAreNotLoggedIn": ""
+    "youAreNotLoggedIn": "",
+    "nameLabel": "",
+    "authentication": ""
   },
   "dialog": {
     "heading": ""

@@ -45,13 +45,6 @@
       "support": "Obtenir de l'aide sur Tchap",
       "settings": "Paramètres",
       "username": "Choisir votre nom"
-    },
-    "username": {
-      "heading": "Choisir votre nom",
-      "label": "Votre Nom",
-      "description": "Tous les autres participants verront ce nom.",
-      "validationError": "Le nom ne peut pas être vide.",
-      "submitLabel": "Enregistrer"
     }
   },
   "participants": {
