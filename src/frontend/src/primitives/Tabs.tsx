@@ -10,6 +10,7 @@ import {
 } from 'react-aria-components'
 import { styled } from '@/styled-system/jsx'
 import { StyledVariantProps } from '@/styled-system/types'
+import React from 'react'
 
 const StyledTabs = styled(RACTabs, {
   base: {
@@ -42,33 +43,63 @@ const StyledTab = styled(RACTab, {
     transition: 'color 200ms ease, backgroundColor 200ms ease',
     borderColor: 'transparent',
     forcedColorAdjust: 'none',
-    '&[data-focused]': {},
-    '&[data-selected]': {
-      borderColor: 'primary',
+  },
+  variants: {
+    border: {
+      true: {
+        '&[data-selected]': {
+          borderColor: 'primary',
+        },
+        borderBottom: 'var(--horizontal) solid',
+        borderInlineEnd: 'var(--vertical) solid',
+      },
+      false: {
+        border: 'none',
+      },
     },
-    borderBottom: 'var(--horizontal) solid',
-    borderInlineEnd: 'var(--vertical) solid',
+  },
+  defaultVariants: {
+    border: true,
   },
 })
 
 export type TabProps = RACTabProps & StyledVariantProps<typeof StyledTab>
 
 export const Tab = ({ children, ...props }: TabProps) => {
-  return <StyledTab {...props}>{children}</StyledTab>
+  const parentBorder = React.useContext(BorderContext)
+  return (
+    <StyledTab border={parentBorder} {...props}>
+      {children}
+    </StyledTab>
+  )
 }
 
 const StyledTabList = styled(RACTabList, {
   base: {
     display: 'flex',
-    '&[data-orientation=horizontal]': {
-      borderBottom: '1px solid',
-      borderColor: 'gray.300',
-    },
     '&[data-orientation=vertical]': {
       flexDirection: 'column',
-      borderInlineEnd: '1px solid',
-      borderColor: 'gray.300',
     },
+  },
+  variants: {
+    border: {
+      false: {
+        border: 'none',
+      },
+      true: {
+        '&[data-orientation=horizontal]': {
+          borderBottom: '1px solid',
+          borderColor: 'gray.300',
+        },
+        '&[data-orientation=vertical]': {
+          borderInlineEnd: '1px solid',
+          borderColor: 'gray.300',
+        },
+      },
+    },
+  },
+  defaultVariants: {
+    border: true,
   },
 })
 
@@ -78,8 +109,16 @@ export type TabListProps = {
 } & RACTabListProps<typeof Tab> &
   StyledVariantProps<typeof StyledTabList>
 
-export const TabList = ({ children, ...props }: TabListProps) => {
-  return <StyledTabList {...props}>{children}</StyledTabList>
+const BorderContext = React.createContext<boolean | undefined>(true)
+
+export const TabList = ({ children, border, ...props }: TabListProps) => {
+  return (
+    <BorderContext.Provider value={border}>
+      <StyledTabList {...props} border={border}>
+        {children}
+      </StyledTabList>
+    </BorderContext.Provider>
+  )
 }
 
 const StyledTabPanel = styled(RACTabPanel, {
