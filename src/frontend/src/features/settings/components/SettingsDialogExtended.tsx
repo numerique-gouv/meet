@@ -10,6 +10,7 @@ import {
   RiSpeakerLine,
 } from '@remixicon/react'
 import { AccountTab } from './tabs/AccountTab'
+import { GeneralTab } from '@/features/settings/components/tabs/GeneralTab.tsx'
 
 const tabsStyle = css({
   maxHeight: '40.625rem', // fixme size copied from meet settings modal
@@ -70,9 +71,7 @@ export const SettingsDialogExtended = (props: SettingsDialogExtended) => {
           <TabPanel flex id="2">
             There are your audio settings
           </TabPanel>
-          <TabPanel flex id="3">
-            There are your general setting
-          </TabPanel>
+          <GeneralTab id="3" />
         </div>
       </Tabs>
     </Dialog>
