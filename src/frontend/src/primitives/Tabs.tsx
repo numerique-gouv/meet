@@ -149,6 +149,15 @@ const StyledTabPanel = styled(RACTabPanel, {
       outline: '2px solid red',
     },
   },
+  variants: {
+    flex: {
+      true: {
+        display: 'flex',
+        flexGrow: 1,
+        overflow: 'auto',
+      },
+    },
+  },
 })
 
 export type TabPanelProps = RACTabPanelProps &
