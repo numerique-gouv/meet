@@ -60,6 +60,7 @@ export type DialogProps = RACDialogProps & {
    * after user interaction
    */
   onOpenChange?: (isOpen: boolean) => void
+  type?: 'flex'
 }
 
 export const Dialog = ({
@@ -71,6 +72,7 @@ export const Dialog = ({
   ...dialogProps
 }: DialogProps) => {
   const isAlert = dialogProps['role'] === 'alertdialog'
+  const boxType = dialogProps['type'] !== 'flex' ? 'dialog' : undefined
   return (
     <StyledModalOverlay
       isKeyboardDismissDisabled={isAlert}
@@ -95,7 +97,7 @@ export const Dialog = ({
                 margin="auto"
                 pointerEvents="auto"
               >
-                <Box size="sm" type="dialog">
+                <Box size="sm" type={boxType}>
                   {!!title && (
                     <Heading
                       slot="title"
