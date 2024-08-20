@@ -6,6 +6,17 @@
     "nameLabel": "Votre Nom",
     "authentication": "Authentification"
   },
+  "audio": {
+    "microphone": {
+      "heading": "Micro",
+      "label": "Sélectionner votre entrée audio"
+    },
+    "speakers": {
+      "heading": "Haut-parleurs",
+      "label": "Sélectionner votre sortie audio"
+    },
+    "permissionsRequired": "Autorisations nécessaires"
+  },
   "dialog": {
     "heading": "Paramètres"
   },

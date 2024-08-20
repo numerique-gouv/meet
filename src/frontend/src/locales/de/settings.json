@@ -6,6 +6,17 @@
     "nameLabel": "",
     "authentication": ""
   },
+  "audio": {
+    "microphone": {
+      "heading": "",
+      "label": ""
+    },
+    "speakers": {
+      "heading": "",
+      "label": ""
+    },
+    "permissionsRequired": ""
+  },
   "dialog": {
     "heading": ""
   },

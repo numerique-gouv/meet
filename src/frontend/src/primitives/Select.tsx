@@ -32,6 +32,12 @@ const StyledButton = styled(Button, {
     '&[data-pressed]': {
       backgroundColor: 'control.hover',
     },
+    // fixme disabled style is being overridden by placeholder one and needs refinement.
+    '&[data-disabled]': {
+      color: 'default.subtle-text',
+      borderColor: 'gray.200',
+      boxShadow: '0 1px 2px rgba(0 0 0 / 0.02)',
+    },
   },
 })
 
