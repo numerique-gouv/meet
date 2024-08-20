@@ -1,5 +1,5 @@
 import { Dialog, type DialogProps } from '@/primitives'
-import { Tab, Tabs, TabPanel, TabList } from '@/primitives/Tabs.tsx'
+import { Tab, Tabs, TabList } from '@/primitives/Tabs.tsx'
 import { css } from '@/styled-system/css'
 import { text } from '@/primitives/Text.tsx'
 import { Heading } from 'react-aria-components'
@@ -11,6 +11,7 @@ import {
 } from '@remixicon/react'
 import { AccountTab } from './tabs/AccountTab'
 import { GeneralTab } from '@/features/settings/components/tabs/GeneralTab.tsx'
+import { AudioTab } from '@/features/settings/components/tabs/AudioTab.tsx'
 
 const tabsStyle = css({
   maxHeight: '40.625rem', // fixme size copied from meet settings modal
@@ -68,9 +69,7 @@ export const SettingsDialogExtended = (props: SettingsDialogExtended) => {
         </div>
         <div className={tabPanelContainerStyle}>
           <AccountTab id="1" onOpenChange={props.onOpenChange} />
-          <TabPanel flex id="2">
-            There are your audio settings
-          </TabPanel>
+          <AudioTab id="2" />
           <GeneralTab id="3" />
         </div>
       </Tabs>
