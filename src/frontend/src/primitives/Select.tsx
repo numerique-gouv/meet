@@ -72,7 +72,7 @@ export const Select = <T extends string | number>({
           <ListBox>
             {items.map((item) => (
               <ListBoxItem
-                className={menuItemRecipe()}
+                className={menuItemRecipe({ extraPadding: true })}
                 id={item.value}
                 key={item.value}
               >

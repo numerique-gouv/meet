@@ -10,7 +10,6 @@ export const menuItemRecipe = cva({
   base: {
     paddingY: 0.125,
     paddingX: 0.5,
-    paddingLeft: 1.5,
     textAlign: 'left',
     width: 'full',
     borderRadius: 4,
@@ -44,7 +43,11 @@ export const menuItemRecipe = cva({
         alignItems: 'center',
         gap: '1rem',
         paddingY: '0.4rem',
-        paddingLeft: 0.5,
+      },
+    },
+    extraPadding: {
+      true: {
+        paddingLeft: 1.5,
       },
     },
   },
