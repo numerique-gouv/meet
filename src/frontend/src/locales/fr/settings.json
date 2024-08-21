@@ -13,7 +13,9 @@
     },
     "speakers": {
       "heading": "Haut-parleurs",
-      "label": "Sélectionner votre sortie audio"
+      "label": "Sélectionner votre sortie audio",
+      "test": "Tester",
+      "ongoingTest": "Test du son…"
     },
     "permissionsRequired": "Autorisations nécessaires"
   },

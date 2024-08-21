@@ -1,0 +1,47 @@
+import { Button } from '@/primitives'
+import { useEffect, useRef, useState } from 'react'
+import { useTranslation } from 'react-i18next'
+import { useMediaDeviceSelect } from '@livekit/components-react'
+
+export const SoundTester = () => {
+  const { t } = useTranslation('settings')
+  const [isPlaying, setIsPlaying] = useState(false)
+  const audioRef = useRef<HTMLAudioElement>(null)
+
+  const { activeDeviceId } = useMediaDeviceSelect({ kind: 'audiooutput' })
+
+  useEffect(() => {
+    const updateActiveId = async (deviceId: string) => {
+      try {
+        await audioRef?.current?.setSinkId(deviceId)
+      } catch (error) {
+        console.error(`Error setting sinkId: ${error}`)
+      }
+    }
+    updateActiveId(activeDeviceId)
+  }, [activeDeviceId])
+
+  // prevent pausing the sound
+  navigator.mediaSession.setActionHandler('pause', function () {})
+
+  return (
+    <>
+      <Button
+        onPress={() => {
+          audioRef?.current?.play()
+          setIsPlaying(true)
+        }}
+        size="sm"
+        isDisabled={isPlaying}
+      >
+        {isPlaying ? t('audio.speakers.ongoingTest') : t('audio.speakers.test')}
+      </Button>
+      {/* eslint-disable jsx-a11y/media-has-caption */}
+      <audio
+        ref={audioRef}
+        src="sounds/uprise.mp3"
+        onEnded={() => setIsPlaying(false)}
+      />
+    </>
+  )
+}
