@@ -9,5 +9,16 @@
   "joinMeeting": "Join a meeting",
   "joinMeetingTipContent": "You can join a meeting by pasting its full link in the browser's address bar.",
   "joinMeetingTipHeading": "Did you know?",
-  "loginToCreateMeeting": "Login to create a meeting"
+  "loginToCreateMeeting": "Login to create a meeting",
+  "createMenu": {
+    "laterOption": "Create a meeting for a later date",
+    "instantOption": "Start an instant meeting"
+  },
+  "laterMeetingDialog": {
+    "heading": "Your connection details",
+    "description": "Send this link to the people you want to invite to the meeting. They will be able to join without Agent Connect.",
+    "copied": "Copied",
+    "copy": "Copy",
+    "inputLabel": "Meeting link"
+  }
 }
