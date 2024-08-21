@@ -13,7 +13,9 @@
     },
     "speakers": {
       "heading": "",
-      "label": ""
+      "label": "",
+      "test": "",
+      "ongoingTest": ""
     },
     "permissionsRequired": ""
   },

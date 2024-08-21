@@ -4,6 +4,7 @@ import { TabPanel, TabPanelProps } from '@/primitives/Tabs'
 import { useMediaDeviceSelect } from '@livekit/components-react'
 import { isSafari } from '@/utils/livekit'
 import { useTranslation } from 'react-i18next'
+import { SoundTester } from '@/components/SoundTester.tsx'
 
 export type AudioTabProps = Pick<DialogProps, 'onOpenChange'> &
   Pick<TabPanelProps, 'id'>
@@ -80,9 +81,12 @@ export const AudioTab = ({ id }: AudioTabProps) => {
             defaultSelectedKey={
               activeDeviceIdOut || getDefaultSelectedKey(itemsOut)
             }
-            onSelectionChange={(key) => setActiveMediaDeviceOut(key as string)}
+            onSelectionChange={async (key) =>
+              setActiveMediaDeviceOut(key as string)
+            }
             {...disabledProps}
           />
+          <SoundTester />
         </>
       )}
     </TabPanel>

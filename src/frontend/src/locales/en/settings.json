@@ -13,7 +13,9 @@
     },
     "speakers": {
       "heading": "Speakers",
-      "label": "Select your audio output"
+      "label": "Select your audio output",
+      "test": "Test",
+      "ongoingTest": "Testing sound…"
     },
     "permissionsRequired": "Permissions required"
   },
