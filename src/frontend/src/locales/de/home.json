@@ -9,5 +9,16 @@
   "joinMeeting": "",
   "joinMeetingTipContent": "",
   "joinMeetingTipHeading": "",
-  "loginToCreateMeeting": ""
+  "loginToCreateMeeting": "",
+  "createMenu": {
+    "laterOption": "",
+    "instantOption": ""
+  },
+  "laterMeetingDialog": {
+    "heading": "",
+    "description": "",
+    "copied": "",
+    "copy": "",
+    "inputLabel": ""
+  }
 }

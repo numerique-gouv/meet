@@ -9,5 +9,16 @@
   "joinMeeting": "Rejoindre une réunion",
   "joinMeetingTipContent": "Vous pouvez rejoindre une réunion en copiant directement son lien complet dans la barre d'adresse du navigateur.",
   "joinMeetingTipHeading": "Astuce",
-  "loginToCreateMeeting": "Connectez-vous pour créer une réunion"
+  "loginToCreateMeeting": "Connectez-vous pour créer une réunion",
+  "createMenu": {
+    "laterOption": "Créer une réunion pour une date ultérieure",
+    "instantOption": "Démarrer une réunion instantanée"
+  },
+  "laterMeetingDialog": {
+    "heading": "Vos informations de connexion",
+    "description": "Envoyez ce lien aux personnes que vous souhaitez inviter à la réunion. Ils pourront la rejoindre sans Agent Connect.",
+    "copied": "Lien copié",
+    "copy": "Copier le lien",
+    "inputLabel": "Lien vers la réunion"
+  }
 }

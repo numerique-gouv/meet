@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next'
 import { DialogTrigger } from 'react-aria-components'
-import { Button, Text } from '@/primitives'
+import { Button, Menu, Text } from '@/primitives'
 import { HStack } from '@/styled-system/jsx'
 import { navigateTo } from '@/navigation/navigateTo'
 import { Screen } from '@/layout/Screen'
@@ -10,6 +10,11 @@ import { authUrl, useUser, UserAware } from '@/features/auth'
 import { JoinMeetingDialog } from '../components/JoinMeetingDialog'
 import { useCreateRoom } from '@/features/rooms'
 import { usePersistentUserChoices } from '@livekit/components-react'
+import { menuItemRecipe } from '@/primitives/menuItemRecipe'
+import { RiAddLine, RiLink } from '@remixicon/react'
+import { MenuItem, Menu as RACMenu } from 'react-aria-components'
+import { LaterMeetingDialog } from '@/features/home/components/LaterMeetingDialog'
+import { useState } from 'react'
 
 export const Home = () => {
   const { t } = useTranslation('home')
@@ -19,13 +24,10 @@ export const Home = () => {
     userChoices: { username },
   } = usePersistentUserChoices()
 
-  const { mutateAsync: createRoom } = useCreateRoom({
-    onSuccess: (data) => {
-      navigateTo('room', data.slug, {
-        state: { create: true, initialRoomData: data },
-      })
-    },
-  })
+  const { mutateAsync: createRoom } = useCreateRoom()
+  const [laterRoomId, setLaterRoomId] = useState<null | string>(null)
+
+  console.log(laterRoomId)
 
   return (
     <UserAware>
@@ -43,21 +45,43 @@ export const Home = () => {
             </Text>
           )}
           <HStack gap="gutter">
-            <Button
-              variant="primary"
-              onPress={
-                isLoggedIn
-                  ? async () => {
+            {isLoggedIn ? (
+              <Menu>
+                <Button variant="primary">{t('createMeeting')}</Button>
+                <RACMenu>
+                  <MenuItem
+                    className={menuItemRecipe({ icon: true })}
+                    onAction={async () => {
                       const slug = generateRoomId()
-                      await createRoom({ slug, username })
-                    }
-                  : undefined
-              }
-              href={isLoggedIn ? undefined : authUrl()}
-            >
-              {isLoggedIn ? t('createMeeting') : t('login', { ns: 'global' })}
-            </Button>
-
+                      createRoom({ slug, username }).then((data) =>
+                        navigateTo('room', data.slug, {
+                          state: { create: true, initialRoomData: data },
+                        })
+                      )
+                    }}
+                  >
+                    <RiAddLine size={18} />
+                    {t('createMenu.instantOption')}
+                  </MenuItem>
+                  <MenuItem
+                    className={menuItemRecipe({ icon: true })}
+                    onAction={() => {
+                      const slug = generateRoomId()
+                      createRoom({ slug, username }).then((data) =>
+                        setLaterRoomId(data.slug)
+                      )
+                    }}
+                  >
+                    <RiLink size={18} />
+                    {t('createMenu.laterOption')}
+                  </MenuItem>
+                </RACMenu>
+              </Menu>
+            ) : (
+              <Button variant="primary" href={authUrl()}>
+                {t('login', { ns: 'global' })}
+              </Button>
+            )}
             <DialogTrigger>
               <Button variant="primary" outline>
                 {t('joinMeeting')}
@@ -66,6 +90,10 @@ export const Home = () => {
             </DialogTrigger>
           </HStack>
         </Centered>
+        <LaterMeetingDialog
+          roomId={laterRoomId || ''}
+          onOpenChange={() => setLaterRoomId(null)}
+        />
       </Screen>
     </UserAware>
   )
