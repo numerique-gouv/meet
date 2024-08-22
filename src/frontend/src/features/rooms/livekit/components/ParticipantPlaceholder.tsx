@@ -30,9 +30,18 @@ export const ParticipantPlaceholder = ({
         style={{
           borderRadius: '50%',
           animation: isSpeaking ? 'pulse 1s infinite' : undefined,
+          width: '80%',
+          maxWidth: '150px',
+          height: 'auto',
+          aspectRatio: '1/1',
+          fontSize: '50px',
         }}
       >
-        <Avatar name={participant.name} bgColor={participantColor} />
+        <Avatar
+          name={participant.name}
+          bgColor={participantColor}
+          context="placeholder"
+        />
       </div>
     </StyledParticipantPlaceHolder>
   )
