@@ -58,6 +58,11 @@ const config: Config = {
         },
       },
       fade: { from: { opacity: 0 }, to: { opacity: 1 } },
+      pulse: {
+        '0%': { boxShadow: '0 0 0 0 rgba(255, 255, 255, 0.7)' },
+        '75%': { boxShadow: '0 0 0 30px rgba(255, 255, 255, 0)' },
+        '100%': { boxShadow: '0 0 0 0 rgba(255, 255, 255, 0)' },
+      },
     },
     tokens: defineTokens({
       /* we take a few things from the panda preset but for now we clear out some stuff.
