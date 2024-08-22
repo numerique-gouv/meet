@@ -16,11 +16,9 @@ import * as React from 'react'
 import {
   CarouselLayout,
   ConnectionStateToast,
-  FocusLayout,
   FocusLayoutContainer,
   GridLayout,
   LayoutContextProvider,
-  ParticipantTile,
   RoomAudioRenderer,
   MessageFormatter,
   usePinnedTracks,
@@ -35,6 +33,8 @@ import { cva } from '@/styled-system/css'
 import { ParticipantsList } from '@/features/rooms/livekit/components/controls/Participants/ParticipantsList'
 import { useSnapshot } from 'valtio'
 import { participantsStore } from '@/stores/participants'
+import { FocusLayout } from '../components/FocusLayout'
+import { ParticipantTile } from '../components/ParticipantTile'
 
 const LayoutWrapper = styled(
   'div',
