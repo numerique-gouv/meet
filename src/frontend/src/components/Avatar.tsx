@@ -2,7 +2,7 @@ import { css } from '@/styled-system/css'
 import React from 'react'
 
 export type AvatarProps = React.HTMLAttributes<HTMLSpanElement> & {
-  name: string
+  name?: string
   size?: number
   bgColor?: string
   textColor?: string

@@ -4,7 +4,6 @@ import {
   FocusToggle,
   LockLockedIcon,
   ParticipantName,
-  ParticipantPlaceholder,
   ParticipantTileProps,
   ScreenShareIcon,
   TrackMutedIndicator,
@@ -25,6 +24,7 @@ import {
   TrackReferenceOrPlaceholder,
 } from '@livekit/components-core'
 import { Track } from 'livekit-client'
+import { ParticipantPlaceholder } from '@/features/rooms/livekit/components/ParticipantPlaceholder'
 
 export function TrackRefContextIfNeeded(
   props: React.PropsWithChildren<{
@@ -108,7 +108,9 @@ export const ParticipantTile: (
                 )
               )}
               <div className="lk-participant-placeholder">
-                <ParticipantPlaceholder />
+                <ParticipantPlaceholder
+                  participant={trackReference.participant}
+                />
               </div>
               <div className="lk-participant-metadata">
                 <div className="lk-participant-metadata-item">
