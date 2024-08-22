@@ -11,6 +11,7 @@ import { participantsStore } from '@/stores/participants'
 import { useTranslation } from 'react-i18next'
 import { allParticipantRoomEvents } from '@/features/rooms/livekit/constants/events'
 import { Avatar } from '@/components/Avatar'
+import { getParticipantColor } from '@/features/rooms/utils/getParticipantColor'
 
 // TODO: Optimize rendering performance, especially for longer participant lists, even though they are generally short.
 export const ParticipantsList = () => {
@@ -26,6 +27,7 @@ export const ParticipantsList = () => {
   const formattedParticipants = participants.map((participant) => ({
     name: participant.name || participant.identity,
     id: participant.identity,
+    color: getParticipantColor(participant),
   }))
 
   const sortedRemoteParticipants = formattedParticipants
@@ -94,7 +96,7 @@ export const ParticipantsList = () => {
                 padding: '0.25rem 0',
               })}
             >
-              <Avatar name={participant.name} />
+              <Avatar name={participant.name} bgColor={participant.color} />
               <Text
                 variant={'sm'}
                 className={css({

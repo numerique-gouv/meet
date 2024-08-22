@@ -2,6 +2,7 @@ import { Participant } from 'livekit-client'
 import { styled } from '@/styled-system/jsx'
 import { Avatar } from '@/components/Avatar'
 import { useIsSpeaking } from '@livekit/components-react'
+import { getParticipantColor } from '@/features/rooms/utils/getParticipantColor'
 
 const StyledParticipantPlaceHolder = styled('div', {
   base: {
@@ -22,7 +23,7 @@ export const ParticipantPlaceholder = ({
   participant,
 }: ParticipantPlaceholderProps) => {
   const isSpeaking = useIsSpeaking(participant)
-
+  const participantColor = getParticipantColor(participant)
   return (
     <StyledParticipantPlaceHolder>
       <div
@@ -31,7 +32,7 @@ export const ParticipantPlaceholder = ({
           animation: isSpeaking ? 'pulse 1s infinite' : undefined,
         }}
       >
-        <Avatar name={participant.name} />
+        <Avatar name={participant.name} bgColor={participantColor} />
       </div>
     </StyledParticipantPlaceHolder>
   )
