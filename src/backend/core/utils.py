@@ -2,12 +2,34 @@
 Utils functions used in the core app
 """
 
+# ruff: noqa:S311
+
+import json
+import random
 from typing import Optional
 from uuid import uuid4
 
 from django.conf import settings
 
 from livekit.api import AccessToken, VideoGrants
+
+
+def generate_color(identity: str) -> str:
+    """Generates a consistent HSL color based on a given identity string.
+
+    The function seeds the random generator with the identity's hash,
+    ensuring consistent color output. The HSL format allows fine-tuned control
+    over saturation and lightness, empirically adjusted to produce visually
+    appealing and distinct colors. HSL is preferred over hex to constrain the color
+    range and ensure predictability.
+    """
+
+    random.seed(hash(identity))
+    hue = random.randint(0, 360)
+    saturation = random.randint(50, 75)
+    lightness = random.randint(25, 60)
+
+    return f"hsl({hue}, {saturation}%, {lightness}%)"
 
 
 def generate_token(room: str, user, username: Optional[str] = None) -> str:
@@ -49,6 +71,7 @@ def generate_token(room: str, user, username: Optional[str] = None) -> str:
         .with_grants(video_grants)
         .with_identity(identity)
         .with_name(username or default_username)
+        .with_metadata(json.dumps({"color": generate_color(identity)}))
     )
 
     return token.to_jwt()
