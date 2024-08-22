@@ -14,7 +14,7 @@ export const Avatar = ({
   bgColor = '#3498db',
   textColor = 'white',
 }: AvatarProps) => {
-  const initial = name?.trim()?.charAt(0).toUpperCase() || '*' // fixme use a proper fallback
+  const initial = name?.trim()?.charAt(0).toUpperCase() || ''
   return (
     <div
       className={css({
