@@ -1,0 +1,68 @@
+rbac:
+  create: true
+
+server:
+  releaseNamespace: true
+  namespaces:
+    - {{ .Release.Namespace | quote }}
+  global:
+    ## How frequently to scrape targets by default
+    ##
+    scrape_interval: 1m
+    ## How long until a scrape request times out
+    ##
+    scrape_timeout: 10s
+    ## How frequently to evaluate rules
+    ##
+    evaluation_interval: 1m
+  persistentVolume:
+    enabled: true
+    size: 8Gi
+  resources: {}
+    # limits:
+    #   cpu: 500m
+    #   memory: 512Mi
+    # requests:
+    #   cpu: 500m
+    #   memory: 512Mi
+  retention: "2y"
+serverFiles:
+  prometheus.yml:
+    rule_files:
+      - /etc/config/recording_rules.yml
+      - /etc/config/alerting_rules.yml
+    ## Below two files are DEPRECATED will be removed from this default values file
+      - /etc/config/rules
+      - /etc/config/alerts
+
+    scrape_configs:
+      - job_name: prometheus
+        static_configs:
+          - targets:
+            - localhost:9090
+      - job_name: grafana
+        static_configs:
+          - targets:
+            - grafana:80
+
+alertmanager:
+  ## If false, alertmanager will not be installed
+  ##
+  enabled: true
+
+  persistence:
+    size: 2Gi
+
+  podSecurityContext:
+    runAsUser: 65534
+    runAsNonRoot: true
+    runAsGroup: 65534
+    fsGroup: 65534
+
+kube-state-metrics:
+  enabled: false
+
+prometheus-node-exporter:
+  enabled: false
+prometheus-pushgateway:
+  enabled: false

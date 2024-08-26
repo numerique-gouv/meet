@@ -1,0 +1,48 @@
+rbac:
+  create: true
+  namespaced: true
+ingress:
+  enabled: true
+  hosts:
+    - grafana.127.0.0.1.nip.io
+  tls: []
+  #  - secretName: chart-example-tls
+  #    hosts:
+  #      - chart-example.local
+testFramework:
+  enabled: false
+persistence:
+  type: pvc
+  enabled: true
+  size: 10Gi
+adminUser: admin
+adminPassword: strongpassword
+datasources:
+  datasources.yaml:
+    apiVersion: 1
+    datasources:
+    - name: Prometheus
+      type: prometheus
+      url: http://prometheus-server
+      access: proxy
+      isDefault: true
+dashboardProviders:
+  dashboardproviders.yaml:
+    apiVersion: 1
+    providers:
+    - name: 'default'
+      orgId: 1
+      folder: ''
+      type: file
+      disableDeletion: false
+      editable: true
+      options:
+        path: /var/lib/grafana/dashboards/default
+dashboards:
+  default:
+    prometheus-2-stats:
+      url: https://raw.githubusercontent.com/grafana/grafana/main/public/app/plugins/datasource/prometheus/dashboards/prometheus_2_stats.json
+      datasource: Prometheus
+    grafana-metrics:
+      url: https://raw.githubusercontent.com/grafana/grafana/main/public/app/plugins/datasource/prometheus/dashboards/grafana_stats.json
+      datasource: Prometheus

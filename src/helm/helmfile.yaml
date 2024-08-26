@@ -4,6 +4,10 @@ repositories:
   oci: true
 - name: livekit
   url: https://helm.livekit.io
+- name: prometheus-community
+  url: https://prometheus-community.github.io/helm-charts
+- name: grafana
+  url: https://grafana.github.io/helm-charts
 
 releases:
   - name: postgres
@@ -54,6 +58,20 @@ releases:
       - env.d/{{ .Environment.Name }}/values.livekit.yaml.gotmpl
     secrets:
       - env.d/{{ .Environment.Name }}/secrets.enc.yaml
+
+  - name: prometheus
+    namespace: {{ .Namespace }}
+    version: 25.26.0
+    chart: prometheus-community/prometheus
+    values:
+      - env.d/{{ .Environment.Name }}/values.prometheus.yaml.gotmpl
+
+  - name: grafana
+    namespace: {{ .Namespace }}
+    version: 8.4.8
+    chart: grafana/grafana
+    values:
+      - env.d/{{ .Environment.Name }}/values.grafana.yaml.gotmpl
 
 environments:
   dev:
