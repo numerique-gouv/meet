@@ -38,7 +38,7 @@ export type AvatarProps = React.HTMLAttributes<HTMLDivElement> & {
 } & RecipeVariantProps<typeof avatar>
 
 export const Avatar = ({ name, bgColor, context, ...props }: AvatarProps) => {
-  const initial = name?.trim()?.charAt(0).toUpperCase() || ''
+  const initial = name?.trim()?.charAt(0) || ''
   return (
     <div
       style={{
