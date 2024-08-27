@@ -3,6 +3,8 @@ import { styled } from '@/styled-system/jsx'
 import { Avatar } from '@/components/Avatar'
 import { useIsSpeaking } from '@livekit/components-react'
 import { getParticipantColor } from '@/features/rooms/utils/getParticipantColor'
+import { useSize } from '@/features/rooms/livekit/hooks/useResizeObserver'
+import { useMemo, useRef } from 'react'
 
 const StyledParticipantPlaceHolder = styled('div', {
   base: {
@@ -24,17 +26,29 @@ export const ParticipantPlaceholder = ({
 }: ParticipantPlaceholderProps) => {
   const isSpeaking = useIsSpeaking(participant)
   const participantColor = getParticipantColor(participant)
+
+  const placeholderEl = useRef<HTMLDivElement>(null)
+  const { width, height } = useSize(placeholderEl)
+
+  const minDimension = Math.min(width, height)
+  const avatarSize = useMemo(
+    () => Math.min(Math.round(minDimension * 0.9), 160),
+    [minDimension]
+  )
+
+  const initialSize = useMemo(() => Math.round(avatarSize * 0.3), [avatarSize])
+
   return (
-    <StyledParticipantPlaceHolder>
+    <StyledParticipantPlaceHolder ref={placeholderEl}>
       <div
         style={{
           borderRadius: '50%',
           animation: isSpeaking ? 'pulse 1s infinite' : undefined,
-          width: '80%',
-          maxWidth: '150px',
           height: 'auto',
           aspectRatio: '1/1',
-          fontSize: '50px',
+          width: '80%',
+          maxWidth: `${avatarSize}px`,
+          fontSize: `${initialSize}px`,
         }}
       >
         <Avatar
