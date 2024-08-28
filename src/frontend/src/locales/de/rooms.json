@@ -51,6 +51,11 @@
     "heading": "",
     "closeButton": "",
     "you": "",
-    "muteParticipant": ""
+    "muteParticipant": "",
+    "muteParticipantAlert": {
+      "description": "",
+      "confirm": "",
+      "cancel": ""
+    }
   }
 }
