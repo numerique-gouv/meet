@@ -50,6 +50,7 @@
   "participants": {
     "heading": "Participants",
     "closeButton": "Hide participants",
-    "you": "You"
+    "you": "You",
+    "muteParticipant": "Close the mic of {{name}}"
   }
 }
