@@ -3,15 +3,13 @@ import { useParticipants } from '@livekit/components-react'
 
 import { Heading } from 'react-aria-components'
 import { Box, Button, Div } from '@/primitives'
-import { HStack, VStack } from '@/styled-system/jsx'
-import { Text, text } from '@/primitives/Text'
+import { text } from '@/primitives/Text'
 import { RiCloseLine } from '@remixicon/react'
-import { capitalize } from '@/utils/capitalize'
 import { participantsStore } from '@/stores/participants'
 import { useTranslation } from 'react-i18next'
 import { allParticipantRoomEvents } from '@/features/rooms/livekit/constants/events'
-import { Avatar } from '@/components/Avatar'
-import { getParticipantColor } from '@/features/rooms/utils/getParticipantColor'
+import { ParticipantListItem } from '@/features/rooms/livekit/components/controls/Participants/ParticipantListItem'
+import { VStack } from '@/styled-system/jsx'
 
 // TODO: Optimize rendering performance, especially for longer participant lists, even though they are generally short.
 export const ParticipantsList = () => {
@@ -24,18 +22,16 @@ export const ParticipantsList = () => {
     updateOnlyOn: allParticipantRoomEvents,
   })
 
-  const formattedParticipants = participants.map((participant) => ({
-    name: participant.name || participant.identity,
-    id: participant.identity,
-    color: getParticipantColor(participant),
-  }))
-
-  const sortedRemoteParticipants = formattedParticipants
+  const sortedRemoteParticipants = participants
     .slice(1)
-    .sort((a, b) => a.name.localeCompare(b.name))
+    .sort((participantA, participantB) => {
+      const nameA = participantA.name || participantA.identity
+      const nameB = participantB.name || participantB.identity
+      return nameA.localeCompare(nameB)
+    })
 
-  const allParticipants = [
-    formattedParticipants[0], // first participant returned by the hook, is always the local one
+  const sortedParticipants = [
+    participants[0], // first participant returned by the hook, is always the local one
     ...sortedRemoteParticipants,
   ]
 
@@ -74,7 +70,7 @@ export const ParticipantsList = () => {
           <RiCloseLine />
         </Button>
       </Div>
-      {participants?.length > 0 && (
+      {sortedParticipants?.length > 0 && (
         <VStack
           role="list"
           className={css({
@@ -87,47 +83,8 @@ export const ParticipantsList = () => {
             display: 'flex',
           })}
         >
-          {allParticipants.map((participant, index) => (
-            <HStack
-              role="listitem"
-              key={participant.id}
-              id={participant.id}
-              className={css({
-                padding: '0.25rem 0',
-              })}
-            >
-              <Avatar name={participant.name} bgColor={participant.color} />
-              <Text
-                variant={'sm'}
-                className={css({
-                  userSelect: 'none',
-                  cursor: 'default',
-                  display: 'flex',
-                })}
-              >
-                <span
-                  className={css({
-                    whiteSpace: 'nowrap',
-                    overflow: 'hidden',
-                    textOverflow: 'ellipsis',
-                    maxWidth: '120px',
-                    display: 'block',
-                  })}
-                >
-                  {capitalize(participant.name)}
-                </span>
-                {index === 0 && (
-                  <span
-                    className={css({
-                      marginLeft: '.25rem',
-                      whiteSpace: 'nowrap',
-                    })}
-                  >
-                    ({t('participants.you')})
-                  </span>
-                )}
-              </Text>
-            </HStack>
+          {sortedParticipants.map((participant) => (
+            <ParticipantListItem participant={participant} />
           ))}
         </VStack>
       )}
