@@ -19,7 +19,7 @@ const avatar = cva({
       list: {
         width: '32px',
         height: '32px',
-        fontSize: '0.8rem',
+        fontSize: '1.25rem',
       },
       placeholder: {
         width: '100%',
