@@ -51,6 +51,11 @@
     "heading": "Participants",
     "closeButton": "Hide participants",
     "you": "You",
-    "muteParticipant": "Close the mic of {{name}}"
+    "muteParticipant": "Close the mic of {{name}}",
+    "muteParticipantAlert": {
+      "description": "Mute {{name}} for all participants? {{name}} is the only person who can unmute themselves.",
+      "confirm": "Mute",
+      "cancel": "Cancel"
+    }
   }
 }

@@ -7,7 +7,7 @@ import { Avatar } from '@/components/Avatar'
 import { getParticipantColor } from '@/features/rooms/utils/getParticipantColor'
 import { Participant, Track } from 'livekit-client'
 import { isLocal } from '@/utils/livekit'
-import { Button } from 'react-aria-components'
+import { Button as RACButton } from 'react-aria-components'
 import { ActiveSpeaker } from '@/features/rooms/components/ActiveSpeaker'
 import {
   useIsSpeaking,
@@ -16,6 +16,35 @@ import {
 import Source = Track.Source
 import { RiMicOffLine } from '@remixicon/react'
 import { TooltipWrapper } from '@/primitives/TooltipWrapper.tsx'
+import { Button, Dialog, P } from '@/primitives'
+import { useState } from 'react'
+
+const MuteAlertDialog = ({
+  isOpen,
+  onClose,
+  onSubmit,
+  name,
+}: {
+  isOpen: boolean
+  onClose: () => void
+  onSubmit: () => void
+  name: string
+}) => {
+  const { t } = useTranslation('rooms')
+  return (
+    <Dialog isOpen={isOpen} role="alertdialog">
+      <P>{t('participants.muteParticipantAlert.description', { name })}</P>
+      <HStack gap={1}>
+        <Button size="sm" invisible onPress={onClose}>
+          {t('participants.muteParticipantAlert.cancel')}
+        </Button>
+        <Button size="sm" invisible onPress={onSubmit}>
+          {t('participants.muteParticipantAlert.confirm')}
+        </Button>
+      </HStack>
+    </Dialog>
+  )
+}
 
 type MicIndicatorProps = {
   participant: Participant
@@ -29,38 +58,51 @@ const MicIndicator = ({ participant }: MicIndicatorProps) => {
   })
   const isSpeaking = useIsSpeaking(participant)
   const isDisabled = isLocal(participant) || (!isLocal(participant) && isMuted)
+
+  const [isAlertOpen, setIsAlertOpen] = useState(false)
+
+  const name = participant.name || participant.identity
+
   return (
-    <TooltipWrapper
-      tooltip={t('participants.muteParticipant', {
-        name: participant.name || participant.identity,
-      })}
-      tooltipType="instant"
-    >
-      <Button
-        isDisabled={isDisabled}
-        className={css({
-          padding: '10px',
-          minWidth: '24px',
-          minHeight: '24px',
-          borderRadius: '50%',
-          backgroundColor: 'transparent',
-          transition: 'background 200ms',
-          '&[data-hovered]': {
-            backgroundColor: '#f5f5f5',
-          },
-          '&[data-focused]': {
-            backgroundColor: '#f5f5f5',
-          },
+    <>
+      <TooltipWrapper
+        tooltip={t('participants.muteParticipant', {
+          name,
         })}
-        onPress={() => !isMuted && console.log(`mute ${participant.identity}`)}
+        tooltipType="instant"
       >
-        {isMuted ? (
-          <RiMicOffLine color="gray" />
-        ) : (
-          <ActiveSpeaker isSpeaking={isSpeaking} />
-        )}
-      </Button>
-    </TooltipWrapper>
+        <RACButton
+          isDisabled={isDisabled}
+          className={css({
+            padding: '10px',
+            minWidth: '24px',
+            minHeight: '24px',
+            borderRadius: '50%',
+            backgroundColor: 'transparent',
+            transition: 'background 200ms',
+            '&[data-hovered]': {
+              backgroundColor: '#f5f5f5',
+            },
+            '&[data-focused]': {
+              backgroundColor: '#f5f5f5',
+            },
+          })}
+          onPress={() => !isMuted && setIsAlertOpen(true)}
+        >
+          {isMuted ? (
+            <RiMicOffLine color="gray" />
+          ) : (
+            <ActiveSpeaker isSpeaking={isSpeaking} />
+          )}
+        </RACButton>
+      </TooltipWrapper>
+      <MuteAlertDialog
+        isOpen={isAlertOpen}
+        onSubmit={() => setIsAlertOpen(false)}
+        onClose={() => setIsAlertOpen(false)}
+        name={name}
+      />
+    </>
   )
 }
 
