@@ -63,6 +63,18 @@ const config: Config = {
         '75%': { boxShadow: '0 0 0 30px rgba(255, 255, 255, 0)' },
         '100%': { boxShadow: '0 0 0 0 rgba(255, 255, 255, 0)' },
       },
+      active_speaker: {
+        '0%': { height: '4px' },
+        '25%': { height: '8px' },
+        '50%': { height: '6px' },
+        '100%': { height: '16px' },
+      },
+      active_speake_small: {
+        '0%': { height: '4px' },
+        '25%': { height: '6px' },
+        '50%': { height: '4px' },
+        '100%': { height: '8px' },
+      },
     },
     tokens: defineTokens({
       /* we take a few things from the panda preset but for now we clear out some stuff.
