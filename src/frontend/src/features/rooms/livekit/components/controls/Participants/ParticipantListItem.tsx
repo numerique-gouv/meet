@@ -77,44 +77,50 @@ export const ParticipantListItem = ({
   return (
     <HStack
       role="listitem"
+      justify="space-between"
       key={participant.identity}
       id={participant.identity}
       className={css({
         padding: '0.25rem 0',
+        width: 'full',
       })}
     >
-      <Avatar name={name} bgColor={getParticipantColor(participant)} />
-      <Text
-        variant={'sm'}
-        className={css({
-          userSelect: 'none',
-          cursor: 'default',
-          display: 'flex',
-        })}
-      >
-        <span
+      <HStack>
+        <Avatar name={name} bgColor={getParticipantColor(participant)} />
+        <Text
+          variant={'sm'}
           className={css({
-            whiteSpace: 'nowrap',
-            overflow: 'hidden',
-            textOverflow: 'ellipsis',
-            maxWidth: '120px',
-            display: 'block',
+            userSelect: 'none',
+            cursor: 'default',
+            display: 'flex',
           })}
         >
-          {name}
-        </span>
-        {isLocal(participant) && (
           <span
             className={css({
-              marginLeft: '.25rem',
               whiteSpace: 'nowrap',
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              maxWidth: '120px',
+              display: 'block',
             })}
           >
-            ({t('participants.you')})
+            {name}
           </span>
-        )}
-      </Text>
-      <MicIndicator participant={participant} />
+          {isLocal(participant) && (
+            <span
+              className={css({
+                marginLeft: '.25rem',
+                whiteSpace: 'nowrap',
+              })}
+            >
+              ({t('participants.you')})
+            </span>
+          )}
+        </Text>
+      </HStack>
+      <HStack>
+        <MicIndicator participant={participant} />
+      </HStack>
     </HStack>
   )
 }
