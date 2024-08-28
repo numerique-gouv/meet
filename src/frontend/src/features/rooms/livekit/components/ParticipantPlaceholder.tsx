@@ -51,6 +51,7 @@ export const ParticipantPlaceholder = ({
           fontSize: `${initialSize}px`,
         }}
       >
+        {/*fixme - participant doesn't update on ParticipantNameChanged event */}
         <Avatar
           name={participant.name}
           bgColor={participantColor}
