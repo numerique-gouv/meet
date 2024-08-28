@@ -50,6 +50,7 @@
   "participants": {
     "heading": "",
     "closeButton": "",
-    "you": ""
+    "you": "",
+    "muteParticipant": ""
   }
 }

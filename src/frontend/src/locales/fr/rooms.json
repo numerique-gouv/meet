@@ -50,6 +50,7 @@
   "participants": {
     "heading": "Participants",
     "closeButton": "Masquer les participants",
-    "you": "Vous"
+    "you": "Vous",
+    "muteParticipant": "Couper le micro de {{name}}"
   }
 }
