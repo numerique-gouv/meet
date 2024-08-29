@@ -18,6 +18,7 @@ import { RiMicOffLine } from '@remixicon/react'
 import { TooltipWrapper } from '@/primitives/TooltipWrapper.tsx'
 import { Button, Dialog, P } from '@/primitives'
 import { useState } from 'react'
+import { useMuteParticipant } from '@/features/rooms/livekit/api/muteParticipant'
 
 const MuteAlertDialog = ({
   isOpen,
@@ -52,6 +53,7 @@ type MicIndicatorProps = {
 
 const MicIndicator = ({ participant }: MicIndicatorProps) => {
   const { t } = useTranslation('rooms')
+  const { muteParticipant } = useMuteParticipant()
   const { isMuted } = useTrackMutedIndicator({
     participant: participant,
     source: Source.Microphone,
@@ -98,7 +100,9 @@ const MicIndicator = ({ participant }: MicIndicatorProps) => {
       </TooltipWrapper>
       <MuteAlertDialog
         isOpen={isAlertOpen}
-        onSubmit={() => setIsAlertOpen(false)}
+        onSubmit={() =>
+          muteParticipant(participant).then(() => setIsAlertOpen(false))
+        }
         onClose={() => setIsAlertOpen(false)}
         name={name}
       />
