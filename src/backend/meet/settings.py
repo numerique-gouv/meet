@@ -557,6 +557,26 @@ class Production(Base):
         },
     }
 
+    LOGGING = {
+        "version": 1,
+        "formatters": {
+            "json": {"()": "dockerflow.logging.JsonLogFormatter", "logger_name": "meet"}
+        },
+        "handlers": {
+            "console": {
+                "level": "DEBUG",
+                "class": "logging.StreamHandler",
+                "formatter": "json",
+            },
+        },
+        "loggers": {
+            "request.summary": {
+                "handlers": ["console"],
+                "level": "DEBUG",
+            },
+        },
+    }
+
 
 class Feature(Production):
     """
