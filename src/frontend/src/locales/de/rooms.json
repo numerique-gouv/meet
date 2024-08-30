@@ -12,10 +12,10 @@
   },
   "leaveRoomPrompt": "",
   "shareDialog": {
-    "copied": "",
     "copy": "",
     "heading": "",
-    "inputLabel": ""
+    "description": "",
+    "permissions": ""
   },
   "error": {
     "createRoom": {

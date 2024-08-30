@@ -12,10 +12,10 @@
   },
   "leaveRoomPrompt": "Revenir à l'accueil vous fera quitter la réunion.",
   "shareDialog": {
-    "copied": "Lien copié",
     "copy": "Copier le lien",
-    "heading": "Partager le lien vers la réunion",
-    "inputLabel": "Lien vers la réunion"
+    "heading": "Votre réunion est prête",
+    "description": "Partagez ce lien avec les personnes que vous souhaitez inviter à la réunion.",
+    "permissions": "Les personnes disposant de ce lien n'ont pas besoin de votre autorisation pour rejoindre cette réunion."
   },
   "error": {
     "createRoom": {
