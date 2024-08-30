@@ -27,12 +27,17 @@ export const SoundTester = () => {
   return (
     <>
       <Button
+        invisible
         onPress={() => {
           audioRef?.current?.play()
           setIsPlaying(true)
         }}
         size="sm"
         isDisabled={isPlaying}
+        fullWidth
+        style={{
+          color: isPlaying ? 'var(--colors-primary)' : undefined,
+        }}
       >
         {isPlaying ? t('audio.speakers.ongoingTest') : t('audio.speakers.test')}
       </Button>
