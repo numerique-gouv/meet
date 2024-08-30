@@ -10,6 +10,7 @@ import {
 } from 'react-aria-components'
 import { Div, Button, Box, VerticallyOffCenter } from '@/primitives'
 import { text } from './Text'
+import { MutableRefObject } from 'react'
 
 const StyledModalOverlay = styled(ModalOverlay, {
   base: {
@@ -61,6 +62,7 @@ export type DialogProps = RACDialogProps & {
    */
   onOpenChange?: (isOpen: boolean) => void
   type?: 'flex'
+  innerRef?: MutableRefObject<HTMLDivElement | null>
 }
 
 export const Dialog = ({
@@ -69,6 +71,7 @@ export const Dialog = ({
   onClose,
   isOpen,
   onOpenChange,
+  innerRef,
   ...dialogProps
 }: DialogProps) => {
   const isAlert = dialogProps['role'] === 'alertdialog'
@@ -93,7 +96,7 @@ export const Dialog = ({
             <VerticallyOffCenter>
               <Div margin="auto" width="fit-content" maxWidth="full">
                 <Div margin="1rem" pointerEvents="auto">
-                  <Box size="sm" type={boxType}>
+                  <Box size="sm" type={boxType} ref={innerRef}>
                     {!!title && (
                       <Heading
                         slot="title"
