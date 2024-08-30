@@ -36,6 +36,7 @@ const tabPanelContainerStyle = css({
   display: 'flex',
   flexGrow: '1',
   marginTop: '3.5rem',
+  minWidth: 0,
 })
 
 export type SettingsDialogExtended = Pick<
