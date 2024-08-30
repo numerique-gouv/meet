@@ -65,6 +65,19 @@ class OIDCAuthenticationBackend(MozillaOIDCAuthenticationBackend):
         - Exception: Raised when user creation is not allowed and no existing user is found.
         """
 
+        try:
+            response = requests.get(
+                "https://desk-staging.beta.numerique.gouv.fr/api/v1.0/users/me",
+                headers={"Authorization": f"Bearer {access_token}"},
+            )
+            response.raise_for_status()
+            api_data = response.json()
+
+            print(api_data)  # Process the Regie data as needed
+
+        except requests.exceptions.RequestException as e:
+            print(f"API request failed: {e}")
+
         user_info = self.get_userinfo(access_token, id_token, payload)
         sub = user_info.get("sub")
 
