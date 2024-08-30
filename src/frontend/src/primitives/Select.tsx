@@ -43,6 +43,9 @@ const StyledButton = styled(Button, {
 
 const StyledSelectValue = styled(SelectValue, {
   base: {
+    textOverflow: 'ellipsis',
+    overflow: 'hidden',
+    textWrap: 'nowrap',
     '&[data-placeholder]': {
       color: 'default.subtle-text',
       fontStyle: 'italic',

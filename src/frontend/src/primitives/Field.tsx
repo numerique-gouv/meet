@@ -23,6 +23,7 @@ import { Div } from './Div'
 const FieldWrapper = styled('div', {
   base: {
     marginBottom: 'textfield',
+    minWidth: 0,
   },
 })
 
