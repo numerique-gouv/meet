@@ -7,7 +7,6 @@ import { Avatar } from '@/components/Avatar'
 import { getParticipantColor } from '@/features/rooms/utils/getParticipantColor'
 import { Participant, Track } from 'livekit-client'
 import { isLocal } from '@/utils/livekit'
-import { Button as RACButton } from 'react-aria-components'
 import { ActiveSpeaker } from '@/features/rooms/components/ActiveSpeaker'
 import {
   useIsSpeaking,
@@ -15,10 +14,10 @@ import {
 } from '@livekit/components-react'
 import Source = Track.Source
 import { RiMicOffLine } from '@remixicon/react'
-import { TooltipWrapper } from '@/primitives/TooltipWrapper.tsx'
 import { Button, Dialog, P } from '@/primitives'
 import { useState } from 'react'
 import { useMuteParticipant } from '@/features/rooms/livekit/api/muteParticipant'
+import { ListItemActionButton } from '@/features/rooms/livekit/components/controls/Participants/ListItemActionButton'
 
 const MuteAlertDialog = ({
   isOpen,
@@ -67,37 +66,19 @@ const MicIndicator = ({ participant }: MicIndicatorProps) => {
 
   return (
     <>
-      <TooltipWrapper
+      <ListItemActionButton
         tooltip={t('participants.muteParticipant', {
           name,
         })}
-        tooltipType="instant"
+        isDisabled={isDisabled}
+        onPress={() => !isMuted && setIsAlertOpen(true)}
       >
-        <RACButton
-          isDisabled={isDisabled}
-          className={css({
-            padding: '10px',
-            minWidth: '24px',
-            minHeight: '24px',
-            borderRadius: '50%',
-            backgroundColor: 'transparent',
-            transition: 'background 200ms',
-            '&[data-hovered]': {
-              backgroundColor: '#f5f5f5',
-            },
-            '&[data-focused]': {
-              backgroundColor: '#f5f5f5',
-            },
-          })}
-          onPress={() => !isMuted && setIsAlertOpen(true)}
-        >
-          {isMuted ? (
-            <RiMicOffLine color="gray" />
-          ) : (
-            <ActiveSpeaker isSpeaking={isSpeaking} />
-          )}
-        </RACButton>
-      </TooltipWrapper>
+        {isMuted ? (
+          <RiMicOffLine color="gray" />
+        ) : (
+          <ActiveSpeaker isSpeaking={isSpeaking} />
+        )}
+      </ListItemActionButton>
       <MuteAlertDialog
         isOpen={isAlertOpen}
         onSubmit={() =>
