@@ -19,6 +19,7 @@ import { useTranslation } from 'react-i18next'
 import { OptionsButton } from '../components/controls/Options/OptionsButton'
 import { ParticipantsToggle } from '@/features/rooms/livekit/components/controls/Participants/ParticipantsToggle'
 import { ChatToggle } from '@/features/rooms/livekit/components/controls/ChatToggle'
+import { HandToggle } from '@/features/rooms/livekit/components/controls/HandToggle'
 
 /** @public */
 export type ControlBarControls = {
@@ -183,6 +184,7 @@ export function ControlBar({
             )}
         </TrackToggle>
       )}
+      <HandToggle />
       <ChatToggle />
       <ParticipantsToggle />
       <OptionsButton />

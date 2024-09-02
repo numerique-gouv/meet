@@ -32,6 +32,10 @@
       "open": "Close the chat",
       "closed": "Open the chat"
     },
+    "hand": {
+      "raise": "Raise hand",
+      "lower": "Lower hand"
+    },
     "leave": "Leave",
     "participants": {
       "open": "Hide everyone",

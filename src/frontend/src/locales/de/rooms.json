@@ -32,6 +32,10 @@
       "open": "",
       "closed": ""
     },
+    "hand": {
+      "raise": "",
+      "lower": ""
+    },
     "leave": "",
     "participants": {
       "open": "",
