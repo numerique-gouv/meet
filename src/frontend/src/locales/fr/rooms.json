@@ -53,8 +53,14 @@
   },
   "participants": {
     "heading": "Participants",
+    "subheading": "Dans la réunion",
     "closeButton": "Masquer les participants",
     "you": "Vous",
+    "contributors": "Contributeurs",
+    "collapsable": {
+      "open": "Ouvrir la liste {{name}}",
+      "close": "Fermer la liste {{name}}"
+    },
     "muteParticipant": "Couper le micro de {{name}}",
     "muteParticipantAlert": {
       "description": "Couper le micro de {{name}} pour tous les participants ? {{name}} est la seule personne habilitée à réactiver son micro",
