@@ -50,7 +50,6 @@ export const Conference = ({
   } = useQuery({
     queryKey: fetchKey,
     staleTime: 6 * 60 * 60 * 1000, // By default, LiveKit access tokens expire 6 hours after generation
-    enabled: !initialRoomData,
     initialData: initialRoomData,
     queryFn: () =>
       fetchRoom({
