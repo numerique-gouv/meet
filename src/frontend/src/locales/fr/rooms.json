@@ -32,6 +32,10 @@
       "open": "Masquer le chat",
       "closed": "Afficher le chat"
     },
+    "hand": {
+      "raise": "Lever la main",
+      "lower": "Baisser la main"
+    },
     "leave": "Quitter",
     "participants": {
       "open": "Masquer les participants",
