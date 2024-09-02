@@ -53,7 +53,13 @@
   },
   "participants": {
     "heading": "",
+    "subheading": "",
     "closeButton": "",
+    "contributors": "",
+    "collapsable": {
+      "open": "",
+      "close": ""
+    },
     "you": "",
     "muteParticipant": "",
     "muteParticipantAlert": {

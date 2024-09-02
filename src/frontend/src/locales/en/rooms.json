@@ -53,8 +53,14 @@
   },
   "participants": {
     "heading": "Participants",
+    "subheading": "In room",
     "closeButton": "Hide participants",
     "you": "You",
+    "contributors": "Contributors",
+    "collapsable": {
+      "open": "Open {{name}} list",
+      "close": "Close {{name}} list"
+    },
     "muteParticipant": "Close the mic of {{name}}",
     "muteParticipantAlert": {
       "description": "Mute {{name}} for all participants? {{name}} is the only person who can unmute themselves.",
