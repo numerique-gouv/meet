@@ -66,6 +66,8 @@
       "description": "Couper le micro de {{name}} pour tous les participants ? {{name}} est la seule personne habilitée à réactiver son micro",
       "confirm": "Couper le micro",
       "cancel": "Annuler"
-    }
+    },
+    "raisedHands": "Mains levées",
+    "lowerParticipantHand": "Baisser la main de {{name}}"
   }
 }
