@@ -78,43 +78,41 @@ export const ParticipantsList = () => {
           <RiCloseLine />
         </Button>
       </Div>
-      <H
-        lvl={2}
-        className={css({
-          fontSize: '0.875rem',
-          fontWeight: 'bold',
-          color: '#5f6368',
-          padding: '0 1.5rem',
-          marginBottom: '0.83em',
-        })}
-      >
-        {t('participants.subheading').toUpperCase()}
-      </H>
-      {raisedHandParticipants.length > 0 && (
-        <div
-          style={{
-            marginBottom: '.9375rem',
-          }}
+      <Div overflowY="scroll">
+        <H
+          lvl={2}
+          className={css({
+            fontSize: '0.875rem',
+            fontWeight: 'bold',
+            color: '#5f6368',
+            padding: '0 1.5rem',
+            marginBottom: '0.83em',
+          })}
         >
-          <ParticipantsCollapsableList
-            heading={t('participants.raisedHands')}
-            participants={raisedHandParticipants}
-            renderParticipant={(participant) => (
-              <HandRaisedListItem participant={participant} />
-            )}
-            action={() => (
-              <LowerAllHandsButton participants={raisedHandParticipants} />
-            )}
-          />
-        </div>
-      )}
-      <ParticipantsCollapsableList
-        heading={t('participants.contributors')}
-        participants={sortedParticipants}
-        renderParticipant={(participant) => (
-          <ParticipantListItem participant={participant} />
+          {t('participants.subheading').toUpperCase()}
+        </H>
+        {raisedHandParticipants.length > 0 && (
+          <Div marginBottom=".9375rem">
+            <ParticipantsCollapsableList
+              heading={t('participants.raisedHands')}
+              participants={raisedHandParticipants}
+              renderParticipant={(participant) => (
+                <HandRaisedListItem participant={participant} />
+              )}
+              action={() => (
+                <LowerAllHandsButton participants={raisedHandParticipants} />
+              )}
+            />
+          </Div>
         )}
-      />
+        <ParticipantsCollapsableList
+          heading={t('participants.contributors')}
+          participants={sortedParticipants}
+          renderParticipant={(participant) => (
+            <ParticipantListItem participant={participant} />
+          )}
+        />
+      </Div>
     </Box>
   )
 }
