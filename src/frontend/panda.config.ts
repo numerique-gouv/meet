@@ -75,6 +75,12 @@ const config: Config = {
         '50%': { height: '4px' },
         '100%': { height: '8px' },
       },
+      wave_hand: {
+        '0%': { transform: 'rotate(0deg)' },
+        '20%': { transform: 'rotate(-20deg)' },
+        '80%': { transform: 'rotate(20deg)' },
+        '100%': { transform: 'rotate(0)' },
+      },
     },
     tokens: defineTokens({
       /* we take a few things from the panda preset but for now we clear out some stuff.
