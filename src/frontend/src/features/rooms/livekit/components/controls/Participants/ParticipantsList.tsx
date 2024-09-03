@@ -11,6 +11,7 @@ import { allParticipantRoomEvents } from '@/features/rooms/livekit/constants/eve
 import { ParticipantListItem } from '@/features/rooms/livekit/components/controls/Participants/ParticipantListItem'
 import { ParticipantsCollapsableList } from '@/features/rooms/livekit/components/controls/Participants/ParticipantsCollapsableList'
 import { HandRaisedListItem } from '@/features/rooms/livekit/components/controls/Participants/HandRaisedListItem'
+import { LowerAllHandsButton } from '@/features/rooms/livekit/components/controls/Participants/LowerAllHandsButton'
 
 // TODO: Optimize rendering performance, especially for longer participant lists, even though they are generally short.
 export const ParticipantsList = () => {
@@ -100,6 +101,9 @@ export const ParticipantsList = () => {
             participants={raisedHandParticipants}
             renderParticipant={(participant) => (
               <HandRaisedListItem participant={participant} />
+            )}
+            action={() => (
+              <LowerAllHandsButton participants={raisedHandParticipants} />
             )}
           />
         </div>
