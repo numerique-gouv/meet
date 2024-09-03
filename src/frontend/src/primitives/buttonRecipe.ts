@@ -140,6 +140,7 @@ export const buttonRecipe = cva({
     legacyStyle: {
       true: {
         borderColor: 'gray.400',
+        transition: 'border 200ms, background 200ms, color 200ms',
         '&[data-hovered]': {
           borderColor: 'gray.500',
         },
@@ -147,10 +148,12 @@ export const buttonRecipe = cva({
           borderColor: 'gray.500',
         },
         '&[data-selected]': {
-          background: '#e5e7eb',
-          borderColor: 'gray.400',
+          backgroundColor: '#1d4ed8',
+          color: 'white',
+          borderColor: 'gray.500',
           '&[data-hovered]': {
-            backgroundColor: 'gray.300',
+            borderColor: '#6b7280',
+            backgroundColor: '#1e40af',
           },
         },
       },
