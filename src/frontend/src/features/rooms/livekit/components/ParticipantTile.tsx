@@ -133,6 +133,9 @@ export const ParticipantTile: (
                           size={16}
                           style={{
                             marginInlineEnd: '.25rem', // fixme - match TrackMutedIndicator styling
+                            animationDuration: '300ms',
+                            animationName: 'wave_hand',
+                            animationIterationCount: '2',
                           }}
                         />
                       )}
