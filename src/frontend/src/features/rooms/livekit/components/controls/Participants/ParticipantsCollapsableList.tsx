@@ -50,12 +50,14 @@ type ParticipantsCollapsableListProps = {
   heading: string
   participants: Array<Participant>
   renderParticipant: (participant: Participant) => JSX.Element
+  action?: () => JSX.Element
 }
 
 export const ParticipantsCollapsableList = ({
   heading,
   participants,
   renderParticipant,
+  action,
 }: ParticipantsCollapsableListProps) => {
   const { t } = useTranslation('rooms')
   const [isOpen, setIsOpen] = useState(true)
@@ -98,6 +100,7 @@ export const ParticipantsCollapsableList = ({
       </ToggleHeader>
       {isOpen && (
         <ListContainer>
+          {action && action()}
           {participants.map((participant) => renderParticipant(participant))}
         </ListContainer>
       )}

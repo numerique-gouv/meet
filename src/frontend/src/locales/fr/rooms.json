@@ -68,6 +68,7 @@
       "cancel": "Annuler"
     },
     "raisedHands": "Mains levées",
-    "lowerParticipantHand": "Baisser la main de {{name}}"
+    "lowerParticipantHand": "Baisser la main de {{name}}",
+    "lowerParticipantsHand": "Baisser la main de tous les participants"
   }
 }

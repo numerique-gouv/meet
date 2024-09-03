@@ -68,6 +68,7 @@
       "cancel": ""
     },
     "raisedHands": "",
-    "lowerParticipantHand": ""
+    "lowerParticipantHand": "",
+    "lowerParticipantsHand": ""
   }
 }
