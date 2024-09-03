@@ -25,6 +25,8 @@ import {
 } from '@livekit/components-core'
 import { Track } from 'livekit-client'
 import { ParticipantPlaceholder } from '@/features/rooms/livekit/components/ParticipantPlaceholder'
+import { RiHand } from '@remixicon/react'
+import { useRaisedHand } from '@/features/rooms/livekit/hooks/useRaisedHand'
 
 export function TrackRefContextIfNeeded(
   props: React.PropsWithChildren<{
@@ -84,6 +86,10 @@ export const ParticipantTile: (
     [trackReference, layoutContext]
   )
 
+  const { isHandRaised } = useRaisedHand({
+    participant: trackReference.participant,
+  })
+
   return (
     <div ref={ref} style={{ position: 'relative' }} {...elementProps}>
       <TrackRefContextIfNeeded trackRef={trackReference}>
@@ -113,9 +119,23 @@ export const ParticipantTile: (
                 />
               </div>
               <div className="lk-participant-metadata">
-                <div className="lk-participant-metadata-item">
+                <div
+                  className="lk-participant-metadata-item"
+                  style={{
+                    minHeight: '24px',
+                  }}
+                >
                   {trackReference.source === Track.Source.Camera ? (
                     <>
+                      {isHandRaised && (
+                        <RiHand
+                          color="white"
+                          size={16}
+                          style={{
+                            marginInlineEnd: '.25rem', // fixme - match TrackMutedIndicator styling
+                          }}
+                        />
+                      )}
                       {isEncrypted && (
                         <LockLockedIcon style={{ marginRight: '0.25rem' }} />
                       )}
