@@ -10,6 +10,7 @@ import { useTranslation } from 'react-i18next'
 import { allParticipantRoomEvents } from '@/features/rooms/livekit/constants/events'
 import { ParticipantListItem } from '@/features/rooms/livekit/components/controls/Participants/ParticipantListItem'
 import { ParticipantsCollapsableList } from '@/features/rooms/livekit/components/controls/Participants/ParticipantsCollapsableList'
+import { HandRaisedListItem } from '@/features/rooms/livekit/components/controls/Participants/HandRaisedListItem'
 
 // TODO: Optimize rendering performance, especially for longer participant lists, even though they are generally short.
 export const ParticipantsList = () => {
@@ -34,6 +35,11 @@ export const ParticipantsList = () => {
     participants[0], // first participant returned by the hook, is always the local one
     ...sortedRemoteParticipants,
   ]
+
+  const raisedHandParticipants = participants.filter((participant) => {
+    const data = JSON.parse(participant.metadata || '{}')
+    return data.raised
+  })
 
   // TODO - extract inline styling in a centralized styling file, and avoid magic numbers
   return (
@@ -83,6 +89,21 @@ export const ParticipantsList = () => {
       >
         {t('participants.subheading').toUpperCase()}
       </H>
+      {raisedHandParticipants.length > 0 && (
+        <div
+          style={{
+            marginBottom: '.9375rem',
+          }}
+        >
+          <ParticipantsCollapsableList
+            heading={t('participants.raisedHands')}
+            participants={raisedHandParticipants}
+            renderParticipant={(participant) => (
+              <HandRaisedListItem participant={participant} />
+            )}
+          />
+        </div>
+      )}
       <ParticipantsCollapsableList
         heading={t('participants.contributors')}
         participants={sortedParticipants}

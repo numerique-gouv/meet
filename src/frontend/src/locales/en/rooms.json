@@ -66,6 +66,8 @@
       "description": "Mute {{name}} for all participants? {{name}} is the only person who can unmute themselves.",
       "confirm": "Mute",
       "cancel": "Cancel"
-    }
+    },
+    "raisedHands": "Raised hands",
+    "lowerParticipantHand": "Lower {{name}}'s hand"
   }
 }
