@@ -4,6 +4,7 @@ Utils functions used in the core app
 
 # ruff: noqa:S311
 
+import hashlib
 import json
 import random
 from typing import Optional
@@ -24,7 +25,11 @@ def generate_color(identity: str) -> str:
     range and ensure predictability.
     """
 
-    random.seed(hash(identity))
+    # ruff: noqa:S324
+    identity_hash = hashlib.sha1(identity.encode("utf-8"))
+    # Keep only hash's last 16 bits, collisions are not a concern
+    seed = int(identity_hash.hexdigest(), 16) & 0xFFFF
+    random.seed(seed)
     hue = random.randint(0, 360)
     saturation = random.randint(50, 75)
     lightness = random.randint(25, 60)
