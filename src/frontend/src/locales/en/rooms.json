@@ -61,6 +61,7 @@
       "open": "Open {{name}} list",
       "close": "Close {{name}} list"
     },
+    "muteYourself": "Close your mic",
     "muteParticipant": "Close the mic of {{name}}",
     "muteParticipantAlert": {
       "description": "Mute {{name}} for all participants? {{name}} is the only person who can unmute themselves.",
