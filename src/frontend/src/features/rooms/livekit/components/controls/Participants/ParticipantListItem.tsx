@@ -13,7 +13,12 @@ import {
   useTrackMutedIndicator,
 } from '@livekit/components-react'
 import Source = Track.Source
-import { RiMicOffLine } from '@remixicon/react'
+import {
+  RiMicFill,
+  RiMicLine,
+  RiMicOffFill,
+  RiMicOffLine,
+} from '@remixicon/react'
 import { Button, Dialog, P } from '@/primitives'
 import { useState } from 'react'
 import { useMuteParticipant } from '@/features/rooms/livekit/api/muteParticipant'
@@ -57,10 +62,7 @@ const MicIndicator = ({ participant }: MicIndicatorProps) => {
     source: Source.Microphone,
   })
   const isSpeaking = useIsSpeaking(participant)
-  const isDisabled = isLocal(participant) || (!isLocal(participant) && isMuted)
-
   const [isAlertOpen, setIsAlertOpen] = useState(false)
-
   const name = participant.name || participant.identity
 
   return (
@@ -69,16 +71,28 @@ const MicIndicator = ({ participant }: MicIndicatorProps) => {
         square
         invisible
         size="sm"
-        tooltip={t('participants.muteParticipant', {
-          name,
-        })}
-        isDisabled={isDisabled}
-        onPress={() => !isMuted && setIsAlertOpen(true)}
+        tooltip={
+          isLocal(participant)
+            ? t('participants.muteYourself')
+            : t('participants.muteParticipant', {
+                name,
+              })
+        }
+        isDisabled={isMuted}
+        onPress={() =>
+          !isMuted && isLocal(participant)
+            ? muteParticipant(participant)
+            : setIsAlertOpen(true)
+        }
       >
         {isMuted ? (
-          <RiMicOffLine color="gray" />
+          <RiMicOffFill color={'gray'} />
         ) : (
-          <ActiveSpeaker isSpeaking={isSpeaking} />
+          <RiMicFill
+            style={{
+              animation: isSpeaking ? 'pulse_mic 800ms infinite' : undefined,
+            }}
+          />
         )}
       </Button>
       <MuteAlertDialog
@@ -102,7 +116,6 @@ export const ParticipantListItem = ({
 }: ParticipantListItemProps) => {
   const { t } = useTranslation('rooms')
   const name = participant.name || participant.identity
-
   return (
     <HStack
       role="listitem"

@@ -81,6 +81,11 @@ const config: Config = {
         '80%': { transform: 'rotate(20deg)' },
         '100%': { transform: 'rotate(0)' },
       },
+      pulse_mic: {
+        '0%': { color: 'primary', opacity: '1' },
+        '50%': { color: 'primary', opacity: '0.8' },
+        '100%': { color: 'primary', opacity: '1' },
+      },
     },
     tokens: defineTokens({
       /* we take a few things from the panda preset but for now we clear out some stuff.
