@@ -17,7 +17,6 @@ import { RiMicOffLine } from '@remixicon/react'
 import { Button, Dialog, P } from '@/primitives'
 import { useState } from 'react'
 import { useMuteParticipant } from '@/features/rooms/livekit/api/muteParticipant'
-import { ListItemActionButton } from '@/features/rooms/livekit/components/controls/Participants/ListItemActionButton'
 
 const MuteAlertDialog = ({
   isOpen,
@@ -66,7 +65,10 @@ const MicIndicator = ({ participant }: MicIndicatorProps) => {
 
   return (
     <>
-      <ListItemActionButton
+      <Button
+        square
+        invisible
+        size="sm"
         tooltip={t('participants.muteParticipant', {
           name,
         })}
@@ -78,7 +80,7 @@ const MicIndicator = ({ participant }: MicIndicatorProps) => {
         ) : (
           <ActiveSpeaker isSpeaking={isSpeaking} />
         )}
-      </ListItemActionButton>
+      </Button>
       <MuteAlertDialog
         isOpen={isAlertOpen}
         onSubmit={() =>

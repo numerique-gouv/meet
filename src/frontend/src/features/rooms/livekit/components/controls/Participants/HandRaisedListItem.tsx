@@ -8,8 +8,8 @@ import { getParticipantColor } from '@/features/rooms/utils/getParticipantColor'
 import { Participant } from 'livekit-client'
 import { isLocal } from '@/utils/livekit'
 import { RiHand } from '@remixicon/react'
-import { ListItemActionButton } from '@/features/rooms/livekit/components/controls/Participants/ListItemActionButton'
 import { useLowerHandParticipant } from '@/features/rooms/livekit/api/lowerHandParticipant.ts'
+import { Button } from '@/primitives'
 
 type HandRaisedListItemProps = {
   participant: Participant
@@ -67,12 +67,15 @@ export const HandRaisedListItem = ({
           )}
         </Text>
       </HStack>
-      <ListItemActionButton
+      <Button
+        square
+        invisible
+        size="sm"
         onPress={() => lowerHandParticipant(participant)}
         tooltip={t('participants.lowerParticipantHand', { name })}
       >
-        <RiHand color="gray" />
-      </ListItemActionButton>
+        <RiHand />
+      </Button>
     </HStack>
   )
 }
