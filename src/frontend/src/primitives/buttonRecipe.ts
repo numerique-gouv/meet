@@ -23,6 +23,9 @@ export const buttonRecipe = cva({
     '&[data-selected]': {
       backgroundColor: 'colorPalette.active',
     },
+    '&[data-disabled]': {
+      cursor: 'auto',
+    },
   },
   variants: {
     size: {
