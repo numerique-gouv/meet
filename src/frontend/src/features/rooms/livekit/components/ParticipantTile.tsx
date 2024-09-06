@@ -123,13 +123,16 @@ export const ParticipantTile: (
                   className="lk-participant-metadata-item"
                   style={{
                     minHeight: '24px',
+                    backgroundColor: isHandRaised ? 'white' : undefined,
+                    color: isHandRaised ? 'black' : undefined,
+                    transition: 'background 200ms ease, color 400ms ease',
                   }}
                 >
                   {trackReference.source === Track.Source.Camera ? (
                     <>
                       {isHandRaised && (
                         <RiHand
-                          color="white"
+                          color="black"
                           size={16}
                           style={{
                             marginInlineEnd: '.25rem', // fixme - match TrackMutedIndicator styling
