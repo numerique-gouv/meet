@@ -6,7 +6,6 @@ import {
   ParticipantName,
   ParticipantTileProps,
   ScreenShareIcon,
-  TrackMutedIndicator,
   useEnsureTrackRef,
   useFeatureContext,
   useIsEncrypted,
@@ -27,6 +26,8 @@ import { Track } from 'livekit-client'
 import { ParticipantPlaceholder } from '@/features/rooms/livekit/components/ParticipantPlaceholder'
 import { RiHand } from '@remixicon/react'
 import { useRaisedHand } from '@/features/rooms/livekit/hooks/useRaisedHand'
+import { HStack } from '@/styled-system/jsx'
+import { MutedMicIndicator } from '@/features/rooms/livekit/components/MutedMicIndicator'
 
 export function TrackRefContextIfNeeded(
   props: React.PropsWithChildren<{
@@ -119,48 +120,44 @@ export const ParticipantTile: (
                 />
               </div>
               <div className="lk-participant-metadata">
-                <div
-                  className="lk-participant-metadata-item"
-                  style={{
-                    minHeight: '24px',
-                    backgroundColor: isHandRaised ? 'white' : undefined,
-                    color: isHandRaised ? 'black' : undefined,
-                    transition: 'background 200ms ease, color 400ms ease',
-                  }}
-                >
-                  {trackReference.source === Track.Source.Camera ? (
-                    <>
-                      {isHandRaised && (
-                        <RiHand
-                          color="black"
-                          size={16}
-                          style={{
-                            marginInlineEnd: '.25rem', // fixme - match TrackMutedIndicator styling
-                            animationDuration: '300ms',
-                            animationName: 'wave_hand',
-                            animationIterationCount: '2',
-                          }}
-                        />
-                      )}
-                      {isEncrypted && (
-                        <LockLockedIcon style={{ marginRight: '0.25rem' }} />
-                      )}
-                      <TrackMutedIndicator
-                        trackRef={{
-                          participant: trackReference.participant,
-                          source: Track.Source.Microphone,
-                        }}
-                        show={'muted'}
-                      ></TrackMutedIndicator>
-                      <ParticipantName />
-                    </>
-                  ) : (
-                    <>
-                      <ScreenShareIcon style={{ marginRight: '0.25rem' }} />
-                      <ParticipantName>&apos;s screen</ParticipantName>
-                    </>
-                  )}
-                </div>
+                <HStack gap={0.25}>
+                  <MutedMicIndicator participant={trackReference.participant} />
+                  <div
+                    className="lk-participant-metadata-item"
+                    style={{
+                      minHeight: '24px',
+                      backgroundColor: isHandRaised ? 'white' : undefined,
+                      color: isHandRaised ? 'black' : undefined,
+                      transition: 'background 200ms ease, color 400ms ease',
+                    }}
+                  >
+                    {trackReference.source === Track.Source.Camera ? (
+                      <>
+                        {isHandRaised && (
+                          <RiHand
+                            color="black"
+                            size={16}
+                            style={{
+                              marginInlineEnd: '.25rem', // fixme - match TrackMutedIndicator styling
+                              animationDuration: '300ms',
+                              animationName: 'wave_hand',
+                              animationIterationCount: '2',
+                            }}
+                          />
+                        )}
+                        {isEncrypted && (
+                          <LockLockedIcon style={{ marginRight: '0.25rem' }} />
+                        )}
+                        <ParticipantName />
+                      </>
+                    ) : (
+                      <>
+                        <ScreenShareIcon style={{ marginRight: '0.25rem' }} />
+                        <ParticipantName>&apos;s screen</ParticipantName>
+                      </>
+                    )}
+                  </div>
+                </HStack>
                 <ConnectionQualityIndicator className="lk-participant-metadata-item" />
               </div>
             </>
