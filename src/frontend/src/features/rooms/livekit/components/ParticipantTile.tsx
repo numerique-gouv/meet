@@ -44,19 +44,24 @@ export function TrackRefContextIfNeeded(
   )
 }
 
+interface ParticipantTileExtendedProps extends ParticipantTileProps {
+  disableMetadata?: boolean
+}
+
 export const ParticipantTile: (
-  props: ParticipantTileProps & React.RefAttributes<HTMLDivElement>
+  props: ParticipantTileExtendedProps & React.RefAttributes<HTMLDivElement>
 ) => React.ReactNode = /* @__PURE__ */ React.forwardRef<
   HTMLDivElement,
-  ParticipantTileProps
+  ParticipantTileExtendedProps
 >(function ParticipantTile(
   {
     trackRef,
     children,
     onParticipantClick,
     disableSpeakingIndicator,
+    disableMetadata,
     ...htmlProps
-  }: ParticipantTileProps,
+  }: ParticipantTileExtendedProps,
   ref
 ) {
   const trackReference = useEnsureTrackRef(trackRef)
@@ -119,50 +124,56 @@ export const ParticipantTile: (
                   participant={trackReference.participant}
                 />
               </div>
-              <div className="lk-participant-metadata">
-                <HStack gap={0.25}>
-                  <MutedMicIndicator participant={trackReference.participant} />
-                  <div
-                    className="lk-participant-metadata-item"
-                    style={{
-                      minHeight: '24px',
-                      backgroundColor: isHandRaised ? 'white' : undefined,
-                      color: isHandRaised ? 'black' : undefined,
-                      transition: 'background 200ms ease, color 400ms ease',
-                    }}
-                  >
-                    {trackReference.source === Track.Source.Camera ? (
-                      <>
-                        {isHandRaised && (
-                          <RiHand
-                            color="black"
-                            size={16}
-                            style={{
-                              marginInlineEnd: '.25rem', // fixme - match TrackMutedIndicator styling
-                              animationDuration: '300ms',
-                              animationName: 'wave_hand',
-                              animationIterationCount: '2',
-                            }}
-                          />
-                        )}
-                        {isEncrypted && (
-                          <LockLockedIcon style={{ marginRight: '0.25rem' }} />
-                        )}
-                        <ParticipantName />
-                      </>
-                    ) : (
-                      <>
-                        <ScreenShareIcon style={{ marginRight: '0.25rem' }} />
-                        <ParticipantName>&apos;s screen</ParticipantName>
-                      </>
-                    )}
-                  </div>
-                </HStack>
-                <ConnectionQualityIndicator className="lk-participant-metadata-item" />
-              </div>
+              {!disableMetadata && (
+                <div className="lk-participant-metadata">
+                  <HStack gap={0.25}>
+                    <MutedMicIndicator
+                      participant={trackReference.participant}
+                    />
+                    <div
+                      className="lk-participant-metadata-item"
+                      style={{
+                        minHeight: '24px',
+                        backgroundColor: isHandRaised ? 'white' : undefined,
+                        color: isHandRaised ? 'black' : undefined,
+                        transition: 'background 200ms ease, color 400ms ease',
+                      }}
+                    >
+                      {trackReference.source === Track.Source.Camera ? (
+                        <>
+                          {isHandRaised && (
+                            <RiHand
+                              color="black"
+                              size={16}
+                              style={{
+                                marginInlineEnd: '.25rem', // fixme - match TrackMutedIndicator styling
+                                animationDuration: '300ms',
+                                animationName: 'wave_hand',
+                                animationIterationCount: '2',
+                              }}
+                            />
+                          )}
+                          {isEncrypted && (
+                            <LockLockedIcon
+                              style={{ marginRight: '0.25rem' }}
+                            />
+                          )}
+                          <ParticipantName />
+                        </>
+                      ) : (
+                        <>
+                          <ScreenShareIcon style={{ marginRight: '0.25rem' }} />
+                          <ParticipantName>&apos;s screen</ParticipantName>
+                        </>
+                      )}
+                    </div>
+                  </HStack>
+                  <ConnectionQualityIndicator className="lk-participant-metadata-item" />
+                </div>
+              )}
             </>
           )}
-          <FocusToggle trackRef={trackReference} />
+          {!disableMetadata && <FocusToggle trackRef={trackReference} />}
         </ParticipantContextIfNeeded>
       </TrackRefContextIfNeeded>
     </div>
