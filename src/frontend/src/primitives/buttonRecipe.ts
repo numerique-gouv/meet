@@ -73,6 +73,12 @@ export const buttonRecipe = cva({
           backgroundColor: 'success.subtle!',
         },
       },
+      text: {
+        color: 'primary',
+        '&[data-hovered]': {
+          background: 'gray.100 !important',
+        },
+      },
       danger: {
         colorPalette: 'danger',
         borderColor: 'danger.600',

@@ -17,7 +17,7 @@ export const LowerAllHandsButton = ({
       aria-label={t('participants.lowerParticipantsHand')}
       size="sm"
       fullWidth
-      invisible
+      variant="text"
       onPress={() => lowerHandParticipants(participants)}
     >
       {t('participants.lowerParticipantsHand')}
