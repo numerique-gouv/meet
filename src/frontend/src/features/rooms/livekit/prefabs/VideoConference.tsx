@@ -35,6 +35,7 @@ import { useSnapshot } from 'valtio'
 import { participantsStore } from '@/stores/participants'
 import { FocusLayout } from '../components/FocusLayout'
 import { ParticipantTile } from '../components/ParticipantTile'
+import { MainNotificationToast } from '@/features/notifications/MainNotificationToast'
 
 const LayoutWrapper = styled(
   'div',
@@ -184,25 +185,33 @@ export function VideoConference({
         >
           <div className="lk-video-conference-inner">
             <LayoutWrapper>
-              {!focusTrack ? (
-                <div
-                  className="lk-grid-layout-wrapper"
-                  style={{ height: 'auto' }}
-                >
-                  <GridLayout tracks={tracks}>
-                    <ParticipantTile />
-                  </GridLayout>
-                </div>
-              ) : (
-                <div className="lk-focus-layout-wrapper">
-                  <FocusLayoutContainer>
-                    <CarouselLayout tracks={carouselTracks}>
+              <div
+                style={{ display: 'flex', position: 'relative', width: '100%' }}
+              >
+                {!focusTrack ? (
+                  <div
+                    className="lk-grid-layout-wrapper"
+                    style={{ height: 'auto' }}
+                  >
+                    <GridLayout tracks={tracks}>
                       <ParticipantTile />
-                    </CarouselLayout>
-                    {focusTrack && <FocusLayout trackRef={focusTrack} />}
-                  </FocusLayoutContainer>
-                </div>
-              )}
+                    </GridLayout>
+                  </div>
+                ) : (
+                  <div
+                    className="lk-focus-layout-wrapper"
+                    style={{ height: 'auto' }}
+                  >
+                    <FocusLayoutContainer>
+                      <CarouselLayout tracks={carouselTracks}>
+                        <ParticipantTile />
+                      </CarouselLayout>
+                      {focusTrack && <FocusLayout trackRef={focusTrack} />}
+                    </FocusLayoutContainer>
+                  </div>
+                )}
+                <MainNotificationToast />
+              </div>
               <Chat
                 style={{ display: widgetState.showChat ? 'grid' : 'none' }}
                 messageFormatter={chatMessageFormatter}

@@ -1,0 +1,6 @@
+{
+  "defaultName": "Un contributeur",
+  "joined": {
+    "description": "{{name}} participe à l'appel"
+  }
+}
