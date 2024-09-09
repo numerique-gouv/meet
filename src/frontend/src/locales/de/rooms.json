@@ -13,6 +13,7 @@
   "leaveRoomPrompt": "",
   "shareDialog": {
     "copy": "",
+    "copied": "",
     "heading": "",
     "description": "",
     "permissions": ""
