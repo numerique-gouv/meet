@@ -17,8 +17,8 @@
   "laterMeetingDialog": {
     "heading": "",
     "description": "",
-    "copied": "",
     "copy": "",
-    "inputLabel": ""
+    "copied": "",
+    "permissions": ""
   }
 }
