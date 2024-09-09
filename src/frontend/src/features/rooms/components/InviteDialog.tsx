@@ -4,7 +4,13 @@ import { Div, Button, type DialogProps, P } from '@/primitives'
 import { HStack, styled, VStack } from '@/styled-system/jsx'
 import { Heading, Dialog } from 'react-aria-components'
 import { Text, text } from '@/primitives/Text'
-import { RiCloseLine, RiFileCopyLine, RiSpam2Fill } from '@remixicon/react'
+import {
+  RiCheckLine,
+  RiCloseLine,
+  RiFileCopyLine,
+  RiSpam2Fill,
+} from '@remixicon/react'
+import { useEffect, useState } from 'react'
 
 // fixme - extract in a proper primitive this dialog without overlay
 const StyledRACDialog = styled(Dialog, {
@@ -34,17 +40,25 @@ export const InviteDialog = ({
   const { t } = useTranslation('rooms')
   const roomUrl = getRouteUrl('room', roomId)
 
+  const [isCopied, setIsCopied] = useState(false)
+
+  useEffect(() => {
+    if (isCopied) {
+      const timeout = setTimeout(() => setIsCopied(false), 3000)
+      return () => clearTimeout(timeout)
+    }
+  }, [isCopied])
+
+  const [isHovered, setIsHovered] = useState(false)
+
   return (
     <StyledRACDialog {...dialogProps}>
       {({ close }) => (
         <VStack
-          alignItems={'left'}
+          alignItems="left"
           justify="start"
           gap={0}
-          style={{
-            maxWidth: '100%',
-            overflow: 'hidden',
-          }}
+          style={{ maxWidth: '100%', overflow: 'hidden' }}
         >
           <Heading slot="title" level={3} className={text({ variant: 'h2' })}>
             {t('shareDialog.heading')}
@@ -63,36 +77,48 @@ export const InviteDialog = ({
             </Button>
           </Div>
           <P>{t('shareDialog.description')}</P>
-          <HStack
-            justify={'space-between'}
-            alignItems="center"
+          <Button
+            variant={isCopied ? 'success' : 'primary'}
+            size="sm"
+            fullWidth
+            aria-label={t('shareDialog.copy')}
             style={{
-              backgroundColor: '#f1f3f4',
-              borderRadius: '4px',
-              maxWidth: '100%',
+              justifyContent: 'start',
             }}
-            gap={0}
+            onPress={() => {
+              navigator.clipboard.writeText(roomUrl)
+              setIsCopied(true)
+            }}
+            onHoverChange={setIsHovered}
           >
-            <div
-              style={{
-                paddingLeft: '0.75rem',
-                textOverflow: 'ellipsis',
-                overflow: 'hidden',
-                textWrap: 'nowrap',
-                userSelect: 'none',
-              }}
-            >
-              {roomUrl.replace(/^https?:\/\//, '')}
-            </div>
-            <Button
-              square
-              invisible
-              tooltip={t('shareDialog.copy')}
-              onPress={() => navigator.clipboard.writeText(roomUrl)}
-            >
-              <RiFileCopyLine size={24} />
-            </Button>
-          </HStack>
+            {isCopied ? (
+              <>
+                <RiCheckLine size={18} style={{ marginRight: '8px' }} />
+                {t('shareDialog.copied')}
+              </>
+            ) : (
+              <>
+                <RiFileCopyLine
+                  size={18}
+                  style={{ marginRight: '8px', minWidth: '18px' }}
+                />
+                {isHovered ? (
+                  t('shareDialog.copy')
+                ) : (
+                  <div
+                    style={{
+                      textOverflow: 'ellipsis',
+                      overflow: 'hidden',
+                      userSelect: 'none',
+                      textWrap: 'nowrap',
+                    }}
+                  >
+                    {roomUrl.replace(/^https?:\/\//, '')}
+                  </div>
+                )}
+              </>
+            )}
+          </Button>
           <HStack>
             <div
               style={{
