@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { getRouteUrl } from '@/navigation/getRouteUrl'
-import { Div, Button, Dialog, Input, type DialogProps, P } from '@/primitives'
+import { Button, Dialog, type DialogProps, P, Text } from '@/primitives'
 import { HStack } from '@/styled-system/jsx'
+import { RiCheckLine, RiFileCopyLine, RiSpam2Fill } from '@remixicon/react'
 
 // fixme - duplication with the InviteDialog
 export const LaterMeetingDialog = ({
@@ -11,19 +12,17 @@ export const LaterMeetingDialog = ({
 }: { roomId: string } & Omit<DialogProps, 'title'>) => {
   const { t } = useTranslation('home')
   const roomUrl = getRouteUrl('room', roomId)
-  const copyLabel = t('laterMeetingDialog.copy')
-  const copiedLabel = t('laterMeetingDialog.copied')
-  const [copyLinkLabel, setCopyLinkLabel] = useState(copyLabel)
+
+  const [isCopied, setIsCopied] = useState(false)
+
   useEffect(() => {
-    if (copyLinkLabel == copiedLabel) {
-      const timeout = setTimeout(() => {
-        setCopyLinkLabel(copyLabel)
-      }, 5000)
-      return () => {
-        clearTimeout(timeout)
-      }
+    if (isCopied) {
+      const timeout = setTimeout(() => setIsCopied(false), 3000)
+      return () => clearTimeout(timeout)
     }
-  }, [copyLinkLabel, copyLabel, copiedLabel])
+  }, [isCopied])
+
+  const [isHovered, setIsHovered] = useState(false)
 
   return (
     <Dialog
@@ -32,31 +31,62 @@ export const LaterMeetingDialog = ({
       title={t('laterMeetingDialog.heading')}
     >
       <P>{t('laterMeetingDialog.description')}</P>
-      <HStack alignItems="stretch" gap="gutter">
-        <Div flex="1">
-          <Input
-            type="text"
-            aria-label={t('laterMeetingDialog.inputLabel')}
-            value={roomUrl}
-            readOnly
-            onClick={(e) => {
-              e.currentTarget.select()
-            }}
-          />
-        </Div>
-        <Div minWidth="8rem">
-          <Button
-            variant="primary"
-            size="sm"
-            fullWidth
-            onPress={() => {
-              navigator.clipboard.writeText(roomUrl)
-              setCopyLinkLabel(copiedLabel)
-            }}
-          >
-            {copyLinkLabel}
-          </Button>
-        </Div>
+      <Button
+        variant={isCopied ? 'success' : 'primary'}
+        size="sm"
+        fullWidth
+        aria-label={t('laterMeetingDialog.copy')}
+        style={{
+          justifyContent: 'start',
+        }}
+        onPress={() => {
+          navigator.clipboard.writeText(roomUrl)
+          setIsCopied(true)
+        }}
+        onHoverChange={setIsHovered}
+      >
+        {isCopied ? (
+          <>
+            <RiCheckLine size={18} style={{ marginRight: '8px' }} />
+            {t('laterMeetingDialog.copied')}
+          </>
+        ) : (
+          <>
+            <RiFileCopyLine
+              size={18}
+              style={{ marginRight: '8px', minWidth: '18px' }}
+            />
+            {isHovered ? (
+              t('laterMeetingDialog.copy')
+            ) : (
+              <div
+                style={{
+                  textOverflow: 'ellipsis',
+                  overflow: 'hidden',
+                  userSelect: 'none',
+                  textWrap: 'nowrap',
+                }}
+              >
+                {roomUrl.replace(/^https?:\/\//, '')}
+              </div>
+            )}
+          </>
+        )}
+      </Button>
+      <HStack>
+        <div
+          style={{
+            backgroundColor: '#d9e5ff',
+            borderRadius: '50%',
+            padding: '4px',
+            marginTop: '1rem',
+          }}
+        >
+          <RiSpam2Fill size={22} style={{ fill: '#4c84fc' }} />
+        </div>
+        <Text variant="sm" style={{ marginTop: '1rem' }}>
+          {t('laterMeetingDialog.permissions')}
+        </Text>
       </HStack>
     </Dialog>
   )
