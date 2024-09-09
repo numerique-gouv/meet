@@ -7,18 +7,12 @@ import { Avatar } from '@/components/Avatar'
 import { getParticipantColor } from '@/features/rooms/utils/getParticipantColor'
 import { Participant, Track } from 'livekit-client'
 import { isLocal } from '@/utils/livekit'
-import { ActiveSpeaker } from '@/features/rooms/components/ActiveSpeaker'
 import {
   useIsSpeaking,
   useTrackMutedIndicator,
 } from '@livekit/components-react'
 import Source = Track.Source
-import {
-  RiMicFill,
-  RiMicLine,
-  RiMicOffFill,
-  RiMicOffLine,
-} from '@remixicon/react'
+import { RiMicFill, RiMicOffFill } from '@remixicon/react'
 import { Button, Dialog, P } from '@/primitives'
 import { useState } from 'react'
 import { useMuteParticipant } from '@/features/rooms/livekit/api/muteParticipant'
