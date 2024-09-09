@@ -39,10 +39,10 @@ const MuteAlertDialog = ({
     <Dialog isOpen={isOpen} role="alertdialog">
       <P>{t('participants.muteParticipantAlert.description', { name })}</P>
       <HStack gap={1}>
-        <Button size="sm" invisible onPress={onClose}>
+        <Button variant="text" size="sm" onPress={onClose}>
           {t('participants.muteParticipantAlert.cancel')}
         </Button>
-        <Button size="sm" invisible onPress={onSubmit}>
+        <Button variant="text" size="sm" onPress={onSubmit}>
           {t('participants.muteParticipantAlert.confirm')}
         </Button>
       </HStack>
