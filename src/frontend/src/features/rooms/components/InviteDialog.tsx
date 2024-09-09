@@ -10,8 +10,8 @@ import { RiCloseLine, RiFileCopyLine, RiSpam2Fill } from '@remixicon/react'
 const StyledRACDialog = styled(Dialog, {
   base: {
     position: 'fixed',
-    left: 30,
-    bottom: 90,
+    left: '0.75rem',
+    bottom: 80,
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
