@@ -4,12 +4,15 @@ import { Participant, RemoteParticipant, RoomEvent } from 'livekit-client'
 import { ToastProvider, toastQueue } from './components/ToastProvider'
 import { NotificationType } from './NotificationType'
 import { Div } from '@/primitives'
+import { isMobileBrowser } from '@livekit/components-core/src/helper/detectMobileBrowser.ts'
 
 export const MainNotificationToast = () => {
   const room = useRoomContext()
-  // fixme - don't show toast on mobile screen
   useEffect(() => {
     const showJoinNotification = (participant: Participant) => {
+      if (isMobileBrowser()) {
+        return
+      }
       toastQueue.add(
         {
           participant,
@@ -52,6 +55,9 @@ export const MainNotificationToast = () => {
       participant?: RemoteParticipant
     ) => {
       if (!participant) {
+        return
+      }
+      if (isMobileBrowser()) {
         return
       }
       const notification = decoder.decode(payload)
