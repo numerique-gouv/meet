@@ -2,14 +2,11 @@ import { useTranslation } from 'react-i18next'
 import { RiGroupLine, RiInfinityLine } from '@remixicon/react'
 import { ToggleButton } from '@/primitives'
 import { css } from '@/styled-system/css'
-import { useLayoutContext, useParticipants } from '@livekit/components-react'
-import { useSnapshot } from 'valtio'
-import { participantsStore } from '@/stores/participants'
+import { useParticipants } from '@livekit/components-react'
+import { useWidgetInteraction } from '../../../hooks/useWidgetInteraction'
 
 export const ParticipantsToggle = () => {
   const { t } = useTranslation('rooms')
-
-  const { dispatch, state } = useLayoutContext().widget
 
   /**
    * Context could not be used due to inconsistent refresh behavior.
@@ -19,10 +16,9 @@ export const ParticipantsToggle = () => {
   const participants = useParticipants()
   const numParticipants = participants?.length
 
-  const participantsSnap = useSnapshot(participantsStore)
-  const showParticipants = participantsSnap.showParticipants
+  const { isParticipantsOpen, toggleParticipants } = useWidgetInteraction()
 
-  const tooltipLabel = showParticipants ? 'open' : 'closed'
+  const tooltipLabel = isParticipantsOpen ? 'open' : 'closed'
 
   return (
     <div
@@ -36,11 +32,8 @@ export const ParticipantsToggle = () => {
         legacyStyle
         aria-label={t(`controls.participants.${tooltipLabel}`)}
         tooltip={t(`controls.participants.${tooltipLabel}`)}
-        isSelected={showParticipants}
-        onPress={() => {
-          if (dispatch && state?.showChat) dispatch({ msg: 'toggle_chat' })
-          participantsStore.showParticipants = !showParticipants
-        }}
+        isSelected={isParticipantsOpen}
+        onPress={() => toggleParticipants()}
       >
         <RiGroupLine />
       </ToggleButton>
