@@ -7,7 +7,6 @@ import { Div } from '@/primitives'
 
 export const MainNotificationToast = () => {
   const room = useRoomContext()
-  // fixme - remove toast if the user quit room in the 5s she joined
   // fixme - don't show toast on mobile screen
   useEffect(() => {
     const showJoinNotification = (participant: Participant) => {
@@ -24,6 +23,23 @@ export const MainNotificationToast = () => {
     room.on(RoomEvent.ParticipantConnected, showJoinNotification)
     return () => {
       room.off(RoomEvent.ParticipantConnected, showJoinNotification)
+    }
+  }, [room])
+
+  useEffect(() => {
+    const removeJoinNotification = (participant: Participant) => {
+      const existingToast = toastQueue.visibleToasts.find(
+        (toast) =>
+          toast.content.participant === participant &&
+          toast.content.type === NotificationType.Joined
+      )
+      if (existingToast) {
+        toastQueue.close(existingToast.key)
+      }
+    }
+    room.on(RoomEvent.ParticipantDisconnected, removeJoinNotification)
+    return () => {
+      room.off(RoomEvent.ParticipantConnected, removeJoinNotification)
     }
   }, [room])
 
