@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import { useRoomContext } from '@livekit/components-react'
-import { Participant, RoomEvent } from 'livekit-client'
+import { Participant, RemoteParticipant, RoomEvent } from 'livekit-client'
 import { ToastProvider, toastQueue } from './components/ToastProvider'
 import { NotificationType } from './NotificationType'
 import { Div } from '@/primitives'
@@ -24,6 +24,45 @@ export const MainNotificationToast = () => {
     room.on(RoomEvent.ParticipantConnected, showJoinNotification)
     return () => {
       room.off(RoomEvent.ParticipantConnected, showJoinNotification)
+    }
+  }, [room])
+
+  // fixme - close all related toasters when hands are lowered remotely
+  useEffect(() => {
+    const decoder = new TextDecoder()
+
+    const handleNotificationReceived = (
+      payload: Uint8Array,
+      participant?: RemoteParticipant
+    ) => {
+      if (!participant) {
+        return
+      }
+      const notification = decoder.decode(payload)
+      const existingToast = toastQueue.visibleToasts.find(
+        (toast) =>
+          toast.content.participant === participant &&
+          toast.content.type === NotificationType.Raised
+      )
+      if (existingToast && notification === NotificationType.Lowered) {
+        toastQueue.close(existingToast.key)
+        return
+      }
+      if (!existingToast && notification === NotificationType.Raised) {
+        toastQueue.add(
+          {
+            participant,
+            type: NotificationType.Raised,
+          },
+          { timeout: 5000 }
+        )
+      }
+    }
+
+    room.on(RoomEvent.DataReceived, handleNotificationReceived)
+
+    return () => {
+      room.off(RoomEvent.DataReceived, handleNotificationReceived)
     }
   }, [room])
 
