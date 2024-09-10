@@ -2,20 +2,32 @@ import { useTranslation } from 'react-i18next'
 import { RiHand } from '@remixicon/react'
 import { ToggleButton } from '@/primitives'
 import { css } from '@/styled-system/css'
-import { useLocalParticipant } from '@livekit/components-react'
+import { useRoomContext } from '@livekit/components-react'
 import { useRaisedHand } from '@/features/rooms/livekit/hooks/useRaisedHand'
+import { NotificationType } from '@/features/notifications/NotificationType'
 
 export const HandToggle = () => {
   const { t } = useTranslation('rooms')
 
-  const localParticipant = useLocalParticipant().localParticipant
+  const room = useRoomContext()
   const { isHandRaised, toggleRaisedHand } = useRaisedHand({
-    participant: localParticipant,
+    participant: room.localParticipant,
   })
 
   const label = isHandRaised
     ? t('controls.hand.lower')
     : t('controls.hand.raise')
+
+  const notifyOtherParticipants = (isHandRaised: boolean) => {
+    room.localParticipant.publishData(
+      new TextEncoder().encode(
+        !isHandRaised ? NotificationType.Raised : NotificationType.Lowered
+      ),
+      {
+        reliable: true,
+      }
+    )
+  }
 
   return (
     <div
@@ -30,7 +42,10 @@ export const HandToggle = () => {
         aria-label={label}
         tooltip={label}
         isSelected={isHandRaised}
-        onPress={() => toggleRaisedHand()}
+        onPress={() => {
+          notifyOtherParticipants(isHandRaised)
+          toggleRaisedHand()
+        }}
       >
         <RiHand />
       </ToggleButton>

@@ -5,6 +5,7 @@ import { useRef } from 'react'
 import { NotificationType } from '../NotificationType'
 import { ToastJoined } from './ToastJoined'
 import { ToastData } from './ToastProvider'
+import { ToastRaised } from '@/features/notifications/components/ToastRaised.tsx'
 
 interface ToastRegionProps extends AriaToastRegionProps {
   state: ToastState<ToastData>
@@ -18,6 +19,9 @@ export function ToastRegion({ state, ...props }: ToastRegionProps) {
       {state.visibleToasts.map((toast) => {
         if (toast.content?.type === NotificationType.Joined) {
           return <ToastJoined key={toast.key} toast={toast} state={state} />
+        }
+        if (toast.content?.type === NotificationType.Raised) {
+          return <ToastRaised key={toast.key} toast={toast} state={state} />
         }
         return <Toast key={toast.key} toast={toast} state={state} />
       })}

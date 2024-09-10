@@ -77,6 +77,7 @@ export const buttonRecipe = cva({
         color: 'primary',
         '&[data-hovered]': {
           background: 'gray.100 !important',
+          color: 'primary !important',
         },
       },
       danger: {

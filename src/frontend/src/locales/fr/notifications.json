@@ -2,5 +2,9 @@
   "defaultName": "Un contributeur",
   "joined": {
     "description": "{{name}} participe à l'appel"
+  },
+  "raised": {
+    "description": "{{name}} a levé la main.",
+    "cta": "Ouvrir la file d'attente"
   }
 }

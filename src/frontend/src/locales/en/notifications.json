@@ -2,5 +2,9 @@
   "defaultName": "A contributor",
   "joined": {
     "description": "{{name}} join the room"
+  },
+  "raised": {
+    "description": "{{name}} raised its hand.",
+    "cta": "Open waiting list"
   }
 }
