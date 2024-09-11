@@ -36,6 +36,7 @@ import { participantsStore } from '@/stores/participants'
 import { FocusLayout } from '../components/FocusLayout'
 import { ParticipantTile } from '../components/ParticipantTile'
 import { MainNotificationToast } from '@/features/notifications/MainNotificationToast'
+import { RecordingIndicator } from '@/features/rooms/livekit/components/RecordingIndicator.tsx'
 
 const LayoutWrapper = styled(
   'div',
@@ -184,6 +185,7 @@ export function VideoConference({
           onWidgetChange={widgetUpdate}
         >
           <div className="lk-video-conference-inner">
+            <RecordingIndicator />
             <LayoutWrapper>
               <div
                 style={{ display: 'flex', position: 'relative', width: '100%' }}
