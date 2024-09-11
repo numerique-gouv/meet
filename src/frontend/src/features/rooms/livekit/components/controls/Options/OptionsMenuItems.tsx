@@ -8,6 +8,7 @@ import { MenuItem, Menu as RACMenu } from 'react-aria-components'
 import { useTranslation } from 'react-i18next'
 import { Dispatch, SetStateAction } from 'react'
 import { DialogState } from '@/features/rooms/livekit/components/controls/Options/OptionsButton'
+import { RecordingMenuItem } from './RecordingMenuItem.tsx'
 
 // @todo try refactoring it to use MenuList component
 export const OptionsMenuItems = ({
@@ -47,6 +48,7 @@ export const OptionsMenuItems = ({
         <RiSettings3Line size={18} />
         {t('options.items.settings')}
       </MenuItem>
+      <RecordingMenuItem />
     </RACMenu>
   )
 }

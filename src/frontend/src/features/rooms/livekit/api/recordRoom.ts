@@ -35,5 +35,22 @@ export const useRecordRoom = () => {
       }
     )
   }
-  return { recordRoom }
+
+  const stopRecordingRoom = (egressId: string) => {
+    if (!data || !data?.livekit) {
+      throw new Error('Room data is not available')
+    }
+    return fetchServerApi(
+      buildServerApiUrl(data.livekit.url, '/twirp/livekit.Egress/StopEgress'),
+      data.livekit.token,
+      {
+        method: 'POST',
+        body: JSON.stringify({
+          egressId,
+        }),
+      }
+    )
+  }
+
+  return { recordRoom, stopRecordingRoom }
 }
