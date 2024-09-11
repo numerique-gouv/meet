@@ -27,8 +27,6 @@ export const Home = () => {
   const { mutateAsync: createRoom } = useCreateRoom()
   const [laterRoomId, setLaterRoomId] = useState<null | string>(null)
 
-  console.log(laterRoomId)
-
   return (
     <UserAware>
       <Screen>
