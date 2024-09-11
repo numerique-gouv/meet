@@ -1,10 +1,10 @@
 {
   "defaultName": "A contributor",
   "joined": {
-    "description": "{{name}} join the room"
+    "description": "{{name}} has joined the room"
   },
   "raised": {
-    "description": "{{name}} raised its hand.",
+    "description": "{{name}} has raised their hand.",
     "cta": "Open waiting list"
   }
 }
