@@ -203,7 +203,12 @@ export function VideoConference({
                     style={{ height: 'auto' }}
                   >
                     <FocusLayoutContainer>
-                      <CarouselLayout tracks={carouselTracks}>
+                      <CarouselLayout
+                        tracks={carouselTracks}
+                        style={{
+                          minWidth: '200px',
+                        }}
+                      >
                         <ParticipantTile />
                       </CarouselLayout>
                       {focusTrack && <FocusLayout trackRef={focusTrack} />}
