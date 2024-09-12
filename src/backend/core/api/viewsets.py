@@ -1,5 +1,6 @@
 """API endpoints"""
 
+import smtplib
 import uuid
 
 from django.conf import settings
@@ -13,6 +14,9 @@ from rest_framework import (
     mixins,
     pagination,
     viewsets,
+)
+from rest_framework import (
+    permissions as drf_permissions,
 )
 from rest_framework import (
     response as drf_response,
@@ -248,6 +252,31 @@ class RoomViewSet(
                 "slug": room.slug,
             },
         )
+
+    @decorators.action(
+        methods=["POST"],
+        detail=True,
+        url_path="summary",
+        permission_classes=[drf_permissions.AllowAny],
+    )
+    def summary(self, request, pk=None):  # pylint: disable=unused-argument
+        """Wip"""
+
+        secret = self.request.data.get("secret", None)
+        if secret is None or secret != settings.WORKER_SECRET:
+            return drf_response.Response({"message": "Invalid secret"}, status=403)
+
+        summary = self.request.data.get("summary", None)
+        transcript = self.request.data.get("transcript", None)
+
+        instance = self.get_object()
+
+        try:
+            instance.email_summary(summary=summary, transcript=transcript)
+        except smtplib.SMTPException:
+            return drf_response.Response({"message": "Error"}, status=500)
+
+        return drf_response.Response({"message": "Webhook data received"}, status=200)
 
 
 class ResourceAccessListModelMixin:

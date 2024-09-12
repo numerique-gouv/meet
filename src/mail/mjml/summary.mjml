@@ -1,0 +1,26 @@
+<mjml>
+  <mj-include path="./partial/header.mjml" />
+  <mj-body mj-class="bg--blue-100">
+    <mj-wrapper css-class="wrapper" padding="0 40px 40px 40px">
+      <mj-section background-url="{% base64_static 'images/mail-header-background.png' %}" background-size="cover" background-repeat="no-repeat" background-position="0 -30px">
+        <mj-column>
+            <mj-image align="center" src="{% base64_static 'images/logo-suite-numerique.png' %}" width="250px" align="left" alt="{%trans 'La Suite Numérique' %}" />
+        </mj-column>
+      </mj-section>
+      <mj-section mj-class="bg--white-100" padding="30px 20px 60px 20px">
+        <mj-column>
+          <mj-text font-size="14px">
+            <p>Summary:</p>
+            <p>{{summary}}</p>
+          </mj-text>
+          <mj-text font-size="14px">
+            <p>Transcript:</p>
+            <p>{{transcript}}</p>
+          </mj-text>
+        </mj-column>
+      </mj-section>
+    </mj-wrapper>
+  </mj-body>
+
+  <mj-include path="./partial/footer.mjml" />
+</mjml>

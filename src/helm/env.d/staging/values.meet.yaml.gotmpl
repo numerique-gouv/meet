@@ -92,6 +92,10 @@ backend:
       secretKeyRef:
         name: backend
         key: LIVEKIT_API_KEY
+    WORKER_SECRET:
+      secretKeyRef:
+        name: backend
+        key: WORKER_SECRET
     LIVEKIT_API_URL: https://livekit-staging.beta.numerique.gouv.fr
     ANALYTICS_KEY: Roi1k6IAc2DEqHB0
     ALLOW_UNREGISTERED_ROOMS: False

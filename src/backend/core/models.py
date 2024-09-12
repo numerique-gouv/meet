@@ -11,6 +11,7 @@ from django.contrib.auth.base_user import AbstractBaseUser
 from django.core import mail, validators
 from django.core.exceptions import PermissionDenied, ValidationError
 from django.db import models
+from django.template.loader import render_to_string
 from django.utils.functional import lazy
 from django.utils.text import capfirst, slugify
 from django.utils.translation import gettext_lazy as _
@@ -325,3 +326,32 @@ class Room(Resource):
         else:
             raise ValidationError({"name": f'Room name "{self.name:s}" is reserved.'})
         super().clean_fields(exclude=exclude)
+
+    def get_owners(self):
+        """Fetch the user who is the owner of the room."""
+        owner_accesses = self.accesses.filter(role=RoleChoices.OWNER)
+        return [access.user for access in owner_accesses]
+
+    def email_summary(self, summary, transcript):
+        """Wip"""
+
+        owners = self.get_owners()
+
+        template_vars = {
+            "title": _("A new summary is ready"),
+            "room": self.slug,
+            "summary": summary,
+            "transcript": transcript,
+        }
+
+        msg_plain = render_to_string("mail/text/summary.txt", template_vars)
+        msg_html = render_to_string("mail/html/summary.html", template_vars)
+
+        for owner in owners:
+            owner.email_user(
+                subject=_("A new summary is ready"),
+                message=msg_plain,
+                from_email=settings.EMAIL_FROM,
+                html_message=msg_html,
+                fail_silently=False,
+            )
