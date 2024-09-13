@@ -16,6 +16,9 @@ from django.utils.functional import lazy
 from django.utils.text import capfirst, slugify
 from django.utils.translation import gettext_lazy as _
 
+from django.core.mail import EmailMessage
+from django.core.files.base import ContentFile
+
 from timezone_field import TimeZoneField
 
 logger = getLogger(__name__)
@@ -151,11 +154,28 @@ class User(AbstractBaseUser, BaseModel, auth_models.PermissionsMixin):
     def __str__(self):
         return self.email or self.admin_email or str(self.id)
 
-    def email_user(self, subject, message, from_email=None, **kwargs):
+    def email_user(self, subject, transcript, from_email=None, **kwargs):
         """Email this user."""
         if not self.email:
             raise ValueError("User has no email address.")
-        mail.send_mail(subject, message, from_email, [self.email], **kwargs)
+#         mail.send_mail(subject, message, from_email, [self.email], **kwargs)
+
+        email = EmailMessage(
+            subject,
+            kwargs['html_message'],
+            from_email,
+            [self.email],
+        )
+
+#         email.attach_alternative(kwargs['html_message'], "text/html")
+
+        transcript = transcript or ''
+
+        wip_file = ContentFile(transcript, 'transcript.txt')
+
+        email.content_subtype = "html"
+        email.attach(wip_file.name, wip_file.read(), 'text/plain')
+        email.send()
 
     def get_teams(self):
         """
@@ -332,16 +352,14 @@ class Room(Resource):
         owner_accesses = self.accesses.filter(role=RoleChoices.OWNER)
         return [access.user for access in owner_accesses]
 
-    def email_summary(self, summary, transcript):
+    def email_summary(self, owners, summary, transcript, link):
         """Wip"""
-
-        owners = self.get_owners()
 
         template_vars = {
             "title": _("A new summary is ready"),
             "room": self.slug,
             "summary": summary,
-            "transcript": transcript,
+            "link": link,
         }
 
         msg_plain = render_to_string("mail/text/summary.txt", template_vars)
@@ -350,7 +368,7 @@ class Room(Resource):
         for owner in owners:
             owner.email_user(
                 subject=_("A new summary is ready"),
-                message=msg_plain,
+                transcript=transcript,
                 from_email=settings.EMAIL_FROM,
                 html_message=msg_html,
                 fail_silently=False,

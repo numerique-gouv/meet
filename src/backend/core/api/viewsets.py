@@ -2,6 +2,7 @@
 
 import smtplib
 import uuid
+import requests
 
 from django.conf import settings
 from django.db.models import Q
@@ -270,9 +271,17 @@ class RoomViewSet(
         transcript = self.request.data.get("transcript", None)
 
         instance = self.get_object()
+        owners = instance.get_owners()
 
+        email = owners[0].email
+
+        url = f"https://dinum-pad-dev.osc-fr1.scalingo.io/summary?email={email}"
+        headers = {
+            "Content-Type": "text/plain"
+        }
+        response = requests.post(url, headers=headers, data=summary, allow_redirects=False)
         try:
-            instance.email_summary(summary=summary, transcript=transcript)
+            instance.email_summary(summary=summary, transcript=transcript, owners=owners, link=response.headers['Location'])
         except smtplib.SMTPException:
             return drf_response.Response({"message": "Error"}, status=500)
 
