@@ -17,6 +17,7 @@ export const RecordingMenuItem = () => {
   const handleAction = async () => {
     if (egressId) {
       setIsPending(true)
+      egressStore.egressIsStopping = true
       const response = await stopRecordingRoom(egressId)
       console.log(response)
       egressStore.egressId = undefined
