@@ -13,7 +13,9 @@
       "enabled": false,
       "groupName": "ignored js dependencies",
       "matchManagers": ["npm"],
-      "matchPackageNames": []
+      "matchPackageNames": [
+        "eslint"
+      ]
     }
   ]
 }
