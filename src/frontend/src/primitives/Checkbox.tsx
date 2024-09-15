@@ -134,10 +134,11 @@ export const Checkbox = ({
       >
         <StyledCheckbox {...props}>
           {(renderProps) => {
-            renderProps.isInvalid && !!props.validate
-              ? setError(props.validate(renderProps.isSelected))
-              : setError(null)
-
+            if (renderProps.isInvalid && !!props.validate) {
+              setError(props.validate(renderProps.isSelected))
+            } else {
+              setError(null)
+            }
             return (
               <>
                 <div className="mt-Checkbox-checkbox">
