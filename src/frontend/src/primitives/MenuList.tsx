@@ -26,7 +26,7 @@ export const MenuList = <T extends string | number = string>({
         const label = typeof item === 'string' ? item : item.label
         return (
           <MenuItem
-            className={menuItemRecipe()}
+            className={menuItemRecipe({ extraPadding: true })}
             key={value}
             id={value as string}
             onAction={() => {

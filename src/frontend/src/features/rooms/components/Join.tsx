@@ -16,8 +16,8 @@ export const Join = ({
         <PreJoin
           persistUserChoices
           onSubmit={onSubmit}
-          micLabel={t('join.micLabel')}
-          camLabel={t('join.camlabel')}
+          micLabel={t('join.audioinput.label')}
+          camLabel={t('join.videoinput.label')}
           joinLabel={t('join.joinLabel')}
           userLabel={t('join.userLabel')}
         />

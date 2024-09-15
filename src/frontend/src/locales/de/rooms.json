@@ -4,11 +4,27 @@
     "heading": ""
   },
   "join": {
-    "camlabel": "",
+    "videoinput": {
+      "choose": "",
+      "disable": "",
+      "enable": "",
+      "label": "",
+      "placeholder": ""
+    },
+    "audioinput": {
+      "choose": "",
+      "disable": "",
+      "enable": "",
+      "label": ""
+    },
     "heading": "",
     "joinLabel": "",
-    "micLabel": "",
-    "userLabel": ""
+    "joinMeeting": "",
+    "toggleOff": "",
+    "toggleOn": "",
+    "userLabel": "",
+    "usernameHint": "",
+    "usernameLabel": ""
   },
   "leaveRoomPrompt": "",
   "shareDialog": {

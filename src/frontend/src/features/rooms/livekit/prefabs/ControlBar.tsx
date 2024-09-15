@@ -6,7 +6,6 @@ import { supportsScreenSharing } from '@livekit/components-core'
 import {
   DisconnectButton,
   LeaveIcon,
-  MediaDeviceMenu,
   TrackToggle,
   useMaybeLayoutContext,
   usePersistentUserChoices,
@@ -20,6 +19,7 @@ import { OptionsButton } from '../components/controls/Options/OptionsButton'
 import { ParticipantsToggle } from '@/features/rooms/livekit/components/controls/Participants/ParticipantsToggle'
 import { ChatToggle } from '@/features/rooms/livekit/components/controls/ChatToggle'
 import { HandToggle } from '@/features/rooms/livekit/components/controls/HandToggle'
+import { SelectToggleDevice } from '@/features/rooms/livekit/components/controls/SelectToggleDevice'
 
 /** @public */
 export type ControlBarControls = {
@@ -126,46 +126,26 @@ export function ControlBar({
 
   return (
     <div {...htmlProps}>
-      <div className="lk-button-group">
-        <TrackToggle
-          source={Track.Source.Microphone}
-          showIcon={showIcon}
-          onChange={microphoneOnChange}
-          onDeviceError={(error) =>
-            onDeviceError?.({ source: Track.Source.Microphone, error })
-          }
-        >
-          {showText && t('controls.microphone')}
-        </TrackToggle>
-        <div className="lk-button-group-menu">
-          <MediaDeviceMenu
-            kind="audioinput"
-            onActiveDeviceChange={(_kind, deviceId) =>
-              saveAudioInputDeviceId(deviceId ?? '')
-            }
-          />
-        </div>
-      </div>
-      <div className="lk-button-group">
-        <TrackToggle
-          source={Track.Source.Camera}
-          showIcon={showIcon}
-          onChange={cameraOnChange}
-          onDeviceError={(error) =>
-            onDeviceError?.({ source: Track.Source.Camera, error })
-          }
-        >
-          {showText && t('controls.camera')}
-        </TrackToggle>
-        <div className="lk-button-group-menu">
-          <MediaDeviceMenu
-            kind="videoinput"
-            onActiveDeviceChange={(_kind, deviceId) =>
-              saveVideoInputDeviceId(deviceId ?? '')
-            }
-          />
-        </div>
-      </div>
+      <SelectToggleDevice
+        source={Track.Source.Microphone}
+        onChange={microphoneOnChange}
+        onDeviceError={(error) =>
+          onDeviceError?.({ source: Track.Source.Microphone, error })
+        }
+        onActiveDeviceChange={(deviceId) =>
+          saveAudioInputDeviceId(deviceId ?? '')
+        }
+      />
+      <SelectToggleDevice
+        source={Track.Source.Camera}
+        onChange={cameraOnChange}
+        onDeviceError={(error) =>
+          onDeviceError?.({ source: Track.Source.Camera, error })
+        }
+        onActiveDeviceChange={(deviceId) =>
+          saveVideoInputDeviceId(deviceId ?? '')
+        }
+      />
       {browserSupportsScreenSharing && (
         <TrackToggle
           source={Track.Source.ScreenShare}

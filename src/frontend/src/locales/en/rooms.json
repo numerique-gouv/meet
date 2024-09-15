@@ -4,11 +4,27 @@
     "heading": "Help us improve Meet"
   },
   "join": {
-    "camlabel": "Camera",
-    "heading": "Join the meeting",
+    "videoinput": {
+      "choose": "Select camera",
+      "disable": "Disable camera",
+      "enable": "Enable camera",
+      "label": "Camera",
+      "placeholder": "Enable camera to see the preview"
+    },
+    "audioinput": {
+      "choose": "Select microphone",
+      "disable": "Disable microphone",
+      "enable": "Enable microphone",
+      "label": "Microphone"
+    },
+    "heading": "Verify your settings",
     "joinLabel": "Join",
-    "micLabel": "Microphone",
-    "userLabel": "Your name"
+    "joinMeeting": "Join meeting",
+    "toggleOff": "Click to turn off",
+    "toggleOn": "Click to turn on",
+    "userLabel": "",
+    "usernameHint": "Shown to other participants",
+    "usernameLabel": "Your name"
   },
   "leaveRoomPrompt": "This will make you leave the meeting.",
   "shareDialog": {
