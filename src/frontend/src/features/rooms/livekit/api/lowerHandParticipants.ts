@@ -11,6 +11,7 @@ export const useLowerHandParticipants = () => {
       )
       return Promise.all(promises)
     } catch (error) {
+      console.error('An error occurred while lowering hands :', error)
       throw new Error('An error occurred while lowering hands.')
     }
   }
