@@ -37,7 +37,7 @@ export interface ControlBarProps extends React.HTMLAttributes<HTMLDivElement> {
   controls?: ControlBarControls
   /**
    * If `true`, the user's device choices will be persisted.
-   * This will enables the user to have the same device choices when they rejoin the room.
+   * This will enable the user to have the same device choices when they rejoin the room.
    * @defaultValue true
    * @alpha
    */
