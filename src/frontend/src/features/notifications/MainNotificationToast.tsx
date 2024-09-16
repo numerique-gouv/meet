@@ -93,6 +93,16 @@ export const MainNotificationToast = () => {
     }
   }, [room, triggerNotificationSound])
 
+  useEffect(() => {
+    const closeAllToasts = () => {
+      toastQueue.visibleToasts.forEach(({ key }) => toastQueue.close(key))
+    }
+    room.on(RoomEvent.Disconnected, closeAllToasts)
+    return () => {
+      room.off(RoomEvent.Disconnected, closeAllToasts)
+    }
+  }, [room])
+
   return (
     <Div position="absolute" bottom={20} right={5} zIndex={1000}>
       <ToastProvider />
