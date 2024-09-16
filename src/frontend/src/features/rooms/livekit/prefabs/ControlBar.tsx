@@ -66,7 +66,7 @@ export function ControlBar({
   onDeviceError,
   ...props
 }: ControlBarProps) {
-  const { t } = useTranslation('rooms')
+  const { t } = useTranslation('rooms', { keyPrefix: 'controls' })
   const [isChatOpen, setIsChatOpen] = React.useState(false)
   const layoutContext = useMaybeLayoutContext()
   React.useEffect(() => {
@@ -156,11 +156,7 @@ export function ControlBar({
           }
         >
           {showText &&
-            t(
-              isScreenShareEnabled
-                ? 'controls.stopScreenShare'
-                : 'controls.shareScreen'
-            )}
+            t(isScreenShareEnabled ? 'stopScreenShare' : 'shareScreen')}
         </TrackToggle>
       )}
       <HandToggle />
