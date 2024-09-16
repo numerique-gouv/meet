@@ -4,7 +4,6 @@ import * as React from 'react'
 import { supportsScreenSharing } from '@livekit/components-core'
 
 import {
-  TrackToggle,
   useMaybeLayoutContext,
   usePersistentUserChoices,
 } from '@livekit/components-react'
@@ -12,13 +11,13 @@ import {
 import { mergeProps } from '@/utils/mergeProps.ts'
 import { StartMediaButton } from '../components/controls/StartMediaButton'
 import { useMediaQuery } from '../hooks/useMediaQuery'
-import { useTranslation } from 'react-i18next'
 import { OptionsButton } from '../components/controls/Options/OptionsButton'
 import { ParticipantsToggle } from '../components/controls/Participants/ParticipantsToggle'
 import { ChatToggle } from '../components/controls/ChatToggle'
 import { HandToggle } from '../components/controls/HandToggle'
 import { SelectToggleDevice } from '../components/controls/SelectToggleDevice'
 import { LeaveButton } from '../components/controls/LeaveButton'
+import { ScreenShareToggle } from '../components/controls/ScreenShareToggle'
 
 /** @public */
 export type ControlBarControls = {
@@ -66,7 +65,6 @@ export function ControlBar({
   onDeviceError,
   ...props
 }: ControlBarProps) {
-  const { t } = useTranslation('rooms', { keyPrefix: 'controls' })
   const [isChatOpen, setIsChatOpen] = React.useState(false)
   const layoutContext = useMaybeLayoutContext()
   React.useEffect(() => {
@@ -82,25 +80,7 @@ export function ControlBar({
   const defaultVariation = isTooLittleSpace ? 'minimal' : 'verbose'
   variation ??= defaultVariation
 
-  const showIcon = React.useMemo(
-    () => variation === 'minimal' || variation === 'verbose',
-    [variation]
-  )
-  const showText = React.useMemo(
-    () => variation === 'textOnly' || variation === 'verbose',
-    [variation]
-  )
-
   const browserSupportsScreenSharing = supportsScreenSharing()
-
-  const [isScreenShareEnabled, setIsScreenShareEnabled] = React.useState(false)
-
-  const onScreenShareChange = React.useCallback(
-    (enabled: boolean) => {
-      setIsScreenShareEnabled(enabled)
-    },
-    [setIsScreenShareEnabled]
-  )
 
   const htmlProps = mergeProps({ className: 'lk-control-bar' }, props)
 
@@ -146,18 +126,11 @@ export function ControlBar({
         }
       />
       {browserSupportsScreenSharing && (
-        <TrackToggle
-          source={Track.Source.ScreenShare}
-          captureOptions={{ audio: true, selfBrowserSurface: 'include' }}
-          showIcon={showIcon}
-          onChange={onScreenShareChange}
+        <ScreenShareToggle
           onDeviceError={(error) =>
             onDeviceError?.({ source: Track.Source.ScreenShare, error })
           }
-        >
-          {showText &&
-            t(isScreenShareEnabled ? 'stopScreenShare' : 'shareScreen')}
-        </TrackToggle>
+        />
       )}
       <HandToggle />
       <ChatToggle />
