@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { useTranslation } from 'react-i18next'
 import {
@@ -9,7 +9,6 @@ import {
 import { Room, RoomOptions } from 'livekit-client'
 import { keys } from '@/api/queryKeys'
 import { queryClient } from '@/api/queryClient'
-import { navigateTo } from '@/navigation/navigateTo'
 import { Screen } from '@/layout/Screen'
 import { QueryAware } from '@/components/QueryAware'
 import { ErrorScreen } from '@/components/ErrorScreen'
@@ -78,25 +77,6 @@ export const Conference = ({
   const room = useMemo(() => new Room(roomOptions), [roomOptions])
 
   const [showInviteDialog, setShowInviteDialog] = useState(mode === 'create')
-
-  /**
-   * checks for actual click on the leave button instead of
-   * relying on LiveKitRoom onDisconnected because onDisconnected
-   * triggers even on page reload, it's not a user "onLeave" event really.
-   * Here we want to react to the user actually deciding to leave.
-   */
-  useEffect(() => {
-    const checkOnLeaveClick = (event: MouseEvent) => {
-      const target = event.target as HTMLElement
-      if (target.classList.contains('lk-disconnect-button')) {
-        navigateTo('feedback')
-      }
-    }
-    document.body.addEventListener('click', checkOnLeaveClick)
-    return () => {
-      document.body.removeEventListener('click', checkOnLeaveClick)
-    }
-  }, [])
 
   const { t } = useTranslation('rooms')
   if (isCreateError) {

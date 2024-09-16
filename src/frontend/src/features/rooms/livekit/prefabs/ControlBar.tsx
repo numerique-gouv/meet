@@ -4,8 +4,6 @@ import * as React from 'react'
 import { supportsScreenSharing } from '@livekit/components-core'
 
 import {
-  DisconnectButton,
-  LeaveIcon,
   TrackToggle,
   useMaybeLayoutContext,
   usePersistentUserChoices,
@@ -16,10 +14,11 @@ import { StartMediaButton } from '../components/controls/StartMediaButton'
 import { useMediaQuery } from '../hooks/useMediaQuery'
 import { useTranslation } from 'react-i18next'
 import { OptionsButton } from '../components/controls/Options/OptionsButton'
-import { ParticipantsToggle } from '@/features/rooms/livekit/components/controls/Participants/ParticipantsToggle'
-import { ChatToggle } from '@/features/rooms/livekit/components/controls/ChatToggle'
-import { HandToggle } from '@/features/rooms/livekit/components/controls/HandToggle'
-import { SelectToggleDevice } from '@/features/rooms/livekit/components/controls/SelectToggleDevice'
+import { ParticipantsToggle } from '../components/controls/Participants/ParticipantsToggle'
+import { ChatToggle } from '../components/controls/ChatToggle'
+import { HandToggle } from '../components/controls/HandToggle'
+import { SelectToggleDevice } from '../components/controls/SelectToggleDevice'
+import { LeaveButton } from '../components/controls/LeaveButton'
 
 /** @public */
 export type ControlBarControls = {
@@ -168,10 +167,7 @@ export function ControlBar({
       <ChatToggle />
       <ParticipantsToggle />
       <OptionsButton />
-      <DisconnectButton>
-        {showIcon && <LeaveIcon />}
-        {showText && t('controls.leave')}
-      </DisconnectButton>
+      <LeaveButton />
       <StartMediaButton />
     </div>
   )
