@@ -15,7 +15,7 @@ export const OptionsMenuItems = ({
 }: {
   onOpenDialog: Dispatch<SetStateAction<DialogState>>
 }) => {
-  const { t } = useTranslation('rooms')
+  const { t } = useTranslation('rooms', { keyPrefix: 'options.items' })
 
   return (
     <RACMenu
@@ -30,7 +30,7 @@ export const OptionsMenuItems = ({
         className={menuItemRecipe({ icon: true })}
       >
         <RiQuestionLine size={18} />
-        {t('options.items.support')}
+        {t('support')}
       </MenuItem>
       <MenuItem
         href="https://grist.incubateur.net/o/docs/forms/1YrfNP1QSSy8p2gCxMFnSf/4"
@@ -38,14 +38,14 @@ export const OptionsMenuItems = ({
         className={menuItemRecipe({ icon: true })}
       >
         <RiFeedbackLine size={18} />
-        {t('options.items.feedbacks')}
+        {t('feedbacks')}
       </MenuItem>
       <MenuItem
         className={menuItemRecipe({ icon: true })}
         onAction={() => onOpenDialog('settings')}
       >
         <RiSettings3Line size={18} />
-        {t('options.items.settings')}
+        {t('settings')}
       </MenuItem>
     </RACMenu>
   )
