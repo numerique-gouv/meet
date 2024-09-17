@@ -9,6 +9,7 @@ import { useMatchesRoute } from '@/navigation/useMatchesRoute'
 import { Feedback } from '@/components/Feedback'
 import { Menu } from '@/primitives/Menu'
 import { MenuList } from '@/primitives/MenuList'
+import posthog from 'posthog-js'
 
 export const Header = () => {
   const { t } = useTranslation()
@@ -79,6 +80,7 @@ export const Header = () => {
                   items={[{ value: 'logout', label: t('logout') }]}
                   onAction={(value) => {
                     if (value === 'logout') {
+                      posthog.reset()
                       window.location.href = logoutUrl()
                     }
                   }}
