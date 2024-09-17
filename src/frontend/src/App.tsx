@@ -13,10 +13,16 @@ import { routes } from './routes'
 import './i18n/init'
 import { silenceLiveKitLogs } from '@/utils/livekit.ts'
 import { queryClient } from '@/api/queryClient'
+import posthog from 'posthog-js'
 
 function App() {
   const { i18n } = useTranslation()
   useLang(i18n.language)
+
+  posthog.init('phc_RPYko028Oqtj0c9exLIWwrlrjLxSdxT0ntW0Lam4iom', {
+    api_host: 'https://eu.i.posthog.com',
+    person_profiles: 'always',
+  })
 
   const isProduction = import.meta.env.PROD
   silenceLiveKitLogs(isProduction)
