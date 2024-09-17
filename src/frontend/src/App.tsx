@@ -19,13 +19,17 @@ function App() {
   const { i18n } = useTranslation()
   useLang(i18n.language)
 
-  posthog.init('phc_RPYko028Oqtj0c9exLIWwrlrjLxSdxT0ntW0Lam4iom', {
-    api_host: 'https://eu.i.posthog.com',
-    person_profiles: 'always',
-  })
-
   const isProduction = import.meta.env.PROD
   silenceLiveKitLogs(isProduction)
+
+  // We're on a free tier, so we need to limit the number of events we send to PostHog.
+  // Be frugal with event tracking, even though we could filter them out later if necessary.
+  if (isProduction) {
+    posthog.init('phc_RPYko028Oqtj0c9exLIWwrlrjLxSdxT0ntW0Lam4iom', {
+      api_host: 'https://eu.i.posthog.com',
+      person_profiles: 'always',
+    })
+  }
 
   return (
     <QueryClientProvider client={queryClient}>
