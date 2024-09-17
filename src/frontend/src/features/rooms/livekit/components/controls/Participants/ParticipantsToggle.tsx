@@ -6,7 +6,7 @@ import { useParticipants } from '@livekit/components-react'
 import { useWidgetInteraction } from '../../../hooks/useWidgetInteraction'
 
 export const ParticipantsToggle = () => {
-  const { t } = useTranslation('rooms')
+  const { t } = useTranslation('rooms', { keyPrefix: 'controls.participants' })
 
   /**
    * Context could not be used due to inconsistent refresh behavior.
@@ -30,8 +30,8 @@ export const ParticipantsToggle = () => {
       <ToggleButton
         square
         legacyStyle
-        aria-label={t(`controls.participants.${tooltipLabel}`)}
-        tooltip={t(`controls.participants.${tooltipLabel}`)}
+        aria-label={t(tooltipLabel)}
+        tooltip={t(tooltipLabel)}
         isSelected={isParticipantsOpen}
         onPress={() => toggleParticipants()}
       >

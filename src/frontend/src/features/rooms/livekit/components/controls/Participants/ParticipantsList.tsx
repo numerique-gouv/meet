@@ -15,7 +15,7 @@ import { LowerAllHandsButton } from '@/features/rooms/livekit/components/control
 
 // TODO: Optimize rendering performance, especially for longer participant lists, even though they are generally short.
 export const ParticipantsList = () => {
-  const { t } = useTranslation('rooms')
+  const { t } = useTranslation('rooms', { keyPrefix: 'participants' })
 
   // Preferred using the 'useParticipants' hook rather than the separate remote and local hooks,
   // because the 'useLocalParticipant' hook does not update the participant's information when their
@@ -65,15 +65,15 @@ export const ParticipantsList = () => {
           paddingTop: '1rem',
         }}
       >
-        {t('participants.heading')}
+        {t('heading')}
       </Heading>
       <Div position="absolute" top="5" right="5">
         <Button
           invisible
           size="xs"
           onPress={() => (participantsStore.showParticipants = false)}
-          aria-label={t('participants.closeButton')}
-          tooltip={t('participants.closeButton')}
+          aria-label={t('closeButton')}
+          tooltip={t('closeButton')}
         >
           <RiCloseLine />
         </Button>
@@ -89,12 +89,12 @@ export const ParticipantsList = () => {
             marginBottom: '0.83em',
           })}
         >
-          {t('participants.subheading').toUpperCase()}
+          {t('subheading').toUpperCase()}
         </H>
         {raisedHandParticipants.length > 0 && (
           <Div marginBottom=".9375rem">
             <ParticipantsCollapsableList
-              heading={t('participants.raisedHands')}
+              heading={t('raisedHands')}
               participants={raisedHandParticipants}
               renderParticipant={(participant) => (
                 <HandRaisedListItem participant={participant} />
@@ -106,7 +106,7 @@ export const ParticipantsList = () => {
           </Div>
         )}
         <ParticipantsCollapsableList
-          heading={t('participants.contributors')}
+          heading={t('contributors')}
           participants={sortedParticipants}
           renderParticipant={(participant) => (
             <ParticipantListItem participant={participant} />

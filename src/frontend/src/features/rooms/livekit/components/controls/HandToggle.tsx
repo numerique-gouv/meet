@@ -7,16 +7,14 @@ import { useRaisedHand } from '@/features/rooms/livekit/hooks/useRaisedHand'
 import { NotificationType } from '@/features/notifications/NotificationType'
 
 export const HandToggle = () => {
-  const { t } = useTranslation('rooms')
+  const { t } = useTranslation('rooms', { keyPrefix: 'controls.hand' })
 
   const room = useRoomContext()
   const { isHandRaised, toggleRaisedHand } = useRaisedHand({
     participant: room.localParticipant,
   })
 
-  const label = isHandRaised
-    ? t('controls.hand.lower')
-    : t('controls.hand.raise')
+  const tooltipLabel = isHandRaised ? 'lower' : 'raise'
 
   const notifyOtherParticipants = (isHandRaised: boolean) => {
     room.localParticipant.publishData(
@@ -39,8 +37,8 @@ export const HandToggle = () => {
       <ToggleButton
         square
         legacyStyle
-        aria-label={label}
-        tooltip={label}
+        aria-label={t(tooltipLabel)}
+        tooltip={t(tooltipLabel)}
         isSelected={isHandRaised}
         onPress={() => {
           notifyOtherParticipants(isHandRaised)

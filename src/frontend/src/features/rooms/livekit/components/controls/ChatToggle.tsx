@@ -5,7 +5,7 @@ import { css } from '@/styled-system/css'
 import { useWidgetInteraction } from '../../hooks/useWidgetInteraction'
 
 export const ChatToggle = () => {
-  const { t } = useTranslation('rooms')
+  const { t } = useTranslation('rooms', { keyPrefix: 'controls.chat' })
 
   const { isChatOpen, unreadMessages, toggleChat } = useWidgetInteraction()
   const tooltipLabel = isChatOpen ? 'open' : 'closed'
@@ -20,8 +20,8 @@ export const ChatToggle = () => {
       <ToggleButton
         square
         legacyStyle
-        aria-label={t(`controls.chat.${tooltipLabel}`)}
-        tooltip={t(`controls.chat.${tooltipLabel}`)}
+        aria-label={t(tooltipLabel)}
+        tooltip={t(tooltipLabel)}
         isSelected={isChatOpen}
         onPress={() => toggleChat()}
       >
