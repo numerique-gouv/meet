@@ -19,6 +19,7 @@ export const LowerAllHandsButton = ({
       fullWidth
       variant="text"
       onPress={() => lowerHandParticipants(participants)}
+      data-attr="participants-lower-hands"
     >
       {t('participants.lowerParticipantsHand')}
     </Button>

@@ -73,6 +73,7 @@ export const HandRaisedListItem = ({
         size="sm"
         onPress={() => lowerHandParticipant(participant)}
         tooltip={t('participants.lowerParticipantHand', { name })}
+        data-attr="participants-lower-hand"
       >
         <RiHand />
       </Button>

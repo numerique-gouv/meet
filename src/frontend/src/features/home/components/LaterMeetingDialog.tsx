@@ -44,6 +44,7 @@ export const LaterMeetingDialog = ({
           setIsCopied(true)
         }}
         onHoverChange={setIsHovered}
+        data-attr="later-dialog-copy"
       >
         {isCopied ? (
           <>

@@ -44,6 +44,7 @@ export const HandToggle = () => {
           notifyOtherParticipants(isHandRaised)
           toggleRaisedHand()
         }}
+        data-attr={`controls-hand-${tooltipLabel}`}
       >
         <RiHand />
       </ToggleButton>

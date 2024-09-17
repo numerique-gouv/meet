@@ -90,6 +90,7 @@ export const InviteDialog = ({
               setIsCopied(true)
             }}
             onHoverChange={setIsHovered}
+            data-attr="share-dialog-copy"
           >
             {isCopied ? (
               <>

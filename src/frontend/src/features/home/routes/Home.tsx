@@ -45,7 +45,9 @@ export const Home = () => {
           <HStack gap="gutter">
             {isLoggedIn ? (
               <Menu>
-                <Button variant="primary">{t('createMeeting')}</Button>
+                <Button variant="primary" data-attr="create-meeting">
+                  {t('createMeeting')}
+                </Button>
                 <RACMenu>
                   <MenuItem
                     className={menuItemRecipe({ icon: true })}
@@ -57,6 +59,7 @@ export const Home = () => {
                         })
                       )
                     }}
+                    data-attr="create-option-instant"
                   >
                     <RiAddLine size={18} />
                     {t('createMenu.instantOption')}
@@ -69,6 +72,7 @@ export const Home = () => {
                         setLaterRoomId(data.slug)
                       )
                     }}
+                    data-attr="create-option-later"
                   >
                     <RiLink size={18} />
                     {t('createMenu.laterOption')}
@@ -76,7 +80,7 @@ export const Home = () => {
                 </RACMenu>
               </Menu>
             ) : (
-              <Button variant="primary" href={authUrl()}>
+              <Button variant="primary" href={authUrl()} data-attr="login">
                 {t('login', { ns: 'global' })}
               </Button>
             )}

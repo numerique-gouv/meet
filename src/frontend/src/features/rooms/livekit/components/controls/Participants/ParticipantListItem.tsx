@@ -78,6 +78,7 @@ const MicIndicator = ({ participant }: MicIndicatorProps) => {
             ? muteParticipant(participant)
             : setIsAlertOpen(true)
         }
+        data-attr="participants-mute"
       >
         {isMuted ? (
           <RiMicOffFill color={'gray'} />

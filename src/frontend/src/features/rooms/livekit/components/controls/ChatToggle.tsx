@@ -24,6 +24,7 @@ export const ChatToggle = () => {
         tooltip={t(tooltipLabel)}
         isSelected={isChatOpen}
         onPress={() => toggleChat()}
+        data-attr={`controls-chat-${tooltipLabel}`}
       >
         <RiChat1Line />
       </ToggleButton>
