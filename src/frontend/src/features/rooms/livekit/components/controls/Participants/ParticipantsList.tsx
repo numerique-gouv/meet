@@ -74,6 +74,7 @@ export const ParticipantsList = () => {
           onPress={() => (participantsStore.showParticipants = false)}
           aria-label={t('closeButton')}
           tooltip={t('closeButton')}
+          data-attr="participants-close"
         >
           <RiCloseLine />
         </Button>

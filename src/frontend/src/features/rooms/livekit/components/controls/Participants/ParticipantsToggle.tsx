@@ -34,6 +34,7 @@ export const ParticipantsToggle = () => {
         tooltip={t(tooltipLabel)}
         isSelected={isParticipantsOpen}
         onPress={() => toggleParticipants()}
+        data-attr={`controls-participants-${tooltipLabel}`}
       >
         <RiGroupLine />
       </ToggleButton>

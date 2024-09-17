@@ -37,6 +37,7 @@ export const ScreenShareToggle = (
         maxWidth: '46px',
         maxHeight: '46px',
       }}
+      data-attr={`controls-screenshare-${tooltipLabel}`}
     >
       <Div position="relative">
         <RiRectangleLine size={28} />

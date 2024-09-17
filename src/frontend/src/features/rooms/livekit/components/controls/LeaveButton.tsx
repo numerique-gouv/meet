@@ -25,6 +25,7 @@ export const LeaveButton = () => {
             navigateTo('feedback')
           })
       }}
+      data-attr="controls-leave"
     >
       <RiPhoneFill
         style={{
