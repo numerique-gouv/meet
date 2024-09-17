@@ -2,6 +2,8 @@ import { useQuery } from '@tanstack/react-query'
 import { keys } from '@/api/queryKeys'
 import { fetchUser } from './fetchUser'
 import { type ApiUser } from './ApiUser'
+import { useEffect } from 'react'
+import posthog from 'posthog-js'
 
 /**
  * returns info about currently logged in user
@@ -14,6 +16,12 @@ export const useUser = () => {
     queryFn: fetchUser,
     staleTime: 1000 * 60 * 60, // 1 hour
   })
+
+  useEffect(() => {
+    if (query.data && query.data.id && !posthog._isIdentified()) {
+      posthog.identify('query.data.id', { email: query.data.email })
+    }
+  }, [query.data])
 
   const isLoggedIn =
     query.status === 'success' ? query.data !== false : undefined
