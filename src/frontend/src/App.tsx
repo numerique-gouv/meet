@@ -1,11 +1,11 @@
 import '@livekit/components-styles'
 import '@/styles/index.css'
-import { Suspense } from 'react'
+import { Suspense, useEffect } from 'react'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { useTranslation } from 'react-i18next'
 import { useLang } from 'hoofd'
-import { Switch, Route } from 'wouter'
+import { Switch, Route, useLocation } from 'wouter'
 import { I18nProvider } from 'react-aria-components'
 import { Layout } from './layout/Layout'
 import { NotFoundScreen } from './components/NotFoundScreen'
@@ -17,6 +17,7 @@ import posthog from 'posthog-js'
 
 function App() {
   const { i18n } = useTranslation()
+  const [location] = useLocation()
   useLang(i18n.language)
 
   const isProduction = import.meta.env.PROD
@@ -30,6 +31,10 @@ function App() {
       person_profiles: 'always',
     })
   }
+
+  useEffect(() => {
+    posthog.capture('$pageview')
+  }, [location])
 
   return (
     <QueryClientProvider client={queryClient}>
