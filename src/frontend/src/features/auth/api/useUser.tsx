@@ -19,7 +19,7 @@ export const useUser = () => {
 
   useEffect(() => {
     if (query.data && query.data.id && !posthog._isIdentified()) {
-      posthog.identify('query.data.id', { email: query.data.email })
+      posthog.identify(query.data.id, { email: query.data.email })
     }
   }, [query.data])
 
