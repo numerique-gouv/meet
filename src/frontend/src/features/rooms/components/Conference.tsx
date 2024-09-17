@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { useTranslation } from 'react-i18next'
 import {
@@ -18,6 +18,7 @@ import { useCreateRoom } from '../api/createRoom'
 import { InviteDialog } from './InviteDialog'
 
 import { VideoConference } from '../livekit/prefabs/VideoConference'
+import posthog from 'posthog-js'
 
 export const Conference = ({
   roomId,
@@ -30,6 +31,9 @@ export const Conference = ({
   mode?: 'join' | 'create'
   initialRoomData?: ApiRoom
 }) => {
+  useEffect(() => {
+    posthog.capture('visit-room', { slug: roomId })
+  }, [roomId])
   const fetchKey = [keys.room, roomId, userConfig.username]
 
   const {
