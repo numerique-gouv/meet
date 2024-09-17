@@ -53,6 +53,10 @@
       "raise": "",
       "lower": ""
     },
+    "screenShare": {
+      "start": "",
+      "stop": ""
+    },
     "leave": "",
     "participants": {
       "open": "",

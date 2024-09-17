@@ -11,13 +11,14 @@ export const ScreenShareToggle = (
     'source' | 'captureOptions'
   >
 ) => {
-  const { t } = useTranslation('rooms', { keyPrefix: 'controls' })
+  const { t } = useTranslation('rooms', { keyPrefix: 'controls.screenShare' })
   const { buttonProps, enabled } = useTrackToggle({
     ...props,
     source: Track.Source.ScreenShare,
     captureOptions: { audio: true, selfBrowserSurface: 'include' },
   })
 
+  const tooltipLabel = enabled ? 'stop' : 'start'
   const Icon = enabled ? RiCloseFill : RiArrowUpLine
 
   // fixme - remove ToggleButton custom styles when we design a proper icon
@@ -26,7 +27,7 @@ export const ScreenShareToggle = (
       isSelected={enabled}
       square
       legacyStyle
-      tooltip={t(enabled ? 'stopScreenShare' : 'shareScreen')}
+      tooltip={t(tooltipLabel)}
       onPress={(e) =>
         buttonProps.onClick?.(
           e as unknown as React.MouseEvent<HTMLButtonElement, MouseEvent>

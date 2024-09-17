@@ -43,8 +43,6 @@
   "controls": {
     "microphone": "Microphone",
     "camera": "Camera",
-    "shareScreen": "Partager l'écran",
-    "stopScreenShare": "Arrêter le partage",
     "chat": {
       "open": "Masquer le chat",
       "closed": "Afficher le chat"
@@ -52,6 +50,10 @@
     "hand": {
       "raise": "Lever la main",
       "lower": "Baisser la main"
+    },
+    "screenShare": {
+      "start": "Partager l'écran",
+      "stop": "Arrêter le partage"
     },
     "leave": "Quitter",
     "participants": {
