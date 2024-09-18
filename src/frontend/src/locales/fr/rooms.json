@@ -71,10 +71,17 @@
       "effects": "Appliquer des effets"
     }
   },
+  "sidePanel": {
+    "heading": {
+      "participants": "Participants"
+    },
+    "content": {
+      "participants": "les participants"
+    },
+    "closeButton": "Masquer {{content}}"
+  },
   "participants": {
-    "heading": "Participants",
     "subheading": "Dans la réunion",
-    "closeButton": "Masquer les participants",
     "you": "Vous",
     "contributors": "Contributeurs",
     "collapsable": {

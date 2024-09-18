@@ -1,17 +1,13 @@
 import { css } from '@/styled-system/css'
 import { useParticipants } from '@livekit/components-react'
 
-import { Heading } from 'react-aria-components'
-import { Box, Button, Div, H } from '@/primitives'
-import { text } from '@/primitives/Text'
-import { RiCloseLine } from '@remixicon/react'
-import { participantsStore } from '@/stores/participants'
+import { Div, H } from '@/primitives'
 import { useTranslation } from 'react-i18next'
 import { allParticipantRoomEvents } from '@/features/rooms/livekit/constants/events'
-import { ParticipantListItem } from '@/features/rooms/livekit/components/controls/Participants/ParticipantListItem'
-import { ParticipantsCollapsableList } from '@/features/rooms/livekit/components/controls/Participants/ParticipantsCollapsableList'
-import { HandRaisedListItem } from '@/features/rooms/livekit/components/controls/Participants/HandRaisedListItem'
-import { LowerAllHandsButton } from '@/features/rooms/livekit/components/controls/Participants/LowerAllHandsButton'
+import { ParticipantListItem } from '../../controls/Participants/ParticipantListItem'
+import { ParticipantsCollapsableList } from '../../controls/Participants/ParticipantsCollapsableList'
+import { HandRaisedListItem } from '../../controls/Participants/HandRaisedListItem'
+import { LowerAllHandsButton } from '../../controls/Participants/LowerAllHandsButton'
 
 // TODO: Optimize rendering performance, especially for longer participant lists, even though they are generally short.
 export const ParticipantsList = () => {
@@ -44,76 +40,40 @@ export const ParticipantsList = () => {
 
   // TODO - extract inline styling in a centralized styling file, and avoid magic numbers
   return (
-    <Box
-      size="sm"
-      minWidth="360px"
-      className={css({
-        overflow: 'hidden',
-        display: 'flex',
-        flexDirection: 'column',
-        margin: '1.5rem 1.5rem 1.5rem 0',
-        padding: 0,
-        gap: 0,
-      })}
-    >
-      <Heading
-        slot="title"
-        level={1}
-        className={text({ variant: 'h2' })}
-        style={{
-          paddingLeft: '1.5rem',
-          paddingTop: '1rem',
-        }}
+    <>
+      <H
+        lvl={2}
+        className={css({
+          fontSize: '0.875rem',
+          fontWeight: 'bold',
+          color: '#5f6368',
+          padding: '0 1.5rem',
+          marginBottom: '0.83em',
+        })}
       >
-        {t('heading')}
-      </Heading>
-      <Div position="absolute" top="5" right="5">
-        <Button
-          invisible
-          size="xs"
-          onPress={() => (participantsStore.showParticipants = false)}
-          aria-label={t('closeButton')}
-          tooltip={t('closeButton')}
-          data-attr="participants-close"
-        >
-          <RiCloseLine />
-        </Button>
-      </Div>
-      <Div overflowY="scroll">
-        <H
-          lvl={2}
-          className={css({
-            fontSize: '0.875rem',
-            fontWeight: 'bold',
-            color: '#5f6368',
-            padding: '0 1.5rem',
-            marginBottom: '0.83em',
-          })}
-        >
-          {t('subheading').toUpperCase()}
-        </H>
-        {raisedHandParticipants.length > 0 && (
-          <Div marginBottom=".9375rem">
-            <ParticipantsCollapsableList
-              heading={t('raisedHands')}
-              participants={raisedHandParticipants}
-              renderParticipant={(participant) => (
-                <HandRaisedListItem participant={participant} />
-              )}
-              action={() => (
-                <LowerAllHandsButton participants={raisedHandParticipants} />
-              )}
-            />
-          </Div>
+        {t('subheading').toUpperCase()}
+      </H>
+      {raisedHandParticipants.length > 0 && (
+        <Div marginBottom=".9375rem">
+          <ParticipantsCollapsableList
+            heading={t('raisedHands')}
+            participants={raisedHandParticipants}
+            renderParticipant={(participant) => (
+              <HandRaisedListItem participant={participant} />
+            )}
+            action={() => (
+              <LowerAllHandsButton participants={raisedHandParticipants} />
+            )}
+          />
+        </Div>
+      )}
+      <ParticipantsCollapsableList
+        heading={t('contributors')}
+        participants={sortedParticipants}
+        renderParticipant={(participant) => (
+          <ParticipantListItem participant={participant} />
         )}
-        <ParticipantsCollapsableList
-          heading={t('contributors')}
-          participants={sortedParticipants}
-          renderParticipant={(participant) => (
-            <ParticipantListItem participant={participant} />
-          )}
-        />
-      </Div>
-    </Box>
+      />
+    </>
   )
 }
