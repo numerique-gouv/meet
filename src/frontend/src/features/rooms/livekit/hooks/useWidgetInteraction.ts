@@ -9,6 +9,7 @@ export const useWidgetInteraction = () => {
   const sidePanel = layoutSnap.sidePanel
 
   const isParticipantsOpen = sidePanel == 'participants'
+  const isEffectsOpen = sidePanel == 'effects'
 
   const toggleParticipants = () => {
     if (dispatch && state?.showChat) {
@@ -26,11 +27,20 @@ export const useWidgetInteraction = () => {
     }
   }
 
+  const toggleEffects = () => {
+    if (dispatch && state?.showChat) {
+      dispatch({ msg: 'toggle_chat' })
+    }
+    layoutStore.sidePanel = isEffectsOpen ? null : 'effects'
+  }
+
   return {
     toggleParticipants,
     toggleChat,
+    toggleEffects,
     isChatOpen: state?.showChat,
     unreadMessages: state?.unreadMessages,
     isParticipantsOpen,
+    isEffectsOpen,
   }
 }

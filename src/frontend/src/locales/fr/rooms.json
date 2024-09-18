@@ -71,12 +71,17 @@
       "effects": "Appliquer des effets"
     }
   },
+  "effects": {
+    "activateCamera": "Votre camera est désactivée"
+  },
   "sidePanel": {
     "heading": {
-      "participants": "Participants"
+      "participants": "Participants",
+      "effects": "Effets"
     },
     "content": {
-      "participants": "les participants"
+      "participants": "les participants",
+      "effects": "les effets"
     },
     "closeButton": "Masquer {{content}}"
   },

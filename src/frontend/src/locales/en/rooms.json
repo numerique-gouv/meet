@@ -71,12 +71,17 @@
       "effects": "Apply effects"
     }
   },
+  "effects": {
+    "activateCamera": "Camera is disabled"
+  },
   "sidePanel": {
     "heading": {
-      "participants": "Participants"
+      "participants": "Participants",
+      "effects": "Effects"
     },
     "content": {
-      "participants": "participants"
+      "participants": "participants",
+      "effects": "effects"
     },
     "closeButton": "Hide {{content}}"
   },

@@ -10,6 +10,7 @@ import { useTranslation } from 'react-i18next'
 import { Dispatch, SetStateAction } from 'react'
 import { DialogState } from './OptionsButton'
 import { Separator } from '@/primitives/Separator'
+import { useWidgetInteraction } from '../../../hooks/useWidgetInteraction'
 
 // @todo try refactoring it to use MenuList component
 export const OptionsMenuItems = ({
@@ -18,7 +19,7 @@ export const OptionsMenuItems = ({
   onOpenDialog: Dispatch<SetStateAction<DialogState>>
 }) => {
   const { t } = useTranslation('rooms', { keyPrefix: 'options.items' })
-
+  const { toggleEffects } = useWidgetInteraction()
   return (
     <RACMenu
       style={{
@@ -28,7 +29,7 @@ export const OptionsMenuItems = ({
     >
       <Section>
         <MenuItem
-          onAction={() => console.log('open dialog')}
+          onAction={() => toggleEffects()}
           className={menuItemRecipe({ icon: true })}
         >
           <RiAccountBoxLine size={20} />
