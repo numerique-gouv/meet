@@ -71,10 +71,17 @@
       "effects": "Apply effects"
     }
   },
+  "sidePanel": {
+    "heading": {
+      "participants": "Participants"
+    },
+    "content": {
+      "participants": "participants"
+    },
+    "closeButton": "Hide {{content}}"
+  },
   "participants": {
-    "heading": "Participants",
     "subheading": "In room",
-    "closeButton": "Hide participants",
     "you": "You",
     "contributors": "Contributors",
     "collapsable": {

@@ -30,11 +30,11 @@ import {
 import { ControlBar } from './ControlBar'
 import { styled } from '@/styled-system/jsx'
 import { cva } from '@/styled-system/css'
-import { ParticipantsList } from '@/features/rooms/livekit/components/controls/Participants/ParticipantsList'
 import { useSnapshot } from 'valtio'
-import { participantsStore } from '@/stores/participants'
+import { layoutStore } from '@/stores/layout'
 import { FocusLayout } from '../components/FocusLayout'
 import { ParticipantTile } from '../components/ParticipantTile'
+import { SidePanel } from '../components/SidePanel'
 import { MainNotificationToast } from '@/features/notifications/MainNotificationToast'
 
 const LayoutWrapper = styled(
@@ -172,8 +172,8 @@ export function VideoConference({
   ])
   /* eslint-enable react-hooks/exhaustive-deps */
 
-  const participantsSnap = useSnapshot(participantsStore)
-  const showParticipants = participantsSnap.showParticipants
+  const layoutSnap = useSnapshot(layoutStore)
+  const sidePanel = layoutSnap.sidePanel
 
   return (
     <div className="lk-video-conference" {...props}>
@@ -223,7 +223,7 @@ export function VideoConference({
                 messageEncoder={chatMessageEncoder}
                 messageDecoder={chatMessageDecoder}
               />
-              {showParticipants && <ParticipantsList />}
+              {sidePanel && <SidePanel />}
             </LayoutWrapper>
             <ControlBar />
           </div>

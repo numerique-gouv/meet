@@ -1,23 +1,25 @@
 import { useLayoutContext } from '@livekit/components-react'
 import { useSnapshot } from 'valtio'
-import { participantsStore } from '@/stores/participants.ts'
+import { layoutStore } from '@/stores/layout'
 
 export const useWidgetInteraction = () => {
   const { dispatch, state } = useLayoutContext().widget
 
-  const participantsSnap = useSnapshot(participantsStore)
-  const isParticipantsOpen = participantsSnap.showParticipants
+  const layoutSnap = useSnapshot(layoutStore)
+  const sidePanel = layoutSnap.sidePanel
+
+  const isParticipantsOpen = sidePanel == 'participants'
 
   const toggleParticipants = () => {
     if (dispatch && state?.showChat) {
       dispatch({ msg: 'toggle_chat' })
     }
-    participantsStore.showParticipants = !isParticipantsOpen
+    layoutStore.sidePanel = isParticipantsOpen ? null : 'participants'
   }
 
   const toggleChat = () => {
     if (isParticipantsOpen) {
-      participantsStore.showParticipants = false
+      layoutStore.sidePanel = null
     }
     if (dispatch) {
       dispatch({ msg: 'toggle_chat' })
