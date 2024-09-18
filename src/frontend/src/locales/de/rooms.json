@@ -73,12 +73,17 @@
       "effects": ""
     }
   },
+  "effects": {
+    "activateCamera": ""
+  },
   "sidePanel": {
     "heading": {
-      "participants": ""
+      "participants": "",
+      "effects": ""
     },
     "content": {
-      "participants": ""
+      "participants": "",
+      "effects": ""
     },
     "closeButton": ""
   },

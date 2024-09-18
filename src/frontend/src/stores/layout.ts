@@ -2,7 +2,7 @@ import { proxy } from 'valtio'
 
 type State = {
   showHeader: boolean
-  sidePanel: 'participants' | null
+  sidePanel: 'participants' | 'effects' | null
 }
 
 export const layoutStore = proxy<State>({

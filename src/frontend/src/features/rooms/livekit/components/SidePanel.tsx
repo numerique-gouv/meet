@@ -9,6 +9,7 @@ import { useTranslation } from 'react-i18next'
 import { ParticipantsList } from './controls/Participants/ParticipantsList'
 import { useWidgetInteraction } from '../hooks/useWidgetInteraction'
 import { ReactNode } from 'react'
+import { Effects } from './Effects'
 
 type StyledSidePanelProps = {
   title: string
@@ -65,7 +66,7 @@ export const SidePanel = () => {
   const layoutSnap = useSnapshot(layoutStore)
   const sidePanel = layoutSnap.sidePanel
 
-  const { isParticipantsOpen } = useWidgetInteraction()
+  const { isParticipantsOpen, isEffectsOpen } = useWidgetInteraction()
   const { t } = useTranslation('rooms', { keyPrefix: 'sidePanel' })
 
   if (!sidePanel) {
@@ -81,6 +82,7 @@ export const SidePanel = () => {
       })}
     >
       {isParticipantsOpen && <ParticipantsList />}
+      {isEffectsOpen && <Effects />}
     </StyledSidePanel>
   )
 }
