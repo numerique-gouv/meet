@@ -3,13 +3,23 @@ import { useLocalParticipant } from '@livekit/components-react'
 import { LocalVideoTrack } from 'livekit-client'
 import { Text, P, ToggleButton, Div, H } from '@/primitives'
 import { useTranslation } from 'react-i18next'
-import { HStack, VStack } from '@/styled-system/jsx'
+import { HStack, styled, VStack } from '@/styled-system/jsx'
 import {
   BackgroundBlur,
   BackgroundOptions,
   ProcessorWrapper,
   BackgroundTransformer,
 } from '@livekit/track-processors'
+
+const Information = styled('div', {
+  base: {
+    backgroundColor: 'orange.50',
+    borderRadius: '4px',
+    padding: '0.75rem 0.75rem',
+    marginTop: '0.8rem',
+    alignItems: 'start',
+  },
+})
 
 enum BlurRadius {
   NONE = 0,
@@ -165,6 +175,16 @@ export const Effects = () => {
         ) : (
           <Text variant="sm">{t('notAvailable')}</Text>
         )}
+        <Information>
+          <Text
+            variant="sm"
+            style={{
+              textWrap: 'balance',
+            }}
+          >
+            ⚠︎ {t('experimental')}
+          </Text>
+        </Information>
       </Div>
     </VStack>
   )

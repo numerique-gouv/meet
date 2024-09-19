@@ -80,7 +80,8 @@
       "normal": "Flou",
       "apply": "Appliquer le flou",
       "clear": "Désactiver le flou"
-    }
+    },
+    "experimental": "Fonctionnalité expérimentale. Une v2 arrive pour un support complet sur tous les navigateurs et une meilleur qualité."
   },
   "sidePanel": {
     "heading": {
