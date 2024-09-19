@@ -4,7 +4,6 @@ import { ToggleButton } from '@/primitives'
 import { css } from '@/styled-system/css'
 import { useRoomContext } from '@livekit/components-react'
 import { useRaisedHand } from '@/features/rooms/livekit/hooks/useRaisedHand'
-import { NotificationType } from '@/features/notifications/NotificationType'
 
 export const HandToggle = () => {
   const { t } = useTranslation('rooms', { keyPrefix: 'controls.hand' })
@@ -15,17 +14,6 @@ export const HandToggle = () => {
   })
 
   const tooltipLabel = isHandRaised ? 'lower' : 'raise'
-
-  const notifyOtherParticipants = (isHandRaised: boolean) => {
-    room.localParticipant.publishData(
-      new TextEncoder().encode(
-        !isHandRaised ? NotificationType.Raised : NotificationType.Lowered
-      ),
-      {
-        reliable: true,
-      }
-    )
-  }
 
   return (
     <div
@@ -40,10 +28,7 @@ export const HandToggle = () => {
         aria-label={t(tooltipLabel)}
         tooltip={t(tooltipLabel)}
         isSelected={isHandRaised}
-        onPress={() => {
-          notifyOtherParticipants(isHandRaised)
-          toggleRaisedHand()
-        }}
+        onPress={() => toggleRaisedHand()}
         data-attr={`controls-hand-${tooltipLabel}`}
       >
         <RiHand />
