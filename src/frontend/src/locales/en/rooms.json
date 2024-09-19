@@ -74,6 +74,7 @@
   "effects": {
     "activateCamera": "Your camera is disabled. Choose an option to enable it.",
     "notAvailable": "The blur effect will be available soon on your browser. We're working on it! In the meantime, you can use Google Chrome :(",
+    "heading": "Blur",
     "blur": {
       "light": "Light blur",
       "normal": "Blur",

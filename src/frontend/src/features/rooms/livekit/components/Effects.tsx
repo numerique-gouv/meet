@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { useLocalParticipant } from '@livekit/components-react'
 import { LocalVideoTrack } from 'livekit-client'
-import { Text, P, ToggleButton } from '@/primitives'
+import { Text, P, ToggleButton, Div, H } from '@/primitives'
 import { useTranslation } from 'react-i18next'
 import { HStack, VStack } from '@/styled-system/jsx'
 import {
@@ -92,8 +92,8 @@ export const Effects = () => {
           muted
           style={{
             transform: 'rotateY(180deg)',
-            minHeight: '173px',
-            borderRadius: '4px',
+            minHeight: '175px',
+            borderRadius: '8px',
           }}
         />
       ) : (
@@ -119,34 +119,53 @@ export const Effects = () => {
           </P>
         </div>
       )}
-      {ProcessorWrapper.isSupported ? (
-        <HStack>
-          <ToggleButton
-            size={'sm'}
-            legacyStyle
-            aria-label={tooltipLabel(BlurRadius.LIGHT)}
-            tooltip={tooltipLabel(BlurRadius.LIGHT)}
-            isDisabled={processorPending}
-            onPress={async () => await toggleBlur(BlurRadius.LIGHT)}
-            isSelected={isSelected(BlurRadius.LIGHT)}
-          >
-            {t('blur.light')}
-          </ToggleButton>
-          <ToggleButton
-            size={'sm'}
-            legacyStyle
-            aria-label={tooltipLabel(BlurRadius.NORMAL)}
-            tooltip={tooltipLabel(BlurRadius.NORMAL)}
-            isDisabled={processorPending}
-            onPress={async () => await toggleBlur(BlurRadius.NORMAL)}
-            isSelected={isSelected(BlurRadius.NORMAL)}
-          >
-            {t('blur.normal')}
-          </ToggleButton>
-        </HStack>
-      ) : (
-        <Text variant="sm">{t('notAvailable')}</Text>
-      )}
+      <Div
+        alignItems={'left'}
+        width={'100%'}
+        style={{
+          border: '1px solid #dadce0',
+          borderRadius: '8px',
+          margin: '0 .625rem',
+          padding: '0.5rem 1rem',
+        }}
+      >
+        <H
+          lvl={3}
+          style={{
+            marginBottom: '0.4rem',
+          }}
+        >
+          {t('heading')}
+        </H>
+        {ProcessorWrapper.isSupported ? (
+          <HStack>
+            <ToggleButton
+              size={'sm'}
+              legacyStyle
+              aria-label={tooltipLabel(BlurRadius.LIGHT)}
+              tooltip={tooltipLabel(BlurRadius.LIGHT)}
+              isDisabled={processorPending}
+              onPress={async () => await toggleBlur(BlurRadius.LIGHT)}
+              isSelected={isSelected(BlurRadius.LIGHT)}
+            >
+              {t('blur.light')}
+            </ToggleButton>
+            <ToggleButton
+              size={'sm'}
+              legacyStyle
+              aria-label={tooltipLabel(BlurRadius.NORMAL)}
+              tooltip={tooltipLabel(BlurRadius.NORMAL)}
+              isDisabled={processorPending}
+              onPress={async () => await toggleBlur(BlurRadius.NORMAL)}
+              isSelected={isSelected(BlurRadius.NORMAL)}
+            >
+              {t('blur.normal')}
+            </ToggleButton>
+          </HStack>
+        ) : (
+          <Text variant="sm">{t('notAvailable')}</Text>
+        )}
+      </Div>
     </VStack>
   )
 }
