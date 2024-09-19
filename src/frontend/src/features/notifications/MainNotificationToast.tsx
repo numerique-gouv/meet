@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import { useRoomContext } from '@livekit/components-react'
-import { Participant, RemoteParticipant, RoomEvent } from 'livekit-client'
+import { Participant, RoomEvent } from 'livekit-client'
 import { ToastProvider, toastQueue } from './components/ToastProvider'
 import { NotificationType } from './NotificationType'
 import { Div } from '@/primitives'
@@ -50,31 +50,32 @@ export const MainNotificationToast = () => {
     }
   }, [room])
 
-  // fixme - close all related toasters when hands are lowered remotely
   useEffect(() => {
-    const decoder = new TextDecoder()
-
     const handleNotificationReceived = (
-      payload: Uint8Array,
-      participant?: RemoteParticipant
+      prevMetadataStr: string | undefined,
+      participant: Participant
     ) => {
-      if (!participant) {
-        return
-      }
-      if (isMobileBrowser()) {
-        return
-      }
-      const notification = decoder.decode(payload)
+      if (!participant) return
+      if (isMobileBrowser()) return
+      if (participant.isLocal) return
+
+      const prevMetadata = JSON.parse(prevMetadataStr || '{}')
+      const metadata = JSON.parse(participant.metadata || '{}')
+
+      if (prevMetadata.raised == metadata.raised) return
+
       const existingToast = toastQueue.visibleToasts.find(
         (toast) =>
           toast.content.participant === participant &&
           toast.content.type === NotificationType.Raised
       )
-      if (existingToast && notification === NotificationType.Lowered) {
+
+      if (existingToast && prevMetadata.raised && !metadata.raised) {
         toastQueue.close(existingToast.key)
         return
       }
-      if (!existingToast && notification === NotificationType.Raised) {
+
+      if (!existingToast && !prevMetadata.raised && metadata.raised) {
         triggerNotificationSound(NotificationType.Raised)
         toastQueue.add(
           {
@@ -86,10 +87,10 @@ export const MainNotificationToast = () => {
       }
     }
 
-    room.on(RoomEvent.DataReceived, handleNotificationReceived)
+    room.on(RoomEvent.ParticipantMetadataChanged, handleNotificationReceived)
 
     return () => {
-      room.off(RoomEvent.DataReceived, handleNotificationReceived)
+      room.off(RoomEvent.ParticipantMetadataChanged, handleNotificationReceived)
     }
   }, [room, triggerNotificationSound])
 
