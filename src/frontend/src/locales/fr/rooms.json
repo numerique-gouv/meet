@@ -72,7 +72,14 @@
     }
   },
   "effects": {
-    "activateCamera": "Votre camera est désactivée"
+    "activateCamera": "Votre camera est désactivée. Choisissez une option pour l'activer.",
+    "notAvailable": "L'effet de flou sera bientôt disponible sur votre navigateur. Nous y travaillons ! En attendant, vous pouvez utiliser Google Chrome :(",
+    "blur": {
+      "light": "Léger flou",
+      "normal": "Flou",
+      "apply": "Appliquer le flou",
+      "clear": "Désactiver le flou"
+    }
   },
   "sidePanel": {
     "heading": {
