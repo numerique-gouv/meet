@@ -7,6 +7,7 @@ type useRaisedHandProps = {
 }
 
 export function useRaisedHand({ participant }: useRaisedHandProps) {
+  // fixme - refactor this part to rely on attributes
   const { metadata } = useParticipantInfo({ participant })
   const parsedMetadata = JSON.parse(metadata || '{}')
 
