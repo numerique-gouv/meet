@@ -1,3 +1,28 @@
+environments:
+  dev:
+    values:
+      - version: 0.0.1
+    secrets:
+      - env.d/{{ .Environment.Name }}/secrets.enc.yaml
+  staging:
+    values:
+      - version: 0.0.1
+        addRedirect: True
+        enablePermanentRedirect: True
+        oldDomain: meet-staging.beta.numerique.gouv.fr
+        newDomain: visio-staging.beta.numerique.gouv.fr
+    secrets:
+      - env.d/{{ .Environment.Name }}/secrets.enc.yaml
+  production:
+    values:
+      - version: 0.0.1
+        addRedirect: True
+        enablePermanentRedirect: True
+        oldDomain: meet.numerique.gouv.fr
+        newDomain: visio.numerique.gouv.fr
+    secrets:
+      - env.d/{{ .Environment.Name }}/secrets.enc.yaml
+
 repositories:
 - name: bitnami
   url: registry-1.docker.io/bitnamicharts
@@ -58,35 +83,5 @@ releases:
     chart: livekit/livekit-server
     values:
       - env.d/{{ .Environment.Name }}/values.livekit.yaml.gotmpl
-    secrets:
-      - env.d/{{ .Environment.Name }}/secrets.enc.yaml
-
-environments:
-  dev:
-    values:
-      - version: 0.0.1
-    secrets:
-      - env.d/{{ .Environment.Name }}/secrets.enc.yaml
-  staging:
-    values:
-      - version: 0.0.1
-        addRedirect: True
-        enablePermanentRedirect: True
-        oldDomain: meet-staging.beta.numerique.gouv.fr
-        newDomain: visio-staging.beta.numerique.gouv.fr
-    secrets:
-      - env.d/{{ .Environment.Name }}/secrets.enc.yaml
-  preprod:
-    values:
-      - version: 0.0.1
-    secrets:
-      - env.d/{{ .Environment.Name }}/secrets.enc.yaml
-  production:
-    values:
-      - version: 0.0.1
-        addRedirect: True
-        enablePermanentRedirect: True
-        oldDomain: meet.numerique.gouv.fr
-        newDomain: visio.numerique.gouv.fr
     secrets:
       - env.d/{{ .Environment.Name }}/secrets.enc.yaml
