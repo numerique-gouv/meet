@@ -3,10 +3,10 @@ import { keys } from '@/api/queryKeys'
 import { fetchUser } from './fetchUser'
 import { type ApiUser } from './ApiUser'
 import { useEffect } from 'react'
-import posthog from 'posthog-js'
+import { startAnalyticsSession } from '@/features/analytics/hooks/useAnalytics'
 
 /**
- * returns info about currently logged in user
+ * returns info about currently logged-in user
  *
  * `isLoggedIn` is undefined while query is loading and true/false when it's done
  */
@@ -18,8 +18,8 @@ export const useUser = () => {
   })
 
   useEffect(() => {
-    if (query.data && query.data.id && !posthog._isIdentified()) {
-      posthog.identify(query.data.id, { email: query.data.email })
+    if (query?.data) {
+      startAnalyticsSession(query.data)
     }
   }, [query.data])
 

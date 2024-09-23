@@ -9,8 +9,8 @@ import { useMatchesRoute } from '@/navigation/useMatchesRoute'
 import { Feedback } from '@/components/Feedback'
 import { Menu } from '@/primitives/Menu'
 import { MenuList } from '@/primitives/MenuList'
-import posthog from 'posthog-js'
 import { ProConnectButton } from '@/components/ProConnectButton'
+import { terminateAnalyticsSession } from '@/features/analytics/hooks/useAnalytics'
 
 export const Header = () => {
   const { t } = useTranslation()
@@ -81,7 +81,7 @@ export const Header = () => {
                   items={[{ value: 'logout', label: t('logout') }]}
                   onAction={(value) => {
                     if (value === 'logout') {
-                      posthog.reset()
+                      terminateAnalyticsSession()
                       window.location.href = logoutUrl()
                     }
                   }}
