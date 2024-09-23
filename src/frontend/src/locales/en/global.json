@@ -12,7 +12,11 @@
   },
   "loading": "Loading…",
   "loggedInUserTooltip": "Logged in as…",
-  "login": "Login",
+  "login": {
+    "buttonLabel": "Login with ProConnect",
+    "linkLabel": "What is ProConnect? - new tab",
+    "link": "What is ProConnect?"
+  },
   "logout": "Logout",
   "notFound": {
     "heading": "Page not found"

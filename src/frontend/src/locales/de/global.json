@@ -12,7 +12,11 @@
   },
   "loading": "",
   "loggedInUserTooltip": "",
-  "login": "Anmelden",
+  "login": {
+    "buttonLabel": "",
+    "linkLabel": "",
+    "link": ""
+  },
   "logout": "",
   "notFound": {
     "heading": ""
