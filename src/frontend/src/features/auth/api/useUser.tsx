@@ -4,6 +4,7 @@ import { fetchUser } from './fetchUser'
 import { type ApiUser } from './ApiUser'
 import { useEffect } from 'react'
 import { startAnalyticsSession } from '@/features/analytics/hooks/useAnalytics'
+import { initializeSupportSession } from '@/features/support/hooks/useSupport'
 
 /**
  * returns info about currently logged-in user
@@ -20,6 +21,7 @@ export const useUser = () => {
   useEffect(() => {
     if (query?.data) {
       startAnalyticsSession(query.data)
+      initializeSupportSession(query.data)
     }
   }, [query.data])
 
