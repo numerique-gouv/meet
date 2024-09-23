@@ -8,9 +8,9 @@ backend:
     argocd.argoproj.io/hook: PreSync
     argocd.argoproj.io/hook-delete-policy: HookSucceeded
   envVars:
-    DJANGO_CSRF_TRUSTED_ORIGINS: http://meet-staging.beta.numerique.gouv.fr,https://meet-staging.beta.numerique.gouv.fr
+    DJANGO_CSRF_TRUSTED_ORIGINS: http://visio-staging.beta.numerique.gouv.fr,https://meet-staging.beta.numerique.gouv.fr
     DJANGO_CONFIGURATION: Production
-    DJANGO_ALLOWED_HOSTS: meet-staging.beta.numerique.gouv.fr
+    DJANGO_ALLOWED_HOSTS: visio-staging.beta.numerique.gouv.fr
     DJANGO_SECRET_KEY:
       secretKeyRef:
         name: backend
@@ -42,11 +42,11 @@ backend:
         key: OIDC_RP_CLIENT_SECRET
     OIDC_RP_SIGN_ALGO: RS256
     OIDC_RP_SCOPES: "openid email"
-    OIDC_REDIRECT_ALLOWED_HOSTS: https://meet-staging.beta.numerique.gouv.fr
+    OIDC_REDIRECT_ALLOWED_HOSTS: https://visio-staging.beta.numerique.gouv.fr
     OIDC_AUTH_REQUEST_EXTRA_PARAMS: "{'acr_values': 'eidas1'}"
-    LOGIN_REDIRECT_URL: https://meet-staging.beta.numerique.gouv.fr
-    LOGIN_REDIRECT_URL_FAILURE: https://meet-staging.beta.numerique.gouv.fr
-    LOGOUT_REDIRECT_URL: https://meet-staging.beta.numerique.gouv.fr
+    LOGIN_REDIRECT_URL: https://visio-staging.beta.numerique.gouv.fr
+    LOGIN_REDIRECT_URL_FAILURE: https://visio-staging.beta.numerique.gouv.fr
+    LOGOUT_REDIRECT_URL: https://visio-staging.beta.numerique.gouv.fr
     DB_HOST:
       secretKeyRef:
         name: postgresql.postgres.libre.sh
@@ -112,7 +112,7 @@ frontend:
 
 ingress:
   enabled: true
-  host: meet-staging.beta.numerique.gouv.fr
+  host: visio-staging.beta.numerique.gouv.fr
   className: nginx
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt-prod
@@ -125,7 +125,7 @@ ingress:
 
 ingressAdmin:
   enabled: true
-  host: meet-staging.beta.numerique.gouv.fr
+  host: visio-staging.beta.numerique.gouv.fr
   className: nginx
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt-prod
