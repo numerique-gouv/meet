@@ -116,6 +116,12 @@ ingress:
   className: nginx
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt-prod
+  tls:
+    enabled: true
+    additional:
+      - secretName: transitional-tls
+        hosts:
+          - {{ .Values.newDomain }}
 
 ingressAdmin:
   enabled: true
@@ -125,3 +131,9 @@ ingressAdmin:
     cert-manager.io/cluster-issuer: letsencrypt-prod
     nginx.ingress.kubernetes.io/auth-signin: https://oauth2-proxy-preprod.beta.numerique.gouv.fr/oauth2/start
     nginx.ingress.kubernetes.io/auth-url: https://oauth2-proxy-preprod.beta.numerique.gouv.fr/oauth2/auth
+  tls:
+    enabled: true
+    additional:
+      - secretName: transitional-tls
+        hosts:
+          - {{ .Values.newDomain }}

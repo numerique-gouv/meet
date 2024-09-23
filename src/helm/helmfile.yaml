@@ -36,6 +36,13 @@ releases:
     chart: ./extra
     secrets:
       - env.d/{{ .Environment.Name }}/secrets.enc.yaml
+    values:
+    - env.d/{{ .Environment.Name }}/values.meet.yaml.gotmpl
+    - addRedirect: {{ .Values | get "addRedirect" "False" }}
+      enablePermanentRedirect: {{ .Values | get "enablePermanentRedirect" "False"}}
+      oldDomain: {{ .Values | get "oldDomain" "demo.com" }}
+      tlsOldSecretName: {{ .Values | get "tlsOldSecretName" "tls"}}
+      newDomain: {{ .Values | get "newDomain" "demo.com" }}
 
   - name: meet
     version: {{ .Values.version }}
@@ -64,6 +71,11 @@ environments:
   staging:
     values:
       - version: 0.0.1
+        addRedirect: True
+        enablePermanentRedirect: True
+        oldDomain: meet-staging.beta.numerique.gouv.fr
+        tlsOldSecretName: meet-tls
+        newDomain: visio-staging.beta.numerique.gouv.fr
     secrets:
       - env.d/{{ .Environment.Name }}/secrets.enc.yaml
   preprod:
