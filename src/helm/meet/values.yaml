@@ -263,3 +263,33 @@ frontend:
 
   ## @param frontend.extraVolumes Additional volumes to mount on the frontend.
   extraVolumes: []
+
+## @section Posthog
+
+posthog:
+
+  ingress:
+    enabled: false
+    className: null
+    host: meet.example.com
+    path: /
+    pathAssets: /static
+    hosts: [ ]
+    tls:
+      enabled: true
+      additional: [ ]
+
+    customBackends: [ ]
+    annotations: {}
+
+  service:
+    type: ExternalName
+    externalName: eu.i.posthog.com
+    port: 443
+    annotations: {}
+
+  assetsService:
+    type: ExternalName
+    externalName: eu-assets.i.posthog.com
+    port: 443
+    annotations: {}
