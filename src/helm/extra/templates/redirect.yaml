@@ -39,7 +39,7 @@ apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
   name: transitional-tls
-  namespace: meet-staging
+  namespace: {{ .Release.Namespace | quote }}
 spec:
   dnsNames:
   - {{ .Values.newDomain }}
@@ -47,7 +47,7 @@ spec:
   issuerRef:
     group: cert-manager.io
     kind: ClusterIssuer
-    name: letsencrypt-prod
+    name: {{ index .Values.ingress.annotations "cert-manager.io/cluster-issuer" }}
   secretName: transitional-tls
   usages:
   - digital signature
