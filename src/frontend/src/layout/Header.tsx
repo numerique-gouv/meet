@@ -11,6 +11,7 @@ import { Menu } from '@/primitives/Menu'
 import { MenuList } from '@/primitives/MenuList'
 import { ProConnectButton } from '@/components/ProConnectButton'
 import { terminateAnalyticsSession } from '@/features/analytics/hooks/useAnalytics'
+import { terminateSupportSession } from '@/features/support/hooks/useSupport'
 
 export const Header = () => {
   const { t } = useTranslation()
@@ -82,6 +83,7 @@ export const Header = () => {
                   onAction={(value) => {
                     if (value === 'logout') {
                       terminateAnalyticsSession()
+                      terminateSupportSession()
                       window.location.href = logoutUrl()
                     }
                   }}

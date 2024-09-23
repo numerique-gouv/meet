@@ -14,6 +14,7 @@ import './i18n/init'
 import { silenceLiveKitLogs } from '@/utils/livekit.ts'
 import { queryClient } from '@/api/queryClient'
 import { useAnalytics } from '@/features/analytics/hooks/useAnalytics'
+import { useSupport } from '@/features/support/hooks/useSupport'
 
 function App() {
   const { i18n } = useTranslation()
@@ -23,6 +24,7 @@ function App() {
   silenceLiveKitLogs(isProduction)
 
   useAnalytics()
+  useSupport()
 
   return (
     <QueryClientProvider client={queryClient}>
