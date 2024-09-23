@@ -137,3 +137,12 @@ ingressAdmin:
       - secretName: transitional-tls
         hosts:
           - {{ .Values.newDomain }}
+
+posthog:
+  ingress:
+    enabled: true
+    host: product.visio-staging.beta.numerique.gouv.fr
+    annotations:
+      kubernetes.io/ingress.class: nginx
+      nginx.ingress.kubernetes.io/upstream-vhost: eu.i.posthog.com
+      nginx.ingress.kubernetes.io/backend-protocol: https

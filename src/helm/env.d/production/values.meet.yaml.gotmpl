@@ -126,3 +126,12 @@ ingressAdmin:
     cert-manager.io/cluster-issuer: letsencrypt
     nginx.ingress.kubernetes.io/auth-signin: https://oauth2-proxy.beta.numerique.gouv.fr/oauth2/start
     nginx.ingress.kubernetes.io/auth-url: https://oauth2-proxy.beta.numerique.gouv.fr/oauth2/auth
+
+posthog:
+  ingress:
+    enabled: true
+    host: product.visio.numerique.gouv.fr
+    annotations:
+      kubernetes.io/ingress.class: nginx
+      nginx.ingress.kubernetes.io/upstream-vhost: eu.i.posthog.com
+      nginx.ingress.kubernetes.io/backend-protocol: https
