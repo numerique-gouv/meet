@@ -12,7 +12,11 @@
   },
   "loading": "Chargement…",
   "loggedInUserTooltip": "Connecté en tant que…",
-  "login": "Se connecter",
+  "login": {
+    "buttonLabel": "S'identifier avec ProConnect",
+    "linkLabel": "Qu'est-ce que ProConnect ? - nouvelle fenêtre",
+    "link": "Qu'est-ce que ProConnect ?"
+  },
   "logout": "Se déconnecter",
   "notFound": {
     "heading": "Page introuvable"

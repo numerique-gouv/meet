@@ -1,18 +1,18 @@
 import { useTranslation } from 'react-i18next'
-import { DialogTrigger } from 'react-aria-components'
+import { DialogTrigger, MenuItem, Menu as RACMenu } from 'react-aria-components'
 import { Button, Menu, Text } from '@/primitives'
 import { HStack } from '@/styled-system/jsx'
 import { navigateTo } from '@/navigation/navigateTo'
 import { Screen } from '@/layout/Screen'
 import { Centered } from '@/layout/Centered'
 import { generateRoomId } from '@/features/rooms'
-import { authUrl, useUser, UserAware } from '@/features/auth'
+import { useUser, UserAware } from '@/features/auth'
 import { JoinMeetingDialog } from '../components/JoinMeetingDialog'
+import { ProConnectButton } from '@/components/ProConnectButton'
 import { useCreateRoom } from '@/features/rooms'
 import { usePersistentUserChoices } from '@livekit/components-react'
 import { menuItemRecipe } from '@/primitives/menuItemRecipe'
 import { RiAddLine, RiLink } from '@remixicon/react'
-import { MenuItem, Menu as RACMenu } from 'react-aria-components'
 import { LaterMeetingDialog } from '@/features/home/components/LaterMeetingDialog'
 import { useState } from 'react'
 
@@ -42,7 +42,7 @@ export const Home = () => {
               {t('loginToCreateMeeting')}
             </Text>
           )}
-          <HStack gap="gutter">
+          <HStack gap="gutter" alignItems="start">
             {isLoggedIn ? (
               <Menu>
                 <Button variant="primary" data-attr="create-meeting">
@@ -80,12 +80,16 @@ export const Home = () => {
                 </RACMenu>
               </Menu>
             ) : (
-              <Button variant="primary" href={authUrl()} data-attr="login">
-                {t('login', { ns: 'global' })}
-              </Button>
+              <ProConnectButton />
             )}
             <DialogTrigger>
-              <Button variant="primary" outline>
+              <Button
+                variant="primary"
+                outline
+                style={{
+                  height: !isLoggedIn ? '56px' : undefined, // Temporary, Align with ProConnect Button fixed height
+                }}
+              >
                 {t('joinMeeting')}
               </Button>
               <JoinMeetingDialog />

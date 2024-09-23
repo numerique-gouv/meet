@@ -4,11 +4,12 @@ import {
   usePersistentUserChoices,
   useRoomContext,
 } from '@livekit/components-react'
-import { authUrl, logoutUrl, useUser } from '@/features/auth'
+import { logoutUrl, useUser } from '@/features/auth'
 import { css } from '@/styled-system/css'
 import { TabPanel, TabPanelProps } from '@/primitives/Tabs'
 import { HStack } from '@/styled-system/jsx'
 import { useState } from 'react'
+import { ProConnectButton } from '@/components/ProConnectButton'
 
 export type AccountTabProps = Pick<DialogProps, 'onOpenChange'> &
   Pick<TabPanelProps, 'id'>
@@ -58,9 +59,7 @@ export const AccountTab = ({ id, onOpenChange }: AccountTabProps) => {
       ) : (
         <>
           <P>{t('account.youAreNotLoggedIn')}</P>
-          <P>
-            <A href={authUrl()}>{t('login', { ns: 'global' })}</A>
-          </P>
+          <ProConnectButton />
         </>
       )}
       <HStack
