@@ -2,8 +2,6 @@ import { useEffect } from 'react'
 import { Crisp } from 'crisp-sdk-web'
 import { ApiUser } from '@/features/auth/api/ApiUser'
 
-const SUPPORT_ID = '58ea6697-8eba-4492-bc59-ad6562585041'
-
 export const initializeSupportSession = (user: ApiUser) => {
   if (!Crisp.isCrispInjected()) return
   const { id, email } = user
@@ -17,17 +15,17 @@ export const terminateSupportSession = () => {
   Crisp.session.reset()
 }
 
+export type useSupportProps = {
+  id?: string
+}
+
 // Configure Crisp chat for real-time support across all pages.
-export const useSupport = () => {
+export const useSupport = ({ id }: useSupportProps) => {
   useEffect(() => {
-    if (!SUPPORT_ID) {
-      console.warn('Crisp Website ID is not set')
-      return
-    }
-    if (Crisp.isCrispInjected()) return
-    Crisp.configure(SUPPORT_ID)
+    if (!id || Crisp.isCrispInjected()) return
+    Crisp.configure(id)
     Crisp.setHideOnMobile(true)
-  }, [])
+  }, [id])
 
   return null
 }
