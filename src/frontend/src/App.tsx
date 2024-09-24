@@ -11,23 +11,15 @@ import { Layout } from './layout/Layout'
 import { NotFoundScreen } from './components/NotFoundScreen'
 import { routes } from './routes'
 import './i18n/init'
-import { silenceLiveKitLogs } from '@/utils/livekit.ts'
 import { queryClient } from '@/api/queryClient'
-import { useAnalytics } from '@/features/analytics/hooks/useAnalytics'
-import { useSupport } from '@/features/support/hooks/useSupport'
+import { AppInitialization } from '@/components/AppInitialization'
 
 function App() {
   const { i18n } = useTranslation()
   useLang(i18n.language)
-
-  const isProduction = import.meta.env.PROD
-  silenceLiveKitLogs(isProduction)
-
-  useAnalytics()
-  useSupport()
-
   return (
     <QueryClientProvider client={queryClient}>
+      <AppInitialization />
       <Suspense fallback={null}>
         <I18nProvider locale={i18n.language}>
           <Layout>
