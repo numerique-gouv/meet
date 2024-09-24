@@ -252,7 +252,17 @@ class Base(Configuration):
     }
 
     # Frontend
-    FRONTEND_CONFIGURATION = {}
+    FRONTEND_CONFIGURATION = {
+        "analytics": values.DictValue(
+            {}, environ_name="FRONTEND_ANALYTICS", environ_prefix=None
+        ),
+        "support": values.DictValue(
+            {}, environ_name="FRONTEND_SUPPORT", environ_prefix=None
+        ),
+        "silence_livekit_debug_logs": values.BooleanValue(
+            False, environ_name="FRONTEND_SILENCE_LIVEKIT_DEBUG", environ_prefix=None
+        ),
+    }
 
     # Mail
     EMAIL_BACKEND = values.Value("django.core.mail.backends.smtp.EmailBackend")
