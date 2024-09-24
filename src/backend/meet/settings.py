@@ -251,6 +251,9 @@ class Base(Configuration):
         "REDOC_DIST": "SIDECAR",
     }
 
+    # Frontend
+    FRONTEND_CONFIGURATION = {}
+
     # Mail
     EMAIL_BACKEND = values.Value("django.core.mail.backends.smtp.EmailBackend")
     EMAIL_HOST = values.Value(None)
