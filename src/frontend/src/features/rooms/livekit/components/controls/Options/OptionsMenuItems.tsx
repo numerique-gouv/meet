@@ -2,7 +2,6 @@ import { menuItemRecipe } from '@/primitives/menuItemRecipe'
 import {
   RiAccountBoxLine,
   RiFeedbackLine,
-  RiQuestionLine,
   RiSettings3Line,
 } from '@remixicon/react'
 import { MenuItem, Menu as RACMenu, Section } from 'react-aria-components'
@@ -38,14 +37,6 @@ export const OptionsMenuItems = ({
       </Section>
       <Separator />
       <Section>
-        <MenuItem
-          href="https://tchap.gouv.fr/#/room/!aGImQayAgBLjSBycpm:agent.dinum.tchap.gouv.fr?via=agent.dinum.tchap.gouv.fr"
-          target="_blank"
-          className={menuItemRecipe({ icon: true })}
-        >
-          <RiQuestionLine size={20} />
-          {t('support')}
-        </MenuItem>
         <MenuItem
           href="https://grist.incubateur.net/o/docs/forms/1YrfNP1QSSy8p2gCxMFnSf/4"
           target="_blank"
