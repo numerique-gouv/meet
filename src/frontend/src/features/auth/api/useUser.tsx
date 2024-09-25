@@ -15,7 +15,7 @@ export const useUser = () => {
   const query = useQuery({
     queryKey: [keys.user],
     queryFn: fetchUser,
-    staleTime: 1000 * 60 * 60, // 1 hour
+    staleTime: Infinity,
   })
 
   useEffect(() => {
