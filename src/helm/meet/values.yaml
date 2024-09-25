@@ -273,7 +273,19 @@ posthog:
     className: null
     host: meet.example.com
     path: /
-    pathAssets: /static
+    hosts: [ ]
+    tls:
+      enabled: true
+      additional: [ ]
+
+    customBackends: [ ]
+    annotations: {}
+
+  ingressAssets:
+    enabled: false
+    className: null
+    host: meet.example.com
+    path: /static
     hosts: [ ]
     tls:
       enabled: true
