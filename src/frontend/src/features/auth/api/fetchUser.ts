@@ -20,7 +20,7 @@ export const fetchUser = (): Promise<ApiUser | false> => {
           // make sure to not resolve the promise while trying to silent login
           // so that consumers of fetchUser don't think the work already ended
           if (canAttemptSilentLogin()) {
-            attemptSilentLogin(3600)
+            attemptSilentLogin(300)
           } else {
             resolve(false)
           }
