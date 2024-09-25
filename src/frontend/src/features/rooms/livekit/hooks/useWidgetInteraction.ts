@@ -19,7 +19,7 @@ export const useWidgetInteraction = () => {
   }
 
   const toggleChat = () => {
-    if (isParticipantsOpen) {
+    if (isParticipantsOpen || isEffectsOpen) {
       layoutStore.sidePanel = null
     }
     if (dispatch) {
