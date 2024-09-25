@@ -1,4 +1,4 @@
-{{- if .Values.posthog.ingress.enabled -}}
+{{- if .Values.posthog.ingressAssets.enabled -}}
 {{- $envVars := include "meet.common.env" (list . .Values.posthog) -}}
 {{- $fullName := include "meet.posthog.fullname" . -}}
 {{- $component := "posthog" -}}
