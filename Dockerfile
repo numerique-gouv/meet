@@ -4,7 +4,7 @@
 FROM python:3.10-slim-bullseye as base
 
 # Upgrade pip to its latest release to speed up dependencies installation
-RUN python -m pip install --upgrade pip
+RUN python -m pip install --upgrade pip setuptools
 
 # Upgrade system packages to install security updates
 RUN apt-get update && \
