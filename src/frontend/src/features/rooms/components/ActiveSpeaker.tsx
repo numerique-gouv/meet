@@ -12,6 +12,19 @@ const StyledContainer = styled('div', {
     justifyContent: 'center',
     gap: '2px',
   },
+  variants: {
+    pushToTalk: {
+      true: {
+        height: '46px',
+        width: '58px',
+        borderLeftRadius: 8,
+        borderRightRadius: 0,
+        backgroundColor: '#dbeafe',
+        border: '1px solid #3b82f6',
+        gap: '3px',
+      },
+    },
+  },
 })
 
 const StyledChild = styled('div', {
@@ -39,13 +52,29 @@ const StyledChild = styled('div', {
         animationName: 'active_speaker_small',
       },
     },
+    pushToTalk: {
+      true: {
+        backgroundColor: 'primary',
+        width: '6px',
+        height: '6px',
+      },
+    },
   },
 })
 
-export const ActiveSpeaker = ({ isSpeaking }: { isSpeaking: boolean }) => {
+export type ActiveSpeakerProps = {
+  isSpeaking: boolean
+  pushToTalk?: boolean
+}
+
+export const ActiveSpeaker = ({
+  isSpeaking,
+  pushToTalk,
+}: ActiveSpeakerProps) => {
   return (
-    <StyledContainer>
+    <StyledContainer pushToTalk={pushToTalk}>
       <StyledChild
+        pushToTalk={pushToTalk}
         active={isSpeaking}
         size="small"
         style={{
@@ -53,12 +82,14 @@ export const ActiveSpeaker = ({ isSpeaking }: { isSpeaking: boolean }) => {
         }}
       />
       <StyledChild
+        pushToTalk={pushToTalk}
         active={isSpeaking}
         style={{
           animationDelay: '100ms',
         }}
       />
       <StyledChild
+        pushToTalk={pushToTalk}
         active={isSpeaking}
         size="small"
         style={{
