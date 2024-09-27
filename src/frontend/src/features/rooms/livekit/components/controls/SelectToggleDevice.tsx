@@ -32,6 +32,7 @@ export type SelectToggleDeviceConfig = {
   iconOn: RemixiconComponentType
   iconOff: RemixiconComponentType
   shortcut?: Shortcut
+  longPress?: Shortcut
 }
 
 type SelectToggleDeviceConfigMap = {
@@ -46,6 +47,9 @@ const selectToggleDeviceConfig: SelectToggleDeviceConfigMap = {
     shortcut: {
       key: 'd',
       ctrlKey: true,
+    },
+    longPress: {
+      key: 'Space',
     },
   },
   [Track.Source.Camera]: {
