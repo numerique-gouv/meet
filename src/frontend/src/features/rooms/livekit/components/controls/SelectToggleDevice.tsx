@@ -15,7 +15,14 @@ import {
   RiVideoOnLine,
 } from '@remixicon/react'
 import { Track } from 'livekit-client'
-import React from 'react'
+
+import { useEffect, useMemo } from 'react'
+
+import { keyboardShortcutsStore } from '@/stores/keyboardShortcuts'
+import {
+  formatShortcutKey,
+  appendShortcutLabel,
+} from '@/features/shortcuts/utils'
 
 export type ToggleSource = Exclude<
   Track.Source,
@@ -28,6 +35,7 @@ type SelectToggleDeviceConfig = {
   kind: MediaDeviceKind
   iconOn: RemixiconComponentType
   iconOff: RemixiconComponentType
+  shortcutKey?: string
 }
 
 type SelectToggleDeviceConfigMap = {
@@ -39,17 +47,20 @@ const selectToggleDeviceConfig: SelectToggleDeviceConfigMap = {
     kind: 'audioinput',
     iconOn: RiMicLine,
     iconOff: RiMicOffLine,
+    shortcutKey: 'd',
   },
   [Track.Source.Camera]: {
     kind: 'videoinput',
     iconOn: RiVideoOnLine,
     iconOff: RiVideoOffLine,
+    shortcutKey: 'e',
   },
 }
 
 type SelectToggleDeviceProps<T extends ToggleSource> =
   UseTrackToggleProps<T> & {
     onActiveDeviceChange: (deviceId: string) => void
+    shortcutKey?: string
     source: SelectToggleSource
   }
 
@@ -63,19 +74,32 @@ export const SelectToggleDevice = <T extends ToggleSource>({
   }
 
   const { t } = useTranslation('rooms', { keyPrefix: 'join' })
-  const { buttonProps, enabled } = useTrackToggle(props)
+  const { toggle, enabled } = useTrackToggle(props)
 
   const { kind, iconOn, iconOff } = config
 
   const { devices, activeDeviceId, setActiveMediaDevice } =
     useMediaDeviceSelect({ kind })
 
-  const toggleLabel = t(enabled ? 'disable' : 'enable', {
-    keyPrefix: `join.${kind}`,
-  })
+  const toggleLabel = useMemo(() => {
+    const label = t(enabled ? 'disable' : 'enable', {
+      keyPrefix: `join.${kind}`,
+    })
+    return config.shortcutKey
+      ? appendShortcutLabel(label, config.shortcutKey, true)
+      : label
+  }, [enabled, kind, config.shortcutKey, t])
 
   const selectLabel = t('choose', { keyPrefix: `join.${kind}` })
   const Icon = enabled ? iconOn : iconOff
+
+  useEffect(() => {
+    if (!config.shortcutKey) return
+    keyboardShortcutsStore.shortcuts.set(
+      formatShortcutKey(config.shortcutKey, true),
+      () => toggle()
+    )
+  }, [toggle, config.shortcutKey])
 
   return (
     <HStack gap={0}>
@@ -83,11 +107,7 @@ export const SelectToggleDevice = <T extends ToggleSource>({
         isSelected={enabled}
         variant={enabled ? undefined : 'danger'}
         toggledStyles={false}
-        onPress={(e) =>
-          buttonProps.onClick?.(
-            e as unknown as React.MouseEvent<HTMLButtonElement>
-          )
-        }
+        onPress={() => toggle()}
         aria-label={toggleLabel}
         tooltip={toggleLabel}
         groupPosition="left"

@@ -25,3 +25,7 @@ export function isSafari(): boolean {
 export function isLocal(p: Participant) {
   return p instanceof LocalParticipant
 }
+
+export function isMacintosh() {
+  return navigator.platform.indexOf('Mac') > -1
+}

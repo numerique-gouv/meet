@@ -8,6 +8,7 @@ import { ErrorScreen } from '@/components/ErrorScreen'
 import { useUser, UserAware } from '@/features/auth'
 import { Conference } from '../components/Conference'
 import { Join } from '../components/Join'
+import { useKeyboardShortcuts } from '@/features/shortcuts/useKeyboardShortcuts'
 
 export const Room = () => {
   const { isLoggedIn } = useUser()
@@ -18,6 +19,8 @@ export const Room = () => {
   const initialRoomData = history.state?.initialRoomData
   const mode = isLoggedIn && history.state?.create ? 'create' : 'join'
   const skipJoinScreen = isLoggedIn && mode === 'create'
+
+  useKeyboardShortcuts()
 
   const clearRouterState = () => {
     if (window?.history?.state) {
