@@ -36,7 +36,7 @@ const StyledChild = styled('div', {
     },
     size: {
       small: {
-        animationName: 'active_speake_small',
+        animationName: 'active_speaker_small',
       },
     },
   },
