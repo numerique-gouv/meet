@@ -69,7 +69,7 @@ const config: Config = {
         '50%': { height: '6px' },
         '100%': { height: '16px' },
       },
-      active_speake_small: {
+      active_speaker_small: {
         '0%': { height: '4px' },
         '25%': { height: '6px' },
         '50%': { height: '4px' },
