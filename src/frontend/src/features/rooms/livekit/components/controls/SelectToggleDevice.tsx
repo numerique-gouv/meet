@@ -23,6 +23,7 @@ import {
   formatShortcutKey,
   appendShortcutLabel,
 } from '@/features/shortcuts/utils'
+import { Shortcut } from '@/features/shortcuts/types'
 
 export type ToggleSource = Exclude<
   Track.Source,
@@ -35,7 +36,7 @@ type SelectToggleDeviceConfig = {
   kind: MediaDeviceKind
   iconOn: RemixiconComponentType
   iconOff: RemixiconComponentType
-  shortcutKey?: string
+  shortcut?: Shortcut
 }
 
 type SelectToggleDeviceConfigMap = {
@@ -47,20 +48,25 @@ const selectToggleDeviceConfig: SelectToggleDeviceConfigMap = {
     kind: 'audioinput',
     iconOn: RiMicLine,
     iconOff: RiMicOffLine,
-    shortcutKey: 'd',
+    shortcut: {
+      key: 'd',
+      ctrlKey: true,
+    },
   },
   [Track.Source.Camera]: {
     kind: 'videoinput',
     iconOn: RiVideoOnLine,
     iconOff: RiVideoOffLine,
-    shortcutKey: 'e',
+    shortcut: {
+      key: 'e',
+      ctrlKey: true,
+    },
   },
 }
 
 type SelectToggleDeviceProps<T extends ToggleSource> =
   UseTrackToggleProps<T> & {
     onActiveDeviceChange: (deviceId: string) => void
-    shortcutKey?: string
     source: SelectToggleSource
   }
 
@@ -85,21 +91,19 @@ export const SelectToggleDevice = <T extends ToggleSource>({
     const label = t(enabled ? 'disable' : 'enable', {
       keyPrefix: `join.${kind}`,
     })
-    return config.shortcutKey
-      ? appendShortcutLabel(label, config.shortcutKey, true)
-      : label
-  }, [enabled, kind, config.shortcutKey, t])
+    return config.shortcut ? appendShortcutLabel(label, config.shortcut) : label
+  }, [enabled, kind, config.shortcut, t])
 
   const selectLabel = t('choose', { keyPrefix: `join.${kind}` })
   const Icon = enabled ? iconOn : iconOff
 
   useEffect(() => {
-    if (!config.shortcutKey) return
+    if (!config.shortcut) return
     keyboardShortcutsStore.shortcuts.set(
-      formatShortcutKey(config.shortcutKey, true),
+      formatShortcutKey(config.shortcut),
       () => toggle()
     )
-  }, [toggle, config.shortcutKey])
+  }, [toggle, config.shortcut])
 
   return (
     <HStack gap={0}>
