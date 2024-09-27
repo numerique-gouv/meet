@@ -16,14 +16,11 @@ import {
 } from '@remixicon/react'
 import { Track } from 'livekit-client'
 
-import { useEffect, useMemo } from 'react'
+import { useMemo } from 'react'
 
-import { keyboardShortcutsStore } from '@/stores/keyboardShortcuts'
-import {
-  formatShortcutKey,
-  appendShortcutLabel,
-} from '@/features/shortcuts/utils'
+import { appendShortcutLabel } from '@/features/shortcuts/utils'
 import { Shortcut } from '@/features/shortcuts/types'
+import { useRegisterKeyboardShortcut } from '@/features/shortcuts/useRegisterKeyboardShortcut'
 
 export type ToggleSource = Exclude<
   Track.Source,
@@ -87,6 +84,8 @@ export const SelectToggleDevice = <T extends ToggleSource>({
   const { devices, activeDeviceId, setActiveMediaDevice } =
     useMediaDeviceSelect({ kind })
 
+  useRegisterKeyboardShortcut({ shortcut: config.shortcut, handler: toggle })
+
   const toggleLabel = useMemo(() => {
     const label = t(enabled ? 'disable' : 'enable', {
       keyPrefix: `join.${kind}`,
@@ -96,14 +95,6 @@ export const SelectToggleDevice = <T extends ToggleSource>({
 
   const selectLabel = t('choose', { keyPrefix: `join.${kind}` })
   const Icon = enabled ? iconOn : iconOff
-
-  useEffect(() => {
-    if (!config.shortcut) return
-    keyboardShortcutsStore.shortcuts.set(
-      formatShortcutKey(config.shortcut),
-      () => toggle()
-    )
-  }, [toggle, config.shortcut])
 
   return (
     <HStack gap={0}>
