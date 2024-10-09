@@ -44,7 +44,7 @@ export const ParticipantsList = () => {
 
   // TODO - extract inline styling in a centralized styling file, and avoid magic numbers
   return (
-    <>
+    <Div overflowY="scroll">
       <H
         lvl={2}
         className={css({
@@ -78,6 +78,6 @@ export const ParticipantsList = () => {
           <ParticipantListItem participant={participant} />
         )}
       />
-    </>
+    </Div>
   )
 }

@@ -94,7 +94,7 @@ export const Effects = () => {
   }
 
   return (
-    <VStack padding="0 1.5rem">
+    <VStack padding="0 1.5rem" overflowY="scroll">
       {localCameraTrack && isCameraEnabled ? (
         <video
           ref={videoRef}
