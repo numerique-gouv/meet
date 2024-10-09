@@ -2,20 +2,25 @@ import { useLayoutContext } from '@livekit/components-react'
 import { useSnapshot } from 'valtio'
 import { layoutStore } from '@/stores/layout'
 
+export enum SidePanel {
+  PARTICIPANTS = 'participants',
+  EFFECTS = 'effects',
+}
+
 export const useWidgetInteraction = () => {
   const { dispatch, state } = useLayoutContext().widget
 
   const layoutSnap = useSnapshot(layoutStore)
   const sidePanel = layoutSnap.sidePanel
 
-  const isParticipantsOpen = sidePanel == 'participants'
-  const isEffectsOpen = sidePanel == 'effects'
+  const isParticipantsOpen = sidePanel == SidePanel.PARTICIPANTS
+  const isEffectsOpen = sidePanel == SidePanel.EFFECTS
 
   const toggleParticipants = () => {
     if (dispatch && state?.showChat) {
       dispatch({ msg: 'toggle_chat' })
     }
-    layoutStore.sidePanel = isParticipantsOpen ? null : 'participants'
+    layoutStore.sidePanel = isParticipantsOpen ? null : SidePanel.PARTICIPANTS
   }
 
   const toggleChat = () => {
@@ -31,7 +36,7 @@ export const useWidgetInteraction = () => {
     if (dispatch && state?.showChat) {
       dispatch({ msg: 'toggle_chat' })
     }
-    layoutStore.sidePanel = isEffectsOpen ? null : 'effects'
+    layoutStore.sidePanel = isEffectsOpen ? null : SidePanel.EFFECTS
   }
 
   return {

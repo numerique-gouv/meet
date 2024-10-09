@@ -1,8 +1,9 @@
 import { proxy } from 'valtio'
+import { SidePanel } from '@/features/rooms/livekit/hooks/useWidgetInteraction'
 
 type State = {
   showHeader: boolean
-  sidePanel: 'participants' | 'effects' | null
+  sidePanel: SidePanel | null
 }
 
 export const layoutStore = proxy<State>({
