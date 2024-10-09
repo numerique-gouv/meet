@@ -58,7 +58,7 @@ const StyledSidePanel = ({
         <RiCloseLine />
       </Button>
     </Div>
-    <Div overflowY="scroll">{children}</Div>
+    {children}
   </Box>
 )
 
