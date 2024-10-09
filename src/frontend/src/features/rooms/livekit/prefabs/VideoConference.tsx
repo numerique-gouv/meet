@@ -24,7 +24,6 @@ import {
   usePinnedTracks,
   useTracks,
   useCreateLayoutContext,
-  Chat,
 } from '@livekit/components-react'
 
 import { ControlBar } from './ControlBar'
@@ -36,6 +35,7 @@ import { FocusLayout } from '../components/FocusLayout'
 import { ParticipantTile } from '../components/ParticipantTile'
 import { SidePanel } from '../components/SidePanel'
 import { MainNotificationToast } from '@/features/notifications/MainNotificationToast'
+import { Chat } from '@/features/rooms/livekit/prefabs/Chat'
 
 const LayoutWrapper = styled(
   'div',
