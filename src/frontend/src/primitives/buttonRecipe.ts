@@ -117,6 +117,9 @@ export const buttonRecipe = cva({
         '&[data-pressed]': {
           borderColor: 'currentcolor',
         },
+        '&[data-disabled]': {
+          color: 'gray.300',
+        },
       },
     },
     fullWidth: {
