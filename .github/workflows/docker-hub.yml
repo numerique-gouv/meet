@@ -57,7 +57,7 @@ jobs:
           docker-image-name: 'docker.io/lasuite/meet-backend:${{ github.sha }}'
       -
         name: Build and push
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         with:
           context: .
           target: backend-production
@@ -107,7 +107,7 @@ jobs:
           docker-image-name: 'docker.io/lasuite/meet-frontend:${{ github.sha }}'
       -
         name: Build and push
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         with:
           context: .
           file: ./src/frontend/Dockerfile
