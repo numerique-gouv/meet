@@ -47,7 +47,16 @@
     "stopScreenShare": "",
     "chat": {
       "open": "",
-      "closed": ""
+      "closed": "",
+      "input": {
+        "textArea": {
+          "label": "",
+          "placeholder": ""
+        },
+        "button": {
+          "label": ""
+        }
+      }
     },
     "hand": {
       "raise": "",

@@ -45,7 +45,16 @@
     "camera": "Camera",
     "chat": {
       "open": "Close the chat",
-      "closed": "Open the chat"
+      "closed": "Open the chat",
+      "input": {
+        "textArea": {
+          "label": "Enter a message",
+          "placeholder": "Enter a message"
+        },
+        "button": {
+          "label": "Send message"
+        }
+      }
     },
     "hand": {
       "raise": "Raise hand",
