@@ -30,21 +30,11 @@ export interface ChatProps
  * ```
  * @public
  */
-export function Chat({
-  messageFormatter,
-  messageDecoder,
-  messageEncoder,
-  channelTopic,
-  ...props
-}: ChatProps) {
+export function Chat({ messageFormatter, ...props }: ChatProps) {
   const inputRef = React.useRef<HTMLTextAreaElement>(null)
   const ulRef = React.useRef<HTMLUListElement>(null)
 
-  const chatOptions: ChatOptions = React.useMemo(() => {
-    return { messageDecoder, messageEncoder, channelTopic }
-  }, [messageDecoder, messageEncoder, channelTopic])
-
-  const { send, chatMessages, isSending } = useChat(chatOptions)
+  const { send, chatMessages, isSending } = useChat()
 
   const layoutContext = useMaybeLayoutContext()
   const lastReadMsgAt = React.useRef<ChatMessage['timestamp']>(0)
