@@ -1,6 +1,4 @@
 import type {
-  MessageDecoder,
-  MessageEncoder,
   TrackReferenceOrPlaceholder,
   WidgetState,
 } from '@livekit/components-core'
@@ -55,8 +53,6 @@ const LayoutWrapper = styled(
 export interface VideoConferenceProps
   extends React.HTMLAttributes<HTMLDivElement> {
   chatMessageFormatter?: MessageFormatter
-  chatMessageEncoder?: MessageEncoder
-  chatMessageDecoder?: MessageDecoder
   /** @alpha */
   SettingsComponent?: React.ComponentType
 }
@@ -81,8 +77,6 @@ export interface VideoConferenceProps
  */
 export function VideoConference({
   chatMessageFormatter,
-  chatMessageDecoder,
-  chatMessageEncoder,
   ...props
 }: VideoConferenceProps) {
   const [widgetState, setWidgetState] = React.useState<WidgetState>({
@@ -220,8 +214,6 @@ export function VideoConference({
               <Chat
                 style={{ display: widgetState.showChat ? 'grid' : 'none' }}
                 messageFormatter={chatMessageFormatter}
-                messageEncoder={chatMessageEncoder}
-                messageDecoder={chatMessageDecoder}
               />
               {sidePanel && <SidePanel />}
             </LayoutWrapper>
