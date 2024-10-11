@@ -9,6 +9,7 @@ import {
   useMaybeLayoutContext,
 } from '@livekit/components-react'
 import { cloneSingleChild } from '@/features/rooms/utils/cloneSingleChild'
+import { ChatInput } from '@/features/rooms/livekit/components/chat/Input'
 
 /** @public */
 export interface ChatProps
@@ -36,7 +37,7 @@ export function Chat({
   channelTopic,
   ...props
 }: ChatProps) {
-  const inputRef = React.useRef<HTMLInputElement>(null)
+  const inputRef = React.useRef<HTMLTextAreaElement>(null)
   const ulRef = React.useRef<HTMLUListElement>(null)
 
   const chatOptions: ChatOptions = React.useMemo(() => {
@@ -48,15 +49,10 @@ export function Chat({
   const layoutContext = useMaybeLayoutContext()
   const lastReadMsgAt = React.useRef<ChatMessage['timestamp']>(0)
 
-  async function handleSubmit(event: React.FormEvent) {
-    event.preventDefault()
-    if (inputRef.current && inputRef.current.value.trim() !== '') {
-      if (send) {
-        await send(inputRef.current.value)
-        inputRef.current.value = ''
-        inputRef.current.focus()
-      }
-    }
+  async function handleSubmit(text: string) {
+    if (!send || !text) return
+    await send(text)
+    inputRef?.current?.focus()
   }
 
   React.useEffect(() => {
@@ -127,25 +123,11 @@ export function Chat({
               )
             })}
       </ul>
-      <form className="lk-chat-form" onSubmit={handleSubmit}>
-        <input
-          className="lk-form-control lk-chat-form-input"
-          disabled={isSending}
-          ref={inputRef}
-          type="text"
-          placeholder="Enter a message..."
-          onInput={(ev) => ev.stopPropagation()}
-          onKeyDown={(ev) => ev.stopPropagation()}
-          onKeyUp={(ev) => ev.stopPropagation()}
-        />
-        <button
-          type="submit"
-          className="lk-button lk-chat-form-button"
-          disabled={isSending}
-        >
-          Send
-        </button>
-      </form>
+      <ChatInput
+        inputRef={inputRef}
+        onSubmit={(e) => handleSubmit(e)}
+        isSending={isSending}
+      />
     </div>
   )
 }
