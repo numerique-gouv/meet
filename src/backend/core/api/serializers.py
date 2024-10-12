@@ -87,6 +87,15 @@ class NestedResourceAccessSerializer(ResourceAccessSerializer):
     user = UserSerializer(read_only=True)
 
 
+class ListRoomSerializer(serializers.ModelSerializer):
+    """Serialize Room model for a list API endpoint."""
+
+    class Meta:
+        model = models.Room
+        fields = ["id", "name", "slug", "is_public"]
+        read_only_fields = ["id", "slug"]
+
+
 class RoomSerializer(serializers.ModelSerializer):
     """Serialize Room model for the API."""
 
@@ -106,10 +115,10 @@ class RoomSerializer(serializers.ModelSerializer):
         if not request:
             return output
 
-        role = instance.get_role(request.user)
-        is_admin = models.RoleChoices.check_administrator_role(role)
+        roles = instance.get_roles(request.user)
+        is_administrator = models.RoleChoices.is_administrator(roles)
 
-        if role is not None:
+        if roles:
             access_serializer = NestedResourceAccessSerializer(
                 instance.accesses.select_related("resource", "user").all(),
                 context=self.context,
@@ -117,10 +126,10 @@ class RoomSerializer(serializers.ModelSerializer):
             )
             output["accesses"] = access_serializer.data
 
-        if not is_admin:
+        if not is_administrator:
             del output["configuration"]
 
-        if role is not None or instance.is_public:
+        if roles or instance.is_public:
             slug = f"{instance.id!s}".replace("-", "")
 
             username = request.query_params.get("username", None)
@@ -133,6 +142,17 @@ class RoomSerializer(serializers.ModelSerializer):
                 ),
             }
 
-        output["is_administrable"] = is_admin
+        output["is_administrable"] = is_administrator
 
         return output
+
+
+class RecordingSerializer(serializers.ModelSerializer):
+    """Serialize Recording for the API."""
+
+    room = ListRoomSerializer(read_only=True)
+
+    class Meta:
+        model = models.Recording
+        fields = ["id", "room", "created_at", "updated_at", "stopped_at", "status"]
+        read_only_fields = fields

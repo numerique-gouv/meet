@@ -28,14 +28,16 @@ class RoleChoices(models.TextChoices):
     OWNER = "owner", _("Owner")
 
     @classmethod
-    def check_administrator_role(cls, role):
+    def is_administrator(cls, roles):
         """Check if a role is administrator."""
-        return role in [cls.ADMIN, cls.OWNER]
+        return bool(set(roles).intersection({RoleChoices.OWNER, RoleChoices.ADMIN}))
 
-    @classmethod
-    def check_owner_role(cls, role):
-        """Check if a role is owner."""
-        return role == cls.OWNER
+
+class RecordingStatusChoices(models.TextChoices):
+    """Recording status choices."""
+
+    RECORDING = "recording", _("Recording")
+    DONE = "done", _("Done")
 
 
 class BaseModel(models.Model):
@@ -193,34 +195,44 @@ class Resource(BaseModel):
         except AttributeError:
             return f"Resource {self.id!s}"
 
-    def get_role(self, user):
-        """
-        Determine the role of a given user in this resource.
-        """
-        if not user or not user.is_authenticated:
-            return None
-
-        role = None
-        for access in self.accesses.filter(user=user):
-            if access.role == RoleChoices.OWNER:
-                return RoleChoices.OWNER
-            if access.role == RoleChoices.ADMIN:
-                role = RoleChoices.ADMIN
-            if access.role == RoleChoices.MEMBER and role != RoleChoices.ADMIN:
-                role = RoleChoices.MEMBER
-        return role
-
     def is_administrator(self, user):
         """
         Check if a user is administrator of the resource.
-
         Users carrying the "owner" role are considered as administrators a fortiori.
         """
-        return RoleChoices.check_administrator_role(self.get_role(user))
+        return RoleChoices.is_administrator(self.get_roles(user))
 
     def is_owner(self, user):
         """Check if a user is owner of the resource."""
-        return RoleChoices.check_owner_role(self.get_role(user))
+        return RoleChoices.OWNER in self.get_roles(user)
+
+    def get_roles(self, user):
+        """Compute the roles a user has in a room."""
+        if not user or not user.is_authenticated:
+            return self.accesses.none()
+
+        try:
+            roles = self.user_roles or []
+        except AttributeError:
+            try:
+                roles = self.accesses.filter(user=user).values_list("role", flat=True)
+            except (models.ObjectDoesNotExist, IndexError):
+                roles = self.accesses.none()
+        return roles
+
+    def get_abilities(self, user):
+        """Compute and return abilities for a given user on the room."""
+        roles = self.get_roles(user)
+        is_owner_or_admin = RoleChoices.is_administrator(roles)
+
+        return {
+            "start_recording": is_owner_or_admin,
+            "destroy": RoleChoices.OWNER in roles,
+            "manage_accesses": is_owner_or_admin,
+            "partial_update": is_owner_or_admin,
+            "retrieve": True,
+            "update": is_owner_or_admin,
+        }
 
 
 class ResourceAccess(BaseModel):
@@ -325,3 +337,47 @@ class Room(Resource):
         else:
             raise ValidationError({"name": f'Room name "{self.name:s}" is reserved.'})
         super().clean_fields(exclude=exclude)
+
+    def start_recording(self):
+        """Create a new related recording object to which Livekit will be able to save a file."""
+        return Recording.objects.create(room=self)
+
+
+class Recording(BaseModel):
+    """Model for recording meetings that take place in a room"""
+
+    room = models.ForeignKey(
+        Room, on_delete=models.CASCADE, related_name="meetings", verbose_name=_("Room")
+    )
+    stopped_at = models.DateTimeField(verbose_name=_("End Time"), null=True, blank=True)
+    status = models.CharField(
+        choices=RecordingStatusChoices, default=RecordingStatusChoices.RECORDING
+    )
+
+    class Meta:
+        db_table = "meet_recording"
+        ordering = ("created_at",)
+        verbose_name = _("Recording")
+        verbose_name_plural = _("Recordings")
+
+    def __str__(self):
+        return _(
+            f"Recording in {self.room.name:s} on {self.created_at:%B %d, %Y at %I:%M %p}"
+        )
+
+    @property
+    def key(self):
+        """Return the path where the recording file will be stored in object storage."""
+        return f"recordings/{self.pk!s}/file.mp4/"
+
+    def get_abilities(self, user):
+        """Compute and return abilities for a given user on the recording."""
+        roles = self.room.get_roles(user)
+
+        return {
+            "destroy": RoleChoices.OWNER in roles,
+            "partial_update": False,
+            "retrieve": False,
+            "stop": True,
+            "update": False,
+        }

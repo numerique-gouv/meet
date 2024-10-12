@@ -16,6 +16,30 @@ services:
     ports:
       - "1081:1080"
 
+  minio:
+    user: ${DOCKER_USER:-1000}
+    image: minio/minio
+    environment:
+      - MINIO_ROOT_USER=meet
+      - MINIO_ROOT_PASSWORD=password
+    ports:
+      - '9000:9000'
+      - '9001:9001'
+    entrypoint: ""
+    command: minio server --console-address :9001 /data
+    volumes:
+      - ./data/media:/data
+
+  createbuckets:
+    image: minio/mc
+    depends_on:
+      - minio
+    entrypoint: >
+      sh -c "
+      /usr/bin/mc alias set meet http://minio:9000 meet password && \
+      /usr/bin/mc mb meet/meet-media-storage && \
+      exit 0;"
+
   app-dev:
     build:
       context: .
@@ -40,6 +64,7 @@ services:
         - mailcatcher
         - redis
         - nginx
+        - createbuckets
         - livekit
   
   celery-dev:
@@ -73,6 +98,7 @@ services:
     depends_on:
       - postgresql
       - redis
+      - createbuckets
       - livekit
 
   celery:

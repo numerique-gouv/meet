@@ -286,7 +286,7 @@ def test_api_rooms_retrieve_members(mock_token, django_assert_num_queries):
     client = APIClient()
     client.force_login(user)
 
-    with django_assert_num_queries(4):
+    with django_assert_num_queries(5):
         response = client.get(
             f"/api/v1.0/rooms/{room.id!s}/",
         )
@@ -360,7 +360,7 @@ def test_api_rooms_retrieve_administrators(mock_token, django_assert_num_queries
     client = APIClient()
     client.force_login(user)
 
-    with django_assert_num_queries(4):
+    with django_assert_num_queries(5):
         response = client.get(
             f"/api/v1.0/rooms/{room.id!s}/",
         )

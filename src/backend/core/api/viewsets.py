@@ -1,17 +1,22 @@
 """API endpoints"""
 
+import re
 import uuid
+from urllib.parse import urlparse
 
 from django.conf import settings
 from django.db.models import Q
 from django.http import Http404
 from django.shortcuts import get_object_or_404
+from django.utils import timezone
 from django.utils.text import slugify
 
 from rest_framework import (
     decorators,
+    exceptions,
     mixins,
     pagination,
+    status,
     viewsets,
 )
 from rest_framework import (
@@ -24,6 +29,13 @@ from ..analytics import analytics
 from . import permissions, serializers
 
 # pylint: disable=too-many-ancestors
+
+UUID_REGEX = (
+    r"[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}"
+)
+RECORDING_URL_PATTERN = re.compile(
+    f"{settings.MEDIA_URL:s}recordings/({UUID_REGEX:s})/file.mp4/$"
+)
 
 
 class NestedGenericViewSet(viewsets.GenericViewSet):
@@ -162,7 +174,7 @@ class RoomViewSet(
     API endpoints to access and perform actions on rooms.
     """
 
-    permission_classes = [permissions.RoomPermissions]
+    permission_classes = [permissions.AccessPermission]
     queryset = models.Room.objects.all()
     serializer_class = serializers.RoomSerializer
 
@@ -186,16 +198,10 @@ class RoomViewSet(
         """
         try:
             instance = self.get_object()
-
-            analytics.track(
-                user=self.request.user,
-                event="Get Room",
-                properties={"slug": instance.slug},
-            )
-
         except Http404:
             if not settings.ALLOW_UNREGISTERED_ROOMS:
                 raise
+
             slug = slugify(self.kwargs["pk"])
             username = request.query_params.get("username", None)
             data = {
@@ -209,6 +215,11 @@ class RoomViewSet(
                 },
             }
         else:
+            analytics.track(
+                user=self.request.user,
+                event="Get Room",
+                properties={"slug": instance.slug},
+            )
             data = self.get_serializer(instance).data
 
         return drf_response.Response(data)
@@ -247,6 +258,17 @@ class RoomViewSet(
             properties={
                 "slug": room.slug,
             },
+        )
+
+    @decorators.action(detail=True, methods=["post"], url_path="start-recording")
+    def start_recording(self, request, *args, **kwargs):
+        """This view is used to start a recording for a room."""
+        # Check permission first
+        room = self.get_object()
+        recording = room.start_recording()
+
+        return drf_response.Response(
+            {"recording": recording.id}, status=status.HTTP_201_CREATED
         )
 
 
@@ -293,3 +315,96 @@ class ResourceAccessViewSet(
     permission_classes = [permissions.ResourceAccessPermission]
     queryset = models.ResourceAccess.objects.all()
     serializer_class = serializers.ResourceAccessSerializer
+
+
+class RecordingViewSet(
+    mixins.DestroyModelMixin,
+    mixins.ListModelMixin,
+    viewsets.GenericViewSet,
+):
+    """
+    API endpoints to access and perform actions on recordings.
+    """
+
+    pagination_class = Pagination
+    permission_classes = [permissions.AccessPermission]
+    queryset = models.Recording.objects.all()
+    serializer_class = serializers.RecordingSerializer
+
+    def list(self, request, *args, **kwargs):
+        """Restrict resources returned by the list endpoint to a user's room."""
+        queryset = self.filter_queryset(self.get_queryset())
+        user = self.request.user
+        if user.is_authenticated:
+            queryset = queryset.filter(room__accesses__user=user)
+        else:
+            queryset = queryset.none()
+
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+
+        serializer = self.get_serializer(queryset, many=True)
+        return drf_response.Response(serializer.data)
+
+    @decorators.action(detail=True, methods=["post"], url_path="stop")
+    def stop(self, request, *args, **kwargs):
+        """
+        This view is used to stop a recording. It can be called anonymously as the
+        recording ID will not have been communicated anywhere at the time of recording.
+        """
+        recording = self.get_object()
+
+        if recording.stopped_at is not None:
+            raise exceptions.PermissionDenied()
+
+        recording.stopped_at = timezone.now()
+        recording.save()
+
+        # TODO: Generate summary and send to note taking app
+
+        serializer = self.get_serializer(recording)
+        return drf_response.Response(serializer.data, status=status.HTTP_200_OK)
+
+    @decorators.action(detail=False, methods=["get"], url_path="retrieve-auth")
+    def retrieve_auth(self, request, *args, **kwargs):
+        """
+        This view is used by an Nginx subrequest to control access to a recording file.
+
+        The original url is passed by nginx in the "HTTP_X_ORIGINAL_URL" header.
+        See corresponding ingress configuration in Helm chart and read about the
+        nginx.ingress.kubernetes.io/auth-url annotation to understand how the Nginx ingress
+        is configured to do this.
+
+        Based on the original url and the logged in user, we must decide if we authorize Nginx
+        to let this request go through (by returning a 200 code) or if we block it (by returning
+        a 403 error). Note that we return 403 errors without any further details for security
+        reasons.
+
+        When we let the request go through, we compute authorization headers that will be added to
+        the request going through thanks to the nginx.ingress.kubernetes.io/auth-response-headers
+        annotation. The request will then be proxied to the object storage backend who will
+        respond with the file after checking the signature included in headers.
+        """
+        if not request.user.is_authenticated:
+            raise exceptions.AuthenticationFailed()
+
+        original_url = urlparse(request.META.get("HTTP_X_ORIGINAL_URL"))
+        match = RECORDING_URL_PATTERN.search(original_url.path)
+
+        try:
+            (pk,) = match.groups()
+        except AttributeError as excpt:
+            raise exceptions.PermissionDenied() from excpt
+
+        # Check permission
+        if not models.Recording.objects.filter(
+            pk=pk, room__accesses__user=request.user
+        ).exists():
+            raise exceptions.PermissionDenied()
+
+        # Generate authorization headers and return an authorization to proceed with the request
+        key = models.Recording(pk=pk).key
+        request = utils.generate_s3_authorization_headers(key)
+        return drf_response.Response("authorized", headers=request.headers, status=200)
