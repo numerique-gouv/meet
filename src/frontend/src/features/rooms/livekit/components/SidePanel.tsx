@@ -15,6 +15,7 @@ type StyledSidePanelProps = {
   title: string
   children: ReactNode
   onClose: () => void
+  isClosed: boolean
   closeButtonTooltip: string
 }
 
@@ -22,11 +23,11 @@ const StyledSidePanel = ({
   title,
   children,
   onClose,
+  isClosed,
   closeButtonTooltip,
 }: StyledSidePanelProps) => (
   <Box
     size="sm"
-    minWidth="360px"
     className={css({
       overflow: 'hidden',
       display: 'flex',
@@ -34,7 +35,16 @@ const StyledSidePanel = ({
       margin: '1.5rem 1.5rem 1.5rem 0',
       padding: 0,
       gap: 0,
+      right: 0,
+      top: 0,
+      bottom: '80px',
+      width: '360px',
+      position: 'absolute',
+      transition: '.5s cubic-bezier(.4,0,.2,1) 5ms',
     })}
+    style={{
+      transform: isClosed ? 'translateX(calc(360px + 1.5rem))' : 'none',
+    }}
   >
     <Heading
       slot="title"
@@ -43,11 +53,19 @@ const StyledSidePanel = ({
       style={{
         paddingLeft: '1.5rem',
         paddingTop: '1rem',
+        display: isClosed ? 'none' : undefined,
       }}
     >
       {title}
     </Heading>
-    <Div position="absolute" top="5" right="5">
+    <Div
+      position="absolute"
+      top="5"
+      right="5"
+      style={{
+        display: isClosed ? 'none' : undefined,
+      }}
+    >
       <Button
         invisible
         size="xs"
@@ -62,16 +80,23 @@ const StyledSidePanel = ({
   </Box>
 )
 
+type PanelProps = {
+  isOpen: boolean;
+  children: React.ReactNode;
+};
+
+const Panel = ({ isOpen, children }: PanelProps) => (
+  <div style={{ display: isOpen ? 'block' : 'none' }}>
+    {children}
+  </div>
+)
+
 export const SidePanel = () => {
   const layoutSnap = useSnapshot(layoutStore)
   const sidePanel = layoutSnap.sidePanel
 
   const { isParticipantsOpen, isEffectsOpen } = useWidgetInteraction()
   const { t } = useTranslation('rooms', { keyPrefix: 'sidePanel' })
-
-  if (!sidePanel) {
-    return
-  }
 
   return (
     <StyledSidePanel
@@ -80,9 +105,18 @@ export const SidePanel = () => {
       closeButtonTooltip={t('closeButton', {
         content: t(`content.${sidePanel}`),
       })}
+      isClosed={!sidePanel}
     >
-      {isParticipantsOpen && <ParticipantsList />}
-      {isEffectsOpen && <Effects />}
+      <Panel
+        isOpen={isParticipantsOpen}
+      >
+        <ParticipantsList />
+      </Panel>
+      <Panel
+        isOpen={isEffectsOpen}
+      >
+        <Effects />
+      </Panel>
     </StyledSidePanel>
   )
 }

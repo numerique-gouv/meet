@@ -1,6 +1,5 @@
 import type {
   TrackReferenceOrPlaceholder,
-  WidgetState,
 } from '@livekit/components-core'
 import {
   isEqualTrackRef,
@@ -33,7 +32,6 @@ import { FocusLayout } from '../components/FocusLayout'
 import { ParticipantTile } from '../components/ParticipantTile'
 import { SidePanel } from '../components/SidePanel'
 import { MainNotificationToast } from '@/features/notifications/MainNotificationToast'
-import { Chat } from '@/features/rooms/livekit/prefabs/Chat'
 
 const LayoutWrapper = styled(
   'div',
@@ -42,7 +40,7 @@ const LayoutWrapper = styled(
       position: 'relative',
       display: 'flex',
       width: '100%',
-      height: 'calc(100% - var(--lk-control-bar-height))',
+      height: '100%',
     },
   })
 )
@@ -79,11 +77,6 @@ export function VideoConference({
   chatMessageFormatter,
   ...props
 }: VideoConferenceProps) {
-  const [widgetState, setWidgetState] = React.useState<WidgetState>({
-    showChat: false,
-    unreadMessages: 0,
-    showSettings: false,
-  })
   const lastAutoFocusedScreenShareTrack =
     React.useRef<TrackReferenceOrPlaceholder | null>(null)
 
@@ -94,11 +87,6 @@ export function VideoConference({
     ],
     { updateOnlyOn: [RoomEvent.ActiveSpeakersChanged], onlySubscribed: false }
   )
-
-  const widgetUpdate = (state: WidgetState) => {
-    log.debug('updating widget state', state)
-    setWidgetState(state)
-  }
 
   const layoutContext = useCreateLayoutContext()
 
@@ -167,6 +155,8 @@ export function VideoConference({
   /* eslint-enable react-hooks/exhaustive-deps */
 
   const layoutSnap = useSnapshot(layoutStore)
+
+  // todo - rename this variable
   const sidePanel = layoutSnap.sidePanel
 
   return (
@@ -175,9 +165,17 @@ export function VideoConference({
         <LayoutContextProvider
           value={layoutContext}
           // onPinChange={handleFocusStateChange}
-          onWidgetChange={widgetUpdate}
         >
-          <div className="lk-video-conference-inner">
+          <div
+            // todo - extract these magic values into constant
+            style={{
+              position: 'absolute',
+              inset: sidePanel
+                ? 'var(--lk-grid-gap) calc(358px + 3rem) calc(80px + var(--lk-grid-gap)) 16px'
+                : 'var(--lk-grid-gap) var(--lk-grid-gap) calc(80px + var(--lk-grid-gap))',
+              transition: 'inset .5s cubic-bezier(0.4,0,0.2,1) 5ms',
+            }}
+          >
             <LayoutWrapper>
               <div
                 style={{ display: 'flex', position: 'relative', width: '100%' }}
@@ -187,7 +185,7 @@ export function VideoConference({
                     className="lk-grid-layout-wrapper"
                     style={{ height: 'auto' }}
                   >
-                    <GridLayout tracks={tracks}>
+                    <GridLayout tracks={tracks} style={{ padding: 0 }}>
                       <ParticipantTile />
                     </GridLayout>
                   </div>
@@ -196,7 +194,7 @@ export function VideoConference({
                     className="lk-focus-layout-wrapper"
                     style={{ height: 'auto' }}
                   >
-                    <FocusLayoutContainer>
+                    <FocusLayoutContainer style={{ padding: 0 }}>
                       <CarouselLayout
                         tracks={carouselTracks}
                         style={{
@@ -209,16 +207,12 @@ export function VideoConference({
                     </FocusLayoutContainer>
                   </div>
                 )}
-                <MainNotificationToast />
               </div>
-              <Chat
-                style={{ display: widgetState.showChat ? 'grid' : 'none' }}
-                messageFormatter={chatMessageFormatter}
-              />
-              {sidePanel && <SidePanel />}
             </LayoutWrapper>
-            <ControlBar />
+            <MainNotificationToast />
           </div>
+          <ControlBar />
+          <SidePanel />
         </LayoutContextProvider>
       )}
       <RoomAudioRenderer />
