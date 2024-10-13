@@ -8,7 +8,6 @@ import {
   usePersistentUserChoices,
 } from '@livekit/components-react'
 
-import { mergeProps } from '@/utils/mergeProps.ts'
 import { StartMediaButton } from '../components/controls/StartMediaButton'
 import { useMediaQuery } from '../hooks/useMediaQuery'
 import { OptionsButton } from '../components/controls/Options/OptionsButton'
@@ -18,6 +17,7 @@ import { HandToggle } from '../components/controls/HandToggle'
 import { SelectToggleDevice } from '../components/controls/SelectToggleDevice'
 import { LeaveButton } from '../components/controls/LeaveButton'
 import { ScreenShareToggle } from '../components/controls/ScreenShareToggle'
+import { css } from '@/styled-system/css'
 
 /** @public */
 export type ControlBarControls = {
@@ -63,7 +63,6 @@ export function ControlBar({
   variation,
   saveUserChoices = true,
   onDeviceError,
-  ...props
 }: ControlBarProps) {
   const [isChatOpen, setIsChatOpen] = React.useState(false)
   const layoutContext = useMaybeLayoutContext()
@@ -81,8 +80,6 @@ export function ControlBar({
   variation ??= defaultVariation
 
   const browserSupportsScreenSharing = supportsScreenSharing()
-
-  const htmlProps = mergeProps({ className: 'lk-control-bar' }, props)
 
   const {
     saveAudioInputEnabled,
@@ -104,7 +101,23 @@ export function ControlBar({
   )
 
   return (
-    <div {...htmlProps}>
+    <div
+      className={css({
+        display: 'flex',
+        gap: '.5rem',
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: '.75rem',
+        borderTop: '1px solid var(--lk-border-color)',
+        maxHeight: 'var(--lk-control-bar-height)',
+        height: '80px',
+        position: 'absolute',
+        backgroundColor: '#d1d5db',
+        bottom: 0,
+        left: 0,
+        right: 0,
+      })}
+    >
       <SelectToggleDevice
         source={Track.Source.Microphone}
         onChange={microphoneOnChange}

@@ -105,7 +105,7 @@ export const MainNotificationToast = () => {
   }, [room])
 
   return (
-    <Div position="absolute" bottom={20} right={5} zIndex={1000}>
+    <Div position="absolute" bottom={0} right={5} zIndex={1000}>
       <ToastProvider />
     </Div>
   )
