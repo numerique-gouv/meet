@@ -34,19 +34,19 @@ export const MainNotificationToast = () => {
   }, [room, triggerNotificationSound])
 
   useEffect(() => {
-    const removeJoinNotification = (participant: Participant) => {
-      const existingToast = toastQueue.visibleToasts.find(
-        (toast) =>
-          toast.content.participant === participant &&
-          toast.content.type === NotificationType.Joined
-      )
-      if (existingToast) {
-        toastQueue.close(existingToast.key)
-      }
+    const removeParticipantNotifications = (participant: Participant) => {
+      toastQueue.visibleToasts.forEach((toast) => {
+        if (toast.content.participant === participant) {
+          toastQueue.close(toast.key)
+        }
+      })
     }
-    room.on(RoomEvent.ParticipantDisconnected, removeJoinNotification)
+    room.on(RoomEvent.ParticipantDisconnected, removeParticipantNotifications)
     return () => {
-      room.off(RoomEvent.ParticipantConnected, removeJoinNotification)
+      room.off(
+        RoomEvent.ParticipantDisconnected,
+        removeParticipantNotifications
+      )
     }
   }, [room])
 
