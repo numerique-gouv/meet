@@ -10,6 +10,7 @@ import { ParticipantsList } from './controls/Participants/ParticipantsList'
 import { useWidgetInteraction } from '../hooks/useWidgetInteraction'
 import { ReactNode } from 'react'
 import { Effects } from './Effects'
+import { Chat } from '../prefabs/Chat'
 
 type StyledSidePanelProps = {
   title: string
@@ -81,12 +82,19 @@ const StyledSidePanel = ({
 )
 
 type PanelProps = {
-  isOpen: boolean;
-  children: React.ReactNode;
-};
+  isOpen: boolean
+  children: React.ReactNode
+}
 
 const Panel = ({ isOpen, children }: PanelProps) => (
-  <div style={{ display: isOpen ? 'block' : 'none' }}>
+  <div
+    style={{
+      display: isOpen ? 'inherit' : 'none',
+      flexDirection: 'column',
+      overflow: 'hidden',
+      flexGrow: 1,
+    }}
+  >
     {children}
   </div>
 )
@@ -95,7 +103,8 @@ export const SidePanel = () => {
   const layoutSnap = useSnapshot(layoutStore)
   const sidePanel = layoutSnap.sidePanel
 
-  const { isParticipantsOpen, isEffectsOpen } = useWidgetInteraction()
+  const { isParticipantsOpen, isEffectsOpen, isChatOpen } =
+    useWidgetInteraction()
   const { t } = useTranslation('rooms', { keyPrefix: 'sidePanel' })
 
   return (
@@ -107,15 +116,14 @@ export const SidePanel = () => {
       })}
       isClosed={!sidePanel}
     >
-      <Panel
-        isOpen={isParticipantsOpen}
-      >
+      <Panel isOpen={isParticipantsOpen}>
         <ParticipantsList />
       </Panel>
-      <Panel
-        isOpen={isEffectsOpen}
-      >
+      <Panel isOpen={isEffectsOpen}>
         <Effects />
+      </Panel>
+      <Panel isOpen={isChatOpen}>
+        <Chat />
       </Panel>
     </StyledSidePanel>
   )

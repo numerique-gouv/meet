@@ -1,11 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { useTranslation } from 'react-i18next'
-import {
-  formatChatMessageLinks,
-  LiveKitRoom,
-  type LocalUserChoices,
-} from '@livekit/components-react'
+import { LiveKitRoom, type LocalUserChoices } from '@livekit/components-react'
 import { Room, RoomOptions } from 'livekit-client'
 import { keys } from '@/api/queryKeys'
 import { queryClient } from '@/api/queryClient'
@@ -104,7 +100,7 @@ export const Conference = ({
           audio={userConfig.audioEnabled}
           video={userConfig.videoEnabled}
         >
-          <VideoConference chatMessageFormatter={formatChatMessageLinks} />
+          <VideoConference />
           {showInviteDialog && (
             <InviteDialog
               isOpen={showInviteDialog}

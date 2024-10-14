@@ -1,6 +1,4 @@
-import type {
-  TrackReferenceOrPlaceholder,
-} from '@livekit/components-core'
+import type { TrackReferenceOrPlaceholder } from '@livekit/components-core'
 import {
   isEqualTrackRef,
   isTrackReference,
@@ -17,7 +15,6 @@ import {
   GridLayout,
   LayoutContextProvider,
   RoomAudioRenderer,
-  MessageFormatter,
   usePinnedTracks,
   useTracks,
   useCreateLayoutContext,
@@ -50,7 +47,6 @@ const LayoutWrapper = styled(
  */
 export interface VideoConferenceProps
   extends React.HTMLAttributes<HTMLDivElement> {
-  chatMessageFormatter?: MessageFormatter
   /** @alpha */
   SettingsComponent?: React.ComponentType
 }
@@ -73,10 +69,7 @@ export interface VideoConferenceProps
  * ```
  * @public
  */
-export function VideoConference({
-  chatMessageFormatter,
-  ...props
-}: VideoConferenceProps) {
+export function VideoConference({ ...props }: VideoConferenceProps) {
   const lastAutoFocusedScreenShareTrack =
     React.useRef<TrackReferenceOrPlaceholder | null>(null)
 
