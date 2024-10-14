@@ -1,7 +1,7 @@
 import { useSnapshot } from 'valtio'
 import { layoutStore } from '@/stores/layout'
 
-export enum SidePanel {
+export enum PanelId {
   PARTICIPANTS = 'participants',
   EFFECTS = 'effects',
   CHAT = 'chat',
@@ -9,30 +9,33 @@ export enum SidePanel {
 
 export const useSidePanel = () => {
   const layoutSnap = useSnapshot(layoutStore)
-  const sidePanel = layoutSnap.sidePanel
+  const activePanelId = layoutSnap.activePanelId
 
-  const isParticipantsOpen = sidePanel == SidePanel.PARTICIPANTS
-  const isEffectsOpen = sidePanel == SidePanel.EFFECTS
-  const isChatOpen = sidePanel == SidePanel.CHAT
+  const isParticipantsOpen = activePanelId == PanelId.PARTICIPANTS
+  const isEffectsOpen = activePanelId == PanelId.EFFECTS
+  const isChatOpen = activePanelId == PanelId.CHAT
+  const isSidePanelOpen = !!activePanelId
 
   const toggleParticipants = () => {
-    layoutStore.sidePanel = isParticipantsOpen ? null : SidePanel.PARTICIPANTS
+    layoutStore.activePanelId = isParticipantsOpen ? null : PanelId.PARTICIPANTS
   }
 
   const toggleChat = () => {
-    layoutStore.sidePanel = isChatOpen ? null : SidePanel.CHAT
+    layoutStore.activePanelId = isChatOpen ? null : PanelId.CHAT
   }
 
   const toggleEffects = () => {
-    layoutStore.sidePanel = isEffectsOpen ? null : SidePanel.EFFECTS
+    layoutStore.activePanelId = isEffectsOpen ? null : PanelId.EFFECTS
   }
 
   return {
+    activePanelId,
     toggleParticipants,
     toggleChat,
     toggleEffects,
     isChatOpen,
     isParticipantsOpen,
     isEffectsOpen,
+    isSidePanelOpen,
   }
 }

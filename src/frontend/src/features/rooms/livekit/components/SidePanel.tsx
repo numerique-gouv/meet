@@ -1,4 +1,3 @@
-import { useSnapshot } from 'valtio'
 import { layoutStore } from '@/stores/layout'
 import { css } from '@/styled-system/css'
 import { Heading } from 'react-aria-components'
@@ -100,20 +99,23 @@ const Panel = ({ isOpen, children }: PanelProps) => (
 )
 
 export const SidePanel = () => {
-  const layoutSnap = useSnapshot(layoutStore)
-  const sidePanel = layoutSnap.sidePanel
-
-  const { isParticipantsOpen, isEffectsOpen, isChatOpen } = useSidePanel()
+  const {
+    activePanelId,
+    isParticipantsOpen,
+    isEffectsOpen,
+    isChatOpen,
+    isSidePanelOpen,
+  } = useSidePanel()
   const { t } = useTranslation('rooms', { keyPrefix: 'sidePanel' })
 
   return (
     <StyledSidePanel
-      title={t(`heading.${sidePanel}`)}
-      onClose={() => (layoutStore.sidePanel = null)}
+      title={t(`heading.${activePanelId}`)}
+      onClose={() => (layoutStore.activePanelId = null)}
       closeButtonTooltip={t('closeButton', {
-        content: t(`content.${sidePanel}`),
+        content: t(`content.${activePanelId}`),
       })}
-      isClosed={!sidePanel}
+      isClosed={!isSidePanelOpen}
     >
       <Panel isOpen={isParticipantsOpen}>
         <ParticipantsList />
