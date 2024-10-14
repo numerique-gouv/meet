@@ -1,13 +1,17 @@
 import { useTranslation } from 'react-i18next'
 import { RiChat1Line } from '@remixicon/react'
-import { ToggleButton } from '@/primitives'
+import { useSnapshot } from 'valtio'
 import { css } from '@/styled-system/css'
+import { ToggleButton } from '@/primitives'
 import { useWidgetInteraction } from '../../hooks/useWidgetInteraction'
+import { chatStore } from '@/stores/chat'
 
 export const ChatToggle = () => {
   const { t } = useTranslation('rooms', { keyPrefix: 'controls.chat' })
 
-  const { isChatOpen, unreadMessages, toggleChat } = useWidgetInteraction()
+  const chatSnap = useSnapshot(chatStore)
+
+  const { isChatOpen, toggleChat } = useWidgetInteraction()
   const tooltipLabel = isChatOpen ? 'open' : 'closed'
 
   return (
@@ -28,7 +32,7 @@ export const ChatToggle = () => {
       >
         <RiChat1Line />
       </ToggleButton>
-      {!!unreadMessages && (
+      {!!chatSnap.unreadMessages && (
         <div
           className={css({
             position: 'absolute',

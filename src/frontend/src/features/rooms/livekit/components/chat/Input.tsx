@@ -92,7 +92,6 @@ export const ChatInput = ({
         }}
         rows={rows || 1}
         style={{
-          backgroundColor: 'white',
           border: 'none',
           resize: 'none',
           height: 'auto',
@@ -101,6 +100,7 @@ export const ChatInput = ({
           padding: '7px 10px',
           overflowY: 'hidden',
         }}
+        placeholderStyle={'strong'}
         spellCheck={false}
         maxLength={500}
         aria-label={t('textArea.label')}

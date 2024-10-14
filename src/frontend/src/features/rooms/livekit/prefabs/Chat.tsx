@@ -1,42 +1,40 @@
 import type { ChatMessage, ChatOptions } from '@livekit/components-core'
 import * as React from 'react'
 import {
-  ChatCloseIcon,
-  ChatEntry,
-  ChatToggle,
-  MessageFormatter,
+  formatChatMessageLinks,
   useChat,
-  useMaybeLayoutContext,
+  useParticipants,
 } from '@livekit/components-react'
-import { cloneSingleChild } from '@/features/rooms/utils/cloneSingleChild'
-import { ChatInput } from '@/features/rooms/livekit/components/chat/Input'
+import { useTranslation } from 'react-i18next'
+import { useSnapshot } from 'valtio'
+import { chatStore } from '@/stores/chat'
+import { Div, Text } from '@/primitives'
+import { ChatInput } from '../components/chat/Input'
+import { ChatEntry } from '../components/chat/Entry'
+import { useWidgetInteraction } from '../hooks/useWidgetInteraction'
 
-/** @public */
 export interface ChatProps
   extends React.HTMLAttributes<HTMLDivElement>,
-    ChatOptions {
-  messageFormatter?: MessageFormatter
-}
+    ChatOptions {}
 
 /**
  * The Chat component adds a basis chat functionality to the LiveKit room. The messages are distributed to all participants
  * in the room. Only users who are in the room at the time of dispatch will receive the message.
- *
- * @example
- * ```tsx
- * <LiveKitRoom>
- *   <Chat />
- * </LiveKitRoom>
- * ```
- * @public
  */
-export function Chat({ messageFormatter, ...props }: ChatProps) {
+export function Chat({ ...props }: ChatProps) {
+  const { t } = useTranslation('rooms', { keyPrefix: 'chat' })
+
   const inputRef = React.useRef<HTMLTextAreaElement>(null)
   const ulRef = React.useRef<HTMLUListElement>(null)
 
   const { send, chatMessages, isSending } = useChat()
 
-  const layoutContext = useMaybeLayoutContext()
+  const { isChatOpen } = useWidgetInteraction()
+  const chatSnap = useSnapshot(chatStore)
+
+  // Use useParticipants hook to trigger a re-render when the participant list changes.
+  const participants = useParticipants()
+
   const lastReadMsgAt = React.useRef<ChatMessage['timestamp']>(0)
 
   async function handleSubmit(text: string) {
@@ -46,22 +44,21 @@ export function Chat({ messageFormatter, ...props }: ChatProps) {
   }
 
   React.useEffect(() => {
-    if (ulRef) {
+    if (chatMessages.length > 0 && ulRef.current) {
       ulRef.current?.scrollTo({ top: ulRef.current.scrollHeight })
     }
   }, [ulRef, chatMessages])
 
   React.useEffect(() => {
-    if (!layoutContext || chatMessages.length === 0) {
+    if (chatMessages.length === 0) {
       return
     }
-
     if (
-      layoutContext.widget.state?.showChat &&
-      chatMessages.length > 0 &&
+      isChatOpen &&
       lastReadMsgAt.current !== chatMessages[chatMessages.length - 1]?.timestamp
     ) {
       lastReadMsgAt.current = chatMessages[chatMessages.length - 1]?.timestamp
+      chatStore.unreadMessages = 0
       return
     }
 
@@ -69,55 +66,69 @@ export function Chat({ messageFormatter, ...props }: ChatProps) {
       (msg) => !lastReadMsgAt.current || msg.timestamp > lastReadMsgAt.current
     ).length
 
-    const { widget } = layoutContext
     if (
       unreadMessageCount > 0 &&
-      widget.state?.unreadMessages !== unreadMessageCount
+      chatSnap.unreadMessages !== unreadMessageCount
     ) {
-      widget.dispatch?.({ msg: 'unread_msg', count: unreadMessageCount })
+      chatStore.unreadMessages = unreadMessageCount
     }
-  }, [chatMessages, layoutContext, layoutContext?.widget])
+  }, [chatMessages, chatSnap.unreadMessages, isChatOpen])
+
+  const renderedMessages = React.useMemo(() => {
+    return chatMessages.map((msg, idx, allMsg) => {
+      const hideMetadata =
+        idx >= 1 &&
+        msg.timestamp - allMsg[idx - 1].timestamp < 60_000 &&
+        allMsg[idx - 1].from === msg.from
+
+      return (
+        <ChatEntry
+          key={msg.id ?? idx}
+          hideMetadata={hideMetadata}
+          entry={msg}
+          messageFormatter={formatChatMessageLinks}
+        />
+      )
+    })
+    // This ensures that the chat message list is updated to reflect any changes in participant information.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [chatMessages, participants])
 
   return (
-    <div {...props} className="lk-chat">
-      <div className="lk-chat-header">
-        Messages
-        <ChatToggle className="lk-close-button">
-          <ChatCloseIcon />
-        </ChatToggle>
-      </div>
-
-      <ul className="lk-list lk-chat-messages" ref={ulRef}>
-        {props.children
-          ? chatMessages.map((msg, idx) =>
-              cloneSingleChild(props.children, {
-                entry: msg,
-                key: msg.id ?? idx,
-                messageFormatter,
-              })
-            )
-          : chatMessages.map((msg, idx, allMsg) => {
-              const hideName = idx >= 1 && allMsg[idx - 1].from === msg.from
-              // If the time delta between two messages is bigger than 60s show timestamp.
-              const hideTimestamp =
-                idx >= 1 && msg.timestamp - allMsg[idx - 1].timestamp < 60_000
-
-              return (
-                <ChatEntry
-                  key={msg.id ?? idx}
-                  hideName={hideName}
-                  hideTimestamp={hideName === false ? false : hideTimestamp} // If we show the name always show the timestamp as well.
-                  entry={msg}
-                  messageFormatter={messageFormatter}
-                />
-              )
-            })}
-      </ul>
+    <Div
+      display={'flex'}
+      padding={'0 1.5rem'}
+      flexGrow={1}
+      flexDirection={'column'}
+      minHeight={0}
+      {...props}
+    >
+      <Text
+        variant="sm"
+        style={{
+          padding: '0.75rem',
+          backgroundColor: '#f3f4f6',
+          borderRadius: 4,
+          marginBottom: '0.75rem',
+        }}
+      >
+        {t('disclaimer')}
+      </Text>
+      <Div
+        flexGrow={1}
+        flexDirection={'column'}
+        minHeight={0}
+        overflowY="scroll"
+      >
+        <ul className="lk-list lk-chat-messages" ref={ulRef}>
+          {renderedMessages}
+        </ul>
+      </Div>
       <ChatInput
         inputRef={inputRef}
         onSubmit={(e) => handleSubmit(e)}
         isSending={isSending}
       />
-    </div>
+    </Div>
   )
 }

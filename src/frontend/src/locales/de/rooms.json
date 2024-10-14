@@ -97,13 +97,18 @@
   "sidePanel": {
     "heading": {
       "participants": "",
-      "effects": ""
+      "effects": "",
+      "chat": ""
     },
     "content": {
       "participants": "",
-      "effects": ""
+      "effects": "",
+      "chat": ""
     },
     "closeButton": ""
+  },
+  "chat": {
+    "disclaimer": ""
   },
   "participants": {
     "subheading": "",
