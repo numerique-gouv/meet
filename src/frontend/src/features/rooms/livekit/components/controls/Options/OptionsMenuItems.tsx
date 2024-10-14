@@ -1,7 +1,7 @@
 import { menuItemRecipe } from '@/primitives/menuItemRecipe'
 import {
   RiAccountBoxLine,
-  RiFeedbackLine,
+  RiMegaphoneLine,
   RiSettings3Line,
 } from '@remixicon/react'
 import { MenuItem, Menu as RACMenu, Section } from 'react-aria-components'
@@ -42,7 +42,7 @@ export const OptionsMenuItems = ({
           target="_blank"
           className={menuItemRecipe({ icon: true })}
         >
-          <RiFeedbackLine size={20} />
+          <RiMegaphoneLine size={20} />
           {t('feedbacks')}
         </MenuItem>
         <MenuItem
