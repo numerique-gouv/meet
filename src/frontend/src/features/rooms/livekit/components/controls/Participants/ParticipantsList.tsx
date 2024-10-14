@@ -1,5 +1,4 @@
 import { css } from '@/styled-system/css'
-import { allParticipantRoomEvents } from '@livekit/components-core'
 import { useParticipants } from '@livekit/components-react'
 
 import { Div, H } from '@/primitives'
@@ -8,7 +7,6 @@ import { ParticipantListItem } from '../../controls/Participants/ParticipantList
 import { ParticipantsCollapsableList } from '../../controls/Participants/ParticipantsCollapsableList'
 import { HandRaisedListItem } from '../../controls/Participants/HandRaisedListItem'
 import { LowerAllHandsButton } from '../../controls/Participants/LowerAllHandsButton'
-import { RoomEvent } from 'livekit-client'
 
 // TODO: Optimize rendering performance, especially for longer participant lists, even though they are generally short.
 export const ParticipantsList = () => {
@@ -17,12 +15,7 @@ export const ParticipantsList = () => {
   // Preferred using the 'useParticipants' hook rather than the separate remote and local hooks,
   // because the 'useLocalParticipant' hook does not update the participant's information when their
   // metadata/name changes. The LiveKit team has marked this as a TODO item in the code.
-  const participants = useParticipants({
-    updateOnlyOn: [
-      RoomEvent.ParticipantNameChanged,
-      ...allParticipantRoomEvents,
-    ],
-  })
+  const participants = useParticipants()
 
   const sortedRemoteParticipants = participants
     .slice(1)
