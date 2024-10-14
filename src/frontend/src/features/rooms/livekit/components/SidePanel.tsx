@@ -7,7 +7,7 @@ import { Box, Button, Div } from '@/primitives'
 import { RiCloseLine } from '@remixicon/react'
 import { useTranslation } from 'react-i18next'
 import { ParticipantsList } from './controls/Participants/ParticipantsList'
-import { useWidgetInteraction } from '../hooks/useWidgetInteraction'
+import { useSidePanel } from '../hooks/useSidePanel'
 import { ReactNode } from 'react'
 import { Effects } from './Effects'
 import { Chat } from '../prefabs/Chat'
@@ -103,8 +103,7 @@ export const SidePanel = () => {
   const layoutSnap = useSnapshot(layoutStore)
   const sidePanel = layoutSnap.sidePanel
 
-  const { isParticipantsOpen, isEffectsOpen, isChatOpen } =
-    useWidgetInteraction()
+  const { isParticipantsOpen, isEffectsOpen, isChatOpen } = useSidePanel()
   const { t } = useTranslation('rooms', { keyPrefix: 'sidePanel' })
 
   return (

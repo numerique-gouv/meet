@@ -1,5 +1,5 @@
 import { proxy } from 'valtio'
-import { SidePanel } from '@/features/rooms/livekit/hooks/useWidgetInteraction'
+import { SidePanel } from '@/features/rooms/livekit/hooks/useSidePanel'
 
 type State = {
   showHeader: boolean
