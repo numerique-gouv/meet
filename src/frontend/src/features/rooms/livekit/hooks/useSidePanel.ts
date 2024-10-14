@@ -7,7 +7,7 @@ export enum SidePanel {
   CHAT = 'chat',
 }
 
-export const useWidgetInteraction = () => {
+export const useSidePanel = () => {
   const layoutSnap = useSnapshot(layoutStore)
   const sidePanel = layoutSnap.sidePanel
 

@@ -3,15 +3,15 @@ import { RiChat1Line } from '@remixicon/react'
 import { useSnapshot } from 'valtio'
 import { css } from '@/styled-system/css'
 import { ToggleButton } from '@/primitives'
-import { useWidgetInteraction } from '../../hooks/useWidgetInteraction'
 import { chatStore } from '@/stores/chat'
+import { useSidePanel } from '../../hooks/useSidePanel'
 
 export const ChatToggle = () => {
   const { t } = useTranslation('rooms', { keyPrefix: 'controls.chat' })
 
   const chatSnap = useSnapshot(chatStore)
 
-  const { isChatOpen, toggleChat } = useWidgetInteraction()
+  const { isChatOpen, toggleChat } = useSidePanel()
   const tooltipLabel = isChatOpen ? 'open' : 'closed'
 
   return (

@@ -6,7 +6,7 @@ import { HStack } from '@/styled-system/jsx'
 import { Button, Div } from '@/primitives'
 import { useTranslation } from 'react-i18next'
 import { RiCloseLine, RiHand } from '@remixicon/react'
-import { useWidgetInteraction } from '@/features/rooms/livekit/hooks/useWidgetInteraction'
+import { useSidePanel } from '@/features/rooms/livekit/hooks/useSidePanel'
 
 export function ToastRaised({ state, ...props }: ToastProps) {
   const { t } = useTranslation('notifications')
@@ -17,7 +17,7 @@ export function ToastRaised({ state, ...props }: ToastProps) {
     ref
   )
   const participant = props.toast.content.participant
-  const { isParticipantsOpen, toggleParticipants } = useWidgetInteraction()
+  const { isParticipantsOpen, toggleParticipants } = useSidePanel()
 
   return (
     <StyledToastContainer {...toastProps} ref={ref}>

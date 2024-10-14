@@ -11,7 +11,7 @@ import { chatStore } from '@/stores/chat'
 import { Div, Text } from '@/primitives'
 import { ChatInput } from '../components/chat/Input'
 import { ChatEntry } from '../components/chat/Entry'
-import { useWidgetInteraction } from '../hooks/useWidgetInteraction'
+import { useSidePanel } from '../hooks/useSidePanel'
 
 export interface ChatProps
   extends React.HTMLAttributes<HTMLDivElement>,
@@ -29,7 +29,7 @@ export function Chat({ ...props }: ChatProps) {
 
   const { send, chatMessages, isSending } = useChat()
 
-  const { isChatOpen } = useWidgetInteraction()
+  const { isChatOpen } = useSidePanel()
   const chatSnap = useSnapshot(chatStore)
 
   // Use useParticipants hook to trigger a re-render when the participant list changes.

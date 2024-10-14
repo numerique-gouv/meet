@@ -3,7 +3,7 @@ import { RiGroupLine, RiInfinityLine } from '@remixicon/react'
 import { ToggleButton } from '@/primitives'
 import { css } from '@/styled-system/css'
 import { useParticipants } from '@livekit/components-react'
-import { useWidgetInteraction } from '../../../hooks/useWidgetInteraction'
+import { useSidePanel } from '../../../hooks/useSidePanel'
 
 export const ParticipantsToggle = () => {
   const { t } = useTranslation('rooms', { keyPrefix: 'controls.participants' })
@@ -16,7 +16,7 @@ export const ParticipantsToggle = () => {
   const participants = useParticipants()
   const numParticipants = participants?.length
 
-  const { isParticipantsOpen, toggleParticipants } = useWidgetInteraction()
+  const { isParticipantsOpen, toggleParticipants } = useSidePanel()
 
   const tooltipLabel = isParticipantsOpen ? 'open' : 'closed'
 
