@@ -1,12 +1,12 @@
 import { proxy } from 'valtio'
-import { SidePanel } from '@/features/rooms/livekit/hooks/useSidePanel'
+import { PanelId } from '@/features/rooms/livekit/hooks/useSidePanel'
 
 type State = {
   showHeader: boolean
-  sidePanel: SidePanel | null
+  activePanelId: PanelId | null
 }
 
 export const layoutStore = proxy<State>({
   showHeader: false,
-  sidePanel: null,
+  activePanelId: null,
 })

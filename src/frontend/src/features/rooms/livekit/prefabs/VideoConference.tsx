@@ -23,12 +23,11 @@ import {
 import { ControlBar } from './ControlBar'
 import { styled } from '@/styled-system/jsx'
 import { cva } from '@/styled-system/css'
-import { useSnapshot } from 'valtio'
-import { layoutStore } from '@/stores/layout'
+import { MainNotificationToast } from '@/features/notifications/MainNotificationToast'
 import { FocusLayout } from '../components/FocusLayout'
 import { ParticipantTile } from '../components/ParticipantTile'
 import { SidePanel } from '../components/SidePanel'
-import { MainNotificationToast } from '@/features/notifications/MainNotificationToast'
+import { useSidePanel } from '../hooks/useSidePanel'
 
 const LayoutWrapper = styled(
   'div',
@@ -147,10 +146,7 @@ export function VideoConference({ ...props }: VideoConferenceProps) {
   ])
   /* eslint-enable react-hooks/exhaustive-deps */
 
-  const layoutSnap = useSnapshot(layoutStore)
-
-  // todo - rename this variable
-  const sidePanel = layoutSnap.sidePanel
+  const { isSidePanelOpen } = useSidePanel()
 
   return (
     <div className="lk-video-conference" {...props}>
@@ -163,7 +159,7 @@ export function VideoConference({ ...props }: VideoConferenceProps) {
             // todo - extract these magic values into constant
             style={{
               position: 'absolute',
-              inset: sidePanel
+              inset: isSidePanelOpen
                 ? 'var(--lk-grid-gap) calc(358px + 3rem) calc(80px + var(--lk-grid-gap)) 16px'
                 : 'var(--lk-grid-gap) var(--lk-grid-gap) calc(80px + var(--lk-grid-gap))',
               transition: 'inset .5s cubic-bezier(0.4,0,0.2,1) 5ms',
