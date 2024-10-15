@@ -10,6 +10,7 @@ import { Dispatch, SetStateAction } from 'react'
 import { DialogState } from './OptionsButton'
 import { Separator } from '@/primitives/Separator'
 import { useSidePanel } from '../../../hooks/useSidePanel'
+import { RecordingMenuItem } from '@/features/rooms/livekit/components/controls/Options/RecordingMenuItem'
 
 // @todo try refactoring it to use MenuList component
 export const OptionsMenuItems = ({
@@ -34,6 +35,7 @@ export const OptionsMenuItems = ({
           <RiAccountBoxLine size={20} />
           {t('effects')}
         </MenuItem>
+        <RecordingMenuItem />
       </Section>
       <Separator />
       <Section>
