@@ -28,6 +28,7 @@ import { FocusLayout } from '../components/FocusLayout'
 import { ParticipantTile } from '../components/ParticipantTile'
 import { SidePanel } from '../components/SidePanel'
 import { useSidePanel } from '../hooks/useSidePanel'
+import { RecordingIndicator } from '@/features/rooms/components/RecordingIndicator.tsx'
 
 const LayoutWrapper = styled(
   'div',
@@ -165,6 +166,7 @@ export function VideoConference({ ...props }: VideoConferenceProps) {
               transition: 'inset .5s cubic-bezier(0.4,0,0.2,1) 5ms',
             }}
           >
+            <RecordingIndicator />
             <LayoutWrapper>
               <div
                 style={{ display: 'flex', position: 'relative', width: '100%' }}
