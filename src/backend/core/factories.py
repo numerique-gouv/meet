@@ -65,3 +65,12 @@ class RoomFactory(ResourceFactory):
 
     name = factory.Faker("catch_phrase")
     slug = factory.LazyAttribute(lambda o: slugify(o.name))
+
+
+class RecordingFactory(factory.django.DjangoModelFactory):
+    """Create fake recordings for testing."""
+
+    class Meta:
+        model = models.Recording
+
+    room = factory.SubFactory(RoomFactory)

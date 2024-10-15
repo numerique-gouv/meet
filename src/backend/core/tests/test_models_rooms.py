@@ -86,81 +86,66 @@ def test_models_rooms_is_public_default():
     assert room.is_public is True
 
 
+def test_models_recordings_key():
+    """Check the room key format."""
+    room = RoomFactory()
+    recording = room.start_recording()
+    assert recording.key == f"recordings/{recording.pk!s}/file.mp4/"
+
+
 # Access rights methods
 
 
 def test_models_rooms_access_rights_none(django_assert_num_queries):
-    """Calling access rights methods with None should return None."""
+    """The `get_roles` method should return an empty list when called with None."""
     room = RoomFactory()
 
     with django_assert_num_queries(0):
-        assert room.get_role(None) is None
-    with django_assert_num_queries(0):
-        assert room.is_administrator(None) is False
-    with django_assert_num_queries(0):
-        assert room.is_owner(None) is False
+        assert not list(room.get_roles(None))
 
 
 def test_models_rooms_access_rights_anonymous(django_assert_num_queries):
-    """Check access rights methods on the room object for an anonymous user."""
+    """The `get_roles` method should return an empty list for an anonymous user."""
     user = AnonymousUser()
     room = RoomFactory()
 
     with django_assert_num_queries(0):
-        assert room.get_role(user) is None
-    with django_assert_num_queries(0):
-        assert room.is_administrator(user) is False
-    with django_assert_num_queries(0):
-        assert room.is_owner(user) is False
+        assert not list(room.get_roles(user))
 
 
 def test_models_rooms_access_rights_authenticated(django_assert_num_queries):
-    """Check access rights methods on the room object for an unrelated user."""
+    """
+    The `get_roles` method should return an empty list for a user not related to the room.
+    """
     user = UserFactory()
     room = RoomFactory()
 
     with django_assert_num_queries(1):
-        assert room.get_role(user) is None
-    with django_assert_num_queries(1):
-        assert room.is_administrator(user) is False
-    with django_assert_num_queries(1):
-        assert room.is_owner(user) is False
+        assert not list(room.get_roles(user))
 
 
 def test_models_rooms_access_rights_member_direct(django_assert_num_queries):
-    """Check access rights methods on the room object for a direct member."""
+    """Check `get_roles` method on the room object for a direct member."""
     user = UserFactory()
     room = RoomFactory(users=[(user, "member")])
 
     with django_assert_num_queries(1):
-        assert room.get_role(user) == "member"
-    with django_assert_num_queries(1):
-        assert room.is_administrator(user) is False
-    with django_assert_num_queries(1):
-        assert room.is_owner(user) is False
+        assert list(room.get_roles(user)) == ["member"]
 
 
 def test_models_rooms_access_rights_administrator_direct(django_assert_num_queries):
-    """The is_administrator method should return True for a direct administrator."""
+    """Check `get_roles` method on the room object for a direct administrator."""
     user = UserFactory()
     room = RoomFactory(users=[(user, "administrator")])
 
     with django_assert_num_queries(1):
-        assert room.get_role(user) == "administrator"
-    with django_assert_num_queries(1):
-        assert room.is_administrator(user) is True
-    with django_assert_num_queries(1):
-        assert room.is_owner(user) is False
+        assert list(room.get_roles(user)) == ["administrator"]
 
 
 def test_models_rooms_access_rights_owner_direct(django_assert_num_queries):
-    """Check access rights methods on the room object for an owner."""
+    """Check `get_roles` method on the room object for an owner."""
     user = UserFactory()
     room = RoomFactory(users=[(user, "owner")])
 
     with django_assert_num_queries(1):
-        assert room.get_role(user) == "owner"
-    with django_assert_num_queries(1):
-        assert room.is_administrator(user) is True
-    with django_assert_num_queries(1):
-        assert room.is_owner(user) is True
+        assert list(room.get_roles(user)) == ["owner"]

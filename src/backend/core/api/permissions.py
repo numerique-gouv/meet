@@ -39,30 +39,30 @@ class IsSelf(IsAuthenticated):
         return obj == request.user
 
 
-class RoomPermissions(permissions.BasePermission):
-    """
-    Permissions applying to the room API endpoint.
-    """
+# class RoomPermissions(permissions.BasePermission):
+#     """
+#     Permissions applying to the room API endpoint.
+#     """
 
-    def has_permission(self, request, view):
-        """Only allow authenticated users for unsafe methods."""
-        if request.method in permissions.SAFE_METHODS:
-            return True
+#     def has_permission(self, request, view):
+#         """Only allow authenticated users for unsafe methods."""
+#         if request.method in permissions.SAFE_METHODS:
+#             return True
 
-        return request.user.is_authenticated
+#         return request.user.is_authenticated
 
-    def has_object_permission(self, request, view, obj):
-        """Object permissions are only given to administrators of the room."""
+#     def has_object_permission(self, request, view, obj):
+#         """Object permissions are only given to administrators of the room."""
 
-        if request.method in permissions.SAFE_METHODS:
-            return True
+#         if request.method in permissions.SAFE_METHODS:
+#             return True
 
-        user = request.user
+#         user = request.user
 
-        if request.method == "DELETE":
-            return obj.is_owner(user)
+#         if request.method == "DELETE":
+#             return obj.is_owner(user)
 
-        return obj.is_administrator(user)
+#         return obj.is_administrator(user)
 
 
 class ResourceAccessPermission(permissions.BasePermission):
@@ -82,4 +82,15 @@ class ResourceAccessPermission(permissions.BasePermission):
         if request.method == "DELETE" and obj.role == RoleChoices.OWNER:
             return obj.user == user
 
-        return obj.resource.is_administrator(user)
+        return RoleChoices.is_administrator(obj.resource.get_roles(user))
+
+
+class AccessPermission(permissions.BasePermission):
+    """Permission class for access objects."""
+
+    def has_permission(self, request, view):
+        return request.user.is_authenticated or view.action != "create"
+
+    def has_object_permission(self, request, view, obj):
+        """Check permission for a given object."""
+        return obj.get_abilities(request.user).get(view.action, False)
