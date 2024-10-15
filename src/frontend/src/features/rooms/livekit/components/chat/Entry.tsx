@@ -31,6 +31,7 @@ export const ChatEntry: (
       className={css({
         display: 'flex',
         flexDirection: 'column',
+        gap: '0.25rem',
       })}
       ref={ref}
       title={time.toLocaleTimeString(locale, { timeStyle: 'full' })}
@@ -42,12 +43,13 @@ export const ChatEntry: (
           className={css({
             display: 'flex',
             gap: '0.5rem',
+            paddingTop: '0.75rem',
           })}
         >
           <Text bold={true} variant="sm">
             {entry.from?.name ?? entry.from?.identity}
           </Text>
-          <Text variant="sm">
+          <Text variant="sm" className={css({ color: 'gray.700' })}>
             {time.toLocaleTimeString(locale, { timeStyle: 'short' })}
           </Text>
         </span>
