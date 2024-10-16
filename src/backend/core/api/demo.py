@@ -9,6 +9,7 @@ from ..models import Room, RoleChoices
 
 import tempfile
 import os
+import smtplib
 
 
 logger = logging.getLogger(__name__)
@@ -106,7 +107,7 @@ def minio_webhook(request):
 
         except Exception as e:
             logger.error("An error occurred while accessing the object: %s", str(e))
-            return Response("Error accessing file", status=500)
+            return Response("")
 
         if settings.OPENAI_ENABLE and temp_file_path:
 
@@ -151,13 +152,28 @@ def minio_webhook(request):
             logger.info("Temporary file %s has been deleted.", temp_file_path)
 
     try:
-        room = Room.objects.get(slug=room_slug)
+        room = Room.objects.get(slug="fqj-hvzr-ieh")
         owner_accesses = room.accesses.filter(role=RoleChoices.OWNER)
         owners = [access.user for access in owner_accesses]
         logger.info("Room %s has owners: %s", room_slug, owners)
 
     except Room.DoesNotExist:
         logger.error("Room with slug %s does not exist", room_slug)
-        owners = []
+        owners = None
+        room = None
+
+    if not owners or not room:
+        logger.error("No owners")
+        return Response("")
+
+    # todo - get link
+
+    try:
+        logger.info("Emailing owners: %s", owners)
+        room.email_summary(owners=owners, link="wip")
+    except smtplib.SMTPException:
+        logger.error("Error while emailing owners")
+        return Response("")
+
 
     return Response("")
