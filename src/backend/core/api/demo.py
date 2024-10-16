@@ -1,6 +1,8 @@
 
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
+from minio import Minio
+from django.conf import settings
 
 MINIO_BUCKET = "livekit-staging-livekit-egress"
 
@@ -24,5 +26,16 @@ def minio_webhook(request):
         return Response("Not interested in this file type")
 
     print('file received', filename)
+
+    client = Minio(
+        settings.MINIO_URL,
+        access_key=settings.MINIO_ACCESS_KEY,
+        secret_key=settings.MINIO_SECRET_KEY,
+    )
+
+    room_id = filename.split("_")[2].split(".")[0]
+
+    print('room_id', room_id, filename)
+
 
     return Response("")

@@ -386,6 +386,16 @@ class Base(Configuration):
         None, environ_name="ANALYTICS_KEY", environ_prefix=None
     )
 
+    # todo - totally wip
+    MINIO_ACCESS_KEY = values.Value(
+        None, environ_name="MINIO_ACCESS_KEY", environ_prefix=None
+    )
+    MINIO_SECRET_KEY = values.Value(
+        None, environ_name="MINIO_SECRET_KEY", environ_prefix=None
+    )
+    MINIO_URL = values.Value(
+        None, environ_name="MINIO_URL", environ_prefix=None
+    )
     # pylint: disable=invalid-name
     @property
     def ENVIRONMENT(self):
