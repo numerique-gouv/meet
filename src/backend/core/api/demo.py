@@ -79,21 +79,30 @@ def minio_webhook(request):
         secret_key=settings.AWS_S3_SECRET_ACCESS_KEY,
     )
 
+    temp_file_path = None
+
     try:
         logger.info('downloading file %s', filename)
-        audio_file_stream = client.get_object(settings.AWS_STORAGE_BUCKET_NAME, object_name=filename)
+        
+        try:
+            audio_file_stream = client.get_object(settings.AWS_STORAGE_BUCKET_NAME, object_name=filename)
 
-        with tempfile.NamedTemporaryFile(delete=False, suffix='.ogg') as temp_audio_file:
-            for data in audio_file_stream.stream(32*1024):
-                temp_audio_file.write(data)
+            with tempfile.NamedTemporaryFile(delete=False, suffix='.ogg') as temp_audio_file:
+                for data in audio_file_stream.stream(32*1024):
+                    temp_audio_file.write(data)
 
-            temp_file_path = temp_audio_file.name
-            logger.info('Temporary file created at %s', temp_file_path)
+                temp_file_path = temp_audio_file.name
+                logger.info('Temporary file created at %s', temp_file_path)
 
-        audio_file_stream.close()
-        audio_file_stream.release_conn()
+            audio_file_stream.close()
+            audio_file_stream.release_conn()
 
-        if settings.OPENAI_ENABLE:
+        except Exception as e:
+            
+            logger.error("An error occurred while accessing the object: %s", str(e))
+            return Response("Error accessing file", status=500)
+
+        if settings.OPENAI_ENABLE and temp_file_path:
 
             openai_client = openai.OpenAI(
                 api_key=settings.OPENAI_API_KEY,
