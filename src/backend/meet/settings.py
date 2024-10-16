@@ -396,6 +396,10 @@ class Base(Configuration):
     MINIO_URL = values.Value(
         None, environ_name="MINIO_URL", environ_prefix=None
     )
+    OPENAI_API_KEY = values.Value(
+        None, environ_name="OPENAI_API_KEY", environ_prefix=None
+    )
+
     # pylint: disable=invalid-name
     @property
     def ENVIRONMENT(self):

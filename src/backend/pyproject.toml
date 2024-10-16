@@ -59,6 +59,7 @@ dependencies = [
     "mozilla-django-oidc==4.0.1",
     "livekit-api==0.7.0",
     "minio==7.2.9",
+    "openai==1.51.2"
 ]
 
 [project.urls]

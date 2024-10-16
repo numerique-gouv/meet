@@ -3,8 +3,13 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from minio import Minio
 from django.conf import settings
+import openai
 
 MINIO_BUCKET = "livekit-staging-livekit-egress"
+
+openai_client = openai.OpenAI(
+    api_key=settings.OPENAI_API_KEY,
+)
 
 # todo - discuss retry policy if the webhook fail
 @api_view(["POST"])

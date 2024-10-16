@@ -109,6 +109,10 @@ backend:
       secretKeyRef:
         name: backend
         key: MINIO_URL
+    OPENAI_API_KEY:
+      secretKeyRef:
+        name: backend
+        key: OPENAI_API_KEY
 
   createsuperuser:
     command:
