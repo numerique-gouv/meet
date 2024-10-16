@@ -65,7 +65,7 @@ def minio_webhook(request):
     object = s3['object']
     filename = object['key']
 
-    if bucket_name != settings.AWS_STORAGE_BUCKET_NAME:
+    if bucket_name != settings.MINIO_BUCKET:
         logger.info('Not interested in this bucket: %s', bucket_name)
         return Response("Not interested in this bucket")
 
@@ -78,12 +78,12 @@ def minio_webhook(request):
 
     try:
         client = Minio(
-            settings.AWS_S3_ENDPOINT_URL,
-            access_key=settings.AWS_S3_ACCESS_KEY_ID,
-            secret_key=settings.AWS_S3_SECRET_ACCESS_KEY,
+            settings.MINIO_URL,
+            access_key=settings.MINIO_ACCESS_KEY,
+            secret_key=settings.MINIO_SECRET_KEY,
         )
     except Exception as e:
-        logger.error("An error occurred while creating the Minio client %s: %s", settings.AWS_S3_ENDPOINT_URL, str(e))
+        logger.error("An error occurred while creating the Minio client %s: %s", settings.MINIO_URL, str(e))
 
     temp_file_path = None
 
@@ -92,7 +92,7 @@ def minio_webhook(request):
         
         try:
 
-            audio_file_stream = client.get_object(settings.AWS_STORAGE_BUCKET_NAME, object_name=filename)
+            audio_file_stream = client.get_object(settings.MINIO_BUCKET, object_name=filename)
 
             with tempfile.NamedTemporaryFile(delete=False, suffix='.ogg') as temp_audio_file:
                 for data in audio_file_stream.stream(32*1024):

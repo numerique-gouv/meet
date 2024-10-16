@@ -119,6 +119,19 @@ backend:
         name: backend
         key: OPENAI_API_KEY
     OPENAI_ENABLE: False
+    MINIO_ACCESS_KEY:
+      secretKeyRef:
+        name: backend
+        key: MINIO_ACCESS_KEY
+    MINIO_SECRET_KEY:
+      secretKeyRef:
+        name: backend
+        key: MINIO_SECRET_KEY
+    MINIO_URL:
+      secretKeyRef:
+        name: backend
+        key: MINIO_URL
+
 
   createsuperuser:
     command:
