@@ -97,18 +97,23 @@ backend:
     ALLOW_UNREGISTERED_ROOMS: False
     FRONTEND_ANALYTICS: "{'id': 'phc_RPYko028Oqtj0c9exLIWwrlrjLxSdxT0ntW0Lam4iom', 'host': 'https://product.visio-staging.beta.numerique.gouv.fr'}"
     FRONTEND_SUPPORT: "{'id': '58ea6697-8eba-4492-bc59-ad6562585041'}"
-    MINIO_ACCESS_KEY:
+    AWS_S3_ENDPOINT_URL:
       secretKeyRef:
-        name: backend
-        key: MINIO_ACCESS_KEY
-    MINIO_SECRET_KEY:
+        name: meet-media-storage.bucket.libre.sh
+        key: url
+    AWS_S3_ACCESS_KEY_ID:
       secretKeyRef:
-        name: backend
-        key: MINIO_SECRET_KEY
-    MINIO_URL:
+        name: meet-media-storage.bucket.libre.sh
+        key: accessKey
+    AWS_S3_SECRET_ACCESS_KEY:
       secretKeyRef:
-        name: backend
-        key: MINIO_URL
+        name: meet-media-storage.bucket.libre.sh
+        key: secretKey
+    AWS_STORAGE_BUCKET_NAME:
+      secretKeyRef:
+        name: meet-media-storage.bucket.libre.sh
+        key: bucket
+    AWS_S3_REGION_NAME: local
     OPENAI_API_KEY:
       secretKeyRef:
         name: backend

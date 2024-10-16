@@ -5,7 +5,6 @@ from minio import Minio
 from django.conf import settings
 import openai
 
-MINIO_BUCKET = "livekit-staging-livekit-egress"
 
 openai_client = openai.OpenAI(
     api_key=settings.OPENAI_API_KEY,
@@ -24,7 +23,7 @@ def minio_webhook(request):
     object = s3['object']
     filename = object['key']
 
-    if bucket_name != MINIO_BUCKET:
+    if bucket_name != settings.AWS_STORAGE_BUCKET_NAME:
         return Response("Not interested in this bucket")
 
     if object['contentType'] != 'audio/ogg':
@@ -33,9 +32,9 @@ def minio_webhook(request):
     print('file received', filename)
 
     client = Minio(
-        settings.MINIO_URL,
-        access_key=settings.MINIO_ACCESS_KEY,
-        secret_key=settings.MINIO_SECRET_KEY,
+        settings.AWS_S3_ENDPOINT_URL,
+        access_key=settings.AWS_S3_ACCESS_KEY_ID,
+        secret_key=settings.AWS_S3_SECRET_ACCESS_KEY,
     )
 
     room_id = filename.split("_")[2].split(".")[0]
