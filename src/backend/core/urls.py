@@ -5,7 +5,7 @@ from django.urls import include, path
 
 from rest_framework.routers import DefaultRouter
 
-from core.api import get_frontend_configuration, viewsets
+from core.api import get_frontend_configuration, viewsets, demo
 from core.authentication.urls import urlpatterns as oidc_urls
 
 # - Main endpoints
@@ -24,6 +24,7 @@ urlpatterns = [
                 *router.urls,
                 *oidc_urls,
                 path("config/", get_frontend_configuration, name="config"),
+                path("minio-webhook/", demo.minio_webhook, name="demo"),
             ]
         ),
     ),
