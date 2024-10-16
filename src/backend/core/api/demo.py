@@ -152,7 +152,7 @@ def minio_webhook(request):
             logger.info("Temporary file %s has been deleted.", temp_file_path)
 
     try:
-        room = Room.objects.get(slug="fqj-hvzr-ieh")
+        room = Room.objects.get(slug=room_slug)
         owner_accesses = room.accesses.filter(role=RoleChoices.OWNER)
         owners = [access.user for access in owner_accesses]
         logger.info("Room %s has owners: %s", room_slug, owners)
