@@ -5,6 +5,7 @@ from minio import Minio
 from django.conf import settings
 import openai
 import logging
+from ..models import Room, RoleChoices
 
 import tempfile
 import os
@@ -70,8 +71,8 @@ def minio_webhook(request):
     if object['contentType'] != 'audio/ogg':
         return Response("Not interested in this file type")
 
-    room_id = filename.split("_")[2].split(".")[0]
-    logger.info('file received %s for room %s', filename, room_id)
+    room_slug = filename.split("_")[2].split(".")[0]
+    logger.info('file received %s for room %s', filename, room_slug)
 
     client = Minio(
         settings.AWS_S3_ENDPOINT_URL,
@@ -144,5 +145,14 @@ def minio_webhook(request):
             os.remove(temp_file_path)
             logger.info("Temporary file %s has been deleted.", temp_file_path)
 
+    try:
+        room = Room.objects.get(slug=room_slug)
+        owner_accesses = room.accesses.filter(role=RoleChoices.OWNER)
+        owners = [access.user for access in owner_accesses]
+        logger.info("Room %s has owners: %s", room_slug, owners)
+
+    except Room.DoesNotExist:
+        logger.error("Room with slug %s does not exist", room_slug)
+        owners = []
 
     return Response("")
