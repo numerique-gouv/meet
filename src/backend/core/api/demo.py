@@ -13,6 +13,42 @@ import os
 logger = logging.getLogger(__name__)
 
 
+def get_prompt(transcript):
+    return f"""
+    You are a helpful assistant.
+
+    Summarize the following meeting transcript into a structured meeting minute format without additional comments about the meeting itself. Organize the summary into multiple parts, omitting the parts that are not applicable:
+
+    1. Summary: Provide a short summary of the entire conversation.
+    2. Subjects Discussed: Provide a concise list of the main topics or issues covered during the meeting.
+    3. Decisions Taken: Clearly and concisely state the decisions or resolutions that were agreed upon in short bullet points. Ensure that all decisions are well-defined and actionable.
+    4. Next Steps: List action items or tasks in brief bullet points, including the responsible persons and deadlines (if mentioned). Make sure no action item is left unassigned or without a deadline if one is mentioned.
+
+    If any part of the transcript is unclear or requires further precision, please notify the user gently, suggesting specific areas that may need additional information. Review everything carefully, make sure not to make unsubstantiated claims.
+
+    Please keep proper markdown title and formatting in the answer.
+
+    {transcript}
+
+    Answer:
+
+    ## Summary
+    [provide a summary of the entire conversation]
+
+    ## Subjects Discussed:
+    - [Concise bullet point summarizing subject]
+    - [Concise bullet point summarizing subject]
+
+    ## Decisions Taken:
+    - [Clear and actionable decision]
+    - [Clear and actionable decision]
+
+    ## Next Steps:
+    - [Action item or task] - [Responsible person, if applicable] - [Deadline, if applicable]
+    - [Action item or task] - [Responsible person, if applicable] - [Deadline, if applicable]
+    """
+
+
 # todo - discuss retry policy if the webhook fail
 @api_view(["POST"])
 def minio_webhook(request):
@@ -72,7 +108,23 @@ def minio_webhook(request):
                     file=audio_file
                 )
 
-            logger.info(transcript)
+            logger.info('Transcript: %s', transcript)
+
+            prompt = get_prompt(transcript)
+
+            logger.info('Prompt: %s', prompt)
+
+            summary_response = openai_client.chat.completions.create(
+                model="gpt-4o",
+                messages=[
+                    {"role": "system", "content": "You are an expert assistant that summarizes meeting transcripts."},
+                    {"role": "user", "content": prompt}
+                ],
+                max_tokens=150 # todo - dig what does this parameter
+            )
+
+            summary = summary_response.choices[0].message.content
+            logger.info('Summary: %s', summary)
 
     except Exception as e:
         logger.error("An error occurred: %s", str(e))
