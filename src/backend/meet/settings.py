@@ -408,6 +408,9 @@ class Base(Configuration):
     OPENAI_API_KEY = values.Value(
         None, environ_name="OPENAI_API_KEY", environ_prefix=None
     )
+    OPENAI_ENABLE = values.BooleanValue(
+        True, environ_name="OPENAI_ENABLE", environ_prefix=None
+    )
 
     # pylint: disable=invalid-name
     @property
@@ -551,6 +554,20 @@ class Production(Base):
     configuration (and derived configurations):
     ALLOWED_HOSTS=["foo.com", "foo.fr"]
     """
+
+    LOGGING = {
+        "version": 1,
+        "disable_existing_loggers": False,
+        "handlers": {
+            "console": {
+                "class": "logging.StreamHandler",
+            },
+        },
+        "root": {
+            "handlers": ["console"],
+            "level": "INFO",
+        },
+    }
 
     # Security
     ALLOWED_HOSTS = [
