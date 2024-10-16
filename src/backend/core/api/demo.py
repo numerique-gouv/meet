@@ -65,10 +65,7 @@ def minio_webhook(request):
     object = s3['object']
     filename = object['key']
 
-    logger.info(settings.AWS_STORAGE_BUCKET_NAME)
-
-    # if bucket_name != settings.AWS_STORAGE_BUCKET_NAME:
-    if bucket_name != 'livekit-staging-livekit-egress':
+    if bucket_name != settings.AWS_STORAGE_BUCKET_NAME:
         logger.info('Not interested in this bucket: %s', bucket_name)
         return Response("Not interested in this bucket")
 
@@ -79,11 +76,14 @@ def minio_webhook(request):
     room_slug = filename.split("_")[2].split(".")[0]
     logger.info('file received %s for room %s', filename, room_slug)
 
-    client = Minio(
-        settings.AWS_S3_ENDPOINT_URL,
-        access_key=settings.AWS_S3_ACCESS_KEY_ID,
-        secret_key=settings.AWS_S3_SECRET_ACCESS_KEY,
-    )
+    try:
+        client = Minio(
+            settings.AWS_S3_ENDPOINT_URL,
+            access_key=settings.AWS_S3_ACCESS_KEY_ID,
+            secret_key=settings.AWS_S3_SECRET_ACCESS_KEY,
+        )
+    except Exception as e:
+        logger.error("An error occurred while creating the Minio client %s: %s", settings.AWS_S3_ENDPOINT_URL, str(e))
 
     temp_file_path = None
 
@@ -91,6 +91,7 @@ def minio_webhook(request):
         logger.info('downloading file %s', filename)
         
         try:
+
             audio_file_stream = client.get_object(settings.AWS_STORAGE_BUCKET_NAME, object_name=filename)
 
             with tempfile.NamedTemporaryFile(delete=False, suffix='.ogg') as temp_audio_file:
@@ -104,7 +105,6 @@ def minio_webhook(request):
             audio_file_stream.release_conn()
 
         except Exception as e:
-            
             logger.error("An error occurred while accessing the object: %s", str(e))
             return Response("Error accessing file", status=500)
 
