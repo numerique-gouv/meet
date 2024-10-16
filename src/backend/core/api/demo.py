@@ -65,10 +65,15 @@ def minio_webhook(request):
     object = s3['object']
     filename = object['key']
 
-    if bucket_name != settings.AWS_STORAGE_BUCKET_NAME:
+    logger.info(settings.AWS_STORAGE_BUCKET_NAME)
+
+    # if bucket_name != settings.AWS_STORAGE_BUCKET_NAME:
+    if bucket_name != 'livekit-staging-livekit-egress':
+        logger.info('Not interested in this bucket: %s', bucket_name)
         return Response("Not interested in this bucket")
 
     if object['contentType'] != 'audio/ogg':
+        logger.info('Not interested in this file type: %s', object['contentType'])
         return Response("Not interested in this file type")
 
     room_slug = filename.split("_")[2].split(".")[0]
