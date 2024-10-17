@@ -33,7 +33,7 @@ def get_prompt(transcript, date):
     Review everything carefully, make sure not to make unsubstantiated claims.
     
     Template:
-    ```
+    
     ### Meeting - [meeting's date YYYY-MM-DD]
     [Brief overview of meeting purpose and outcomes]
     
@@ -47,16 +47,15 @@ def get_prompt(transcript, date):
     
     ### Action Items
     - [ ] Task: [Description] - [Name, if applicable] - [Deadline, if applicable]
-    ```
+    
     Please translate the template to the language of the transcript.
+    Please keep proper markdown title and formatting in the answer.
     
     Transcript:
     {transcript}
     
-    Meeting's date:
-    {date}
+    Meeting's date: {date}
     """
-
 
 
 def get_room_and_owners(slug):
