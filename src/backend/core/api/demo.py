@@ -10,6 +10,7 @@ from ..models import Room, RoleChoices
 import tempfile
 import os
 import smtplib
+import requests
 
 
 logger = logging.getLogger(__name__)
@@ -51,6 +52,128 @@ def get_prompt(transcript):
     """
 
 
+
+def get_room_and_owners(slug):
+    """Wip."""
+
+    try:
+        room = Room.objects.get(slug=slug)
+        owner_accesses = room.accesses.filter(role=RoleChoices.OWNER)
+        owners = [access.user for access in owner_accesses]
+
+        logger.info("Room %s has owners: %s", slug, owners)
+
+    except Room.DoesNotExist:
+        logger.error("Room with slug %s does not exist", slug)
+
+        owners = None
+        room = None
+
+    return room, owners
+
+
+def remove_temporary_file(path):
+    """Wip."""
+
+    if not path or not os.path.exists(path):
+        return
+
+    os.remove(path)
+    logger.info("Temporary file %s has been deleted.", path)
+
+def get_blocknote_content(summary):
+    """Wip."""
+
+    if not settings.BLOCKNOTE_CONVERTER_URL:
+        logger.error("BLOCKNOTE_CONVERTER_URL is not configured")
+        return None
+
+    headers = {
+        "Content-Type": "application/json"
+    }
+
+    data = {
+        "markdown": summary
+    }
+
+    logger.info("Converting summary in BlockNote.js…")
+    response = requests.post(settings.BLOCKNOTE_CONVERTER_URL, headers=headers, json=data)
+
+    if response.status_code != 200:
+        logger.error(f"Failed to convert summary. Status code: {response.status_code}")
+
+    response_data = response.json()
+    if not 'content' in response_data:
+        logger.error(f"Content is missing: %s", response_data)
+
+    content = response_data['content']
+    logger.info("Base64 content:", content)
+
+    return content
+
+
+def get_doc_link(content, email):
+    """Wip."""
+
+    logger.info("Wip create a document with content for %s", email)
+
+    return "link"
+
+def email_owner_with_summary(room, link, owner):
+    """Wip."""
+
+    logger.info("Emailing owner: %s", owner)
+
+    try:
+        room.email_summary(owners=[owner], link=link)
+    except smtplib.SMTPException:
+        logger.error("Error while emailing owner")
+
+def strip_room_slug(filename):
+    """Wip."""
+    return filename.split("_")[2].split(".")[0]
+
+
+def get_minio_client():
+    """Wip."""
+
+    try:
+        return Minio(
+            settings.MINIO_URL,
+            access_key=settings.MINIO_ACCESS_KEY,
+            secret_key=settings.MINIO_SECRET_KEY,
+        )
+    except Exception as e:
+        logger.error("An error occurred while creating the Minio client %s: %s", settings.MINIO_URL, str(e))
+
+
+def download_temporary_file(minio_client, filename):
+    """Wip."""
+
+    temp_file_path = None
+
+    logger.info('downloading file %s', filename)
+
+    try:
+        audio_file_stream = minio_client.get_object(settings.MINIO_BUCKET, object_name=filename)
+
+        with tempfile.NamedTemporaryFile(delete=False, suffix='.ogg') as temp_audio_file:
+
+            for data in audio_file_stream.stream(32 * 1024):
+                temp_audio_file.write(data)
+
+            temp_file_path = temp_audio_file.name
+            logger.info('Temporary file created at %s', temp_file_path)
+
+        audio_file_stream.close()
+        audio_file_stream.release_conn()
+
+    except Exception as e:
+        logger.error("An error occurred while accessing the object: %s", str(e))
+
+    return temp_file_path
+
+
 # todo - discuss retry policy if the webhook fail
 @api_view(["POST"])
 def minio_webhook(request):
@@ -74,58 +197,31 @@ def minio_webhook(request):
         logger.info('Not interested in this file type: %s', object['contentType'])
         return Response("Not interested in this file type")
 
-    room_slug = filename.split("_")[2].split(".")[0]
+    room_slug = strip_room_slug(filename)
     logger.info('file received %s for room %s', filename, room_slug)
 
-    try:
-        client = Minio(
-            settings.MINIO_URL,
-            access_key=settings.MINIO_ACCESS_KEY,
-            secret_key=settings.MINIO_SECRET_KEY,
-        )
-    except Exception as e:
-        logger.error("An error occurred while creating the Minio client %s: %s", settings.MINIO_URL, str(e))
+    minio_client = get_minio_client()
 
     temp_file_path = None
+    summary = None
 
     try:
-        logger.info('downloading file %s', filename)
-        
-        try:
-
-            audio_file_stream = client.get_object(settings.MINIO_BUCKET, object_name=filename)
-
-            with tempfile.NamedTemporaryFile(delete=False, suffix='.ogg') as temp_audio_file:
-                for data in audio_file_stream.stream(32*1024):
-                    temp_audio_file.write(data)
-
-                temp_file_path = temp_audio_file.name
-                logger.info('Temporary file created at %s', temp_file_path)
-
-            audio_file_stream.close()
-            audio_file_stream.release_conn()
-
-        except Exception as e:
-            logger.error("An error occurred while accessing the object: %s", str(e))
-            return Response("")
+        temp_file_path = download_temporary_file(minio_client, filename)
 
         if settings.OPENAI_ENABLE and temp_file_path:
-
+            logger.info('Initiating OpenAI client …')
             openai_client = openai.OpenAI(
                 api_key=settings.OPENAI_API_KEY,
             )
 
             with open(temp_file_path, "rb") as audio_file:
-                
                 logger.info('Querying transcription …')
-
                 transcript = openai_client.audio.transcriptions.create(
                     model="whisper-1",
                     file=audio_file
                 )
 
             logger.info('Transcript: %s', transcript)
-
             prompt = get_prompt(transcript)
 
             logger.info('Prompt: %s', prompt)
@@ -147,33 +243,27 @@ def minio_webhook(request):
         raise
 
     finally:
-        if temp_file_path and os.path.exists(temp_file_path):
-            os.remove(temp_file_path)
-            logger.info("Temporary file %s has been deleted.", temp_file_path)
+        remove_temporary_file(temp_file_path)
 
-    try:
-        room = Room.objects.get(slug=room_slug)
-        owner_accesses = room.accesses.filter(role=RoleChoices.OWNER)
-        owners = [access.user for access in owner_accesses]
-        logger.info("Room %s has owners: %s", room_slug, owners)
+    if not summary:
+        logger.error("Empty summary.")
+        return Response("")
 
-    except Room.DoesNotExist:
-        logger.error("Room with slug %s does not exist", room_slug)
-        owners = None
-        room = None
+    room, owners = get_room_and_owners(room_slug)
 
     if not owners or not room:
-        logger.error("No owners")
+        logger.error("No owners in room %s", room_slug)
         return Response("")
 
-    # todo - get link
+    content = get_blocknote_content(summary)
 
-    try:
-        logger.info("Emailing owners: %s", owners)
-        room.email_summary(owners=owners, link="wip")
-    except smtplib.SMTPException:
-        logger.error("Error while emailing owners")
+    if not content:
+        logger.error("Empty content.")
         return Response("")
 
+    owner = owners[0]
+
+    link = get_doc_link(content, owner.email)
+    email_owner_with_summary(room, link, owner)
 
     return Response("")

@@ -426,6 +426,9 @@ class Base(Configuration):
         'livekit-staging-livekit-egress', environ_name="MINIO_BUCKET", environ_prefix=None
     )
 
+    BLOCKNOTE_CONVERTER_URL = values.Value(
+        'https://converter-blocknote.osc-fr1.scalingo.io/', environ_name="",  environ_prefix=None
+    )
     # pylint: disable=invalid-name
     @property
     def ENVIRONMENT(self):
