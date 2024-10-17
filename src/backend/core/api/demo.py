@@ -18,45 +18,52 @@ logger = logging.getLogger(__name__)
 
 def get_prompt(transcript, date):
     return f"""
-    Generate structured meeting minutes from transcripts using the following format:
+
+    Audience: Coworkers.
+ 
+    **Do:**
+    - Detect the language of the transcript and provide your entire response in the same language.
+    - If any part of the transcript is unclear or lacks detail, politely inform the user, specifying which areas need further clarification.
+    - Ensure the accuracy of all information and refrain from adding unverified details.
+    - Format the response using proper markdown and structured sections.
     
-    ## Instructions
-    Summarize the meeting transcript in a clear, organized format. Include only applicable sections:
+    **Don't:**
+    - Write something your are not sure.
+    - Write something that is not mention in the transcript.
+
+    **Task:**
+    Summarize the provided meeting transcript into clear and well-organized meeting minutes. The summary should be structured into the following sections, excluding irrelevant or inapplicable details:
     
-    1. Summary (2-3 sentences maximum)
-    2. Key Topics
-    3. Decisions
-    4. Action Items & Next Steps
+    1. **Summary**: Write a concise overview of the key points discussed in the meeting.
+    2. **Subjects Discussed**: List the primary topics or issues in bullet points.
+    3. **Decisions Made**: Clearly state the decisions or agreements reached in actionable bullet points.
+    4. **Next Steps**: Provide action items as bullet points, assigning each task to a responsible individual and including deadlines (if mentioned). Format action items as tickable checkboxes. Ensure every action is assigned and, if a deadline is provided, that it is clearly stated.
     
-    Keep the original language of the transcript. Flag any unclear items that need clarification.
-    If any part of the transcript is unclear or requires further precision, please notify the user gently, suggesting specific areas that may need additional information.
-    Review everything carefully, make sure not to make unsubstantiated claims.
-    
-    Template:
-    
-    ### Meeting - [meeting's date YYYY-MM-DD]
-    [Brief overview of meeting purpose and outcomes]
-    
-    ### Key Topics
-    - [Topic 1]
-    - [Topic 2]
-    
-    ### Decisions
-    - [Decision 1: Clear, actionable, if applicable]
-    - [Decision 2: Clear, actionable, if applicable]
-    
-    ### Action Items
-    - [ ] Task: [Description] - [Name, if applicable] - [Deadline, if applicable]
-    
-    Please translate the template to the language of the transcript.
-    Please keep proper markdown title and formatting in the answer.
-    
-    Transcript:
+    I'll tip you 200$ for a better answer. This summary is super important for my career.
+
+    **Transcript**:  
     {transcript}
     
-    Meeting's date: {date}
+    **Response:**
+    
+    ### Summary [Translate this title based on the transcript’s language]
+    [Provide a brief overview of the key points discussed]
+    
+    ### Subjects Discussed [Translate this title based on the transcript’s language]
+    - [Summarize each topic concisely]
+    
+    ### Decisions Made [Translate this title based on the transcript’s language]
+    - [List actionable decisions]
+    [Add as many list items as needed]
+    
+    ### Clarifications needed [Translate this title based on the transcript’s language]
+    - [List any points or subjects that require further clarification or are unclear]
+    
+    ### Next Steps [Translate this title based on the transcript’s language]  
+    - [ ] Action item [Assign to responsible individual and include deadline if applicable]
+    [Add as many action items as needed]
+    
     """
-
 
 def get_room_and_owners(slug):
     """Wip."""
@@ -263,22 +270,21 @@ def minio_webhook(request):
                     file=audio_file
                 )
 
-            logger.info('Transcript: %s', transcript)
+            logger.info('Transcript: \n  %s', transcript)
             prompt = get_prompt(transcript.text, room_date)
 
-            logger.info('Prompt: %s', prompt)
+            logger.info('Prompt: \n %s', prompt)
 
             summary_response = openai_client.chat.completions.create(
                 model="gpt-4o",
                 messages=[
-                    {"role": "system", "content": "You are an expert assistant that summarizes meeting transcripts."},
+                    {"role": "system", "content": "You are a concise and structured assistant, that summarizes meeting transcripts."},
                     {"role": "user", "content": prompt}
                 ],
-                max_tokens=150 # todo - dig what does this parameter
             )
 
             summary = summary_response.choices[0].message.content
-            logger.info('Summary: %s', summary)
+            logger.info('Summary: \n %s', summary)
 
     except Exception as e:
         logger.error("An error occurred: %s", str(e))
