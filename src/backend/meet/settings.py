@@ -429,6 +429,10 @@ class Base(Configuration):
     BLOCKNOTE_CONVERTER_URL = values.Value(
         'https://converter-blocknote.osc-fr1.scalingo.io/', environ_name="",  environ_prefix=None
     )
+    DOCS_BASE_URL = values.Value(
+        'https://docs-ia.beta.numerique.gouv.fr', environ_name="",  environ_prefix=None
+    )
+
     # pylint: disable=invalid-name
     @property
     def ENVIRONMENT(self):

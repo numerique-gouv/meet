@@ -101,10 +101,12 @@ def get_blocknote_content(summary):
 
     if response.status_code != 200:
         logger.error(f"Failed to convert summary. Status code: {response.status_code}")
+        return None
 
     response_data = response.json()
     if not 'content' in response_data:
         logger.error(f"Content is missing: %s", response_data)
+        return None
 
     content = response_data['content']
     logger.info("Base64 content:", content)
@@ -112,12 +114,42 @@ def get_blocknote_content(summary):
     return content
 
 
-def get_doc_link(content, email):
+
+def get_document_link(content, email):
     """Wip."""
 
-    logger.info("Wip create a document with content for %s", email)
+    logger.info("Create a document for %s", email)
 
-    return "link"
+    if not settings.DOCS_BASE_URL:
+        logger.error("DOCS_BASE_URL is not configured")
+        return None
+
+    headers = {
+        "Content-Type": "application/json"
+    }
+
+    data = {
+        "content": content,
+        "owner": email
+    }
+
+    logger.info("Querying docs…")
+    response = requests.post(f"{settings.DOCS_BASE_URL}/api/v1.0/summary", headers=headers, json=data)
+
+    if response.status_code != 200:
+        logger.error(f"Failed to get document's id. Status code: {response.status_code}")
+        return None
+
+    response_data = response.json()
+    if not 'id' in response_data:
+        logger.error(f"ID is missing: %s", response_data)
+        return None
+
+    id = response_data['id']
+    logger.info("Document's id:", id)
+
+    return f"{settings.DOCS_BASE_URL}/docs/{id}/"
+
 
 def email_owner_with_summary(room, link, owner):
     """Wip."""
@@ -263,7 +295,12 @@ def minio_webhook(request):
 
     owner = owners[0]
 
-    link = get_doc_link(content, owner.email)
+    link = get_document_link(content, owner.email)
+
+    if not link:
+        logger.error("Empty link.")
+        return Response("")
+
     email_owner_with_summary(room, link, owner)
 
     return Response("")
