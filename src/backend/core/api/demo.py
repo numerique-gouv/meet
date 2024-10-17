@@ -16,39 +16,45 @@ import requests
 logger = logging.getLogger(__name__)
 
 
-def get_prompt(transcript):
+def get_prompt(transcript, date):
     return f"""
-    You are a helpful assistant.
-
-    Summarize the following meeting transcript into a structured meeting minute format without additional comments about the meeting itself. Organize the summary into multiple parts, omitting the parts that are not applicable:
-
-    1. Summary: Provide a short summary of the entire conversation.
-    2. Subjects Discussed: Provide a concise list of the main topics or issues covered during the meeting.
-    3. Decisions Taken: Clearly and concisely state the decisions or resolutions that were agreed upon in short bullet points. Ensure that all decisions are well-defined and actionable.
-    4. Next Steps: List action items or tasks in brief bullet points, including the responsible persons and deadlines (if mentioned). Make sure no action item is left unassigned or without a deadline if one is mentioned.
-
-    If any part of the transcript is unclear or requires further precision, please notify the user gently, suggesting specific areas that may need additional information. Review everything carefully, make sure not to make unsubstantiated claims.
-
-    Please keep proper markdown title and formatting in the answer.
-
+    Generate structured meeting minutes from transcripts using the following format:
+    
+    ## Instructions
+    Summarize the meeting transcript in a clear, organized format. Include only applicable sections:
+    
+    1. Summary (2-3 sentences maximum)
+    2. Key Topics
+    3. Decisions
+    4. Action Items & Next Steps
+    
+    Keep the original language of the transcript. Flag any unclear items that need clarification.
+    If any part of the transcript is unclear or requires further precision, please notify the user gently, suggesting specific areas that may need additional information.
+    Review everything carefully, make sure not to make unsubstantiated claims.
+    
+    Template:
+    ```
+    ### Meeting - [meeting's date YYYY-MM-DD]
+    [Brief overview of meeting purpose and outcomes]
+    
+    ### Key Topics
+    - [Topic 1]
+    - [Topic 2]
+    
+    ### Decisions
+    - [Decision 1: Clear, actionable, if applicable]
+    - [Decision 2: Clear, actionable, if applicable]
+    
+    ### Action Items
+    - [ ] Task: [Description] - [Name, if applicable] - [Deadline, if applicable]
+    ```
+    Please translate the template to the language of the transcript.
+    
+    Transcript:
     {transcript}
-
-    Answer:
-
-    ## Summary
-    [provide a summary of the entire conversation]
-
-    ## Subjects Discussed:
-    - [Concise bullet point summarizing subject]
-    - [Concise bullet point summarizing subject]
-
-    ## Decisions Taken:
-    - [Clear and actionable decision]
-    - [Clear and actionable decision]
-
-    ## Next Steps:
-    - [Action item or task] - [Responsible person, if applicable] - [Deadline, if applicable]
-    - [Action item or task] - [Responsible person, if applicable] - [Deadline, if applicable]
+    
+    Meeting's date:
+    {date}
     """
 
 
@@ -165,6 +171,10 @@ def strip_room_slug(filename):
     """Wip."""
     return filename.split("_")[2].split(".")[0]
 
+def strip_room_date(filename):
+    """Wip."""
+    return filename.split("_")[1].split(".")[0]
+
 
 def get_minio_client():
     """Wip."""
@@ -230,6 +240,7 @@ def minio_webhook(request):
         return Response("Not interested in this file type")
 
     room_slug = strip_room_slug(filename)
+    room_date = strip_room_date(filename)
     logger.info('file received %s for room %s', filename, room_slug)
 
     minio_client = get_minio_client()
@@ -254,7 +265,7 @@ def minio_webhook(request):
                 )
 
             logger.info('Transcript: %s', transcript)
-            prompt = get_prompt(transcript)
+            prompt = get_prompt(transcript.text, room_date)
 
             logger.info('Prompt: %s', prompt)
 
