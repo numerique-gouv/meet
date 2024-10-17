@@ -109,7 +109,7 @@ def get_blocknote_content(summary):
         return None
 
     content = response_data['content']
-    logger.info("Base64 content:", content)
+    logger.info("Base64 content: %s", content)
 
     return content
 
@@ -146,7 +146,7 @@ def get_document_link(content, email):
         return None
 
     id = response_data['id']
-    logger.info("Document's id:", id)
+    logger.info("Document's id: %s", id)
 
     return f"{settings.DOCS_BASE_URL}/docs/{id}/"
 
