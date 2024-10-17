@@ -134,7 +134,7 @@ def get_document_link(content, email):
     }
 
     logger.info("Querying docs…")
-    response = requests.post(f"{settings.DOCS_BASE_URL}/api/v1.0/summary", headers=headers, json=data)
+    response = requests.post(f"{settings.DOCS_BASE_URL}/api/v1.0/summary/", headers=headers, json=data)
 
     if response.status_code != 200:
         logger.error(f"Failed to get document's id. Status code: {response.status_code}")
