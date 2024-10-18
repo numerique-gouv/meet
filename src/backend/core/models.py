@@ -15,6 +15,8 @@ from django.utils.functional import lazy
 from django.utils.text import capfirst, slugify
 from django.utils.translation import gettext_lazy as _
 
+from django.template.loader import render_to_string
+
 from timezone_field import TimeZoneField
 
 logger = getLogger(__name__)
@@ -325,3 +327,24 @@ class Room(Resource):
         else:
             raise ValidationError({"name": f'Room name "{self.name:s}" is reserved.'})
         super().clean_fields(exclude=exclude)
+
+
+    def email_summary(self, owners, link):
+        """Wip"""
+
+        template_vars = {
+            "title": "Votre résumé est prêt",
+            "link": link,
+            "room": self.slug,
+        }
+        msg_html = render_to_string("mail/html/summary.html", template_vars)
+        msg_plain = render_to_string("mail/text/invitation.txt", template_vars)
+
+        for owner in owners:
+            owner.email_user(
+                subject="Votre résumé est prêt",
+                from_email=settings.EMAIL_FROM,
+                message=msg_plain,
+                html_message=msg_html,
+                fail_silently=False,
+            )

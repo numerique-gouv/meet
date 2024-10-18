@@ -53,6 +53,7 @@ def generate_token(room: str, user, username: Optional[str] = None) -> str:
         room=room,
         room_join=True,
         room_admin=True,
+        room_record=True,
         can_update_own_metadata=True,
         can_publish_sources=[
             "camera",
