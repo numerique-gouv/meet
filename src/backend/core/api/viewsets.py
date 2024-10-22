@@ -13,6 +13,7 @@ from rest_framework import (
     decorators,
     mixins,
     pagination,
+    status,
     viewsets,
 )
 from rest_framework import (
@@ -231,7 +232,8 @@ class RoomViewSet(
         # TODO - persist response
 
         return drf_response.Response(
-            {"message": f"Recording started for room {room.slug}", "egress": response}
+            {"message": f"Recording started for room {room.slug}", "egress": response},
+            status=status.HTTP_201_CREATED,
         )
 
     def list(self, request, *args, **kwargs):
