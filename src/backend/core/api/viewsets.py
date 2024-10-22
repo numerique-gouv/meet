@@ -3,6 +3,7 @@
 import uuid
 
 from django.conf import settings
+from django.core.exceptions import PermissionDenied
 from django.db.models import Q
 from django.http import Http404
 from django.shortcuts import get_object_or_404
@@ -212,6 +213,34 @@ class RoomViewSet(
             data = self.get_serializer(instance).data
 
         return drf_response.Response(data)
+
+    @decorators.action(
+        detail=True,
+        methods=["get"],
+        url_name="start_recording",
+        url_path="start-recording",
+        # permission_classes=[permissions.IsAuthenticated],
+    )
+    def start_room_recording(self, request, pk=None):
+        """Start room recording."""
+        room = self.get_object()
+        if not room.is_administrator(request.user) and not room.is_owner(request.user):
+            raise PermissionDenied(
+                "You must be an admin or owner to start a recording."
+            )
+
+        # TODO - check if no active recording is already present, we limit room recording to one
+
+        try:
+            response = utils.start_egress(room)
+        except (RuntimeError, ValueError) as e:
+            return drf_response.Response({"error": str(e)})
+
+        # TODO - persist response
+
+        return drf_response.Response(
+            {"message": f"Recording started for room {room.slug}", "egress": response}
+        )
 
     def list(self, request, *args, **kwargs):
         """Limit listed rooms to the ones related to the authenticated user."""
