@@ -212,13 +212,7 @@ class RoomViewSet(
 
         return drf_response.Response(data)
 
-    @decorators.action(
-        detail=True,
-        methods=["get"],
-        url_name="start_recording",
-        url_path="start-recording",
-        # permission_classes=[permissions.IsAuthenticated],
-    )
+    @decorators.action(detail=True, methods=["post"], url_path="start-recording")
     def start_room_recording(self, request, pk=None):
         """Start room recording."""
         room = self.get_object()
