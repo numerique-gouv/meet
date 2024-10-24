@@ -18,6 +18,10 @@ import { SelectToggleDevice } from '../components/controls/SelectToggleDevice'
 import { LeaveButton } from '../components/controls/LeaveButton'
 import { ScreenShareToggle } from '../components/controls/ScreenShareToggle'
 import { css } from '@/styled-system/css'
+import { Button } from '@/primitives'
+import { useStartRecording } from '@/features/rooms/api/startRecording.ts'
+import { useStopRecording } from '@/features/rooms/api/stopRecording.ts'
+import { useParams } from 'wouter'
 
 /** @public */
 export type ControlBarControls = {
@@ -66,6 +70,12 @@ export function ControlBar({
 }: ControlBarProps) {
   const [isChatOpen, setIsChatOpen] = React.useState(false)
   const layoutContext = useMaybeLayoutContext()
+
+  const { roomId } = useParams()
+
+  const { mutateAsync: startRecording } = useStartRecording()
+  const { mutateAsync: stopRecording } = useStopRecording()
+
   React.useEffect(() => {
     if (layoutContext?.widget.state?.showChat !== undefined) {
       setIsChatOpen(layoutContext?.widget.state?.showChat)
@@ -151,6 +161,12 @@ export function ControlBar({
       <OptionsButton />
       <LeaveButton />
       <StartMediaButton />
+      <Button onPress={async () => await startRecording({ slug: roomId })}>
+        start
+      </Button>
+      <Button onPress={async () => await stopRecording({ slug: roomId })}>
+        stop
+      </Button>
     </div>
   )
 }

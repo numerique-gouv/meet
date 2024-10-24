@@ -137,6 +137,10 @@ class Base(Configuration):
         environ_name="AWS_STORAGE_BUCKET_NAME",
         environ_prefix=None,
     )
+    AWS_ENABLE_STORAGE_HOOK = values.BooleanValue(
+        False, environ_name="AWS_ENABLE_STORAGE_HOOK", environ_prefix=None
+    )
+
     # Internationalization
     # https://docs.djangoproject.com/en/3.1/topics/i18n/
 
@@ -399,6 +403,12 @@ class Base(Configuration):
     )
     ALLOW_UNREGISTERED_ROOMS = values.BooleanValue(
         True, environ_name="ALLOW_UNREGISTERED_ROOMS", environ_prefix=None
+    )
+    ENABLE_RECORDING = values.BooleanValue(
+        False, environ_name="ENABLE_RECORDING", environ_prefix=None
+    )
+    LOG_RECORDING_OUTPUT = values.BooleanValue(
+        False, environ_name="LOG_RECORDING_OUTPUT", environ_prefix=None
     )
     ANALYTICS_KEY = values.Value(
         None, environ_name="ANALYTICS_KEY", environ_prefix=None
