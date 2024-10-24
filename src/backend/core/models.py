@@ -38,6 +38,40 @@ class RoleChoices(models.TextChoices):
         return role == cls.OWNER
 
 
+class RecordingStatusChoices(models.TextChoices):
+    """Recording status choices."""
+
+    ACTIVE = "active", _("Active")
+    STOPPED = "stopped", _("Stopped")
+    ABORTED = "aborted", _("Aborted")
+    SAVED = "saved", _("Saved")
+    FAILED_TO_START = "failed_to_start", _("Failed to Start")
+    FAILED_TO_STOP = "failed_to_stop", _("Failed to Stop")
+
+    @classmethod
+    def is_final_status(cls, status):
+        """Check if the status is a final status."""
+        return status in [
+            cls.STOPPED,
+            cls.SAVED,
+            cls.ABORTED,
+            cls.FAILED_TO_START,
+            cls.FAILED_TO_STOP,
+        ]
+
+    @classmethod
+    def is_error_status(cls, status):
+        """Check if the status is an error status."""
+        return status in [cls.ABORTED, cls.FAILED_TO_START, cls.FAILED_TO_STOP]
+
+
+class RecordingModeChoices(models.TextChoices):
+    """Recording mode choices."""
+
+    SCREEN_RECORDING = "screen_recording", _("SCREEN_RECORDING")
+    TRANSCRIPT = "transcript", _("TRANSCRIPT")
+
+
 class BaseModel(models.Model):
     """
     Serves as an abstract base model for other models, ensuring that records are validated
@@ -222,6 +256,10 @@ class Resource(BaseModel):
         """Check if a user is owner of the resource."""
         return RoleChoices.check_owner_role(self.get_role(user))
 
+    def is_owner_or_administrator(self, user):
+        """Check if a user is owner or administrator of the resource."""
+        return self.is_owner(user) or self.is_administrator(user)
+
 
 class ResourceAccess(BaseModel):
     """Link table between resources and users"""
@@ -325,3 +363,73 @@ class Room(Resource):
         else:
             raise ValidationError({"name": f'Room name "{self.name:s}" is reserved.'})
         super().clean_fields(exclude=exclude)
+
+
+# todo - discuss how the path could changed, and we could loose track of file
+# todo - discuss the uniqueness of worker_id field
+class Recording(BaseModel):
+    """Model for recordings that take place in a room"""
+
+    creator = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name="recordings",
+        verbose_name=_("Creator"),
+    )
+    room = models.ForeignKey(
+        Room,
+        on_delete=models.CASCADE,
+        related_name="recordings",
+        verbose_name=_("Room"),
+    )
+    status = models.CharField(
+        max_length=20,
+        choices=RecordingStatusChoices.choices,
+        default=RecordingStatusChoices.ACTIVE,
+    )
+    mode = models.CharField(
+        max_length=20,
+        choices=RecordingModeChoices.choices,
+        default=RecordingModeChoices.SCREEN_RECORDING,
+        verbose_name=_("Recording mode"),
+        help_text=_("Defines the type of recording being performed."),
+    )
+    worker_id = models.CharField(
+        max_length=255,
+        null=True,
+        blank=True,
+        verbose_name=_("Worker ID"),
+        help_text=_(
+            "Enter an identifier for the worker recording. This ID is retained even when"
+            "the worker stops, allowing for easy tracking and management of recorded data."
+        ),
+    )
+
+    class Meta:
+        db_table = "meet_recording"
+        ordering = ("-created_at",)
+        verbose_name = _("Recording")
+        verbose_name_plural = _("Recordings")
+        constraints = [
+            models.UniqueConstraint(
+                fields=["room"],
+                condition=models.Q(status=RecordingStatusChoices.ACTIVE),
+                name="unique_active_recording_per_room",
+            )
+        ]
+
+    def __str__(self):
+        return str(self.id)
+
+    def get_abilities(self, user):
+        """Compute and return abilities for a given user on the recording."""
+        is_creator = user == self.creator
+        is_final_status = RecordingStatusChoices.is_final_status(self.status)
+
+        return {
+            "destroy": is_creator and is_final_status,
+            "partial_update": False,
+            "retrieve": is_creator,
+            "stop": is_creator and not is_final_status,
+            "update": False,
+        }

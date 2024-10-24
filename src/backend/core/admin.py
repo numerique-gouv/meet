@@ -77,3 +77,24 @@ class RoomAdmin(admin.ModelAdmin):
     """Room admin interface declaration."""
 
     inlines = (ResourceAccessInline,)
+
+
+@admin.register(models.Recording)
+class RecordingAdmin(admin.ModelAdmin):
+    """Recording admin interface declaration."""
+
+    list_display = ("id", "status", "room", "creator", "created_at", "worker_id")
+    readonly_fields = (
+        "id",
+        "created_at",
+        "updated_at",
+        "worker_id",
+        "room",
+        "creator",
+        "mode",
+    )
+
+    fieldsets = (
+        (None, {"fields": ("status", "room", "creator", "worker_id", "mode")}),
+        ("Timestamps", {"fields": ("created_at", "updated_at")}),
+    )
