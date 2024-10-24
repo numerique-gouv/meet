@@ -3,7 +3,6 @@ Utils functions used in the core app
 """
 
 # ruff: noqa:S311
-# pylint: disable=no-member
 
 import hashlib
 import json
@@ -13,11 +12,7 @@ from uuid import uuid4
 
 from django.conf import settings
 
-import aiohttp
-from asgiref.sync import async_to_sync
-from livekit.api import AccessToken, TwirpError, VideoGrants
-from livekit.api.egress_service import EgressService
-from livekit.protocol import egress as proto_egress
+from livekit.api import AccessToken, VideoGrants
 
 
 def generate_color(identity: str) -> str:
@@ -86,44 +81,3 @@ def generate_token(room: str, user, username: Optional[str] = None) -> str:
     )
 
     return token.to_jwt()
-
-
-@async_to_sync
-async def start_egress(room):
-    """Start room recording using LiveKit's Egress service."""
-
-    if not room or not room.id:
-        raise ValueError("Invalid room object")
-
-    # FIXME - Temporary, liveKit removes dashes in room's name
-    room_name = str(room.id).replace("-", "")
-
-    try:
-        async with aiohttp.ClientSession() as session:
-            egress_service = EgressService(
-                session=session, **settings.LIVEKIT_CONFIGURATION
-            )
-
-            # TODO - discuss whether we organize recordings in subfolder
-            response = await egress_service.start_room_composite_egress(
-                start=proto_egress.RoomCompositeEgressRequest(
-                    room_name=room_name,
-                    file_outputs=[
-                        proto_egress.EncodedFileOutput(
-                            file_type=proto_egress.EncodedFileType.MP4,
-                            filepath="{room_name}{time}.mp4",
-                        )
-                    ],
-                )
-            )
-
-            return {
-                "egress_id": response.egress_id,
-                "filename": response.file.filename,
-            }
-
-    except TwirpError as e:
-        # TODO - log error
-        raise RuntimeError(
-            "An error occurred while starting the room recording."
-        ) from e
