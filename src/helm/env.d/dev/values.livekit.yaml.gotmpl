@@ -4,13 +4,20 @@ terminationGracePeriodSeconds: 18000
 livekit:
   log_level: debug
   rtc:
-    use_external_ip: true
+    use_external_ip: false
     port_range_start: 50000
     port_range_end: 60000
     tcp_port: 7881
   redis:
-    address:
+    address: redis-master:6379
+    password: pass
   keys:
+  turn:
+    enabled: true
+    udp_port: 443
+    domain: livekit.127.0.0.1.nip.io
+    loadBalancerAnnotations: {}
+
 
 loadBalancer:
   type: nginx
