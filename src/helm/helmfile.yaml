@@ -100,3 +100,12 @@ releases:
       - env.d/{{ .Environment.Name }}/values.livekit.yaml.gotmpl
     secrets:
       - env.d/{{ .Environment.Name }}/secrets.enc.yaml
+
+  - name: livekit-egress
+    installed: {{ eq .Environment.Name "dev" | toYaml }}
+    namespace: {{ .Namespace }}
+    chart: livekit/egress
+    values:
+      - env.d/{{ .Environment.Name }}/values.egress.yaml.gotmpl
+    secrets:
+      - env.d/{{ .Environment.Name }}/secrets.enc.yaml
