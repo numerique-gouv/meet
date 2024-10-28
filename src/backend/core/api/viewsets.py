@@ -240,10 +240,7 @@ class RoomViewSet(
     def start_room_recording(self, request, pk=None):  # pylint: disable=unused-argument
         """Start room recording."""
         if not settings.ENABLE_RECORDING:
-            return drf_response.Response(
-                {"error": "Recording is disabled."},
-                status=drf_status.HTTP_403_FORBIDDEN,
-            )
+            raise PermissionDenied({"error": "Recording is disabled."})
 
         room = self.get_object()
         if not room.is_owner_or_administrator(request.user):
@@ -283,10 +280,7 @@ class RoomViewSet(
     def stop_room_recording(self, request, pk=None):  # pylint: disable=unused-argument
         """Stop room recording."""
         if not settings.ENABLE_RECORDING:
-            return drf_response.Response(
-                {"error": "Recording is disabled."},
-                status=drf_status.HTTP_403_FORBIDDEN,
-            )
+            raise PermissionDenied({"error": "Recording is disabled."})
 
         room = self.get_object()
         if not room.is_owner_or_administrator(request.user):
@@ -404,10 +398,7 @@ class RecordingViewSet(viewsets.GenericViewSet, mixins.ListModelMixin):
     def on_save(self, request, pk=None):  # pylint: disable=unused-argument
         """Handle incoming storage hook events for recordings."""
         if not settings.AWS_ENABLE_STORAGE_HOOK:
-            return drf_response.Response(
-                {"error": "Storage hook is disabled."},
-                status=drf_status.HTTP_403_FORBIDDEN,
-            )
+            raise PermissionDenied({"error": "Storage hook is disabled."})
         try:
             self.storage.on_save(request.data)
         except IgnoreNotificationError:
