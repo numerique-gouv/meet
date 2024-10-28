@@ -15,6 +15,7 @@ router.register("rooms", viewsets.RoomViewSet, basename="rooms")
 router.register(
     "resource-accesses", viewsets.ResourceAccessViewSet, basename="resource_accesses"
 )
+router.register("recording", viewsets.RecordingViewSet, basename="recordings")
 
 urlpatterns = [
     path(
