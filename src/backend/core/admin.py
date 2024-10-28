@@ -83,7 +83,8 @@ class RoomAdmin(admin.ModelAdmin):
 class RecordingAdmin(admin.ModelAdmin):
     """Recording admin interface declaration."""
 
-    list_display = ("id", "status", "room", "creator", "created_at", "worker_id")
+    list_display = ("id", "status", "room", "created_at", "worker_id")
+    list_select_related = ("creator",)
     readonly_fields = (
         "id",
         "created_at",
