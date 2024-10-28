@@ -135,7 +135,7 @@ class StorageHandler:
             raise IgnoreNotificationError("Invalid file type received.") from e
 
         try:
-            recording = Recording.objects.get(recording_id)
+            recording = Recording.objects.get(id=recording_id)
         except Recording.DoesNotExist as e:
             logger.exception("Recording with ID %s not found.", recording_id)
             raise RecordingNotFound(
@@ -157,7 +157,7 @@ class MinioParser(AbstractHookParser):
 
     # Todo - discuss if it should be an instance attribute
     FILENAME_PATTERN = re.compile(
-        r"(?P<recording_id>[0-9a-fA-F\-]{36})\.(?P<file_type>[a-zA-Z0-9]+)"
+        r"(?P<parent_folder>(?:[^%]+%2F)*)?(?P<recording_id>[0-9a-fA-F\-]{36})\.(?P<file_type>[a-zA-Z0-9]+)"
     )
 
     def __init__(self, bucket_name):
@@ -196,19 +196,19 @@ class MinioParser(AbstractHookParser):
             record = data["Records"][0]
             s3 = record["s3"]
             bucket_name = s3["bucket"]["name"]
-            filename = s3["object"]["key"]
+            filepath = s3["object"]["key"]
             filetype = s3["object"]["contentType"]
         except KeyError as e:
             raise InvalidRequestDataError(f"Missing required field: {e}") from e
         except IndexError as e:
             raise InvalidRequestDataError(f"Unexpected data structure: {e}") from e
 
-        if not filename or not filetype or not bucket_name:
+        if not filepath or not filetype or not bucket_name:
             raise InvalidRequestDataError(
-                "Missing essential data fields: filename, filetype, or bucket name"
+                "Missing essential data fields: filepath, filetype, or bucket name"
             )
 
-        return bucket_name, filename, filetype
+        return bucket_name, filepath, filetype
 
     def extract_recording_id(self, data):
         """Extract and validate the recording ID from the event's filename.
@@ -238,7 +238,7 @@ class MinioParser(AbstractHookParser):
             )
 
         # FIXME - bulky, not extensible
-        if not "ogg" in filetype and not "mp4" in filetype:
+        if filetype not in {"audio/ogg", "video/mp4"}:
             raise InvalidFileTypeError(
                 f"Invalid file type, expected 'ogg' or 'mp4', got '{filetype}'"
             )
