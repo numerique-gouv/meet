@@ -271,13 +271,8 @@ class RoomViewSet(
                 status=drf_status.HTTP_200_OK,
             )
 
-        try:
-            self.session_manager.start_recording(recording)
-        except RecordingStartError:
-            return drf_response.Response(
-                {"message": f"Failed to start recording for room {room.slug}."},
-                status=drf_status.HTTP_500_INTERNAL_SERVER_ERROR,
-            )
+        # May raise exception
+        self.session_manager.start_recording(recording)
 
         return drf_response.Response(
             {"message": f"Recording started for room {room.slug}"},
@@ -307,13 +302,8 @@ class RoomViewSet(
                 status=drf_status.HTTP_404_NOT_FOUND,
             )
 
-        try:
-            self.session_manager.stop_recording(recording)
-        except RecordingStopError:
-            return drf_response.Response(
-                {"message": f"Failed to stop recording for room {room.slug}."},
-                status=drf_status.HTTP_500_INTERNAL_SERVER_ERROR,
-            )
+        # May raise exception
+        self.session_manager.stop_recording(recording)
 
         return drf_response.Response(
             {"message": f"Recording stopped for room {room.slug}."}

@@ -82,7 +82,7 @@ class StorageHandler:
 
         # todo - check others status
         if RecordingStatusChoices.is_error_status(recording.status):
-            logger.error(
+            logger.exception(
                 "Recording with ID %s is in an error state and cannot be saved.",
                 recording.id,
             )
@@ -91,7 +91,7 @@ class StorageHandler:
             )
 
         if recording.status == RecordingStatusChoices.SAVED:
-            logger.error("Recording with ID %s is already saved.", recording.id)
+            logger.exception("Recording with ID %s is already saved.", recording.id)
             raise RecordingUpdateError(
                 f"Recording with ID {recording.id} is already saved."
             )
@@ -121,12 +121,12 @@ class StorageHandler:
         try:
             recording_id = self._parser.extract_recording_id(data)
         except InvalidRequestDataError as e:
-            logger.error("Could not handle hook event %s", e)
+            logger.exception("Could not handle hook event %s", e)
             logger.debug("Invalid request data: %s", data)
             raise IgnoreNotificationError("Invalid request data received.") from e
 
         except InvalidBucketError as e:
-            logger.error("Invalid bucket queried: %s", e)
+            logger.exception("Invalid bucket queried: %s", e)
             raise IgnoreNotificationError("Invalid bucket specified.") from e
 
         except InvalidFileTypeError as e:
@@ -137,7 +137,7 @@ class StorageHandler:
         try:
             recording = Recording.objects.get(recording_id)
         except Recording.DoesNotExist as e:
-            logger.error("Recording with ID %s not found.", recording_id)
+            logger.exception("Recording with ID %s not found.", recording_id)
             raise RecordingNotFound(
                 f"Recording with ID {recording_id} not found."
             ) from e
