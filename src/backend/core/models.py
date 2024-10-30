@@ -256,10 +256,6 @@ class Resource(BaseModel):
         """Check if a user is owner of the resource."""
         return RoleChoices.check_owner_role(self.get_role(user))
 
-    def is_owner_or_administrator(self, user):
-        """Check if a user is owner or administrator of the resource."""
-        return self.is_owner(user) or self.is_administrator(user)
-
 
 class ResourceAccess(BaseModel):
     """Link table between resources and users"""
@@ -366,7 +362,6 @@ class Room(Resource):
 
 
 # todo - discuss how the path could changed, and we could loose track of file
-# todo - discuss the uniqueness of worker_id field
 class Recording(BaseModel):
     """Model for recordings that take place in a room"""
 
@@ -390,9 +385,8 @@ class Recording(BaseModel):
     mode = models.CharField(
         max_length=20,
         choices=RecordingModeChoices.choices,
-        default=RecordingModeChoices.SCREEN_RECORDING,
-        verbose_name=_("Recording mode"),
-        help_text=_("Defines the type of recording being performed."),
+        verbose_name=_("Worker kind"),
+        help_text=_("Defines the kind of worker being called."),
     )
     worker_id = models.CharField(
         max_length=255,
@@ -433,3 +427,11 @@ class Recording(BaseModel):
             "stop": is_creator and not is_final_status,
             "update": False,
         }
+
+    def is_savable(self) -> bool:
+        """Wip."""
+
+        is_in_error = RecordingStatusChoices.is_error_status(self.status)
+        is_already_saved = self.status == RecordingStatusChoices.SAVED
+
+        return not is_in_error and not is_already_saved

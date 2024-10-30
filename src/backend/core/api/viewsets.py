@@ -4,8 +4,6 @@ import uuid
 from logging import getLogger
 
 from django.conf import settings
-from django.core.exceptions import PermissionDenied, ValidationError
-from django.db import IntegrityError
 from django.db.models import Q
 from django.http import Http404
 from django.shortcuts import get_object_or_404
@@ -18,6 +16,9 @@ from rest_framework import (
     viewsets,
 )
 from rest_framework import (
+    exceptions as drf_exceptions,
+)
+from rest_framework import (
     response as drf_response,
 )
 from rest_framework import (
@@ -25,16 +26,18 @@ from rest_framework import (
 )
 
 from core import models, utils
-from core.recording import (
-    IgnoreNotificationError,
-    LivekitEgressWorker,
-    MinioParser,
-    RecordingNotFound,
-    RecordingSessionManager,
+from core.recording.storage import (
+    InvalidBucketError,
+    InvalidFileTypeError,
+    InvalidRequestDataError,
+    StorageEventAuthentication,
+    get_parser,
+)
+from core.recording.worker import (
     RecordingStartError,
     RecordingStopError,
-    RecordingUpdateError,
-    StorageHandler,
+    WorkerServiceMediator,
+    worker_service_provider,
 )
 
 from ..analytics import analytics
@@ -184,12 +187,6 @@ class RoomViewSet(
     permission_classes = [permissions.RoomPermissions]
     queryset = models.Room.objects.all()
     serializer_class = serializers.RoomSerializer
-    session_manager = RecordingSessionManager(
-        worker_class=LivekitEgressWorker,
-        output_folder="recordings",
-        server_configurations=settings.LIVEKIT_CONFIGURATION,
-        enable_output_logging=settings.LOG_RECORDING_OUTPUT,
-    )
 
     def get_object(self):
         """Allow getting a room by its slug."""
@@ -236,68 +233,81 @@ class RoomViewSet(
 
         return drf_response.Response(data)
 
-    @decorators.action(detail=True, methods=["post"], url_path="start-recording")
+    @decorators.action(
+        detail=True,
+        methods=["post"],
+        url_path="start-recording",
+        permission_classes=[
+            permissions.IsRoomOwnerOrAdministrator,
+            permissions.IsRecordingEnabled,
+        ],
+    )
     def start_room_recording(self, request, pk=None):  # pylint: disable=unused-argument
-        """Start room recording."""
-        if not settings.ENABLE_RECORDING:
-            raise PermissionDenied({"error": "Recording is disabled."})
+        """Start recording a room."""
 
         room = self.get_object()
-        if not room.is_owner_or_administrator(request.user):
-            raise PermissionDenied(
-                "You must be an admin or owner to start a recording."
+        mode = request.data.get("mode")
+
+        if mode is None:
+            return drf_response.Response(
+                {"error": "Recording mode is required."},
+                status=drf_status.HTTP_400_BAD_REQUEST,
             )
 
-        mode = request.data.get(
-            "mode", models.RecordingModeChoices.SCREEN_RECORDING
+        # May raise exception if an active recording already exist for the room
+        recording = models.Recording.objects.create(
+            creator=request.user, room=room, mode=mode
         )
-        if mode not in models.RecordingModeChoices.values:
-            raise ValidationError({"error": "Invalid recording mode specified."})
+
+        worker_service = worker_service_provider.create(mode=recording.mode)
+        worker_manager = WorkerServiceMediator(worker_service=worker_service)
 
         try:
-            recording = models.Recording.objects.create(
-                creator=request.user, room=room, mode=mode
-            )
-        except IntegrityError as e:
-            # todo - integrity error not specific enough
-            logger.error(
-                "An active recording already exists for room %s: %s", room.slug, e
-            )
+            worker_manager.start(recording)
+        except RecordingStartError:
             return drf_response.Response(
-                {"error": f"An active recording already exists for room {room.slug}."},
-                status=drf_status.HTTP_200_OK,
+                {"error": f"Recording failed to start for room {room.slug}"},
+                status=drf_status.HTTP_500_INTERNAL_SERVER_ERROR,
             )
-
-        # May raise exception
-        self.session_manager.start_recording(recording)
 
         return drf_response.Response(
-            {"message": f"Recording started for room {room.slug}"},
+            {"message": f"Recording successfully started for room {room.slug}"},
             status=drf_status.HTTP_201_CREATED,
         )
 
-    @decorators.action(detail=True, methods=["post"], url_path="stop-recording")
+    @decorators.action(
+        detail=True,
+        methods=["post"],
+        url_path="stop-recording",
+        permission_classes=[
+            permissions.IsRoomOwnerOrAdministrator,
+            permissions.IsRecordingEnabled,
+        ],
+    )
     def stop_room_recording(self, request, pk=None):  # pylint: disable=unused-argument
         """Stop room recording."""
-        if not settings.ENABLE_RECORDING:
-            raise PermissionDenied({"error": "Recording is disabled."})
 
         room = self.get_object()
-        if not room.is_owner_or_administrator(request.user):
-            raise PermissionDenied("You must be an admin or owner to stop a recording.")
 
         try:
             recording = models.Recording.objects.get(
                 room=room, status=models.RecordingStatusChoices.ACTIVE
             )
-        except models.Recording.DoesNotExist:
-            return drf_response.Response(
-                {"error": "No active recording found for this room."},
-                status=drf_status.HTTP_404_NOT_FOUND,
-            )
+        except models.Recording.DoesNotExist as e:
+            raise drf_exceptions.NotFound(
+                "No active recording found for this room."
+            ) from e
 
-        # May raise exception
-        self.session_manager.stop_recording(recording)
+        worker_service = worker_service_provider.create(mode=recording.mode)
+        worker_manager = WorkerServiceMediator(worker_service=worker_service)
+
+        try:
+            worker_manager.stop(recording)
+        except RecordingStopError:
+            return drf_response.Response(
+                {"error": f"Recording failed to stop for room {room.slug}"},
+                status=drf_status.HTTP_500_INTERNAL_SERVER_ERROR,
+            )
 
         return drf_response.Response(
             {"message": f"Recording stopped for room {room.slug}."}
@@ -390,33 +400,46 @@ class RecordingViewSet(viewsets.GenericViewSet, mixins.ListModelMixin):
     API endpoints to access and perform actions on recording.
     """
 
-    storage = StorageHandler(
-        bucket_name=settings.AWS_STORAGE_BUCKET_NAME, parser_class=MinioParser
+    @decorators.action(
+        detail=False,
+        methods=["post"],
+        url_path="storage-hook",
+        authentication_classes=[StorageEventAuthentication],
+        permission_classes=[permissions.IsStorageEventEnabled],
     )
-
-    @decorators.action(detail=False, methods=["post"], url_path="storage-hook")
-    def on_save(self, request, pk=None):  # pylint: disable=unused-argument
+    def on_storage_event_received(self, request, pk=None):  # pylint: disable=unused-argument
         """Handle incoming storage hook events for recordings."""
-        if not settings.AWS_ENABLE_STORAGE_HOOK:
-            raise PermissionDenied({"error": "Storage hook is disabled."})
+
+        parser = get_parser()
+
         try:
-            self.storage.on_save(request.data)
-        except IgnoreNotificationError:
+            recording_id = parser.get_recording_id(request.data)
+
+        except InvalidRequestDataError as e:
+            raise drf_exceptions.PermissionDenied(f"Invalid request data: {e}") from e
+
+        except InvalidBucketError as e:
+            raise drf_exceptions.PermissionDenied("Invalid bucket specified") from e
+
+        except InvalidFileTypeError as e:
             return drf_response.Response(
-                {"message": "Ignore, doesn't match criteria"},
-            )
-        except RecordingUpdateError as e:
-            return drf_response.Response(
-                {"error": f"Error updating recording: {e}"},
-                status=drf_status.HTTP_403_FORBIDDEN,
-            )
-        except RecordingNotFound:
-            return drf_response.Response(
-                {"error": "No recording found for this event."},
-                status=drf_status.HTTP_404_NOT_FOUND,
+                {"message": f"Ignore this file type, {e}"},
             )
 
-        # TODO - trigger postprocessing based on recording's mode
+        try:
+            recording = models.Recording.objects.get(id=recording_id)
+        except models.Recording.DoesNotExist as e:
+            raise drf_exceptions.NotFound("No recording found for this event.") from e
+
+        if not recording.is_savable():
+            raise drf_exceptions.PermissionDenied(
+                f"Recording with ID {recording_id} cannot be saved because it is either in an error state or has already been saved."
+            )
+
+        recording.status = models.RecordingStatusChoices.SAVED
+        recording.save()
+
+        # todo - trigger post-processing
 
         return drf_response.Response(
             {"message": "Event processed."},

@@ -1,5 +1,7 @@
 """Permission handlers for the Meet core app."""
 
+from django.conf import settings
+
 from rest_framework import permissions
 
 from ..models import RoleChoices
@@ -65,6 +67,21 @@ class RoomPermissions(permissions.BasePermission):
         return obj.is_administrator(user)
 
 
+class IsRoomOwnerOrAdministrator(permissions.BasePermission):
+    """Temporary"""
+
+    message = "You must be an admin or owner to start a recording."
+
+    def has_permission(self, request, view):
+        # Get the room object
+        room = view.get_object()
+
+        if not room.is_owner(request.user) and not room.is_administrator(request.user):
+            return False
+
+        return True
+
+
 class ResourceAccessPermission(permissions.BasePermission):
     """
     Permissions for a room that can only be updated by room administrators.
@@ -83,3 +100,23 @@ class ResourceAccessPermission(permissions.BasePermission):
             return obj.user == user
 
         return obj.resource.is_administrator(user)
+
+
+class IsRecordingEnabled(permissions.BasePermission):
+    """Check if the recording feature is enabled."""
+
+    message = "Access denied, recording is disabled."
+
+    def has_permission(self, request, view):
+        """Determine if access is allowed based on settings."""
+        return settings.RECORDING_ENABLE
+
+
+class IsStorageEventEnabled(permissions.BasePermission):
+    """Check if the storage event feature is enabled."""
+
+    message = "Access denied, storage event is disabled."
+
+    def has_permission(self, request, view):
+        """Determine if access is allowed based on settings."""
+        return settings.RECORDING_STORAGE_EVENT_ENABLE
