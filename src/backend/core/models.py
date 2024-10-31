@@ -363,6 +363,9 @@ class Room(Resource):
 
 
 # todo - discuss how the path could changed, and we could loose track of file
+# todo - discuss having constraint to avoid transitioning from a final status to another
+# todo - discuss persisting extra metadata on the event sent by the storage
+# todo - discuss inheriting from ResourceAccess model
 class Recording(BaseModel):
     """Model for recordings that take place in a room"""
 
@@ -431,7 +434,7 @@ class Recording(BaseModel):
         }
 
     def is_savable(self) -> bool:
-        """Wip."""
+        """Determine if the recording can be saved based on its current status."""
 
         is_in_error = RecordingStatusChoices.is_error_status(self.status)
         is_already_saved = self.status == RecordingStatusChoices.SAVED

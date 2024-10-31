@@ -75,16 +75,8 @@ class RecordingFactory(factory.django.DjangoModelFactory):
 
     creator = factory.SubFactory(UserFactory)
     room = factory.SubFactory(RoomFactory)
-
-    status = factory.fuzzy.FuzzyChoice(
-        [choice[0] for choice in models.RecordingStatusChoices.choices],
-    )
+    status = models.RecordingStatusChoices.INITIATED
     mode = factory.fuzzy.FuzzyChoice(
         [choice[0] for choice in models.RecordingModeChoices.choices]
     )
-
-    worker_id = factory.LazyAttribute(
-        lambda obj: f"worker-{fake.uuid4()}"
-        if obj.status != models.RecordingStatusChoices.FAILED_TO_START
-        else None
-    )
+    worker_id = None

@@ -254,7 +254,7 @@ class RoomViewSet(
                 status=drf_status.HTTP_400_BAD_REQUEST,
             )
 
-        # May raise exception if an active recording already exist for the room
+        # May raise exception if an active or initiated recording already exist for the room
         recording = models.Recording.objects.create(
             creator=request.user, room=room, mode=mode
         )
@@ -289,6 +289,7 @@ class RoomViewSet(
 
         room = self.get_object()
 
+        # fixme - do I need to be the creator of the recording to stop it?
         try:
             recording = models.Recording.objects.get(
                 room=room, status=models.RecordingStatusChoices.ACTIVE
