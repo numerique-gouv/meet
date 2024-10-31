@@ -65,3 +65,26 @@ class RoomFactory(ResourceFactory):
 
     name = factory.Faker("catch_phrase")
     slug = factory.LazyAttribute(lambda o: slugify(o.name))
+
+
+class RecordingFactory(factory.django.DjangoModelFactory):
+    """Create fake recording for testing."""
+
+    class Meta:
+        model = models.Recording
+
+    creator = factory.SubFactory(UserFactory)
+    room = factory.SubFactory(RoomFactory)
+
+    status = factory.fuzzy.FuzzyChoice(
+        [choice[0] for choice in models.RecordingStatusChoices.choices],
+    )
+    mode = factory.fuzzy.FuzzyChoice(
+        [choice[0] for choice in models.RecordingModeChoices.choices]
+    )
+
+    worker_id = factory.LazyAttribute(
+        lambda obj: f"worker-{fake.uuid4()}"
+        if obj.status != models.RecordingStatusChoices.FAILED_TO_START
+        else None
+    )
