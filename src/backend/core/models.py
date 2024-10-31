@@ -41,10 +41,11 @@ class RoleChoices(models.TextChoices):
 class RecordingStatusChoices(models.TextChoices):
     """Recording status choices."""
 
+    INITIATED = "initiated", _("Initiated")
     ACTIVE = "active", _("Active")
     STOPPED = "stopped", _("Stopped")
-    ABORTED = "aborted", _("Aborted")
     SAVED = "saved", _("Saved")
+    ABORTED = "aborted", _("Aborted")
     FAILED_TO_START = "failed_to_start", _("Failed to Start")
     FAILED_TO_STOP = "failed_to_stop", _("Failed to Stop")
 
@@ -380,7 +381,7 @@ class Recording(BaseModel):
     status = models.CharField(
         max_length=20,
         choices=RecordingStatusChoices.choices,
-        default=RecordingStatusChoices.ACTIVE,
+        default=RecordingStatusChoices.INITIATED,
     )
     mode = models.CharField(
         max_length=20,
@@ -407,8 +408,9 @@ class Recording(BaseModel):
         constraints = [
             models.UniqueConstraint(
                 fields=["room"],
-                condition=models.Q(status=RecordingStatusChoices.ACTIVE),
-                name="unique_active_recording_per_room",
+                condition=models.Q(status=RecordingStatusChoices.ACTIVE)
+                | models.Q(status=RecordingStatusChoices.INITIATED),
+                name="unique_initiated_or_active_recording_per_room",
             )
         ]
 
