@@ -10,7 +10,7 @@ from django.conf import settings
 logger = logging.getLogger(__name__)
 
 
-@dataclass
+@dataclass(frozen=True)
 class WorkerServiceConfig:
     """Declare Worker Service common configurations"""
 
