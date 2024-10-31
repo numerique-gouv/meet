@@ -19,7 +19,9 @@ class BaseEgressService:
         self._s3 = livekit_api.S3Upload(**config.bucket_args)
 
     def _get_filepath(self, filename, extension):
-        """Construct the file path for a given filename and extension."""
+        """Construct the file path for a given filename and extension.
+        Unsecure method, doesn't handle paths robustly and securely.
+        """
         return f"{self._config.output_folder}/{filename}.{extension}"
 
     @async_to_sync
@@ -33,12 +35,8 @@ class BaseEgressService:
         async with aiohttp.ClientSession(connector=connector) as session:
             client = EgressService(session, **self._config.server_configurations)
             method = getattr(client, method_name)
-
-            # todo - test method, to make sure it exists
-
             try:
                 response = await method(request)
-
             except livekit_api.TwirpError as e:
                 raise WorkerConnectionError(
                     f"LiveKit client connection error, {e.message}."
@@ -65,11 +63,15 @@ class BaseEgressService:
             )
 
         # To avoid exposing EgressStatus values and coupling with LiveKit outside of this class,
-        # the response status is mapped to simpler "ABORTED" or "STOPPED" strings.
+        # the response status is mapped to simpler "ABORTED", "STOPPED" or "FAILED_TO_STOP" strings.
         if response.status == livekit_api.EgressStatus.EGRESS_ABORTED:
             return "ABORTED"
 
-        return "STOPPED"
+        # todo - verify if it's functional
+        if response.status == livekit_api.EgressStatus.EGRESS_ENDING:
+            return "STOPPED"
+
+        return "FAILED_TO_STOP"
 
     def start(self, room_name, recording_id):
         """Start the egress process for a recording (not implemented in the base class).
