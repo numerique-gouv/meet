@@ -47,10 +47,14 @@ class WorkerServiceMediator:
         # FIXME - no manipulations of room_name should be required
         room_name = f"{recording.room.id!s}".replace("-", "")
 
+        if recording.status != RecordingStatusChoices.INITIATED:
+            logger.error("Cannot start recording in %s status.", recording.status)
+            raise RecordingStartError()
+
         try:
             worker_id = self._worker_service.start(room_name, recording.id)
         except (WorkerRequestError, WorkerConnectionError, WorkerResponseError) as e:
-            logger.error(
+            logger.exception(
                 "Failed to start recording for room %s: %s", recording.room.slug, e
             )
             recording.status = RecordingStatusChoices.FAILED_TO_START
@@ -78,10 +82,14 @@ class WorkerServiceMediator:
             RecordingStopError: If there is an error stopping the recording.
         """
 
+        if recording.status != RecordingStatusChoices.ACTIVE:
+            logger.error("Cannot stop recording in %s status.", recording.status)
+            raise RecordingStopError()
+
         try:
             response = self._worker_service.stop(worker_id=recording.worker_id)
         except (WorkerConnectionError, WorkerResponseError) as e:
-            logger.error(
+            logger.exception(
                 "Failed to stop recording for room %s: %s", recording.room.slug, e
             )
             recording.status = RecordingStatusChoices.FAILED_TO_STOP
