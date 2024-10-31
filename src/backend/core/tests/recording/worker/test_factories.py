@@ -93,6 +93,8 @@ def mock_worker_service():
     """Fixture to provide a mock WorkerService implementation"""
 
     class TestWorkerService:
+        """Mock WorkerService"""
+
         hrid = "test-worker"
 
         def __init__(self, config):
