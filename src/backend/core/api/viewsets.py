@@ -26,10 +26,10 @@ from rest_framework import (
 )
 
 from core import models, utils
-from core.recording.storage import (
+from core.recording.event import (
     InvalidBucketError,
     InvalidFileTypeError,
-    InvalidRequestDataError,
+    ParsingEventDataError,
     StorageEventAuthentication,
     get_parser,
 )
@@ -415,7 +415,7 @@ class RecordingViewSet(viewsets.GenericViewSet, mixins.ListModelMixin):
         try:
             recording_id = parser.get_recording_id(request.data)
 
-        except InvalidRequestDataError as e:
+        except ParsingEventDataError as e:
             raise drf_exceptions.PermissionDenied(f"Invalid request data: {e}") from e
 
         except InvalidBucketError as e:
@@ -433,7 +433,8 @@ class RecordingViewSet(viewsets.GenericViewSet, mixins.ListModelMixin):
 
         if not recording.is_savable():
             raise drf_exceptions.PermissionDenied(
-                f"Recording with ID {recording_id} cannot be saved because it is either in an error state or has already been saved."
+                f"Recording with ID {recording_id} cannot be saved because it is either,"
+                f"in an error state or has already been saved."
             )
 
         recording.status = models.RecordingStatusChoices.SAVED

@@ -1,18 +1,23 @@
+"""Meet storage event parser classes."""
 
-import re
 import logging
-
+import re
 from dataclasses import dataclass
 from functools import lru_cache
-from typing import Any, Dict, Protocol, Optional
+from typing import Any, Dict, Optional, Protocol
 
 from django.conf import settings
 from django.utils.module_loading import import_string
 
-
-from .exceptions import ParsingEventDataError, InvalidBucketError, InvalidFileTypeError, InvalidFilepathError
+from .exceptions import (
+    InvalidBucketError,
+    InvalidFilepathError,
+    InvalidFileTypeError,
+    ParsingEventDataError,
+)
 
 logger = logging.getLogger(__name__)
+
 
 @dataclass
 class StorageEvent:
@@ -34,7 +39,7 @@ class StorageEvent:
 class EventParser(Protocol):
     """Wip."""
 
-    def __init__(self, bucket_name, allowed_filetypes = None):
+    def __init__(self, bucket_name, allowed_filetypes=None):
         """Wip."""
 
     def parse(self, data: Dict) -> StorageEvent:
@@ -59,18 +64,16 @@ def get_parser() -> EventParser:
 class MinioParser:
     """Wip."""
 
-
-
-    def __init__(self, bucket_name, allowed_filetypes = None):
+    def __init__(self, bucket_name, allowed_filetypes=None):
         """Wip."""
 
         self._bucket_name = bucket_name
-        self._allowed_filetypes = allowed_filetypes or  {"audio/ogg", "video/mp4"}
+        self._allowed_filetypes = allowed_filetypes or {"audio/ogg", "video/mp4"}
 
+        # pylint: disable=line-too-long
         self._filepath_regex = re.compile(
             r"(?P<folder>(?:[^%]+%2F)*)?(?P<recording_id>[0-9a-fA-F\-]{36})\.(?P<extension>[a-zA-Z0-9]+)"
         )
-
 
     @staticmethod
     def parse(data):
@@ -87,20 +90,20 @@ class MinioParser:
             filepath = file_object["key"]
             filetype = file_object["contentType"]
         except (KeyError, IndexError) as e:
-
             # todo - be more actionable
-            raise ParsingEventDataError(f"Missing or malformed field in event data: {e}") from e
+            raise ParsingEventDataError(
+                f"Missing or malformed field in event data: {e}"
+            ) from e
 
         try:
             return StorageEvent(
                 filepath=filepath,
                 filetype=filetype,
                 bucket_name=bucket_name,
+                metadata=None,
             )
         except TypeError as e:
-
             # todo - be more actionable
-
             raise ParsingEventDataError(
                 "Missing essential data fields: filepath, filetype, or bucket name"
             ) from e
@@ -115,16 +118,18 @@ class MinioParser:
 
         if not event_data.filetype in self._allowed_filetypes:
             raise InvalidFileTypeError(
-                f"Invalid file type, expected {self._allowed_filetypes}, got '{event_data.filetype}'"
+                f"Invalid file type, expected {self._allowed_filetypes},"
+                f"got '{event_data.filetype}'"
             )
 
         match = self._filepath_regex.match(event_data.filepath)
         if not match:
-            raise InvalidFilepathError(f"Invalid filepath structure: {event_data.filepath}")
+            raise InvalidFilepathError(
+                f"Invalid filepath structure: {event_data.filepath}"
+            )
 
         recording_id = match.group("recording_id")
         return recording_id
-
 
     def get_recording_id(self, data):
         """Wip."""
@@ -133,7 +138,3 @@ class MinioParser:
         recording_id = self.validate(event_data)
 
         return recording_id
-
-
-
-

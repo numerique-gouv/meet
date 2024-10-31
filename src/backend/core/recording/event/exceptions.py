@@ -15,4 +15,3 @@ class InvalidFileTypeError(Exception):
 
 class InvalidFilepathError(Exception):
     """Raised when the filepath in the request is invalid."""
-

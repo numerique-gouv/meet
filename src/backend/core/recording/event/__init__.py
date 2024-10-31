@@ -1,3 +1,5 @@
+"""Meet event parser classes and exceptions."""
+
 from .authentification import *
 from .exceptions import *
-from .wip import *
+from .parsers import *
