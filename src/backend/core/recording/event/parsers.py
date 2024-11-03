@@ -95,11 +95,9 @@ class MinioParser:
             filepath = file_object["key"]
             filetype = file_object["contentType"]
         except (KeyError, IndexError) as e:
-            # todo - be more actionable
             raise ParsingEventDataError(
                 f"Missing or malformed field in event data: {e}"
             ) from e
-
         try:
             return StorageEvent(
                 filepath=filepath,
@@ -108,9 +106,8 @@ class MinioParser:
                 metadata=None,
             )
         except TypeError as e:
-            # todo - be more actionable
             raise ParsingEventDataError(
-                "Missing essential data fields: filepath, filetype, or bucket name"
+                f"Missing essential data fields: {e}"
             ) from e
 
     def validate(self, event_data: StorageEvent) -> str:
