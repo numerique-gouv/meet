@@ -1,4 +1,4 @@
-FROM node:20-alpine as frontend-deps
+FROM node:20-alpine AS frontend-deps
 
 WORKDIR /home/frontend/
 
@@ -11,11 +11,11 @@ COPY .dockerignore ./.dockerignore
 COPY ./src/frontend/ .
 
 ### ---- Front-end builder image ----
-FROM frontend-deps as meet
+FROM frontend-deps AS meet
 
 WORKDIR /home/frontend
 
-FROM frontend-deps as meet-dev
+FROM frontend-deps AS meet-dev
 
 WORKDIR /home/frontend
 
@@ -25,14 +25,14 @@ CMD [ "npm", "run", "dev"]
 
 # Tilt will rebuild Meet target so, we dissociate meet and meet-builder
 # to avoid rebuilding the app at every changes.
-FROM meet as meet-builder
+FROM meet AS meet-builder
 
 WORKDIR /home/frontend
 
 RUN npm run build
 
 # ---- Front-end image ----
-FROM nginxinc/nginx-unprivileged:1.26-alpine as frontend-production
+FROM nginxinc/nginx-unprivileged:1.26-alpine AS frontend-production
 
 # Un-privileged user running the application
 ARG DOCKER_USER
