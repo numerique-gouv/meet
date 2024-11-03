@@ -35,6 +35,14 @@ class StorageEvent:
     bucket_name: str
     metadata: Optional[Dict[str, Any]]
 
+    def __post_init__(self):
+        if self.filepath is None:
+            raise TypeError("filepath cannot be None")
+        if self.filetype is None:
+            raise TypeError("filetype cannot be None")
+        if self.bucket_name is None:
+            raise TypeError("bucket_name cannot be None")
+
 
 class EventParser(Protocol):
     """Interface for parsing storage events."""
@@ -69,15 +77,18 @@ def get_parser() -> EventParser:
 class MinioParser:
     """Handle parsing and validation of Minio storage events."""
 
-    def __init__(self, bucket_name, allowed_filetypes=None):
+    def __init__(self, bucket_name: str, allowed_filetypes=None):
         """Initialize parser with target bucket name and accepted filetypes."""
+
+        if not bucket_name:
+            raise ValueError("Bucket name cannot be None or empty")
 
         self._bucket_name = bucket_name
         self._allowed_filetypes = allowed_filetypes or {"audio/ogg", "video/mp4"}
 
         # pylint: disable=line-too-long
         self._filepath_regex = re.compile(
-            r"(?P<folder>(?:[^%]+%2F)*)?(?P<recording_id>[0-9a-fA-F\-]{36})\.(?P<extension>[a-zA-Z0-9]+)"
+            r"(?P<url_encoded_folder_path>(?:[^%]+%2F)*)?(?P<recording_id>[0-9a-fA-F\-]{36})\.(?P<extension>[a-zA-Z0-9]+)"
         )
 
     @staticmethod
@@ -85,7 +96,7 @@ class MinioParser:
         """Convert raw Minio event dictionary to StorageEvent object."""
 
         if not data:
-            raise ParsingEventDataError("Received empty data")
+            raise ParsingEventDataError("Received empty data.")
 
         try:
             record = data["Records"][0]
@@ -95,9 +106,7 @@ class MinioParser:
             filepath = file_object["key"]
             filetype = file_object["contentType"]
         except (KeyError, IndexError) as e:
-            raise ParsingEventDataError(
-                f"Missing or malformed field in event data: {e}"
-            ) from e
+            raise ParsingEventDataError(f"Missing or malformed key: {e}.") from e
         try:
             return StorageEvent(
                 filepath=filepath,
@@ -106,9 +115,7 @@ class MinioParser:
                 metadata=None,
             )
         except TypeError as e:
-            raise ParsingEventDataError(
-                f"Missing essential data fields: {e}"
-            ) from e
+            raise ParsingEventDataError(f"Missing essential data fields: {e}") from e
 
     def validate(self, event_data: StorageEvent) -> str:
         """Verify StorageEvent matches bucket, filetype and filepath requirements."""

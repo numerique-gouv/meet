@@ -421,6 +421,11 @@ class Base(Configuration):
     RECORDING_STORAGE_EVENT_TOKEN = values.Value(
         None, environ_name="RECORDING_STORAGE_HOOK_TOKEN", environ_prefix=None
     )
+    RECORDING_EVENT_PARSER_CLASS = values.Value(
+        "core.recording.event.parsers.MinioParser",
+        environ_name="RECORDING_EVENT_PARSER_CLASS",
+        environ_prefix=None,
+    )
 
     # pylint: disable=invalid-name
     @property
