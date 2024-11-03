@@ -1,4 +1,4 @@
-"""Recording and storage services specific exceptions."""
+"""Storage parsers specific exceptions."""
 
 
 class ParsingEventDataError(Exception):

@@ -37,35 +37,40 @@ class StorageEvent:
 
 
 class EventParser(Protocol):
-    """Wip."""
+    """Interface for parsing storage events."""
 
     def __init__(self, bucket_name, allowed_filetypes=None):
-        """Wip."""
+        """Initialize parser with bucket name and optional allowed filetypes."""
 
     def parse(self, data: Dict) -> StorageEvent:
-        """Wip."""
+        """Extract storage event data from raw dictionary input."""
 
     def validate(self, data: StorageEvent) -> None:
-        """Wip."""
+        """Verify storage event data meets all requirements."""
 
     def get_recording_id(self, data: Dict) -> str:
-        """Wip."""
+        """Extract recording ID from event dictionary."""
 
 
-# todo - explain we don't need a factory class, a function with cache is enough
 @lru_cache(maxsize=1)
 def get_parser() -> EventParser:
-    """Wip."""
+    """Return cached instance of configured event parser.
+
+    Uses function memoization instead of a factory class since the only
+    varying parameter is the parser class from settings. A factory class
+    would add unnecessary complexity when a cached function provides the
+    same singleton behavior with simpler code.
+    """
 
     event_parser_cls = import_string(settings.RECORDING_EVENT_PARSER_CLASS)
     return event_parser_cls(bucket_name=settings.AWS_STORAGE_BUCKET_NAME)
 
 
 class MinioParser:
-    """Wip."""
+    """Handle parsing and validation of Minio storage events."""
 
     def __init__(self, bucket_name, allowed_filetypes=None):
-        """Wip."""
+        """Initialize parser with target bucket name and accepted filetypes."""
 
         self._bucket_name = bucket_name
         self._allowed_filetypes = allowed_filetypes or {"audio/ogg", "video/mp4"}
@@ -77,7 +82,7 @@ class MinioParser:
 
     @staticmethod
     def parse(data):
-        """Wip."""
+        """Convert raw Minio event dictionary to StorageEvent object."""
 
         if not data:
             raise ParsingEventDataError("Received empty data")
@@ -109,7 +114,7 @@ class MinioParser:
             ) from e
 
     def validate(self, event_data: StorageEvent) -> str:
-        """Wip."""
+        """Verify StorageEvent matches bucket, filetype and filepath requirements."""
 
         if event_data.bucket_name != self._bucket_name:
             raise InvalidBucketError(
@@ -132,7 +137,7 @@ class MinioParser:
         return recording_id
 
     def get_recording_id(self, data):
-        """Wip."""
+        """Extract recording ID from Minio event through parsing and validation."""
 
         event_data = self.parse(data)
         recording_id = self.validate(event_data)
