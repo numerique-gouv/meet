@@ -174,7 +174,7 @@ class User(AbstractBaseUser, BaseModel, auth_models.PermissionsMixin):
 class Resource(BaseModel):
     """Model to define access control"""
 
-    is_public = models.BooleanField(default=settings.DEFAULT_ROOM_IS_PUBLIC)
+    is_public = models.BooleanField(default=settings.RESOURCE_DEFAULT_IS_PUBLIC)
     users = models.ManyToManyField(
         User,
         through="ResourceAccess",

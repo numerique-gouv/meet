@@ -376,8 +376,8 @@ class Base(Configuration):
         ),
         "url": values.Value(environ_name="LIVEKIT_API_URL", environ_prefix=None),
     }
-    DEFAULT_ROOM_IS_PUBLIC = values.BooleanValue(
-        True, environ_name="DEFAULT_ROOM_IS_PUBLIC", environ_prefix=None
+    RESOURCE_DEFAULT_IS_PUBLIC = values.BooleanValue(
+        True, environ_name="RESOURCE_DEFAULT_IS_PUBLIC", environ_prefix=None
     )
     ALLOW_UNREGISTERED_ROOMS = values.BooleanValue(
         True, environ_name="ALLOW_UNREGISTERED_ROOMS", environ_prefix=None
