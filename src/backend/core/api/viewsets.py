@@ -186,13 +186,6 @@ class RoomViewSet(
         """
         try:
             instance = self.get_object()
-
-            analytics.track(
-                user=self.request.user,
-                event="Get Room",
-                properties={"slug": instance.slug},
-            )
-
         except Http404:
             if not settings.ALLOW_UNREGISTERED_ROOMS:
                 raise
@@ -210,6 +203,11 @@ class RoomViewSet(
             }
         else:
             data = self.get_serializer(instance).data
+            analytics.track(
+                user=self.request.user,
+                event="Get Room",
+                properties={"slug": instance.slug},
+            )
 
         return drf_response.Response(data)
 
