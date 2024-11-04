@@ -96,7 +96,11 @@ class OIDCAuthenticationBackend(MozillaOIDCAuthenticationBackend):
         except User.DoesNotExist:
             if email and settings.OIDC_FALLBACK_TO_EMAIL_FOR_IDENTIFICATION:
                 try:
-                    return User.objects.get(email=email)
+                    return User.objects.get(email__iexact=email)
                 except User.DoesNotExist:
                     pass
+                except User.MultipleObjectsReturned as e:
+                    raise SuspiciousOperation(
+                        _("Multiple user accounts share a common email.")
+                    ) from e
         return None
