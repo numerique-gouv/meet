@@ -123,3 +123,23 @@ def test_models_oidc_user_getter_empty_sub(django_assert_num_queries, monkeypatc
         klass.get_or_create_user(access_token="test-token", id_token=None, payload=None)
 
     assert models.User.objects.exists() is False
+
+
+def test_authentication_get_inactive_user(monkeypatch):
+    """Test an exception is raised when attempting to authenticate inactive user."""
+
+    klass = OIDCAuthenticationBackend()
+    db_user = UserFactory(is_active=False)
+
+    def get_userinfo_mocked(*args):
+        return {"sub": db_user.sub}
+
+    monkeypatch.setattr(OIDCAuthenticationBackend, "get_userinfo", get_userinfo_mocked)
+
+    with (
+        pytest.raises(
+            SuspiciousOperation,
+            match="User account is disabled",
+        ),
+    ):
+        klass.get_or_create_user(access_token="test-token", id_token=None, payload=None)
