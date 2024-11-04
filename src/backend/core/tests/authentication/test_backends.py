@@ -102,3 +102,24 @@ def test_models_oidc_user_getter_invalid_token(django_assert_num_queries, monkey
         klass.get_or_create_user(access_token="test-token", id_token=None, payload=None)
 
     assert models.User.objects.exists() is False
+
+
+def test_models_oidc_user_getter_empty_sub(django_assert_num_queries, monkeypatch):
+    """The user's info contains a sub, but it's an empty string."""
+    klass = OIDCAuthenticationBackend()
+
+    def get_userinfo_mocked(*args):
+        return {"test": "123", "sub": ""}
+
+    monkeypatch.setattr(OIDCAuthenticationBackend, "get_userinfo", get_userinfo_mocked)
+
+    with (
+        django_assert_num_queries(0),
+        pytest.raises(
+            SuspiciousOperation,
+            match="User info contained no recognizable user identification",
+        ),
+    ):
+        klass.get_or_create_user(access_token="test-token", id_token=None, payload=None)
+
+    assert models.User.objects.exists() is False
