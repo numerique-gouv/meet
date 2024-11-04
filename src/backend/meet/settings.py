@@ -327,6 +327,10 @@ class Base(Configuration):
         default=True,
         environ_name="OIDC_CREATE_USER",
     )
+    OIDC_FALLBACK_TO_EMAIL_FOR_IDENTIFICATION = values.BooleanValue(
+        default=False,
+        environ_name="OIDC_FALLBACK_TO_EMAIL_FOR_IDENTIFICATION",
+    )
     OIDC_RP_SIGN_ALGO = values.Value(
         "RS256", environ_name="OIDC_RP_SIGN_ALGO", environ_prefix=None
     )

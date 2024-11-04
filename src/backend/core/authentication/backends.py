@@ -1,5 +1,6 @@
 """Authentication Backends for the Meet core app."""
 
+from django.conf import settings
 from django.core.exceptions import SuspiciousOperation
 from django.utils.translation import gettext_lazy as _
 
@@ -71,22 +72,31 @@ class OIDCAuthenticationBackend(MozillaOIDCAuthenticationBackend):
                 _("User info contained no recognizable user identification")
             )
 
-        try:
-            user = User.objects.get(sub=sub)
-        except User.DoesNotExist:
-            if self.get_settings("OIDC_CREATE_USER", True):
-                user = User.objects.create(
-                    sub=sub,
-                    email=user_info.get("email"),
-                    password="!",  # noqa: S106
-                )
-            else:
-                user = None
+        email = user_info.get("email")
+        user = self.get_existing_user(sub, email)
 
-        if not user:
+        if not user and self.get_settings("OIDC_CREATE_USER", True):
+            user = User.objects.create(
+                sub=sub,
+                email=email,
+                password="!",  # noqa: S106
+            )
+        elif not user:
             return None
 
         if not user.is_active:
             raise SuspiciousOperation(_("User account is disabled"))
 
         return user
+
+    def get_existing_user(self, sub, email):
+        """Fetch existing user by sub or email."""
+        try:
+            return User.objects.get(sub=sub)
+        except User.DoesNotExist:
+            if email and settings.OIDC_FALLBACK_TO_EMAIL_FOR_IDENTIFICATION:
+                try:
+                    return User.objects.get(email=email)
+                except User.DoesNotExist:
+                    pass
+        return None
