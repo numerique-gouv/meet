@@ -59,6 +59,13 @@ releases:
           buckets:
             - name: meet-media-storage
               versioning: true
+      - ingress:
+          enabled: true
+          hostname: minio-console.127.0.0.1.nip.io
+          servicePort: 9001
+          annotations:
+            nginx.ingress.kubernetes.io/proxy-body-size: "0"
+            kubernetes.io/ingress.class: nginx
 
   - name: redis
     installed: {{ eq .Environment.Name "dev" | toYaml }}
