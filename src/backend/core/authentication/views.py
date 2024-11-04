@@ -22,8 +22,6 @@ from mozilla_django_oidc.views import (
     OIDCLogoutView as MozillaOIDCOIDCLogoutView,
 )
 
-from ..analytics import analytics
-
 
 class OIDCLogoutView(MozillaOIDCOIDCLogoutView):
     """Custom logout view for handling OpenID Connect (OIDC) logout flow.
@@ -100,10 +98,6 @@ class OIDCLogoutView(MozillaOIDCOIDCLogoutView):
 
         logout_url = self.redirect_url
 
-        analytics.track(
-            user=request.user,
-            event="Signed Out",
-        )
         if request.user.is_authenticated:
             logout_url = self.construct_oidc_logout_url(request)
 

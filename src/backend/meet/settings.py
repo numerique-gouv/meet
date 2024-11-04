@@ -505,8 +505,6 @@ class Test(Base):
 
     CELERY_TASK_ALWAYS_EAGER = values.BooleanValue(True)
 
-    ANALYTICS_KEY = None
-
     def __init__(self):
         # pylint: disable=invalid-name
         self.INSTALLED_APPS += ["drf_spectacular_sidecar"]

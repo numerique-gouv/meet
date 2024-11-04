@@ -10,8 +10,6 @@ from mozilla_django_oidc.auth import (
 
 from core.models import User
 
-from ..analytics import analytics
-
 
 class OIDCAuthenticationBackend(MozillaOIDCAuthenticationBackend):
     """Custom OpenID Connect (OIDC) Authentication Backend.
@@ -81,7 +79,6 @@ class OIDCAuthenticationBackend(MozillaOIDCAuthenticationBackend):
             else:
                 user = None
 
-        analytics.identify(user=user)
         return user
 
     def create_user(self, claims):
