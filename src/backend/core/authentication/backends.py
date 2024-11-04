@@ -83,4 +83,10 @@ class OIDCAuthenticationBackend(MozillaOIDCAuthenticationBackend):
             else:
                 user = None
 
+        if not user:
+            return None
+
+        if not user.is_active:
+            raise SuspiciousOperation(_("User account is disabled"))
+
         return user
