@@ -202,3 +202,86 @@ def test_finds_user_by_email(django_assert_num_queries, settings):
         user = klass.get_existing_user("wrong-sub", db_user.email)
 
     assert user == db_user
+
+
+def test_finds_user_case_insensitive_email(django_assert_num_queries, settings):
+    """Should match email case-insensitively when falling back to email."""
+    settings.OIDC_FALLBACK_TO_EMAIL_FOR_IDENTIFICATION = True
+
+    klass = OIDCAuthenticationBackend()
+    db_user = UserFactory(email="foo@mail.com")
+
+    with django_assert_num_queries(2):
+        user = klass.get_existing_user("wrong-sub", "FOO@MAIL.COM")
+
+    assert user == db_user
+
+
+def test_finds_user_multiple_users_same_email(django_assert_num_queries, settings):
+    """Should handle multiple users with same email appropriately."""
+
+    settings.OIDC_FALLBACK_TO_EMAIL_FOR_IDENTIFICATION = True
+
+    klass = OIDCAuthenticationBackend()
+    email = "foo@mail.com"
+    UserFactory(email=email)
+    UserFactory(email=email)  # Second user with same email
+
+    with (
+        django_assert_num_queries(2),
+        pytest.raises(
+            SuspiciousOperation,
+            match="Multiple user accounts share a common email.",
+        ),
+    ):
+        klass.get_existing_user("wrong-sub", email)
+
+
+def test_finds_user_whitespace_email(django_assert_num_queries, settings):
+    """Should not match emails with whitespace."""
+
+    settings.OIDC_FALLBACK_TO_EMAIL_FOR_IDENTIFICATION = True
+    settings.OIDC_CREATE_USER = False
+
+    klass = OIDCAuthenticationBackend()
+    UserFactory(email="foo@mail.com")
+
+    with django_assert_num_queries(2):
+        user = klass.get_existing_user("wrong-sub", " foo@mail.com ")
+
+    assert user is None
+
+
+@pytest.mark.parametrize(
+    "email",
+    [
+        "john.doe@ｅxample.com",  # Fullwidth character in domain
+        "john.doe@еxample.com",  # Cyrillic 'е' in domain
+        "JOHN.DOe@exam𝔭le.com",  # Mixed Gothic '𝔭' in domain
+        "john.doe@exаmple.com",  # Cyrillic 'а' (a) in domain
+        "john.doe@ｅ𝓧𝓪𝓶𝓹𝓵𝓮.com",  # Mixed fullwidth and cursive in domain
+    ],
+)
+def test_authentication_getter_existing_user_email_tricky(email, monkeypatch, settings):
+    """Test email matching security against visually similar but non-ASCII domains.
+
+    Validates that emails with Unicode characters that visually resemble ASCII
+    (homoglyphs) are treated as distinct from their ASCII counterparts for security,
+    per RFC compliance requirements for hostnames.
+    """
+
+    settings.OIDC_FALLBACK_TO_EMAIL_FOR_IDENTIFICATION = True
+
+    klass = OIDCAuthenticationBackend()
+    db_user = UserFactory(email="john.doe@example.com")
+
+    def get_userinfo_mocked(*args):
+        return {"sub": "123", "email": email}
+
+    monkeypatch.setattr(OIDCAuthenticationBackend, "get_userinfo", get_userinfo_mocked)
+
+    user = klass.get_or_create_user(
+        access_token="test-token", id_token=None, payload=None
+    )
+
+    assert user != db_user
