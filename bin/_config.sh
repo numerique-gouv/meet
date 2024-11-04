@@ -5,7 +5,7 @@ set -eo pipefail
 REPO_DIR="$(cd "$( dirname "${BASH_SOURCE[0]}" )/.." && pwd)"
 UNSET_USER=0
 
-COMPOSE_FILE="${REPO_DIR}/docker-compose.yml"
+COMPOSE_FILE="${REPO_DIR}/compose.yml"
 COMPOSE_PROJECT="meet"
 
 
