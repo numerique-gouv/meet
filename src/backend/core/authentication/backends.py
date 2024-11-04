@@ -66,7 +66,7 @@ class OIDCAuthenticationBackend(MozillaOIDCAuthenticationBackend):
         user_info = self.get_userinfo(access_token, id_token, payload)
         sub = user_info.get("sub")
 
-        if sub is None:
+        if not sub:
             raise SuspiciousOperation(
                 _("User info contained no recognizable user identification")
             )
