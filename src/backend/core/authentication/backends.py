@@ -75,26 +75,12 @@ class OIDCAuthenticationBackend(MozillaOIDCAuthenticationBackend):
             user = User.objects.get(sub=sub)
         except User.DoesNotExist:
             if self.get_settings("OIDC_CREATE_USER", True):
-                user = self.create_user(user_info)
+                user = User.objects.create(
+                    sub=sub,
+                    email=user_info.get("email"),
+                    password="!",  # noqa: S106
+                )
             else:
                 user = None
-
-        return user
-
-    def create_user(self, claims):
-        """Return a newly created User instance."""
-
-        sub = claims.get("sub")
-
-        if sub is None:
-            raise SuspiciousOperation(
-                _("Claims contained no recognizable user identification")
-            )
-
-        user = User.objects.create(
-            sub=sub,
-            email=claims.get("email"),
-            password="!",  # noqa: S106
-        )
 
         return user
