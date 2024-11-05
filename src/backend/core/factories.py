@@ -65,3 +65,48 @@ class RoomFactory(ResourceFactory):
 
     name = factory.Faker("catch_phrase")
     slug = factory.LazyAttribute(lambda o: slugify(o.name))
+
+
+class RecordingFactory(factory.django.DjangoModelFactory):
+    """Create fake recording for testing."""
+
+    class Meta:
+        model = models.Recording
+
+    room = factory.SubFactory(RoomFactory)
+    status = models.RecordingStatusChoices.INITIATED
+    worker_id = None
+
+    @factory.post_generation
+    def users(self, create, extracted, **kwargs):
+        """Add users to recording from a given list of users with or without roles."""
+        if create and extracted:
+            for item in extracted:
+                if isinstance(item, models.User):
+                    UserRecordingAccessFactory(recording=self, user=item)
+                else:
+                    UserRecordingAccessFactory(
+                        recording=self, user=item[0], role=item[1]
+                    )
+
+
+class UserRecordingAccessFactory(factory.django.DjangoModelFactory):
+    """Create fake recording user accesses for testing."""
+
+    class Meta:
+        model = models.RecordingAccess
+
+    recording = factory.SubFactory(RecordingFactory)
+    user = factory.SubFactory(UserFactory)
+    role = factory.fuzzy.FuzzyChoice(models.RoleChoices.values)
+
+
+class TeamRecordingAccessFactory(factory.django.DjangoModelFactory):
+    """Create fake recording team accesses for testing."""
+
+    class Meta:
+        model = models.RecordingAccess
+
+    recording = factory.SubFactory(RecordingFactory)
+    team = factory.Sequence(lambda n: f"team{n}")
+    role = factory.fuzzy.FuzzyChoice(models.RoleChoices.values)
