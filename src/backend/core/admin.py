@@ -77,3 +77,18 @@ class RoomAdmin(admin.ModelAdmin):
     """Room admin interface declaration."""
 
     inlines = (ResourceAccessInline,)
+
+
+class RecordingAccessInline(admin.TabularInline):
+    """Inline admin class for recording accesses."""
+
+    model = models.RecordingAccess
+    extra = 0
+
+
+@admin.register(models.Recording)
+class RecordingAdmin(admin.ModelAdmin):
+    """Recording admin interface declaration."""
+
+    inlines = (RecordingAccessInline,)
+    list_display = ("id", "status", "room", "created_at", "worker_id")
