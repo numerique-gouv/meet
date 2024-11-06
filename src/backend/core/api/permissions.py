@@ -65,14 +65,10 @@ class RoomPermissions(permissions.BasePermission):
         return obj.is_administrator(user)
 
 
-class ResourceAccessPermission(permissions.BasePermission):
+class ResourceAccessPermission(IsAuthenticated):
     """
     Permissions for a room that can only be updated by room administrators.
     """
-
-    def has_permission(self, request, view):
-        """Only allow authenticated users."""
-        return request.user.is_authenticated
 
     def has_object_permission(self, request, view, obj):
         """
@@ -83,3 +79,14 @@ class ResourceAccessPermission(permissions.BasePermission):
             return obj.user == user
 
         return obj.resource.is_administrator(user)
+
+
+class HasAbilityPermission(permissions.BasePermission):
+    """Permission class for access objects."""
+
+    def has_permission(self, request, view):
+        return request.user.is_authenticated
+
+    def has_object_permission(self, request, view, obj):
+        """Check permission for a given object."""
+        return obj.get_abilities(request.user).get(view.action, False)

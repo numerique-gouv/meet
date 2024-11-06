@@ -87,6 +87,15 @@ class NestedResourceAccessSerializer(ResourceAccessSerializer):
     user = UserSerializer(read_only=True)
 
 
+class ListRoomSerializer(serializers.ModelSerializer):
+    """Serialize Room model for a list API endpoint."""
+
+    class Meta:
+        model = models.Room
+        fields = ["id", "name", "slug", "is_public"]
+        read_only_fields = ["id", "slug"]
+
+
 class RoomSerializer(serializers.ModelSerializer):
     """Serialize Room model for the API."""
 
@@ -136,3 +145,14 @@ class RoomSerializer(serializers.ModelSerializer):
         output["is_administrable"] = is_admin
 
         return output
+
+
+class RecordingSerializer(serializers.ModelSerializer):
+    """Serialize Recording for the API."""
+
+    room = ListRoomSerializer(read_only=True)
+
+    class Meta:
+        model = models.Recording
+        fields = ["id", "room", "created_at", "updated_at", "status"]
+        read_only_fields = fields
