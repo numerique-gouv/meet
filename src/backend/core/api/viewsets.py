@@ -277,3 +277,27 @@ class ResourceAccessViewSet(
     permission_classes = [permissions.ResourceAccessPermission]
     queryset = models.ResourceAccess.objects.all()
     serializer_class = serializers.ResourceAccessSerializer
+
+
+class RecordingViewSet(
+    mixins.DestroyModelMixin,
+    mixins.ListModelMixin,
+    viewsets.GenericViewSet,
+):
+    """
+    API endpoints to access and perform actions on recordings.
+    """
+
+    pagination_class = Pagination
+    permission_classes = [permissions.HasAbilityPermission]
+    queryset = models.Recording.objects.all()
+    serializer_class = serializers.RecordingSerializer
+
+    def get_queryset(self):
+        """Restrict recordings to the user's ones."""
+        user = self.request.user
+        return (
+            super()
+            .get_queryset()
+            .filter(Q(accesses__user=user) | Q(accesses__team__in=user.get_teams()))
+        )
