@@ -406,6 +406,14 @@ class Base(Configuration):
         True, environ_name="ALLOW_UNREGISTERED_ROOMS", environ_prefix=None
     )
 
+    # Recording settings
+    RECORDING_OUTPUT_FOLDER = values.Value(
+        "recordings", environ_name="RECORDING_OUTPUT_FOLDER", environ_prefix=None
+    )
+    RECORDING_VERIFY_SSL = values.BooleanValue(
+        True, environ_name="RECORDING_VERIFY_SSL", environ_prefix=None
+    )
+
     # pylint: disable=invalid-name
     @property
     def ENVIRONMENT(self):
