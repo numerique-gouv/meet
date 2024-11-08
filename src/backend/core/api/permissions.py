@@ -1,5 +1,7 @@
 """Permission handlers for the Meet core app."""
 
+from django.conf import settings
+
 from rest_framework import permissions
 
 from ..models import RoleChoices
@@ -87,3 +89,23 @@ class HasAbilityPermission(IsAuthenticated):
     def has_object_permission(self, request, view, obj):
         """Check permission for a given object."""
         return obj.get_abilities(request.user).get(view.action, False)
+
+
+class HasPrivilegesOnRoom(IsAuthenticated):
+    """Check if user has privileges on a given room."""
+
+    message = "You must have privileges to start a recording."
+
+    def has_object_permission(self, request, view, obj):
+        """Determine if user has privileges on room."""
+        return obj.is_owner(request.user) or obj.is_administrator(request.user)
+
+
+class IsRecordingEnabled(permissions.BasePermission):
+    """Check if the recording feature is enabled."""
+
+    message = "Access denied, recording is disabled."
+
+    def has_permission(self, request, view):
+        """Determine if access is allowed based on settings."""
+        return settings.RECORDING_ENABLE

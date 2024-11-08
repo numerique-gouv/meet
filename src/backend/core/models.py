@@ -72,6 +72,13 @@ class RecordingStatusChoices(models.TextChoices):
         return status in {cls.ABORTED, cls.FAILED_TO_START, cls.FAILED_TO_STOP}
 
 
+class RecordingModeChoices(models.TextChoices):
+    """Recording mode choices."""
+
+    SCREEN_RECORDING = "screen_recording", _("SCREEN_RECORDING")
+    TRANSCRIPT = "transcript", _("TRANSCRIPT")
+
+
 class BaseModel(models.Model):
     """
     Serves as an abstract base model for other models, ensuring that records are validated
@@ -481,6 +488,13 @@ class Recording(BaseModel):
             "Enter an identifier for the worker recording."
             "This ID is retained even when the worker stops, allowing for easy tracking."
         ),
+    )
+    mode = models.CharField(
+        max_length=20,
+        choices=RecordingModeChoices.choices,
+        default=RecordingModeChoices.SCREEN_RECORDING,
+        verbose_name=_("Recording mode"),
+        help_text=_("Defines the mode of recording being called."),
     )
 
     class Meta:

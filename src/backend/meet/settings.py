@@ -407,11 +407,22 @@ class Base(Configuration):
     )
 
     # Recording settings
+    RECORDING_ENABLE = values.BooleanValue(
+        False, environ_name="RECORDING_ENABLE", environ_prefix=None
+    )
     RECORDING_OUTPUT_FOLDER = values.Value(
         "recordings", environ_name="RECORDING_OUTPUT_FOLDER", environ_prefix=None
     )
     RECORDING_VERIFY_SSL = values.BooleanValue(
         True, environ_name="RECORDING_VERIFY_SSL", environ_prefix=None
+    )
+    RECORDING_WORKER_CLASSES = values.DictValue(
+        {
+            "screen_recording": "core.recording.worker.services.VideoCompositeEgressService",
+            "transcript": "core.recording.worker.services.AudioCompositeEgressService",
+        },
+        environ_name="RECORDING_WORKER_CLASSES",
+        environ_prefix=None,
     )
 
     # pylint: disable=invalid-name
