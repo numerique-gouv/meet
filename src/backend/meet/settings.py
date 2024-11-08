@@ -424,6 +424,14 @@ class Base(Configuration):
         environ_name="RECORDING_WORKER_CLASSES",
         environ_prefix=None,
     )
+    RECORDING_EVENT_PARSER_CLASS = values.Value(
+        "core.recording.event.parsers.MinioParser",
+        environ_name="RECORDING_EVENT_PARSER_CLASS",
+        environ_prefix=None,
+    )
+    RECORDING_ENABLE_STORAGE_EVENT_AUTH = values.BooleanValue(
+        True, environ_name="RECORDING_ENABLE_STORAGE_EVENT_AUTH", environ_prefix=None
+    )
 
     # pylint: disable=invalid-name
     @property
