@@ -156,3 +156,25 @@ class RecordingSerializer(serializers.ModelSerializer):
         model = models.Recording
         fields = ["id", "room", "created_at", "updated_at", "status"]
         read_only_fields = fields
+
+
+class StartRecordingSerializer(serializers.Serializer):
+    """Validate start recording requests."""
+
+    mode = serializers.ChoiceField(
+        choices=models.RecordingModeChoices.choices,
+        required=True,
+        error_messages={
+            "required": "Recording mode is required.",
+            "invalid_choice": "Invalid recording mode. Choose between "
+            "screen_recording or transcript.",
+        },
+    )
+
+    def create(self, validated_data):
+        """Not implemented as this is a validation-only serializer."""
+        raise NotImplementedError("StartRecordingSerializer is validation-only")
+
+    def update(self, instance, validated_data):
+        """Not implemented as this is a validation-only serializer."""
+        raise NotImplementedError("StartRecordingSerializer is validation-only")

@@ -75,6 +75,7 @@ class RecordingFactory(factory.django.DjangoModelFactory):
 
     room = factory.SubFactory(RoomFactory)
     status = models.RecordingStatusChoices.INITIATED
+    mode = models.RecordingModeChoices.SCREEN_RECORDING
     worker_id = None
 
     @factory.post_generation

@@ -1,6 +1,7 @@
 """API endpoints"""
 
 import uuid
+from logging import getLogger
 
 from django.conf import settings
 from django.db.models import Q
@@ -15,14 +16,32 @@ from rest_framework import (
     viewsets,
 )
 from rest_framework import (
+    exceptions as drf_exceptions,
+)
+from rest_framework import (
     response as drf_response,
+)
+from rest_framework import (
+    status as drf_status,
 )
 
 from core import models, utils
+from core.recording.worker.exceptions import (
+    RecordingStartError,
+    RecordingStopError,
+)
+from core.recording.worker.factories import (
+    get_worker_service,
+)
+from core.recording.worker.mediator import (
+    WorkerServiceMediator,
+)
 
 from . import permissions, serializers
 
 # pylint: disable=too-many-ancestors
+
+logger = getLogger(__name__)
 
 
 class NestedGenericViewSet(viewsets.GenericViewSet):
@@ -231,6 +250,89 @@ class RoomViewSet(
             resource=room,
             user=self.request.user,
             role=models.RoleChoices.OWNER,
+        )
+
+    @decorators.action(
+        detail=True,
+        methods=["post"],
+        url_path="start-recording",
+        permission_classes=[
+            permissions.HasPrivilegesOnRoom,
+            permissions.IsRecordingEnabled,
+        ],
+    )
+    def start_room_recording(self, request, pk=None):  # pylint: disable=unused-argument
+        """Start recording a room."""
+
+        serializer = serializers.StartRecordingSerializer(data=request.data)
+
+        if not serializer.is_valid():
+            return drf_response.Response(
+                {"detail": "Invalid request."}, status=drf_status.HTTP_400_BAD_REQUEST
+            )
+
+        mode = serializer.validated_data["mode"]
+        room = self.get_object()
+
+        # May raise exception if an active or initiated recording already exist for the room
+        recording = models.Recording.objects.create(room=room, mode=mode)
+
+        models.RecordingAccess.objects.create(
+            user=self.request.user, role=models.RoleChoices.OWNER, recording=recording
+        )
+
+        worker_service = get_worker_service(mode=recording.mode)
+        worker_manager = WorkerServiceMediator(worker_service=worker_service)
+
+        try:
+            worker_manager.start(recording)
+        except RecordingStartError:
+            return drf_response.Response(
+                {"error": f"Recording failed to start for room {room.slug}"},
+                status=drf_status.HTTP_500_INTERNAL_SERVER_ERROR,
+            )
+
+        return drf_response.Response(
+            {"message": f"Recording successfully started for room {room.slug}"},
+            status=drf_status.HTTP_201_CREATED,
+        )
+
+    @decorators.action(
+        detail=True,
+        methods=["post"],
+        url_path="stop-recording",
+        permission_classes=[
+            permissions.HasPrivilegesOnRoom,
+            permissions.IsRecordingEnabled,
+        ],
+    )
+    def stop_room_recording(self, request, pk=None):  # pylint: disable=unused-argument
+        """Stop room recording."""
+
+        room = self.get_object()
+
+        try:
+            recording = models.Recording.objects.get(
+                room=room, status=models.RecordingStatusChoices.ACTIVE
+            )
+        except models.Recording.DoesNotExist as e:
+            raise drf_exceptions.NotFound(
+                "No active recording found for this room."
+            ) from e
+
+        worker_service = get_worker_service(mode=recording.mode)
+        worker_manager = WorkerServiceMediator(worker_service=worker_service)
+
+        try:
+            worker_manager.stop(recording)
+        except RecordingStopError:
+            return drf_response.Response(
+                {"error": f"Recording failed to stop for room {room.slug}"},
+                status=drf_status.HTTP_500_INTERNAL_SERVER_ERROR,
+            )
+
+        return drf_response.Response(
+            {"message": f"Recording stopped for room {room.slug}."}
         )
 
 
