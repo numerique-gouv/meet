@@ -26,6 +26,13 @@ from rest_framework import (
 )
 
 from core import models, utils
+from core.recording.event.authentication import StorageEventAuthentication
+from core.recording.event.exceptions import (
+    InvalidBucketError,
+    InvalidFileTypeError,
+    ParsingEventDataError,
+)
+from core.recording.event.parsers import get_parser
 from core.recording.worker.exceptions import (
     RecordingStartError,
     RecordingStopError,
@@ -402,4 +409,48 @@ class RecordingViewSet(
             super()
             .get_queryset()
             .filter(Q(accesses__user=user) | Q(accesses__team__in=user.get_teams()))
+        )
+
+    @decorators.action(
+        detail=False,
+        methods=["post"],
+        url_path="storage-hook",
+        authentication_classes=[StorageEventAuthentication],
+        permission_classes=[permissions.IsStorageEventEnabled],
+    )
+    def on_storage_event_received(self, request, pk=None):  # pylint: disable=unused-argument
+        """Handle incoming storage hook events for recordings."""
+
+        parser = get_parser()
+
+        try:
+            recording_id = parser.get_recording_id(request.data)
+
+        except ParsingEventDataError as e:
+            raise drf_exceptions.PermissionDenied(f"Invalid request data: {e}") from e
+
+        except InvalidBucketError as e:
+            raise drf_exceptions.PermissionDenied("Invalid bucket specified") from e
+
+        except InvalidFileTypeError as e:
+            return drf_response.Response(
+                {"message": f"Ignore this file type, {e}"},
+            )
+
+        try:
+            recording = models.Recording.objects.get(id=recording_id)
+        except models.Recording.DoesNotExist as e:
+            raise drf_exceptions.NotFound("No recording found for this event.") from e
+
+        if not recording.is_savable():
+            raise drf_exceptions.PermissionDenied(
+                f"Recording with ID {recording_id} cannot be saved because it is either,"
+                " in an error state or has already been saved."
+            )
+
+        recording.status = models.RecordingStatusChoices.SAVED
+        recording.save()
+
+        return drf_response.Response(
+            {"message": "Event processed."},
         )

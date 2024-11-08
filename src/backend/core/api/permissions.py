@@ -109,3 +109,13 @@ class IsRecordingEnabled(permissions.BasePermission):
     def has_permission(self, request, view):
         """Determine if access is allowed based on settings."""
         return settings.RECORDING_ENABLE
+
+
+class IsStorageEventEnabled(permissions.BasePermission):
+    """Check if the storage event feature is enabled."""
+
+    message = "Access denied, storage event is disabled."
+
+    def has_permission(self, request, view):
+        """Determine if access is allowed based on settings."""
+        return settings.RECORDING_STORAGE_EVENT_ENABLE

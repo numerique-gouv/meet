@@ -50,6 +50,9 @@ class StorageEventAuthentication(BaseAuthentication):
         if not settings.RECORDING_ENABLE_STORAGE_EVENT_AUTH:
             return MachineUser(), None
 
+        if not settings.RECORDING_ENABLE_STORAGE_EVENT_AUTH:
+            return MachineUser(), None
+
         required_token = settings.RECORDING_STORAGE_EVENT_TOKEN
         if not required_token:
             if settings.RECORDING_ENABLE_STORAGE_EVENT_AUTH:
