@@ -540,10 +540,10 @@ class Recording(BaseModel):
     def is_savable(self) -> bool:
         """Determine if the recording can be saved based on its current status."""
 
-        is_unsuccessful = RecordingStatusChoices.is_unsuccessful(self.status)
-        is_already_saved = self.status == RecordingStatusChoices.SAVED
-
-        return not is_unsuccessful and not is_already_saved
+        return self.status in {
+            RecordingStatusChoices.ACTIVE,
+            RecordingStatusChoices.STOPPED,
+        }
 
 
 class RecordingAccess(BaseAccess):

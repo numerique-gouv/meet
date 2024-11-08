@@ -173,6 +173,12 @@ def test_models_recording_is_savable_already_saved():
     assert recording.is_savable() is False
 
 
+def test_models_recording_is_savable_only_initiated():
+    """Test is_savable for only initiated recording."""
+    recording = RecordingFactory(status=RecordingStatusChoices.INITIATED)
+    assert recording.is_savable() is False
+
+
 # Test few corner cases
 
 
