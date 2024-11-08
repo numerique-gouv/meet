@@ -432,6 +432,12 @@ class Base(Configuration):
     RECORDING_ENABLE_STORAGE_EVENT_AUTH = values.BooleanValue(
         True, environ_name="RECORDING_ENABLE_STORAGE_EVENT_AUTH", environ_prefix=None
     )
+    RECORDING_STORAGE_EVENT_ENABLE = values.BooleanValue(
+        False, environ_name="RECORDING_STORAGE_EVENT_ENABLE", environ_prefix=None
+    )
+    RECORDING_STORAGE_EVENT_TOKEN = values.Value(
+        None, environ_name="RECORDING_STORAGE_HOOK_TOKEN", environ_prefix=None
+    )
 
     # pylint: disable=invalid-name
     @property
