@@ -19,7 +19,7 @@ export const Join = ({
           micLabel={t('join.audioinput.label')}
           camLabel={t('join.videoinput.label')}
           joinLabel={t('join.joinLabel')}
-          userLabel={t('join.userLabel')}
+          userLabel={t('join.usernameLabel')}
         />
       </CenteredContent>
     </Screen>
