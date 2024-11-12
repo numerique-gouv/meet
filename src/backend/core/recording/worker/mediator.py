@@ -41,13 +41,11 @@ class WorkerServiceMediator:
             RecordingStartError: If there is an error starting the recording.
         """
 
-        # FIXME - no manipulations of room_name should be required
-        room_name = f"{recording.room.id!s}".replace("-", "")
-
         if recording.status != RecordingStatusChoices.INITIATED:
             logger.error("Cannot start recording in %s status.", recording.status)
             raise RecordingStartError()
 
+        room_name = str(recording.room.id)
         try:
             worker_id = self._worker_service.start(room_name, recording.id)
         except (WorkerRequestError, WorkerConnectionError, WorkerResponseError) as e:

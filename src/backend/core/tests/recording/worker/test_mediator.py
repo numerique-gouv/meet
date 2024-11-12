@@ -45,7 +45,7 @@ def test_start_recording_success(mediator, mock_worker_service):
     mediator.start(mock_recording)
 
     # Verify worker service call
-    expected_room_name = str(mock_recording.room.id).replace("-", "")
+    expected_room_name = str(mock_recording.room.id)
     mock_worker_service.start.assert_called_once_with(
         expected_room_name, mock_recording.id
     )
