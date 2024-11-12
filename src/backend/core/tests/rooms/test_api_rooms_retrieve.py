@@ -38,7 +38,7 @@ def test_api_rooms_retrieve_anonymous_private_pk():
 def test_api_rooms_retrieve_anonymous_private_pk_no_dashes():
     """It should be possible to get a room by its id stripped of its dashes."""
     room = RoomFactory(is_public=False)
-    id_no_dashes = str(room.id).replace("-", "")
+    id_no_dashes = str(room.id)
 
     client = APIClient()
     response = client.get(f"/api/v1.0/rooms/{id_no_dashes:s}/")
@@ -178,7 +178,7 @@ def test_api_rooms_retrieve_anonymous_public(mock_token):
     response = client.get(f"/api/v1.0/rooms/{room.id!s}/")
 
     assert response.status_code == 200
-    expected_name = f"{room.id!s}".replace("-", "")
+    expected_name = f"{room.id!s}"
     assert response.json() == {
         "id": str(room.id),
         "is_administrable": False,
@@ -220,7 +220,7 @@ def test_api_rooms_retrieve_authenticated_public(mock_token):
     )
     assert response.status_code == 200
 
-    expected_name = f"{room.id!s}".replace("-", "")
+    expected_name = f"{room.id!s}"
     assert response.json() == {
         "id": str(room.id),
         "is_administrable": False,
@@ -318,7 +318,7 @@ def test_api_rooms_retrieve_members(mock_token, django_assert_num_queries):
         key=lambda x: x["id"],
     )
 
-    expected_name = str(room.id).replace("-", "")
+    expected_name = str(room.id)
     assert content_dict == {
         "id": str(room.id),
         "is_administrable": False,
@@ -390,7 +390,7 @@ def test_api_rooms_retrieve_administrators(mock_token, django_assert_num_queries
         ],
         key=lambda x: x["id"],
     )
-    expected_name = str(room.id).replace("-", "")
+    expected_name = str(room.id)
     assert content_dict == {
         "id": str(room.id),
         "is_administrable": True,
