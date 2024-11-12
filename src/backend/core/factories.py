@@ -32,6 +32,7 @@ class ResourceFactory(factory.django.DjangoModelFactory):
 
     class Meta:
         model = models.Resource
+        skip_postgeneration_save = True
 
     is_public = factory.Faker("boolean", chance_of_getting_true=50)
 
@@ -44,6 +45,8 @@ class ResourceFactory(factory.django.DjangoModelFactory):
                     UserResourceAccessFactory(resource=self, user=item)
                 else:
                     UserResourceAccessFactory(resource=self, user=item[0], role=item[1])
+
+        self.save()
 
 
 class UserResourceAccessFactory(factory.django.DjangoModelFactory):
@@ -72,6 +75,7 @@ class RecordingFactory(factory.django.DjangoModelFactory):
 
     class Meta:
         model = models.Recording
+        skip_postgeneration_save = True
 
     room = factory.SubFactory(RoomFactory)
     status = models.RecordingStatusChoices.INITIATED
@@ -89,6 +93,8 @@ class RecordingFactory(factory.django.DjangoModelFactory):
                     UserRecordingAccessFactory(
                         recording=self, user=item[0], role=item[1]
                     )
+
+            self.save()
 
 
 class UserRecordingAccessFactory(factory.django.DjangoModelFactory):
