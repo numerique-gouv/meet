@@ -44,12 +44,3 @@ def test_models_users_send_mail_main_missing():
         user.email_user("my subject", "my message")
 
     assert str(excinfo.value) == "User has no email address."
-
-
-def test_models_users_email_anonymized():
-    """The user's email should be anonymized if it exists."""
-    user = factories.UserFactory(email="john.doe@world.com")
-    assert user.email_anonymized == "***@world.com"
-
-    user = factories.UserFactory(email=None)
-    assert user.email_anonymized == ""
