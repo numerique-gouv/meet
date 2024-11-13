@@ -390,6 +390,16 @@ class Base(Configuration):
     OIDC_REDIRECT_FIELD_NAME = values.Value(
         "returnTo", environ_name="OIDC_REDIRECT_FIELD_NAME", environ_prefix=None
     )
+    OIDC_USERINFO_FULLNAME_FIELDS = values.ListValue(
+        default=["first_name", "last_name"],
+        environ_name="OIDC_USERINFO_FULLNAME_FIELDS",
+        environ_prefix=None,
+    )
+    OIDC_USERINFO_SHORTNAME_FIELD = values.Value(
+        default="first_name",
+        environ_name="OIDC_USERINFO_SHORTNAME_FIELD",
+        environ_prefix=None,
+    )
 
     # Video conference configuration
     LIVEKIT_CONFIGURATION = {
