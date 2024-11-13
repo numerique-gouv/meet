@@ -2,6 +2,12 @@ import { fetchApi } from './fetchApi'
 import { keys } from './queryKeys'
 import { useQuery } from '@tanstack/react-query'
 
+// todo - refactor it in a proper place
+export enum RecordingMode {
+  Transcript = 'transcript',
+  ScreenRecording = 'screen_recording',
+}
+
 export interface ApiConfig {
   analytics?: {
     id: string
@@ -11,6 +17,10 @@ export interface ApiConfig {
     id: string
   }
   silence_livekit_debug_logs?: boolean
+  recording?: {
+    is_enabled?: boolean
+    available_modes?: RecordingMode[]
+  }
 }
 
 const fetchConfig = (): Promise<ApiConfig> => {
