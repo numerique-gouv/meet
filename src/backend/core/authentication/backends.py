@@ -75,17 +75,24 @@ class OIDCAuthenticationBackend(MozillaOIDCAuthenticationBackend):
         email = user_info.get("email")
         user = self.get_existing_user(sub, email)
 
+        claims = {
+            "email": email,
+            "full_name": self.compute_full_name(user_info),
+            "short_name": user_info.get(settings.OIDC_USERINFO_SHORTNAME_FIELD),
+        }
         if not user and self.get_settings("OIDC_CREATE_USER", True):
             user = User.objects.create(
                 sub=sub,
-                email=email,
                 password="!",  # noqa: S106
+                **claims,
             )
         elif not user:
             return None
 
         if not user.is_active:
             raise SuspiciousOperation(_("User account is disabled"))
+
+        self.update_user_if_needed(user, claims)
 
         return user
 
@@ -104,3 +111,32 @@ class OIDCAuthenticationBackend(MozillaOIDCAuthenticationBackend):
                         _("Multiple user accounts share a common email.")
                     ) from e
         return None
+
+    @staticmethod
+    def compute_full_name(user_info):
+        """Compute user's full name based on OIDC fields in settings."""
+        full_name = " ".join(
+            filter(
+                None,
+                (
+                    user_info.get(field)
+                    for field in settings.OIDC_USERINFO_FULLNAME_FIELDS
+                ),
+            )
+        )
+        return full_name or None
+
+    @staticmethod
+    def update_user_if_needed(user, claims):
+        """Update user claims if they have changed."""
+        user_fields = vars(user.__class__)  # Get available model fields
+        updated_claims = {
+            key: value
+            for key, value in claims.items()
+            if value and key in user_fields and value != getattr(user, key)
+        }
+
+        if not updated_claims:
+            return
+
+        User.objects.filter(sub=user.sub).update(**updated_claims)

@@ -85,6 +85,32 @@ def test_authentication_getter_new_user_with_email(monkeypatch):
     assert models.User.objects.count() == 1
 
 
+@pytest.mark.parametrize("email", [None, "johndoe@foo.com"])
+def test_authentication_getter_new_user_with_names(monkeypatch, email):
+    """
+    If no user matches, a user should be created.
+    User's info contains name-related field, created user's full and short names should be filled,
+    whether the email is filled
+    """
+    klass = OIDCAuthenticationBackend()
+
+    def get_userinfo_mocked(*args):
+        return {"sub": "123", "first_name": "John", "last_name": "Doe", "email": email}
+
+    monkeypatch.setattr(OIDCAuthenticationBackend, "get_userinfo", get_userinfo_mocked)
+
+    user = klass.get_or_create_user(
+        access_token="test-token", id_token=None, payload=None
+    )
+
+    assert user.sub == "123"
+    assert user.email == email
+    assert user.full_name == "John Doe"
+    assert user.short_name == "John"
+    assert user.password == "!"
+    assert models.User.objects.count() == 1
+
+
 def test_models_oidc_user_getter_invalid_token(django_assert_num_queries, monkeypatch):
     """The user's info doesn't contain a sub."""
     klass = OIDCAuthenticationBackend()
@@ -286,3 +312,103 @@ def test_authentication_getter_existing_user_email_tricky(email, monkeypatch, se
     )
 
     assert user != db_user
+
+
+@pytest.mark.parametrize(
+    "first_name, last_name, email",
+    [
+        ("Jack", "Doe", "john.doe@example.com"),
+        ("John", "Duy", "john.doe@example.com"),
+        ("John", "Doe", "jack.duy@example.com"),
+        ("Jack", "Duy", "jack.duy@example.com"),
+    ],
+)
+def test_authentication_getter_existing_user_change_fields(
+    first_name, last_name, email, django_assert_num_queries, monkeypatch
+):
+    """It should update the email or name fields on the user when they change."""
+
+    klass = OIDCAuthenticationBackend()
+    user = UserFactory(
+        full_name="John Doe", short_name="John", email="john.doe@example.com"
+    )
+
+    def get_userinfo_mocked(*args):
+        return {
+            "sub": user.sub,
+            "email": email,
+            "first_name": first_name,
+            "last_name": last_name,
+        }
+
+    monkeypatch.setattr(OIDCAuthenticationBackend, "get_userinfo", get_userinfo_mocked)
+
+    # One and only one additional update query when a field has changed
+    with django_assert_num_queries(2):
+        authenticated_user = klass.get_or_create_user(
+            access_token="test-token", id_token=None, payload=None
+        )
+
+    assert user == authenticated_user
+    user.refresh_from_db()
+    assert user.email == email
+    assert user.full_name == f"{first_name:s} {last_name:s}"
+    assert user.short_name == first_name
+
+
+@pytest.mark.parametrize(
+    "user_info, expected_name",
+    [
+        ({"given_name": "John", "family_name": "Doe"}, "John Doe"),
+        (
+            {"given_name": "John", "middle_name": "M", "family_name": "Doe"},
+            "John M Doe",
+        ),
+        ({"family_name": "Doe"}, "Doe"),
+        ({"given_name": "", "family_name": ""}, None),
+        ({}, None),
+    ],
+)
+def test_compute_full_name(user_info, expected_name, settings):
+    """Test full name computation from OIDC user info fields."""
+    settings.OIDC_USERINFO_FULLNAME_FIELDS = [
+        "given_name",
+        "middle_name",
+        "family_name",
+    ]
+    klass = OIDCAuthenticationBackend()
+    assert klass.compute_full_name(user_info) == expected_name
+
+
+def test_compute_full_name_no_fields(settings):
+    """Test full name computation with empty field configuration."""
+    settings.OIDC_USERINFO_FULLNAME_FIELDS = []
+    klass = OIDCAuthenticationBackend()
+    assert klass.compute_full_name({"given_name": "John"}) is None
+
+
+@pytest.mark.parametrize(
+    "claims",
+    [
+        {"email": "john.doe@example.com"},  # Same data - no change needed
+        {"email": ""},  # Empty strings should not override
+        {"non_related_field": "foo"},  # Unrelated fields should be ignored
+        {},  # Empty claims should not affect user
+        {"email": None},  # None values should be ignored
+    ],
+)
+def test_update_user_when_no_update_needed(django_assert_num_queries, claims):
+    """Test that user attributes remain unchanged when claims don't require updates."""
+
+    user = UserFactory(
+        full_name="John Doe", short_name="John", email="john.doe@example.com"
+    )
+
+    klass = OIDCAuthenticationBackend()
+
+    with django_assert_num_queries(0):
+        klass.update_user_if_needed(user, claims)
+
+    user.refresh_from_db()
+
+    assert user.email == "john.doe@example.com"
