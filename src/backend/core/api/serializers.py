@@ -14,8 +14,8 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.User
-        fields = ["id", "email"]
-        read_only_fields = ["id", "email"]
+        fields = ["id", "email", "full_name", "short_name"]
+        read_only_fields = ["id", "email", "full_name", "short_name"]
 
 
 class ResourceAccessSerializerMixin:
