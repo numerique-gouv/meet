@@ -37,6 +37,10 @@ def get_frontend_configuration(request):
     """Returns the frontend configuration dict as configured in settings."""
     frontend_configuration = {
         "LANGUAGE_CODE": settings.LANGUAGE_CODE,
+        "recording": {
+            "is_enabled": settings.RECORDING_ENABLE,
+            "available_modes": settings.RECORDING_WORKER_CLASSES.keys(),
+        },
     }
     frontend_configuration.update(settings.FRONTEND_CONFIGURATION)
     return Response(frontend_configuration)
