@@ -62,15 +62,14 @@ def test_authentication_getter_new_user_no_email(monkeypatch):
 def test_authentication_getter_new_user_with_email(monkeypatch):
     """
     If no user matches, a user should be created.
-    User's email and name should be set on the identity.
-    The "email" field on the User model should not be set as it is reserved for staff users.
+    User's info contains an email, created user's email should be filled.
     """
     klass = OIDCAuthenticationBackend()
 
     email = "meet@example.com"
 
     def get_userinfo_mocked(*args):
-        return {"sub": "123", "email": email, "first_name": "John", "last_name": "Doe"}
+        return {"sub": "123", "email": email}
 
     monkeypatch.setattr(OIDCAuthenticationBackend, "get_userinfo", get_userinfo_mocked)
 
@@ -80,6 +79,8 @@ def test_authentication_getter_new_user_with_email(monkeypatch):
 
     assert user.sub == "123"
     assert user.email == email
+    assert user.full_name is None
+    assert user.short_name is None
     assert user.password == "!"
     assert models.User.objects.count() == 1
 
