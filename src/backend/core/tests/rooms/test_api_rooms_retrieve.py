@@ -301,6 +301,8 @@ def test_api_rooms_retrieve_members(mock_token, django_assert_num_queries):
                 "user": {
                     "id": str(user_access.user.id),
                     "email": user_access.user.email,
+                    "full_name": user_access.user.full_name,
+                    "short_name": user_access.user.short_name,
                 },
                 "resource": str(room.id),
                 "role": user_access.role,
@@ -310,6 +312,8 @@ def test_api_rooms_retrieve_members(mock_token, django_assert_num_queries):
                 "user": {
                     "id": str(other_user_access.user.id),
                     "email": other_user_access.user.email,
+                    "full_name": other_user_access.user.full_name,
+                    "short_name": other_user_access.user.short_name,
                 },
                 "resource": str(room.id),
                 "role": other_user_access.role,
@@ -374,6 +378,8 @@ def test_api_rooms_retrieve_administrators(mock_token, django_assert_num_queries
                 "user": {
                     "id": str(other_user_access.user.id),
                     "email": other_user_access.user.email,
+                    "full_name": other_user_access.user.full_name,
+                    "short_name": other_user_access.user.short_name,
                 },
                 "resource": str(room.id),
                 "role": other_user_access.role,
@@ -383,6 +389,8 @@ def test_api_rooms_retrieve_administrators(mock_token, django_assert_num_queries
                 "user": {
                     "id": str(user_access.user.id),
                     "email": user_access.user.email,
+                    "full_name": user_access.user.full_name,
+                    "short_name": user_access.user.short_name,
                 },
                 "resource": str(room.id),
                 "role": user_access.role,
