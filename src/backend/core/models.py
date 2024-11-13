@@ -145,7 +145,10 @@ class User(AbstractBaseUser, BaseModel, auth_models.PermissionsMixin):
     admin_email = models.EmailField(
         _("admin email address"), unique=True, blank=True, null=True
     )
-
+    full_name = models.CharField(_("full name"), max_length=100, null=True, blank=True)
+    short_name = models.CharField(
+        _("short name"), max_length=100, null=True, blank=True
+    )
     language = models.CharField(
         max_length=10,
         choices=lazy(lambda: settings.LANGUAGES, tuple)(),
