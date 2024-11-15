@@ -48,7 +48,7 @@ export const AccountTab = ({ id, onOpenChange }: AccountTabProps) => {
           <P>
             <Trans
               i18nKey="settings:account.currentlyLoggedAs"
-              values={{ user: user?.email }}
+              values={{ user: user?.full_name || user?.email }}
               components={[<Badge />]}
             />
           </P>
