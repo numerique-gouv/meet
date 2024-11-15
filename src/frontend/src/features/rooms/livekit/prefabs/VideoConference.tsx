@@ -149,7 +149,13 @@ export function VideoConference({ ...props }: VideoConferenceProps) {
   const { isSidePanelOpen } = useSidePanel()
 
   return (
-    <div className="lk-video-conference" {...props}>
+    <div
+      className="lk-video-conference"
+      {...props}
+      style={{
+        overflowX: 'hidden',
+      }}
+    >
       {isWeb() && (
         <LayoutContextProvider
           value={layoutContext}
