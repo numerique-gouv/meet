@@ -24,7 +24,7 @@ backend:
     OIDC_RP_CLIENT_ID: {{ .Values.oidc.clientId }}
     OIDC_RP_CLIENT_SECRET: {{ .Values.oidc.clientSecret }}
     OIDC_RP_SIGN_ALGO: RS256
-    OIDC_RP_SCOPES: "openid email"
+    OIDC_RP_SCOPES: "openid email given_name usual_name"
     OIDC_REDIRECT_ALLOWED_HOSTS: https://meet.127.0.0.1.nip.io
     OIDC_AUTH_REQUEST_EXTRA_PARAMS: "{'acr_values': 'eidas1'}"
     LOGIN_REDIRECT_URL: https://meet.127.0.0.1.nip.io

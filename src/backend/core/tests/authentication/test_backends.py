@@ -95,7 +95,7 @@ def test_authentication_getter_new_user_with_names(monkeypatch, email):
     klass = OIDCAuthenticationBackend()
 
     def get_userinfo_mocked(*args):
-        return {"sub": "123", "first_name": "John", "last_name": "Doe", "email": email}
+        return {"sub": "123", "given_name": "John", "usual_name": "Doe", "email": email}
 
     monkeypatch.setattr(OIDCAuthenticationBackend, "get_userinfo", get_userinfo_mocked)
 
@@ -315,7 +315,7 @@ def test_authentication_getter_existing_user_email_tricky(email, monkeypatch, se
 
 
 @pytest.mark.parametrize(
-    "first_name, last_name, email",
+    "given_name, usual_name, email",
     [
         ("Jack", "Doe", "john.doe@example.com"),
         ("John", "Duy", "john.doe@example.com"),
@@ -324,7 +324,7 @@ def test_authentication_getter_existing_user_email_tricky(email, monkeypatch, se
     ],
 )
 def test_authentication_getter_existing_user_change_fields(
-    first_name, last_name, email, django_assert_num_queries, monkeypatch
+    given_name, usual_name, email, django_assert_num_queries, monkeypatch
 ):
     """It should update the email or name fields on the user when they change."""
 
@@ -337,8 +337,8 @@ def test_authentication_getter_existing_user_change_fields(
         return {
             "sub": user.sub,
             "email": email,
-            "first_name": first_name,
-            "last_name": last_name,
+            "given_name": given_name,
+            "usual_name": usual_name,
         }
 
     monkeypatch.setattr(OIDCAuthenticationBackend, "get_userinfo", get_userinfo_mocked)
@@ -352,8 +352,8 @@ def test_authentication_getter_existing_user_change_fields(
     assert user == authenticated_user
     user.refresh_from_db()
     assert user.email == email
-    assert user.full_name == f"{first_name:s} {last_name:s}"
-    assert user.short_name == first_name
+    assert user.full_name == f"{given_name:s} {usual_name:s}"
+    assert user.short_name == given_name
 
 
 @pytest.mark.parametrize(
