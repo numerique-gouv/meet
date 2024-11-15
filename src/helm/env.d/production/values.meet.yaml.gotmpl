@@ -42,7 +42,7 @@ backend:
         name: backend
         key: OIDC_RP_CLIENT_SECRET
     OIDC_RP_SIGN_ALGO: RS256
-    OIDC_RP_SCOPES: "openid email"
+    OIDC_RP_SCOPES: "openid email given_name usual_name"
     OIDC_REDIRECT_ALLOWED_HOSTS: https://visio.numerique.gouv.fr
     OIDC_AUTH_REQUEST_EXTRA_PARAMS: "{'acr_values': 'eidas1'}"
     LOGIN_REDIRECT_URL: https://visio.numerique.gouv.fr
