@@ -2,6 +2,7 @@ import { useTranslation } from 'react-i18next'
 import { PreJoin, type LocalUserChoices } from '@livekit/components-react'
 import { Screen } from '@/layout/Screen'
 import { CenteredContent } from '@/layout/CenteredContent'
+import { useUser } from '@/features/auth'
 
 export const Join = ({
   onSubmit,
@@ -9,6 +10,7 @@ export const Join = ({
   onSubmit: (choices: LocalUserChoices) => void
 }) => {
   const { t } = useTranslation('rooms')
+  const { user } = useUser()
 
   return (
     <Screen layout="centered">
@@ -20,6 +22,7 @@ export const Join = ({
           camLabel={t('join.videoinput.label')}
           joinLabel={t('join.joinLabel')}
           userLabel={t('join.usernameLabel')}
+          defaults={{ username: user?.full_name }}
         />
       </CenteredContent>
     </Screen>
