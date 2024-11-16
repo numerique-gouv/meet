@@ -23,5 +23,30 @@
     "copy": "",
     "copied": "",
     "permissions": ""
+  },
+  "introSlider": {
+    "previous": {
+      "label": "",
+      "tooltip": ""
+    },
+    "next": {
+      "label": "",
+      "tooltip": ""
+    },
+    "slide1": {
+      "title": "",
+      "body": "",
+      "imgAlt": ""
+    },
+    "slide2": {
+      "title": "",
+      "body": "",
+      "imgAlt": ""
+    },
+    "slide3": {
+      "title": "",
+      "body": "",
+      "imgAlt": ""
+    }
   }
 }
