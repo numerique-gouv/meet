@@ -1,7 +1,7 @@
 {
   "createMeeting": "Créer une réunion",
-  "heading": "Visio",
-  "intro": "Collaborez en toute simplicité, où que vous soyez.",
+  "heading": "Visioconférences simples et sécurisées",
+  "intro": "Communiquez et travaillez en toute simplicité, sans compromis sur votre souveraineté",
   "joinInputError": "Saisissez un lien ou un code de réunion. Exemples :",
   "joinInputExample": "Un code de réunion ressemble à ceci : abc-defg-hij",
   "joinInputLabel": "Lien complet ou code de la réunion",

@@ -1,10 +1,9 @@
 import { useTranslation } from 'react-i18next'
 import { DialogTrigger, MenuItem, Menu as RACMenu } from 'react-aria-components'
-import { Button, Menu, Text } from '@/primitives'
-import { HStack } from '@/styled-system/jsx'
+import { Button, Menu } from '@/primitives'
+import { HStack, styled } from '@/styled-system/jsx'
 import { navigateTo } from '@/navigation/navigateTo'
 import { Screen } from '@/layout/Screen'
-import { Centered } from '@/layout/Centered'
 import { generateRoomId } from '@/features/rooms'
 import { useUser, UserAware } from '@/features/auth'
 import { JoinMeetingDialog } from '../components/JoinMeetingDialog'
@@ -14,7 +13,125 @@ import { usePersistentUserChoices } from '@livekit/components-react'
 import { menuItemRecipe } from '@/primitives/menuItemRecipe'
 import { RiAddLine, RiLink } from '@remixicon/react'
 import { LaterMeetingDialog } from '@/features/home/components/LaterMeetingDialog'
-import { useState } from 'react'
+import { IntroSlider } from '@/features/home/components/IntroSlider'
+import { MoreLink } from '@/features/home/components/MoreLink'
+import { ReactNode, useState } from 'react'
+
+import { css } from '@/styled-system/css'
+
+const Columns = ({ children }: { children?: ReactNode }) => {
+  return (
+    <div
+      className={css({
+        alignItems: 'center',
+        display: 'inline-flex',
+        flexDirection: 'column',
+        height: '100%',
+        minHeight: '100%',
+        justifyContent: 'normal',
+        padding: '0 1rem',
+        width: 'calc(100%-2rem)',
+        lg: {
+          flexDirection: 'row',
+          justifyContent: 'space-evenly',
+          width: '100%',
+          padding: 0,
+        },
+      })}
+    >
+      {children}
+    </div>
+  )
+}
+
+const LeftColumn = ({ children }: { children?: ReactNode }) => {
+  return (
+    <div
+      className={css({
+        alignItems: 'center',
+        textAlign: 'center',
+        display: 'inline-flex',
+        flexDirection: 'column',
+        flexBasis: 'auto',
+        flexShrink: 0,
+        maxWidth: '39rem',
+        width: '100%',
+        padding: '1rem 3%',
+        marginTop: 'auto',
+        lg: {
+          margin: 0,
+          textAlign: 'left',
+          alignItems: 'flex-start',
+          flexShrink: '1',
+          flexBasis: '45rem',
+          maxWidth: '45rem',
+          padding: '1em 3em',
+        },
+      })}
+    >
+      {children}
+    </div>
+  )
+}
+
+const RightColumn = ({ children }: { children?: ReactNode }) => {
+  return (
+    <div
+      className={css({
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        overflow: 'hidden',
+        padding: '1rem 3%',
+        marginBottom: 'auto',
+        flexBasis: 'auto',
+        flexShrink: 0,
+        maxWidth: '39rem',
+        lg: {
+          margin: 0,
+          flexBasis: '45%',
+          padding: '1em 3em',
+        },
+      })}
+    >
+      {children}
+    </div>
+  )
+}
+
+const Separator = styled('div', {
+  base: {
+    borderBottom: '1px solid',
+    borderColor: '#747775',
+    marginTop: '2.5rem',
+    maxWidth: '30rem',
+    width: '100%',
+  },
+})
+
+const Heading = styled('h1', {
+  base: {
+    fontSize: '3rem',
+    lineHeight: '3.2rem',
+    letterSpacing: '0',
+    fontWeight: '500',
+    fontStyle: 'normal',
+    fontStretch: 'normal',
+    fontOpticalSizing: 'auto',
+    marginBottom: 0,
+    paddingBottom: '0.75rem',
+  },
+})
+
+const IntroText = styled('div', {
+  base: {
+    marginBottom: '3rem',
+    fontSize: '1.375rem',
+    lineHeight: '1.8rem',
+    textWrap: 'pretty',
+    maxWidth: '28rem',
+  },
+})
 
 export const Home = () => {
   const { t } = useTranslation('home')
@@ -30,72 +147,83 @@ export const Home = () => {
   return (
     <UserAware>
       <Screen>
-        <Centered width="fit-content">
-          <Text as="h1" variant="display">
-            {t('heading')}
-          </Text>
-          <Text as="p" variant="h3">
-            {t('intro')}
-          </Text>
-          {!isLoggedIn && (
-            <Text margin="sm" variant="note">
-              {t('loginToCreateMeeting')}
-            </Text>
-          )}
-          <HStack gap="gutter" alignItems="start">
-            {isLoggedIn ? (
-              <Menu>
-                <Button variant="primary" data-attr="create-meeting">
-                  {t('createMeeting')}
+        <Columns>
+          <LeftColumn>
+            <Heading>{t('heading')}</Heading>
+            <IntroText>{t('intro')}</IntroText>
+            <HStack gap="gutter" alignItems="start">
+              {isLoggedIn ? (
+                <Menu>
+                  <Button variant="primary" data-attr="create-meeting">
+                    {t('createMeeting')}
+                  </Button>
+                  <RACMenu>
+                    <MenuItem
+                      className={menuItemRecipe({ icon: true })}
+                      onAction={async () => {
+                        const slug = generateRoomId()
+                        createRoom({ slug, username }).then((data) =>
+                          navigateTo('room', data.slug, {
+                            state: { create: true, initialRoomData: data },
+                          })
+                        )
+                      }}
+                      data-attr="create-option-instant"
+                    >
+                      <RiAddLine size={18} />
+                      {t('createMenu.instantOption')}
+                    </MenuItem>
+                    <MenuItem
+                      className={menuItemRecipe({ icon: true })}
+                      onAction={() => {
+                        const slug = generateRoomId()
+                        createRoom({ slug, username }).then((data) =>
+                          setLaterRoomId(data.slug)
+                        )
+                      }}
+                      data-attr="create-option-later"
+                    >
+                      <RiLink size={18} />
+                      {t('createMenu.laterOption')}
+                    </MenuItem>
+                  </RACMenu>
+                </Menu>
+              ) : (
+                <ProConnectButton hint={false} />
+              )}
+              <DialogTrigger>
+                <Button
+                  variant="primary"
+                  outline
+                  style={{
+                    height: !isLoggedIn ? '56px' : undefined, // Temporary, Align with ProConnect Button fixed height
+                  }}
+                >
+                  {t('joinMeeting')}
                 </Button>
-                <RACMenu>
-                  <MenuItem
-                    className={menuItemRecipe({ icon: true })}
-                    onAction={async () => {
-                      const slug = generateRoomId()
-                      createRoom({ slug, username }).then((data) =>
-                        navigateTo('room', data.slug, {
-                          state: { create: true, initialRoomData: data },
-                        })
-                      )
-                    }}
-                    data-attr="create-option-instant"
-                  >
-                    <RiAddLine size={18} />
-                    {t('createMenu.instantOption')}
-                  </MenuItem>
-                  <MenuItem
-                    className={menuItemRecipe({ icon: true })}
-                    onAction={() => {
-                      const slug = generateRoomId()
-                      createRoom({ slug, username }).then((data) =>
-                        setLaterRoomId(data.slug)
-                      )
-                    }}
-                    data-attr="create-option-later"
-                  >
-                    <RiLink size={18} />
-                    {t('createMenu.laterOption')}
-                  </MenuItem>
-                </RACMenu>
-              </Menu>
-            ) : (
-              <ProConnectButton />
-            )}
-            <DialogTrigger>
-              <Button
-                variant="primary"
-                outline
-                style={{
-                  height: !isLoggedIn ? '56px' : undefined, // Temporary, Align with ProConnect Button fixed height
-                }}
-              >
-                {t('joinMeeting')}
-              </Button>
-              <JoinMeetingDialog />
-            </DialogTrigger>
-          </HStack>
-        </Centered>
+                <JoinMeetingDialog />
+              </DialogTrigger>
+            </HStack>
+            <Separator />
+            <div
+              className={css({
+                display: { base: 'none', lg: 'inline' },
+              })}
+            >
+              <MoreLink />
+            </div>
+          </LeftColumn>
+          <RightColumn>
+            <IntroSlider />
+            <div
+              className={css({
+                display: { base: 'inline', lg: 'none' },
+              })}
+            >
+              <MoreLink />
+            </div>
+          </RightColumn>
+        </Columns>
         <LaterMeetingDialog
           roomId={laterRoomId || ''}
           onOpenChange={() => setLaterRoomId(null)}
