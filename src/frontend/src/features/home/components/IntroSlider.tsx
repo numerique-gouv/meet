@@ -113,6 +113,27 @@ const Slide = styled('div', {
   },
 })
 
+const TextAnimation = styled('div', {
+  base: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '0.5rem',
+  },
+  variants: {
+    visible: {
+      true: {
+        opacity: 1,
+        transform: 'none',
+        transition: 'opacity ease-in .3s, transform ease-in .3s',
+      },
+      false: {
+        opacity: 0,
+        transform: 'translateX(-30%)',
+      },
+    },
+  },
+})
+
 type Slide = {
   key: string
   img: string
@@ -166,8 +187,10 @@ export const IntroSlider = () => {
           {SLIDES.map((slide, index) => (
             <Slide visible={index == slideIndex}>
               <Image src={slide.img} alt={t(`${slide.key}.imgAlt`)} />
-              <Heading>{t(`${slide.key}.title`)}</Heading>
-              <Body>{t(`${slide.key}.body`)}</Body>
+              <TextAnimation visible={index == slideIndex}>
+                <Heading>{t(`${slide.key}.title`)}</Heading>
+                <Body>{t(`${slide.key}.body`)}</Body>
+              </TextAnimation>
             </Slide>
           ))}
         </SlideContainer>
