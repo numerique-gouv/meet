@@ -9,7 +9,7 @@ const link = cva({
     borderRadius: 2,
     transition: 'all 0.2s',
     '&[data-hovered]': {
-      textDecoration: 'none',
+      textDecorationThickness: '2px',
     },
     '&[data-pressed]': {
       textDecoration: 'underline',
