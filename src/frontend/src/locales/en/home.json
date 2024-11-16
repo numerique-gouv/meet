@@ -10,6 +10,9 @@
   "joinMeetingTipContent": "You can join a meeting by pasting its full link in the browser's address bar.",
   "joinMeetingTipHeading": "Did you know?",
   "loginToCreateMeeting": "Login to create a meeting",
+  "moreLinkLabel": "Learn more - new tab",
+  "moreLink": "Learn more",
+  "moreAbout": "about Visio",
   "createMenu": {
     "laterOption": "Create a meeting for a later date",
     "instantOption": "Start an instant meeting"

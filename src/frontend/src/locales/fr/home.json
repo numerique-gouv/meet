@@ -10,6 +10,9 @@
   "joinMeetingTipContent": "Vous pouvez rejoindre une réunion en copiant directement son lien complet dans la barre d'adresse du navigateur.",
   "joinMeetingTipHeading": "Astuce",
   "loginToCreateMeeting": "Connectez-vous pour créer une réunion",
+  "moreLinkLabel": "En savoir plus - nouvelle fenêtre",
+  "moreLink": "En savoir plus",
+  "moreAbout": "sur Visio",
   "createMenu": {
     "laterOption": "Créer une réunion pour une date ultérieure",
     "instantOption": "Démarrer une réunion instantanée"
