@@ -22,9 +22,6 @@ export const Header = () => {
   return (
     <div
       className={css({
-        borderBottomColor: 'box.border',
-        borderBottomWidth: 1,
-        borderBottomStyle: 'solid',
         paddingY: 1,
         paddingX: 1,
         flexShrink: 0,
