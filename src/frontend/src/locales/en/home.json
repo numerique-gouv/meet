@@ -33,6 +33,10 @@
       "label": "next",
       "tooltip": "next"
     },
+    "beta": {
+      "text": "Join the beta",
+      "tooltip": "Fill out the form"
+    },
     "slide1": {
       "title": "Try Visio to simplify your daily tasks",
       "body": "Discover an intuitive and accessible solution, designed for all public agents, their partners, and much more.",

@@ -33,6 +33,10 @@
       "label": "suivant",
       "tooltip": "suivant"
     },
+    "beta": {
+      "text": "Essayer la beta",
+      "tooltip": "Accéder au formulaire"
+    },
     "slide1": {
       "title": "Essayez Visio pour simplifier votre quotidien",
       "body": "Découvrez une solution intuitive et accessible, conçue pour tous les agents publics et leurs partenaires, et bien plus encore.",

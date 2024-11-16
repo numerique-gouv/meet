@@ -4,10 +4,14 @@ import thirdSlide from '@/assets/intro-slider/3_resume.png'
 
 import { styled } from '@/styled-system/jsx'
 import { css } from '@/styled-system/css'
-import { Button } from '@/primitives'
+import { Button, LinkButton } from '@/primitives'
 import { RiArrowLeftSLine, RiArrowRightSLine } from '@remixicon/react'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
+
+// todo - extract in a proper env variable
+const BETA_USERS_FORM_URL =
+  'https://grist.numerique.gouv.fr/o/docs/forms/3fFfvJoTBEQ6ZiMi8zsQwX/17'
 
 const Heading = styled('h2', {
   base: {
@@ -116,6 +120,7 @@ const Slide = styled('div', {
 const TextAnimation = styled('div', {
   base: {
     display: 'flex',
+    alignItems: 'center',
     flexDirection: 'column',
     gap: '0.5rem',
   },
@@ -137,6 +142,7 @@ const TextAnimation = styled('div', {
 type Slide = {
   key: string
   img: string
+  isAvailableInBeta?: boolean
 }
 
 // todo - optimize how images are imported
@@ -152,6 +158,7 @@ const SLIDES: Slide[] = [
   {
     key: 'slide3',
     img: thirdSlide,
+    isAvailableInBeta: true,
   },
 ]
 
@@ -190,6 +197,17 @@ export const IntroSlider = () => {
               <TextAnimation visible={index == slideIndex}>
                 <Heading>{t(`${slide.key}.title`)}</Heading>
                 <Body>{t(`${slide.key}.body`)}</Body>
+                {slide.isAvailableInBeta && (
+                  <LinkButton
+                    href={BETA_USERS_FORM_URL}
+                    tooltip={t('beta.tooltip')}
+                    variant={'primary'}
+                    size={'sm'}
+                    style={{ marginTop: '1rem', width: 'fit-content' }}
+                  >
+                    {t('beta.text')}
+                  </LinkButton>
+                )}
               </TextAnimation>
             </Slide>
           ))}
