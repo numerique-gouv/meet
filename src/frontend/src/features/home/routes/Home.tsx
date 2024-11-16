@@ -31,6 +31,8 @@ const Columns = ({ children }: { children?: ReactNode }) => {
         justifyContent: 'normal',
         padding: '0 1rem',
         width: 'calc(100%-2rem)',
+        opacity: 0,
+        animation: '.5s ease-in fade 0s forwards',
         lg: {
           flexDirection: 'row',
           justifyContent: 'space-evenly',
