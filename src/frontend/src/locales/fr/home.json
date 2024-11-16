@@ -23,5 +23,30 @@
     "copy": "Copier le lien de la réunion",
     "copied": "Lien copié dans le presse-papiers",
     "permissions": "Les personnes disposant de ce lien n'ont pas besoin de votre autorisation pour rejoindre cette réunion."
+  },
+  "introSlider": {
+    "previous": {
+      "label": "précédent",
+      "tooltip": "précédent"
+    },
+    "next": {
+      "label": "suivant",
+      "tooltip": "suivant"
+    },
+    "slide1": {
+      "title": "Essayez Visio pour simplifier votre quotidien",
+      "body": "Découvrez une solution intuitive et accessible, conçue pour tous les agents publics et leurs partenaires, et bien plus encore.",
+      "imgAlt": "Illustration d'une plateforme de collaboration simple et accessible"
+    },
+    "slide2": {
+      "title": "Organisez des appels de groupe sans limite",
+      "body": "Réunions sans limite de temps, jusqu'à 15 participants, avec une communication fluide et de haute qualité, quel que soit le nombre.",
+      "imgAlt": "Image d'une réunion virtuelle avec plusieurs participants collaborant efficacement"
+    },
+    "slide3": {
+      "title": "Transformez vos réunions avec l'IA",
+      "body": "Obtenez des transcriptions précises et actionnables, pour booster votre productivité. Fonctionnalité en beta, essayez-la maintenant !",
+      "imgAlt": "Illustration de prise de notes assistée par l'IA dans une réunion virtuelle"
+    }
   }
 }

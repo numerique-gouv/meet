@@ -1,5 +1,13 @@
-import firstSlide from '@/assets/intro-slider/1.png'
-import { styled, VStack } from '@/styled-system/jsx'
+import firstSlide from '@/assets/intro-slider/1_solo.png'
+import secondSlide from '@/assets/intro-slider/2_multiple.png'
+import thirdSlide from '@/assets/intro-slider/3_resume.png'
+
+import { styled } from '@/styled-system/jsx'
+import { css } from '@/styled-system/css'
+import { Button } from '@/primitives'
+import { RiArrowLeftSLine, RiArrowRightSLine } from '@remixicon/react'
+import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 
 const Heading = styled('h2', {
   base: {
@@ -32,18 +40,161 @@ const Image = styled('img', {
   },
 })
 
-// todo - refactor it in a proper slider, only displaying a single slide yet
+const Dot = styled('div', {
+  base: {
+    borderRadius: '50%',
+    display: 'inline-block',
+    height: '.375rem',
+    margin: '0 .25rem',
+    width: '.375rem',
+  },
+  variants: {
+    selected: {
+      true: {
+        backgroundColor: '#000091',
+      },
+      false: {
+        backgroundColor: '#CACAFB',
+      },
+    },
+  },
+})
+
+const Container = styled('div', {
+  base: {
+    display: 'flex',
+    flexDirection: 'column',
+    width: '100%',
+    justifyContent: 'space-between',
+    textAlign: 'center',
+  },
+})
+
+const ButtonVerticalCenter = styled('div', {
+  base: {
+    marginTop: '10.3125rem',
+    transform: 'translateY(-50%)',
+  },
+})
+
+const SlideContainer = styled('div', {
+  base: {
+    alignItems: 'stretch',
+    display: 'flex',
+    position: 'relative',
+  },
+})
+
+const Slide = styled('div', {
+  base: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    gap: '0.5rem',
+    justifyContent: 'start',
+    minHeight: '550px',
+    minWidth: '200px',
+    width: '22.625rem',
+  },
+  variants: {
+    visible: {
+      true: {
+        visibility: 'visible',
+        position: 'static',
+      },
+      false: {
+        visibility: 'hidden',
+        position: 'absolute',
+      },
+    },
+  },
+  defaultVariants: {
+    visible: false,
+  },
+})
+
+type Slide = {
+  key: string
+  img: string
+}
+
+// todo - optimize how images are imported
+const SLIDES: Slide[] = [
+  {
+    key: 'slide1',
+    img: firstSlide,
+  },
+  {
+    key: 'slide2',
+    img: secondSlide,
+  },
+  {
+    key: 'slide3',
+    img: thirdSlide,
+  },
+]
+
 export const IntroSlider = () => {
+  const [slideIndex, setSlideIndex] = useState(0)
+  const { t } = useTranslation('home', { keyPrefix: 'introSlider' })
+  const NUMBER_SLIDES = SLIDES.length
+
   return (
-    <>
-      <Image src={firstSlide} alt="" />
-      <VStack justify={'center'} gap={0.5}>
-        <Heading>Essayez Visio pour simplifier votre quotidien</Heading>
-        <Body>
-          Découvrez une solution intuitive et accessible, conçue pour tous les
-          agents publics et leurs partenaires, et bien plus encore.
-        </Body>
-      </VStack>
-    </>
+    <Container>
+      <div
+        className={css({
+          display: 'flex',
+          flexGrow: 1,
+          justifyContent: 'center',
+        })}
+      >
+        <div>
+          <ButtonVerticalCenter>
+            <Button
+              square
+              invisible
+              aria-label={t('previous.label')}
+              tooltip={t('previous.tooltip')}
+              onPress={() => setSlideIndex(slideIndex - 1)}
+              isDisabled={slideIndex == 0}
+            >
+              <RiArrowLeftSLine />
+            </Button>
+          </ButtonVerticalCenter>
+        </div>
+        <SlideContainer>
+          {SLIDES.map((slide, index) => (
+            <Slide visible={index == slideIndex}>
+              <Image src={slide.img} alt={t(`${slide.key}.imgAlt`)} />
+              <Heading>{t(`${slide.key}.title`)}</Heading>
+              <Body>{t(`${slide.key}.body`)}</Body>
+            </Slide>
+          ))}
+        </SlideContainer>
+        <div>
+          <ButtonVerticalCenter>
+            <Button
+              square
+              invisible
+              aria-label={t('next.label')}
+              tooltip={t('next.tooltip')}
+              onPress={() => setSlideIndex(slideIndex + 1)}
+              isDisabled={slideIndex == NUMBER_SLIDES - 1}
+            >
+              <RiArrowRightSLine />
+            </Button>
+          </ButtonVerticalCenter>
+        </div>
+      </div>
+      <div
+        className={css({
+          marginTop: '0.5rem',
+        })}
+      >
+        {SLIDES.map((_, index) => (
+          <Dot key={index} selected={index == slideIndex} />
+        ))}
+      </div>
+    </Container>
   )
 }

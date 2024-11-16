@@ -23,5 +23,30 @@
     "copy": "Copy the meeting link",
     "copied": "Link copied to clipboard",
     "permissions": "People with this link do not need your permission to join this meeting."
+  },
+  "introSlider": {
+    "previous": {
+      "label": "previous",
+      "tooltip": "previous"
+    },
+    "next": {
+      "label": "next",
+      "tooltip": "next"
+    },
+    "slide1": {
+      "title": "Try Visio to simplify your daily tasks",
+      "body": "Discover an intuitive and accessible solution, designed for all public agents, their partners, and much more.",
+      "imgAlt": "Illustration of a user-friendly and accessible collaboration platform"
+    },
+    "slide2": {
+      "title": "Host group calls without limits",
+      "body": "Unlimited time meetings, up to 15 participants, with smooth and high-quality communication, no matter the group size.",
+      "imgAlt": "Image of a virtual meeting with multiple participants collaborating seamlessly"
+    },
+    "slide3": {
+      "title": "Transform your meetings with AI",
+      "body": "Get accurate and actionable transcripts to boost your productivity. Feature in beta—try it now!",
+      "imgAlt": "Illustration of AI-powered note-taking in a virtual meeting"
+    }
   }
 }
