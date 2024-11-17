@@ -74,6 +74,12 @@ const Container = styled('div', {
   },
 })
 
+const ButtonContainer = styled('div', {
+  base: {
+    display: { base: 'none', xsm: 'block' },
+  },
+})
+
 const ButtonVerticalCenter = styled('div', {
   base: {
     marginTop: '10.3125rem',
@@ -96,9 +102,9 @@ const Slide = styled('div', {
     alignItems: 'center',
     gap: '0.5rem',
     justifyContent: 'start',
-    minHeight: '550px',
-    minWidth: '200px',
-    width: '22.625rem',
+    minHeight: { base: 'none', xsm: '550px' },
+    minWidth: { base: 'none', xsm: '200px' },
+    width: { base: '100%', xsm: '22.625rem' },
   },
   variants: {
     visible: {
@@ -176,7 +182,7 @@ export const IntroSlider = () => {
           justifyContent: 'center',
         })}
       >
-        <div>
+        <ButtonContainer>
           <ButtonVerticalCenter>
             <Button
               square
@@ -189,7 +195,7 @@ export const IntroSlider = () => {
               <RiArrowLeftSLine />
             </Button>
           </ButtonVerticalCenter>
-        </div>
+        </ButtonContainer>
         <SlideContainer>
           {SLIDES.map((slide, index) => (
             <Slide visible={index == slideIndex}>
@@ -212,7 +218,7 @@ export const IntroSlider = () => {
             </Slide>
           ))}
         </SlideContainer>
-        <div>
+        <ButtonContainer>
           <ButtonVerticalCenter>
             <Button
               square
@@ -225,11 +231,12 @@ export const IntroSlider = () => {
               <RiArrowRightSLine />
             </Button>
           </ButtonVerticalCenter>
-        </div>
+        </ButtonContainer>
       </div>
       <div
         className={css({
           marginTop: '0.5rem',
+          display: { base: 'none', xsm: 'block' },
         })}
       >
         {SLIDES.map((_, index) => (
