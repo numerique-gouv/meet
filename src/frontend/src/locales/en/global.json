@@ -6,7 +6,10 @@
   "error": {
     "heading": "An error occurred while loading the page"
   },
-  "feedbackAlert": "Give us feedback",
+  "feedback": {
+    "context": "Visio is still evolving—your input matters!",
+    "cta": "Share your feedback"
+  },
   "forbidden": {
     "heading": "You don't have the permission to view this page"
   },

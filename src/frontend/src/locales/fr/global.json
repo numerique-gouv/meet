@@ -6,7 +6,10 @@
   "error": {
     "heading": "Une erreur est survenue lors du chargement de la page"
   },
-  "feedbackAlert": "Donnez-nous votre avis",
+  "feedback": {
+    "context": "Visio est en pleine construction — votre avis compte !",
+    "cta": "Partagez votre avis"
+  },
   "forbidden": {
     "heading": "Accès interdit"
   },

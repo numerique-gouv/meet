@@ -6,7 +6,7 @@ import { Text, Button } from '@/primitives'
 import { SettingsButton } from '@/features/settings'
 import { logoutUrl, useUser } from '@/features/auth'
 import { useMatchesRoute } from '@/navigation/useMatchesRoute'
-import { Feedback } from '@/components/Feedback'
+import { FeedbackBanner } from '@/components/FeedbackBanner.tsx'
 import { Menu } from '@/primitives/Menu'
 import { MenuList } from '@/primitives/MenuList'
 import { ProConnectButton } from '@/components/ProConnectButton'
@@ -20,77 +20,79 @@ export const Header = () => {
   const { user, isLoggedIn } = useUser()
 
   return (
-    <div
-      className={css({
-        paddingY: 1,
-        paddingX: 1,
-        flexShrink: 0,
-      })}
-    >
+    <>
+      <FeedbackBanner />
       <div
         className={css({
-          display: 'flex',
-          flexDirection: 'column',
-          rowGap: 1,
-          md: {
-            rowGap: 0,
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-          },
+          paddingY: 1,
+          paddingX: 1,
+          flexShrink: 0,
         })}
       >
-        <header>
-          <Stack gap={2.25} direction="row" align="center">
-            <Text bold variant="h1" margin={false}>
-              <Link
-                onClick={(event) => {
-                  if (
-                    isRoom &&
-                    !window.confirm(t('leaveRoomPrompt', { ns: 'rooms' }))
-                  ) {
-                    event.preventDefault()
-                  }
-                }}
-                to="/"
-              >
-                {t('app')}
-              </Link>
-            </Text>
-            <Feedback />
-          </Stack>
-        </header>
-        <nav>
-          <Stack gap={1} direction="row" align="center">
-            {isLoggedIn === false && !isHome && (
-              <ProConnectButton hint={false} />
-            )}
-            {!!user && (
-              <Menu>
-                <Button
-                  size="sm"
-                  invisible
-                  tooltip={t('loggedInUserTooltip')}
-                  tooltipType="delayed"
-                >
-                  {user?.full_name || user?.email}
-                </Button>
-                <MenuList
-                  items={[{ value: 'logout', label: t('logout') }]}
-                  onAction={(value) => {
-                    if (value === 'logout') {
-                      terminateAnalyticsSession()
-                      terminateSupportSession()
-                      window.location.href = logoutUrl()
+        <div
+          className={css({
+            display: 'flex',
+            flexDirection: 'column',
+            rowGap: 1,
+            md: {
+              rowGap: 0,
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+            },
+          })}
+        >
+          <header>
+            <Stack gap={2.25} direction="row" align="center">
+              <Text bold variant="h1" margin={false}>
+                <Link
+                  onClick={(event) => {
+                    if (
+                      isRoom &&
+                      !window.confirm(t('leaveRoomPrompt', { ns: 'rooms' }))
+                    ) {
+                      event.preventDefault()
                     }
                   }}
-                />
-              </Menu>
-            )}
-            <SettingsButton />
-          </Stack>
-        </nav>
+                  to="/"
+                >
+                  {t('app')}
+                </Link>
+              </Text>
+            </Stack>
+          </header>
+          <nav>
+            <Stack gap={1} direction="row" align="center">
+              {isLoggedIn === false && !isHome && (
+                <ProConnectButton hint={false} />
+              )}
+              {!!user && (
+                <Menu>
+                  <Button
+                    size="sm"
+                    invisible
+                    tooltip={t('loggedInUserTooltip')}
+                    tooltipType="delayed"
+                  >
+                    {user?.full_name || user?.email}
+                  </Button>
+                  <MenuList
+                    items={[{ value: 'logout', label: t('logout') }]}
+                    onAction={(value) => {
+                      if (value === 'logout') {
+                        terminateAnalyticsSession()
+                        terminateSupportSession()
+                        window.location.href = logoutUrl()
+                      }
+                    }}
+                  />
+                </Menu>
+              )}
+              <SettingsButton />
+            </Stack>
+          </nav>
+        </div>
       </div>
-    </div>
+    </>
   )
 }

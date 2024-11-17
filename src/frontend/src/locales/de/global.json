@@ -6,7 +6,10 @@
   "error": {
     "heading": ""
   },
-  "feedbackAlert": "",
+  "feedback": {
+    "context": "",
+    "cta": ""
+  },
   "forbidden": {
     "heading": ""
   },
