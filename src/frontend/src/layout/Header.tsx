@@ -32,14 +32,10 @@ export const Header = () => {
         <div
           className={css({
             display: 'flex',
-            flexDirection: 'column',
-            rowGap: 1,
-            md: {
-              rowGap: 0,
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-            },
+            rowGap: 0,
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'center',
           })}
         >
           <header>
@@ -74,7 +70,17 @@ export const Header = () => {
                     tooltip={t('loggedInUserTooltip')}
                     tooltipType="delayed"
                   >
-                    {user?.full_name || user?.email}
+                    <span
+                      className={css({
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis',
+                        whiteSpace: 'nowrap',
+                        display: 'block',
+                        maxWidth: { base: '80px', xsm: '350px' },
+                      })}
+                    >
+                      {user?.full_name || user?.email}
+                    </span>
                   </Button>
                   <MenuList
                     items={[{ value: 'logout', label: t('logout') }]}
