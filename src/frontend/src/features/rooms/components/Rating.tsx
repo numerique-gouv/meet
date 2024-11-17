@@ -43,6 +43,11 @@ const ratingButtonRecipe = cva({
         backgroundColor: '#1d4ed8',
         color: 'white',
       },
+      false: {
+        '&[data-hovered]': {
+          backgroundColor: 'gray.100',
+        },
+      },
     },
     borderLeft: {
       true: {
