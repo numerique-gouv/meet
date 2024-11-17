@@ -1,7 +1,8 @@
 {
   "feedback": {
-    "body": "Please fill out the form available in the header to give us your precious feedback! Thanks.",
-    "heading": "Help us improve Visio"
+    "heading": "You have left the meeting",
+    "home": "Return to home",
+    "back": "Rejoin the meeting"
   },
   "join": {
     "videoinput": {
@@ -106,6 +107,14 @@
   },
   "chat": {
     "disclaimer": "The messages are visible to participants only at the time they are sent. All messages are deleted at the end of the call."
+  },
+  "rating": {
+    "submit": "Submit",
+    "question": "What do you think about the quality of your call?",
+    "levels": {
+      "min": "very poor",
+      "max": "excellent"
+    }
   },
   "participants": {
     "subheading": "In room",
