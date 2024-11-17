@@ -13,11 +13,14 @@ i18n
   )
   .use(initReactI18next)
   .use(LanguageDetector)
-i18n.init({
-  supportedLngs: ['en', 'fr'],
-  fallbackLng: 'en',
-  ns: i18nDefaultNamespace,
-  interpolation: {
-    escapeValue: false,
-  },
-})
+  .init({
+    supportedLngs: ['en', 'fr'],
+    fallbackLng: 'fr',
+    ns: i18nDefaultNamespace,
+    detection: {
+      order: ['localStorage', 'navigator'],
+    },
+    interpolation: {
+      escapeValue: false,
+    },
+  })
