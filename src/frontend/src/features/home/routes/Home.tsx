@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next'
 import { DialogTrigger, MenuItem, Menu as RACMenu } from 'react-aria-components'
 import { Button, Menu } from '@/primitives'
-import { HStack, styled } from '@/styled-system/jsx'
+import { styled } from '@/styled-system/jsx'
 import { navigateTo } from '@/navigation/navigateTo'
 import { Screen } from '@/layout/Screen'
 import { generateRoomId } from '@/features/rooms'
@@ -113,15 +113,19 @@ const Separator = styled('div', {
 
 const Heading = styled('h1', {
   base: {
-    fontSize: '3rem',
-    lineHeight: '3.2rem',
-    letterSpacing: '0',
     fontWeight: '500',
     fontStyle: 'normal',
     fontStretch: 'normal',
     fontOpticalSizing: 'auto',
     marginBottom: 0,
     paddingBottom: '0.75rem',
+    fontSize: '2.3rem',
+    lineHeight: '2.5rem',
+    letterSpacing: '0',
+    xsm: {
+      fontSize: '3rem',
+      lineHeight: '3.2rem',
+    },
   },
 })
 
@@ -153,7 +157,14 @@ export const Home = () => {
           <LeftColumn>
             <Heading>{t('heading')}</Heading>
             <IntroText>{t('intro')}</IntroText>
-            <HStack gap="gutter" alignItems="start">
+            <div
+              className={css({
+                display: 'flex',
+                gap: 0.5,
+                flexDirection: { base: 'column', xsm: 'row' },
+                alignItems: { base: 'center', xsm: 'items-start' },
+              })}
+            >
               {isLoggedIn ? (
                 <Menu>
                   <Button variant="primary" data-attr="create-meeting">
@@ -205,7 +216,7 @@ export const Home = () => {
                 </Button>
                 <JoinMeetingDialog />
               </DialogTrigger>
-            </HStack>
+            </div>
             <Separator />
             <div
               className={css({
