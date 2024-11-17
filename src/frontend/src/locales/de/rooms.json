@@ -1,7 +1,8 @@
 {
   "feedback": {
-    "body": "",
-    "heading": ""
+    "heading": "",
+    "home": "",
+    "back": ""
   },
   "join": {
     "videoinput": {
@@ -108,6 +109,14 @@
   },
   "chat": {
     "disclaimer": ""
+  },
+  "rating": {
+    "submit": "",
+    "question": "",
+    "levels": {
+      "min": "",
+      "max": ""
+    }
   },
   "participants": {
     "subheading": "",

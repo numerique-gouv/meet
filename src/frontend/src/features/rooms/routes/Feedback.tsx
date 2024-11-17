@@ -1,17 +1,47 @@
 import { useTranslation } from 'react-i18next'
-import { Text } from '@/primitives'
+import { Button } from '@/primitives'
 import { Screen } from '@/layout/Screen'
-import { CenteredContent } from '@/layout/CenteredContent'
+import { Center, HStack, styled, VStack } from '@/styled-system/jsx'
+import { Rating } from '@/features/rooms/components/Rating.tsx'
+import { useLocation } from 'wouter'
+
+// fixme - duplicated with home, refactor in a proper style
+const Heading = styled('h1', {
+  base: {
+    fontWeight: '500',
+    fontStyle: 'normal',
+    fontStretch: 'normal',
+    fontOpticalSizing: 'auto',
+    fontSize: '2.3rem',
+    lineHeight: '2.5rem',
+    letterSpacing: '0',
+    paddingBottom: '2rem',
+  },
+})
 
 export const FeedbackRoute = () => {
   const { t } = useTranslation('rooms')
+  const [, setLocation] = useLocation()
   return (
     <Screen layout="centered">
-      <CenteredContent title={t('feedback.heading')} withBackButton>
-        <Text as="p" variant="h3" centered>
-          {t('feedback.body')}
-        </Text>
-      </CenteredContent>
+      <Center>
+        <VStack>
+          <Heading>{t('feedback.heading')}</Heading>
+          <HStack>
+            <Button
+              outline
+              variant="primary"
+              onPress={() => window.history.back()}
+            >
+              {t('feedback.back')}
+            </Button>
+            <Button variant="primary" onPress={() => setLocation('/')}>
+              {t('feedback.home')}
+            </Button>
+          </HStack>
+          <Rating />
+        </VStack>
+      </Center>
     </Screen>
   )
 }

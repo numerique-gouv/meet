@@ -1,7 +1,8 @@
 {
   "feedback": {
-    "body": "Remplissez le formulaire disponible dans l'entête du site pour nous donner votre avis sur l'outil. Vos retours sont précieux ! Merci.",
-    "heading": "Aidez-nous à améliorer Visio"
+    "heading": "Vous avez quitté la réunion",
+    "home": "Retourner à l'accueil",
+    "back": "Réintégrer la réunion"
   },
   "join": {
     "videoinput": {
@@ -106,6 +107,14 @@
   },
   "chat": {
     "disclaimer": "Les messages sont visibles par les participants uniquement au moment de\nleur envoi. Tous les messages sont supprimés à la fin de l'appel."
+  },
+  "rating": {
+    "submit": "Envoyer",
+    "question": "Que pensez-vous de la qualité de votre appel ?",
+    "levels": {
+      "min": "très mauvaise",
+      "max": "excellente"
+    }
   },
   "participants": {
     "subheading": "Dans la réunion",

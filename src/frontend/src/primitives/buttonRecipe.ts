@@ -59,6 +59,9 @@ export const buttonRecipe = cva({
       },
       primary: {
         colorPalette: 'primary',
+        '&[data-disabled]': {
+          opacity: 0.3,
+        },
       },
       // @TODO: better handling of colors… this is a mess
       success: {
