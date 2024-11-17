@@ -24,6 +24,7 @@ const Columns = ({ children }: { children?: ReactNode }) => {
     <div
       className={css({
         alignItems: 'center',
+        margin: 'auto',
         display: 'inline-flex',
         flexDirection: 'column',
         height: '100%',
