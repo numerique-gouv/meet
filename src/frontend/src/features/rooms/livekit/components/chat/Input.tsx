@@ -1,8 +1,7 @@
-import { Button } from '@/primitives'
+import { Button, TextArea } from '@/primitives'
 import { HStack } from '@/styled-system/jsx'
 import { RiSendPlane2Fill } from '@remixicon/react'
 import { useState, useEffect } from 'react'
-import { TextArea } from '@/primitives/TextArea'
 import { RefObject } from 'react'
 import { useTranslation } from 'react-i18next'
 
