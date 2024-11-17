@@ -3,6 +3,7 @@ import { useState } from 'react'
 import { cva } from '@/styled-system/css'
 import { useTranslation } from 'react-i18next'
 import { styled } from '@/styled-system/jsx'
+import { usePostHog } from 'posthog-js/react'
 
 const Card = styled('div', {
   base: {
@@ -59,7 +60,8 @@ const labelRecipe = cva({
   },
 })
 
-export const Rating = ({ maxRating = 8, ...props }) => {
+export const Rating = ({ maxRating = 7, ...props }) => {
+  const posthog = usePostHog()
   const { t } = useTranslation('rooms', { keyPrefix: 'rating' })
   const [selectedRating, setSelectedRating] = useState<number | null>(null)
 
@@ -69,6 +71,23 @@ export const Rating = ({ maxRating = 8, ...props }) => {
 
   const minLabel = props?.minLabel ?? t('levels.min')
   const maxLabel = props?.maxLabel ?? t('levels.max')
+
+  const onSubmit = () => {
+    try {
+      posthog.capture('survey sent', {
+        $survey_id: '01933c22-d005-0000-b623-20b752171e2e',
+        $survey_response: `${selectedRating}`,
+      })
+      setSelectedRating(null)
+    } catch (e) {
+      console.warn(e)
+      setSelectedRating(null)
+    }
+  }
+
+  if (!posthog.__loaded) {
+    return null
+  }
 
   return (
     <Card>
@@ -106,6 +125,7 @@ export const Rating = ({ maxRating = 8, ...props }) => {
         size="sm"
         fullWidth
         isDisabled={!selectedRating}
+        onPress={onSubmit}
       >
         {t('submit')}
       </Button>
