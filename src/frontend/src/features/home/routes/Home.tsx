@@ -36,7 +36,7 @@ const Columns = ({ children }: { children?: ReactNode }) => {
         animation: '.5s ease-in fade 0s forwards',
         lg: {
           flexDirection: 'row',
-          justifyContent: 'space-evenly',
+          justifyContent: 'center',
           width: '100%',
           padding: 0,
         },
@@ -57,7 +57,7 @@ const LeftColumn = ({ children }: { children?: ReactNode }) => {
         flexDirection: 'column',
         flexBasis: 'auto',
         flexShrink: 0,
-        maxWidth: '39rem',
+        maxWidth: '38rem',
         width: '100%',
         padding: '1rem 3%',
         marginTop: 'auto',
@@ -66,8 +66,8 @@ const LeftColumn = ({ children }: { children?: ReactNode }) => {
           textAlign: 'left',
           alignItems: 'flex-start',
           flexShrink: '1',
-          flexBasis: '35rem',
-          maxWidth: '35rem',
+          flexBasis: '36rem',
+          maxWidth: '36rem',
           padding: '1em 3em',
         },
       })}
@@ -133,10 +133,10 @@ const Heading = styled('h1', {
 const IntroText = styled('div', {
   base: {
     marginBottom: '3rem',
-    fontSize: '1.375rem',
+    fontSize: '1.5rem',
     lineHeight: '1.8rem',
     textWrap: 'pretty',
-    maxWidth: '28rem',
+    maxWidth: '32rem',
   },
 })
 
