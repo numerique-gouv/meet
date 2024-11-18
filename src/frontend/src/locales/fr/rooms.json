@@ -116,6 +116,16 @@
       "max": "excellente"
     }
   },
+  "openFeedback": {
+    "question": "Que pouvons-nous faire pour améliorer Visio ?",
+    "placeholder": "Décrivez vos bugs ou partagez vos suggestions …",
+    "submit": "Envoyer",
+    "skip": "Passer"
+  },
+  "confirmationMessage": {
+    "heading": "Merci pour votre submission",
+    "body": "Notre équipe produit prend le temps d'analyser attentivement vos réponses. Nous reviendrons vers vous dans les plus brefs délais."
+  },
   "participants": {
     "subheading": "Dans la réunion",
     "you": "Vous",
