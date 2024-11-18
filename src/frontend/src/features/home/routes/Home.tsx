@@ -66,8 +66,8 @@ const LeftColumn = ({ children }: { children?: ReactNode }) => {
           textAlign: 'left',
           alignItems: 'flex-start',
           flexShrink: '1',
-          flexBasis: '45rem',
-          maxWidth: '45rem',
+          flexBasis: '35rem',
+          maxWidth: '35rem',
           padding: '1em 3em',
         },
       })}
