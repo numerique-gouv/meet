@@ -198,7 +198,7 @@ export const IntroSlider = () => {
         </ButtonContainer>
         <SlideContainer>
           {SLIDES.map((slide, index) => (
-            <Slide visible={index == slideIndex}>
+            <Slide visible={index == slideIndex} key={index}>
               <Image src={slide.img} alt={t(`${slide.key}.imgAlt`)} />
               <TextAnimation visible={index == slideIndex}>
                 <Heading>{t(`${slide.key}.title`)}</Heading>
