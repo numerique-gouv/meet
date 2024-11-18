@@ -1,7 +1,7 @@
 apiVersion: core.libre.sh/v1alpha1
 kind: Bucket
 metadata:
-  name: impress-media-storage
+  name: meet-media-storage
   namespace: {{ .Release.Namespace | quote }}
 spec:
   provider: data
