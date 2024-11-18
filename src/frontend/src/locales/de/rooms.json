@@ -118,6 +118,16 @@
       "max": ""
     }
   },
+  "openFeedback": {
+    "question": "",
+    "placeholder": "",
+    "submit": "",
+    "skip": ""
+  },
+  "confirmationMessage": {
+    "heading": "",
+    "body": ""
+  },
   "participants": {
     "subheading": "",
     "contributors": "",

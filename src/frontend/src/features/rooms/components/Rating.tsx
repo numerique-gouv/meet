@@ -1,9 +1,10 @@
-import { Button, H, Text } from '@/primitives'
-import { useState } from 'react'
+import { Button, H, Text, TextArea } from '@/primitives'
+import { useEffect, useState } from 'react'
 import { cva } from '@/styled-system/css'
 import { useTranslation } from 'react-i18next'
-import { styled } from '@/styled-system/jsx'
+import { styled, VStack } from '@/styled-system/jsx'
 import { usePostHog } from 'posthog-js/react'
+import { PostHog } from 'posthog-js'
 
 const Card = styled('div', {
   base: {
@@ -13,6 +14,8 @@ const Card = styled('div', {
     marginTop: '1.5rem',
     borderRadius: '0.25rem',
     boxShadow: '',
+    minWidth: '380px',
+    minHeight: '196px',
   },
 })
 
@@ -65,8 +68,76 @@ const labelRecipe = cva({
   },
 })
 
-export const Rating = ({ maxRating = 7, ...props }) => {
-  const posthog = usePostHog()
+const OpenFeedback = ({
+  posthog,
+  onNext,
+}: {
+  posthog: PostHog
+  onNext: () => void
+}) => {
+  const { t } = useTranslation('rooms', { keyPrefix: 'openFeedback' })
+  const [feedback, setFeedback] = useState('')
+
+  const onContinue = () => {
+    setFeedback('')
+    onNext()
+  }
+
+  const onSubmit = () => {
+    try {
+      posthog.capture('survey sent', {
+        $survey_id: '01933c5a-5a1d-0000-ada8-e39f5918c2d4',
+        $survey_response: feedback,
+      })
+    } catch (e) {
+      console.warn(e)
+    } finally {
+      onContinue()
+    }
+  }
+
+  return (
+    <Card>
+      <H lvl={3}>{t('question')}</H>
+      <TextArea
+        id="feedbackInput"
+        name="feedback"
+        placeholder={t('placeholder')}
+        required
+        value={feedback}
+        onChange={(e) => setFeedback(e.target.value)}
+        style={{
+          minHeight: '150px',
+          marginBottom: '1rem',
+        }}
+      />
+      <VStack gap="0.5">
+        <Button
+          variant="primary"
+          size="sm"
+          fullWidth
+          isDisabled={!feedback}
+          onPress={onSubmit}
+        >
+          {t('submit')}
+        </Button>
+        <Button invisible size="sm" fullWidth onPress={onNext}>
+          {t('skip')}
+        </Button>
+      </VStack>
+    </Card>
+  )
+}
+
+const RateQuality = ({
+  posthog,
+  onNext,
+  maxRating = 7,
+}: {
+  posthog: PostHog
+  onNext: () => void
+  maxRating?: number
+}) => {
   const { t } = useTranslation('rooms', { keyPrefix: 'rating' })
   const [selectedRating, setSelectedRating] = useState<number | null>(null)
 
@@ -74,24 +145,18 @@ export const Rating = ({ maxRating = 7, ...props }) => {
     setSelectedRating((prevRating) => (prevRating === rating ? null : rating))
   }
 
-  const minLabel = props?.minLabel ?? t('levels.min')
-  const maxLabel = props?.maxLabel ?? t('levels.max')
-
   const onSubmit = () => {
     try {
       posthog.capture('survey sent', {
         $survey_id: '01933c22-d005-0000-b623-20b752171e2e',
         $survey_response: `${selectedRating}`,
       })
-      setSelectedRating(null)
     } catch (e) {
       console.warn(e)
+    } finally {
       setSelectedRating(null)
+      onNext()
     }
-  }
-
-  if (!posthog.__loaded) {
-    return null
   }
 
   return (
@@ -119,10 +184,10 @@ export const Rating = ({ maxRating = 7, ...props }) => {
         }}
       >
         <Text variant="sm" className={labelRecipe()}>
-          {minLabel}
+          {t('levels.min')}
         </Text>
         <Text variant="sm" className={labelRecipe()}>
-          {maxLabel}
+          {t('levels.max')}
         </Text>
       </div>
       <Button
@@ -136,4 +201,49 @@ export const Rating = ({ maxRating = 7, ...props }) => {
       </Button>
     </Card>
   )
+}
+
+const ConfirmationMessage = ({ onNext }: { onNext: () => void }) => {
+  const { t } = useTranslation('rooms', { keyPrefix: 'confirmationMessage' })
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      onNext()
+    }, 10000)
+    return () => clearTimeout(timer)
+  }, [onNext])
+  return (
+    <Card
+      style={{
+        maxWidth: '380px',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+      }}
+    >
+      <VStack gap={0}>
+        <H lvl={3}>{t('heading')}</H>
+        <Text as="p" variant="paragraph" centered>
+          {t('body')}
+        </Text>
+      </VStack>
+    </Card>
+  )
+}
+
+export const Rating = () => {
+  const posthog = usePostHog()
+
+  const [step, setStep] = useState(0)
+
+  if (step == 0) {
+    return <RateQuality posthog={posthog} onNext={() => setStep(step + 1)} />
+  }
+
+  if (step == 1) {
+    return <OpenFeedback posthog={posthog} onNext={() => setStep(step + 1)} />
+  }
+
+  if (step == 2) {
+    return <ConfirmationMessage onNext={() => setStep(0)} />
+  }
 }
