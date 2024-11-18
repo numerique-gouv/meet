@@ -38,7 +38,7 @@ const Body = styled('p', {
 
 const Image = styled('img', {
   base: {
-    maxHeight: '330px',
+    maxHeight: '362px',
     height: '100%',
     width: 'fit-content',
   },
@@ -82,7 +82,7 @@ const ButtonContainer = styled('div', {
 
 const ButtonVerticalCenter = styled('div', {
   base: {
-    marginTop: '10.3125rem',
+    marginTop: '13.3125rem',
     transform: 'translateY(-50%)',
   },
 })
