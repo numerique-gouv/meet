@@ -8,3 +8,7 @@ class Settings(BaseSettings):
 
     app_name: str = "Awesome API"
     model_config = SettingsConfigDict(env_file=".env")
+
+    # Celery settings
+    celery_broker_url: str = "redis://redis/0"
+    celery_result_backend: str = "redis://redis/0"

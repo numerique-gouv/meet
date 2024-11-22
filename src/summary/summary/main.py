@@ -3,8 +3,11 @@
 from functools import lru_cache
 from typing import Annotated
 
-from config import Settings
 from fastapi import Depends, FastAPI
+
+from .celery_worker import send_push_notification
+from .config import Settings
+
 
 app = FastAPI()
 
@@ -31,3 +34,10 @@ async def heartbeat():
 async def lbheartbeat():
     """Health check endpoint for load balancer."""
     return {"status": "ok"}
+
+
+@app.get("/push/{filename}")
+async def notify(filename: str):
+    """Push a notification."""
+    send_push_notification.delay(device_token)
+    return {"message": "Notification sent"}
