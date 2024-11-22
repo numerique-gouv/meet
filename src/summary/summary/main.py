@@ -39,5 +39,5 @@ async def lbheartbeat():
 @app.get("/push/{filename}")
 async def notify(filename: str):
     """Push a notification."""
-    send_push_notification.delay(device_token)
+    send_push_notification.delay(filename)
     return {"message": "Notification sent"}
