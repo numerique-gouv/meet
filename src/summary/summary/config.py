@@ -21,3 +21,10 @@ class Settings(BaseSettings):
 
     # AI-related settings
     openai_api_key: str
+
+    # Webhook-related settings
+    webhook_max_retries: int = 2
+    webhook_status_forcelist: list[int] = [502, 503, 504]
+    webhook_backoff_factor: float = 0.1
+    webhook_api_token: str
+    webhook_url: str

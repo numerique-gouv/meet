@@ -4,6 +4,7 @@ from functools import lru_cache
 from typing import Annotated
 
 from fastapi import Depends, FastAPI
+from pydantic import BaseModel
 
 from .celery_worker import send_push_notification
 from .config import Settings
@@ -36,8 +37,16 @@ async def lbheartbeat():
     return {"status": "ok"}
 
 
-@app.get("/push/{filename}")
-async def notify(filename: str):
+class NotificationRequest(BaseModel):
+    """Notification data."""
+
+    filename: str
+    email: str
+    sub: str
+
+
+@app.post("/push")
+async def notify(request: NotificationRequest):
     """Push a notification."""
-    send_push_notification.delay(filename)
+    send_push_notification.delay(request.filename, request.email, request.sub)
     return {"message": "Notification sent"}
