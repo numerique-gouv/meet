@@ -7,6 +7,11 @@ dependencies = [
     "uvicorn>=0.24.0",
     "pydantic>=2.5.0",
     "pydantic-settings>=2.1.0",
+    "celery==5.4.0",
+    "redis==4.5.4",
+    "minio==7.2.9",
+    "openai==1.51.2",
+    "requests==2.32.3",
 ]
 
 [project.optional-dependencies]

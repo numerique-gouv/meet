@@ -1,24 +1,13 @@
-"""Application entry point."""
+"""Application endpoint."""
 
-from functools import lru_cache
-from typing import Annotated
-
-from config import Settings
+from celery.result import AsyncResult
 from fastapi import Depends, FastAPI
+from pydantic import BaseModel
+
+from .celery_worker import process_audio_transcribe_summarize
+from .security import verify_token
 
 app = FastAPI()
-
-
-@lru_cache
-def get_settings():
-    """Load and cache application settings."""
-    return Settings()
-
-
-@app.get("/")
-async def root(settings: Annotated[Settings, Depends(get_settings)]):
-    """Root endpoint that returns app name."""
-    return {"message": f"Hello World, using {settings.app_name}"}
 
 
 @app.get("/__heartbeat__")
@@ -31,3 +20,27 @@ async def heartbeat():
 async def lbheartbeat():
     """Health check endpoint for load balancer."""
     return {"status": "ok"}
+
+
+class NotificationRequest(BaseModel):
+    """Notification data."""
+
+    filename: str
+    email: str
+    sub: str
+
+
+@app.post("/push")
+async def notify(request: NotificationRequest, token: str = Depends(verify_token)):
+    """Push a notification."""
+    task = process_audio_transcribe_summarize.delay(
+        request.filename, request.email, request.sub
+    )
+    return {"task_id": task.id, "message": "Notification sent"}
+
+
+@app.get("/status/{task_id}")
+async def get_status(task_id: str, token: str = Depends(verify_token)):
+    """Check task status by ID."""
+    task = AsyncResult(task_id)
+    return {"task_id": task_id, "status": task.status}
