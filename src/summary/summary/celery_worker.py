@@ -5,6 +5,7 @@ from pathlib import Path
 
 import openai
 from celery import Celery
+from celery.utils.log import get_task_logger
 from minio import Minio
 
 from .config import Settings
@@ -12,6 +13,8 @@ from .prompt import get_instructions
 
 settings = Settings()
 
+
+logger = get_task_logger(__name__)
 
 celery = Celery(
     __name__,
@@ -31,8 +34,8 @@ def save_audio_stream(audio_stream, chunk_size=32 * 1024):
 @celery.task(max_retries=1)
 def send_push_notification(filename: str):
     """Mock push notification."""
-    print("notification received")  # noqa: T201
-    print(f"filename: {filename}")  # noqa: T201
+    logger.info("Notification received")
+    logger.debug("filename: %s", filename)
 
     minio_client = Minio(
         settings.minio_url,
@@ -40,36 +43,34 @@ def send_push_notification(filename: str):
         secret_key=settings.minio_secret_key,
     )
 
-    print("Connected to the bucket")  # noqa: T201
+    logger.debug("Connection to the Minio bucket successful")
 
     audio_file_stream = minio_client.get_object(
         settings.minio_bucket, object_name=filename
     )
 
     temp_file_path = save_audio_stream(audio_file_stream)
-    print(f"file downloaded {temp_file_path}")  # noqa: T201
+    logger.debug("Recording successfully downloaded, filepath: %s", temp_file_path)
 
-    print("Initiating OpenAI client …")  # noqa: T201
+    logger.debug("Initiating OpenAI client")
     openai_client = openai.OpenAI(
         api_key=settings.openai_api_key,
     )
 
-    print("Querying transcription …")  # noqa: T201
+    logger.debug("Querying transcription …")
     with open(temp_file_path, "rb") as audio_file:
-        transcript = openai_client.audio.transcriptions.create(
+        transcription = openai_client.audio.transcriptions.create(
             model="whisper-1", file=audio_file
         )
 
-        print(f"Transcription: \n {transcript}")  # noqa: T201
+        transcription = transcription.text
 
-    instructions = get_instructions(transcript)
+        logger.debug("Transcription: \n %s", transcription)
 
+    instructions = get_instructions(transcription)
     summary_response = openai_client.chat.completions.create(
         model="gpt-4o", messages=instructions
     )
 
-    print(summary_response)  # noqa: T201
-
     summary = summary_response.choices[0].message.content
-
-    print(f"Summary: {summary}")  # noqa: T201
+    logger.debug("Summary: \n %s", summary)
