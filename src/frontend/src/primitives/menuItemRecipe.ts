@@ -27,12 +27,12 @@ export const menuItemRecipe = cva({
     },
     '&[data-focused]': {
       color: 'primary.text',
-      backgroundColor: 'primary',
+      backgroundColor: 'primaryDark.50',
       outline: 'none!',
     },
     '&[data-hovered]': {
       color: 'primary.text',
-      backgroundColor: 'primary',
+      backgroundColor: 'primaryDark.50',
       outline: 'none!',
     },
   },

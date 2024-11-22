@@ -68,7 +68,7 @@ export const AccountTab = ({ id, onOpenChange }: AccountTabProps) => {
           marginLeft: 'auto',
         })}
       >
-        <Button onPress={handleOnCancel}>
+        <Button variant="secondary" onPress={handleOnCancel}>
           {t('cancel', { ns: 'global' })}
         </Button>
         <Button variant={'primary'} onPress={handleOnSubmit}>

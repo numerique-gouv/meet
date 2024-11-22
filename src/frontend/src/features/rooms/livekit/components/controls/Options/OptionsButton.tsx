@@ -16,7 +16,7 @@ export const OptionsButton = () => {
       <Menu>
         <Button
           square
-          legacyStyle
+          variant="primaryDark"
           aria-label={t('options.buttonLabel')}
           tooltip={t('options.buttonLabel')}
         >

@@ -66,12 +66,8 @@ const StyledTab = styled(RACTab, {
           color: 'box.text',
         },
         '&[data-selected]': {
-          backgroundColor: 'primary',
+          backgroundColor: 'primaryDark.50',
           color: 'white',
-          '&[data-hovered]': {
-            backgroundColor: 'primary',
-            color: 'white',
-          },
         },
       },
     },

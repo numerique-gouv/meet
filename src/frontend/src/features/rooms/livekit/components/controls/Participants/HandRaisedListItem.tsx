@@ -69,7 +69,7 @@ export const HandRaisedListItem = ({
       </HStack>
       <Button
         square
-        invisible
+        variant="greyscale"
         size="sm"
         onPress={() => lowerHandParticipant(participant)}
         tooltip={t('participants.lowerParticipantHand', { name })}

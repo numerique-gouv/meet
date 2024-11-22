@@ -185,8 +185,8 @@ export const IntroSlider = () => {
         <ButtonContainer>
           <ButtonVerticalCenter>
             <Button
+              variant="greyscale"
               square
-              invisible
               aria-label={t('previous.label')}
               tooltip={t('previous.tooltip')}
               onPress={() => setSlideIndex(slideIndex - 1)}
@@ -221,8 +221,8 @@ export const IntroSlider = () => {
         <ButtonContainer>
           <ButtonVerticalCenter>
             <Button
+              variant="greyscale"
               square
-              invisible
               aria-label={t('next.label')}
               tooltip={t('next.tooltip')}
               onPress={() => setSlideIndex(slideIndex + 1)}

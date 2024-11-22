@@ -29,8 +29,7 @@ export const FeedbackRoute = () => {
           <Heading>{t('feedback.heading')}</Heading>
           <HStack>
             <Button
-              outline
-              variant="primary"
+              variant="secondary"
               onPress={() => window.history.back()}
             >
               {t('feedback.back')}

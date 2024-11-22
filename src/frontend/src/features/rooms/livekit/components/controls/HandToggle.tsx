@@ -24,7 +24,7 @@ export const HandToggle = () => {
     >
       <ToggleButton
         square
-        legacyStyle
+        variant="primaryDark"
         aria-label={t(tooltipLabel)}
         tooltip={t(tooltipLabel)}
         isSelected={isHandRaised}

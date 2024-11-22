@@ -29,7 +29,7 @@ export const ParticipantsToggle = () => {
     >
       <ToggleButton
         square
-        legacyStyle
+        variant="primaryTextDark"
         aria-label={t(tooltipLabel)}
         tooltip={t(tooltipLabel)}
         isSelected={isParticipantsOpen}
