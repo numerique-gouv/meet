@@ -151,7 +151,6 @@ export const Effects = () => {
           <HStack>
             <ToggleButton
               size={'sm'}
-              legacyStyle
               aria-label={tooltipLabel(BlurRadius.LIGHT)}
               tooltip={tooltipLabel(BlurRadius.LIGHT)}
               isDisabled={processorPending}
@@ -162,7 +161,6 @@ export const Effects = () => {
             </ToggleButton>
             <ToggleButton
               size={'sm'}
-              legacyStyle
               aria-label={tooltipLabel(BlurRadius.NORMAL)}
               tooltip={tooltipLabel(BlurRadius.NORMAL)}
               isDisabled={processorPending}

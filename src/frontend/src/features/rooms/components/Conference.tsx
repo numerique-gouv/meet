@@ -15,6 +15,7 @@ import { InviteDialog } from './InviteDialog'
 
 import { VideoConference } from '../livekit/prefabs/VideoConference'
 import posthog from 'posthog-js'
+import { css } from '@/styled-system/css'
 
 export const Conference = ({
   roomId,
@@ -107,6 +108,9 @@ export const Conference = ({
           audio={userConfig.audioEnabled}
           video={userConfig.videoEnabled}
           connectOptions={connectOptions}
+          className={css({
+            backgroundColor: 'primaryDark.50 !important'
+          })}
         >
           <VideoConference />
           {showInviteDialog && (

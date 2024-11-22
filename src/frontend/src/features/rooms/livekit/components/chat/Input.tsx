@@ -106,7 +106,7 @@ export const ChatInput = ({
       />
       <Button
         square
-        invisible
+        variant="secondaryText"
         size="sm"
         onPress={handleSubmit}
         isDisabled={isDisabled}

@@ -207,8 +207,7 @@ export const Home = () => {
               )}
               <DialogTrigger>
                 <Button
-                  variant="primary"
-                  outline
+                  variant="secondary"
                   style={{
                     height: !isLoggedIn ? '56px' : undefined, // Temporary, Align with ProConnect Button fixed height
                   }}

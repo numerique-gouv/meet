@@ -43,7 +43,7 @@ const ratingButtonRecipe = cva({
   variants: {
     selected: {
       true: {
-        backgroundColor: '#1d4ed8',
+        backgroundColor: 'primary.800',
         color: 'white',
       },
       false: {

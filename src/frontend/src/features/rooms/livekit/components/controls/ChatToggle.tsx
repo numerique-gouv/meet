@@ -23,7 +23,7 @@ export const ChatToggle = () => {
     >
       <ToggleButton
         square
-        legacyStyle
+        variant="primaryTextDark"
         aria-label={t(tooltipLabel)}
         tooltip={t(tooltipLabel)}
         isSelected={isChatOpen}

@@ -103,54 +103,75 @@ export function ControlBar({
   return (
     <div
       className={css({
-        display: 'flex',
-        gap: '.5rem',
         alignItems: 'center',
-        justifyContent: 'center',
+        justifyContent: 'space-between',
         padding: '.75rem',
-        borderTop: '1px solid var(--lk-border-color)',
         maxHeight: 'var(--lk-control-bar-height)',
         height: '80px',
         position: 'absolute',
-        backgroundColor: '#d1d5db',
         bottom: 0,
         left: 0,
         right: 0,
+        base: {
+          display: 'flex'
+        }
       })}
     >
-      <SelectToggleDevice
-        source={Track.Source.Microphone}
-        onChange={microphoneOnChange}
-        onDeviceError={(error) =>
-          onDeviceError?.({ source: Track.Source.Microphone, error })
-        }
-        onActiveDeviceChange={(deviceId) =>
-          saveAudioInputDeviceId(deviceId ?? '')
-        }
-      />
-      <SelectToggleDevice
-        source={Track.Source.Camera}
-        onChange={cameraOnChange}
-        onDeviceError={(error) =>
-          onDeviceError?.({ source: Track.Source.Camera, error })
-        }
-        onActiveDeviceChange={(deviceId) =>
-          saveVideoInputDeviceId(deviceId ?? '')
-        }
-      />
-      {browserSupportsScreenSharing && (
-        <ScreenShareToggle
+      <div className={css({
+        display: 'flex',
+        gap: '.5rem',
+        alignItems: 'center',
+        lg: {
+          position: 'absolute',
+          left: '50%',
+          transform: 'translateX(-50%)',
+        },
+      })}>
+        <SelectToggleDevice
+          source={Track.Source.Microphone}
+          onChange={microphoneOnChange}
           onDeviceError={(error) =>
-            onDeviceError?.({ source: Track.Source.ScreenShare, error })
+            onDeviceError?.({ source: Track.Source.Microphone, error })
+          }
+          onActiveDeviceChange={(deviceId) =>
+            saveAudioInputDeviceId(deviceId ?? '')
           }
         />
-      )}
-      <HandToggle />
-      <ChatToggle />
-      <ParticipantsToggle />
-      <OptionsButton />
-      <LeaveButton />
-      <StartMediaButton />
+        <SelectToggleDevice
+          source={Track.Source.Camera}
+          onChange={cameraOnChange}
+          onDeviceError={(error) =>
+            onDeviceError?.({ source: Track.Source.Camera, error })
+          }
+          onActiveDeviceChange={(deviceId) =>
+            saveVideoInputDeviceId(deviceId ?? '')
+          }
+        />
+        {browserSupportsScreenSharing && (
+          <ScreenShareToggle
+            onDeviceError={(error) =>
+              onDeviceError?.({ source: Track.Source.ScreenShare, error })
+            }
+          />
+        )}
+        <HandToggle />
+        <OptionsButton />
+        <LeaveButton />
+        <StartMediaButton />
+      </div>
+      <div className={css({
+        display: 'flex',
+        gap: '.5rem',
+        alignItems: 'center',
+        marginRight: '6.25rem',
+        lg: {
+          position: 'absolute',
+          right: 0
+        }
+      })}>
+        <ChatToggle />
+        <ParticipantsToggle />
+      </div>
     </div>
   )
 }
