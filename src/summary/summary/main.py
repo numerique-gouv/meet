@@ -1,26 +1,17 @@
-"""Application entry point."""
-
-from functools import lru_cache
-from typing import Annotated
+"""Application endpoint."""
 
 from fastapi import Depends, FastAPI
 from pydantic import BaseModel
 
 from .celery_worker import send_push_notification
-from .config import Settings
-
+from .config import SettingsDeps
+from .security import verify_token
 
 app = FastAPI()
 
 
-@lru_cache
-def get_settings():
-    """Load and cache application settings."""
-    return Settings()
-
-
 @app.get("/")
-async def root(settings: Annotated[Settings, Depends(get_settings)]):
+async def root(settings: SettingsDeps):
     """Root endpoint that returns app name."""
     return {"message": f"Hello World, using {settings.app_name}"}
 
@@ -46,7 +37,7 @@ class NotificationRequest(BaseModel):
 
 
 @app.post("/push")
-async def notify(request: NotificationRequest):
+async def notify(request: NotificationRequest, token: str = Depends(verify_token)):
     """Push a notification."""
     send_push_notification.delay(request.filename, request.email, request.sub)
     return {"message": "Notification sent"}

@@ -1,5 +1,9 @@
-"""Module for managing application configuration and settings."""
+"""Application configuration and settings."""
 
+from functools import lru_cache
+from typing import Annotated
+
+from fastapi import Depends
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -8,6 +12,7 @@ class Settings(BaseSettings):
 
     app_name: str = "Awesome API"
     model_config = SettingsConfigDict(env_file=".env")
+    app_api_token: str
 
     # Celery settings
     celery_broker_url: str = "redis://redis/0"
@@ -28,3 +33,12 @@ class Settings(BaseSettings):
     webhook_backoff_factor: float = 0.1
     webhook_api_token: str
     webhook_url: str
+
+
+@lru_cache
+def get_settings():
+    """Load and cache application settings."""
+    return Settings()
+
+
+SettingsDeps = Annotated[Settings, Depends(get_settings)]
