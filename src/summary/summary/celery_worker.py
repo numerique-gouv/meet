@@ -29,14 +29,14 @@ celery = Celery(
 
 
 def save_audio_stream(audio_stream, chunk_size=32 * 1024):
-    """Wip."""
+    """Save an audio stream to a temporary OGG file."""
     with tempfile.NamedTemporaryFile(suffix=".ogg", delete=False) as tmp:
         tmp.writelines(audio_stream.stream(chunk_size))
         return Path(tmp.name)
 
 
 def create_retry_session():
-    """Wip."""
+    """Create an HTTP session configured with retry logic."""
     session = Session()
     retries = Retry(
         total=settings.webhook_max_retries,
@@ -49,7 +49,7 @@ def create_retry_session():
 
 
 def post_with_retries(url, data):
-    """Wip."""
+    """Send POST request with automatic retries."""
     session = create_retry_session()
     session.headers.update({"Authorization": f"Bearer {settings.webhook_api_token}"})
     try:
