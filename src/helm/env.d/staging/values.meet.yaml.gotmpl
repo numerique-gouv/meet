@@ -174,3 +174,107 @@ posthog:
       cert-manager.io/cluster-issuer: letsencrypt-prod
       nginx.ingress.kubernetes.io/upstream-vhost: eu-assets.i.posthog.com
       nginx.ingress.kubernetes.io/backend-protocol: https
+
+summary:
+  replicas: 1
+  envVars:
+    APP_NAME: summary-microservice
+    APP_API_TOKEN:
+      secretKeyRef:
+        name: summary
+        key: APP_API_TOKEN
+    AWS_S3_ENDPOINT_URL:
+      secretKeyRef:
+        name: meet-media-storage.bucket.libre.sh
+        key: url
+    AWS_S3_ACCESS_KEY_ID:
+      secretKeyRef:
+        name: meet-media-storage.bucket.libre.sh
+        key: accessKey
+    AWS_S3_SECRET_ACCESS_KEY:
+      secretKeyRef:
+        name: meet-media-storage.bucket.libre.sh
+        key: secretKey
+    AWS_STORAGE_BUCKET_NAME:
+      secretKeyRef:
+        name: meet-media-storage.bucket.libre.sh
+        key: bucket
+    AWS_S3_REGION_NAME: local
+    OPENAI_API_KEY:
+      secretKeyRef:
+        name: summary
+        key: OPENAI_API_KEY
+    WEBHOOK_API_TOKEN:
+      secretKeyRef:
+        name: summary
+        key: WEBHOOK_API_TOKEN
+    WEBHOOK_URL: https://www.mock-impress.com/webhook/
+    CELERY_BROKER_URL:
+      secretKeyRef:
+        name: redis-summary.redis.libre.sh
+        key: url
+    CELERY_RESULT_BACKEND:
+      secretKeyRef:
+        name: redis-summary.redis.libre.sh
+        key: url
+
+  image:
+    repository: lasuite/meet-summary
+    pullPolicy: Always
+    tag: "main"
+
+celery:
+  replicas: 1
+  envVars:
+    APP_NAME: summary-microservice
+    APP_API_TOKEN:
+      secretKeyRef:
+        name: summary
+        key: APP_API_TOKEN
+    AWS_S3_ENDPOINT_URL:
+      secretKeyRef:
+        name: meet-media-storage.bucket.libre.sh
+        key: url
+    AWS_S3_ACCESS_KEY_ID:
+      secretKeyRef:
+        name: meet-media-storage.bucket.libre.sh
+        key: accessKey
+    AWS_S3_SECRET_ACCESS_KEY:
+      secretKeyRef:
+        name: meet-media-storage.bucket.libre.sh
+        key: secretKey
+    AWS_STORAGE_BUCKET_NAME:
+      secretKeyRef:
+        name: meet-media-storage.bucket.libre.sh
+        key: bucket
+    AWS_S3_REGION_NAME: local
+    OPENAI_API_KEY:
+      secretKeyRef:
+        name: summary
+        key: OPENAI_API_KEY
+    WEBHOOK_API_TOKEN:
+      secretKeyRef:
+        name: summary
+        key: WEBHOOK_API_TOKEN
+    WEBHOOK_URL: https://www.mock-impress.com/webhook/
+    CELERY_BROKER_URL:
+      secretKeyRef:
+        name: redis-summary.redis.libre.sh
+        key: url
+    CELERY_RESULT_BACKEND:
+      secretKeyRef:
+        name: redis-summary.redis.libre.sh
+        key: url
+
+  image:
+    repository: lasuite/meet-summary
+    pullPolicy: Always
+    tag: "main"
+
+  command:
+    - "celery"
+    - "-A"
+    - "summary.celery_worker"
+    - "worker"
+    - "--pool=solo"
+    - "--loglevel=info"
