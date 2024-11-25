@@ -79,3 +79,6 @@ db.sqlite3
 
 # Egress output
 docker/livekit/out
+
+# Summary
+src/vsummary
