@@ -74,15 +74,16 @@ def process_audio_transcribe_summarize(filename: str, email: str, sub: str):
     logger.debug("filename: %s", filename)
 
     minio_client = Minio(
-        settings.minio_url,
-        access_key=settings.minio_access_key,
-        secret_key=settings.minio_secret_key,
+        settings.aws_s3_endpoint_url,
+        access_key=settings.aws_s3_access_key_id,
+        secret_key=settings.aws_s3_secret_access_key,
+        secure=settings.aws_s3_secure_access,
     )
 
     logger.debug("Connection to the Minio bucket successful")
 
     audio_file_stream = minio_client.get_object(
-        settings.minio_bucket, object_name=filename
+        settings.aws_storage_bucket_name, object_name=filename
     )
 
     temp_file_path = save_audio_stream(audio_file_stream)

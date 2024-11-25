@@ -19,10 +19,11 @@ class Settings(BaseSettings):
     celery_result_backend: str = "redis://redis/0"
 
     # Minio settings
-    minio_bucket: str
-    minio_url: str
-    minio_access_key: str
-    minio_secret_key: str
+    aws_storage_bucket_name: str
+    aws_s3_endpoint_url: str
+    aws_s3_access_key_id: str
+    aws_s3_secret_access_key: str
+    aws_s3_secure_access: bool = True
 
     # AI-related settings
     openai_api_key: str
