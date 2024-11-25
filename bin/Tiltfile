@@ -27,6 +27,17 @@ docker_build(
     ]
 )
 
+docker_build(
+    'localhost:5001/meet-summary:latest',
+    context='../src/summary',
+    dockerfile='../src/summary/Dockerfile',
+    only=['.', '../../docker', '../../.dockerignore'],
+    target = 'production',
+    live_update=[
+        sync('../src/summary', '/home/summary'),
+    ]
+)
+
 k8s_yaml(local('cd ../src/helm && helmfile -n meet -e dev template .'))
 
 migration = '''
