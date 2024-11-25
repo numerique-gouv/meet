@@ -167,6 +167,24 @@ Requires top level scope
 {{- end }}
 
 {{/*
+Full name for the summary
+
+Requires top level scope
+*/}}
+{{- define "meet.summary.fullname" -}}
+{{ include "meet.fullname" . }}-summary
+{{- end }}
+
+{{/*
+Full name for the Celery
+
+Requires top level scope
+*/}}
+{{- define "meet.celery.fullname" -}}
+{{ include "meet.fullname" . }}-celery
+{{- end }}
+
+{{/*
 Usage : {{ include "meet.secret.dockerconfigjson.name" (dict "fullname" (include "meet.fullname" .) "imageCredentials" .Values.path.to.the.image1) }}
 */}}
 {{- define "meet.secret.dockerconfigjson.name" }}

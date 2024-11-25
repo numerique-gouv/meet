@@ -305,3 +305,184 @@ posthog:
     externalName: eu-assets.i.posthog.com
     port: 443
     annotations: {}
+
+
+## @section summary
+
+summary:
+
+  ## @param summary.command Override the summary container command
+  command: []
+
+  ## @param summary.args Override the summary container args
+  args: []
+
+  ## @param summary.replicas Amount of summary replicas
+  replicas: 1
+
+  ## @param summary.shareProcessNamespace Enable share process namespace between containers
+  shareProcessNamespace: false
+
+  ## @param summary.sidecars Add sidecars containers to summary deployment
+  sidecars: []
+
+  ## @param summary.migrateJobAnnotations Annotations for the migrate job
+  migrateJobAnnotations: {}
+
+  ## @param summary.securityContext Configure summary Pod security context
+  securityContext: null
+
+  ## @param summary.envVars Configure summary container environment variables
+  ## @extra summary.envVars.BY_VALUE Example environment variable by setting value directly
+  ## @extra summary.envVars.FROM_CONFIGMAP.configMapKeyRef.name Name of a ConfigMap when configuring env vars from a ConfigMap
+  ## @extra summary.envVars.FROM_CONFIGMAP.configMapKeyRef.key Key within a ConfigMap when configuring env vars from a ConfigMap
+  ## @extra summary.envVars.FROM_SECRET.secretKeyRef.name Name of a Secret when configuring env vars from a Secret
+  ## @extra summary.envVars.FROM_SECRET.secretKeyRef.key Key within a Secret when configuring env vars from a Secret
+  ## @skip summary.envVars
+  envVars:
+    <<: *commonEnvVars
+
+  ## @param summary.podAnnotations Annotations to add to the summary Pod
+  podAnnotations: {}
+
+  ## @param summary.service.type summary Service type
+  ## @param summary.service.port summary Service listening port
+  ## @param summary.service.targetPort summary container listening port
+  ## @param summary.service.annotations Annotations to add to the summary Service
+  service:
+    type: ClusterIP
+    port: 80
+    targetPort: 8000
+    annotations: {}
+
+  ## @param summary.probes.liveness.path [nullable] Configure path for summary HTTP liveness probe
+  ## @param summary.probes.liveness.targetPort [nullable] Configure port for summary HTTP liveness probe
+  ## @param summary.probes.liveness.initialDelaySeconds [nullable] Configure initial delay for summary liveness probe
+  ## @param summary.probes.liveness.initialDelaySeconds [nullable] Configure timeout for summary liveness probe
+  ## @param summary.probes.startup.path [nullable] Configure path for summary HTTP startup probe
+  ## @param summary.probes.startup.targetPort [nullable] Configure port for summary HTTP startup probe
+  ## @param summary.probes.startup.initialDelaySeconds [nullable] Configure initial delay for summary startup probe
+  ## @param summary.probes.startup.initialDelaySeconds [nullable] Configure timeout for summary startup probe
+  ## @param summary.probes.readiness.path [nullable] Configure path for summary HTTP readiness probe
+  ## @param summary.probes.readiness.targetPort [nullable] Configure port for summary HTTP readiness probe
+  ## @param summary.probes.readiness.initialDelaySeconds [nullable] Configure initial delay for summary readiness probe
+  ## @param summary.probes.readiness.initialDelaySeconds [nullable] Configure timeout for summary readiness probe
+  probes:
+    liveness:
+      path: /__heartbeat__
+      initialDelaySeconds: 30
+    readiness:
+      path: /__lbheartbeat__
+      initialDelaySeconds: 30
+
+  ## @param summary.resources Resource requirements for the summary container
+  resources: {}
+
+  ## @param summary.nodeSelector Node selector for the summary Pod
+  nodeSelector: {}
+
+  ## @param summary.tolerations Tolerations for the summary Pod
+  tolerations: []
+
+  ## @param summary.affinity Affinity for the summary Pod
+  affinity: {}
+
+  ## @param summary.persistence Additional volumes to create and mount on the summary. Used for debugging purposes
+  ## @extra summary.persistence.volume-name.size Size of the additional volume
+  ## @extra summary.persistence.volume-name.type Type of the additional volume, persistentVolumeClaim or emptyDir
+  ## @extra summary.persistence.volume-name.mountPath Path where the volume should be mounted to
+  persistence: {}
+
+  ## @param summary.extraVolumeMounts Additional volumes to mount on the summary.
+  extraVolumeMounts: []
+
+  ## @param summary.extraVolumes Additional volumes to mount on the summary.
+  extraVolumes: []
+
+
+## @section celery
+
+celery:
+
+  ## @param celery.command Override the celery container command
+  command: []
+
+  ## @param celery.args Override the celery container args
+  args: []
+
+  ## @param celery.replicas Amount of celery replicas
+  replicas: 1
+
+  ## @param celery.shareProcessNamespace Enable share process namespace between containers
+  shareProcessNamespace: false
+
+  ## @param celery.sidecars Add sidecars containers to celery deployment
+  sidecars: []
+
+  ## @param celery.migrateJobAnnotations Annotations for the migrate job
+  migrateJobAnnotations: {}
+
+  ## @param celery.securityContext Configure celery Pod security context
+  securityContext: null
+
+  ## @param celery.envVars Configure celery container environment variables
+  ## @extra celery.envVars.BY_VALUE Example environment variable by setting value directly
+  ## @extra celery.envVars.FROM_CONFIGMAP.configMapKeyRef.name Name of a ConfigMap when configuring env vars from a ConfigMap
+  ## @extra celery.envVars.FROM_CONFIGMAP.configMapKeyRef.key Key within a ConfigMap when configuring env vars from a ConfigMap
+  ## @extra celery.envVars.FROM_SECRET.secretKeyRef.name Name of a Secret when configuring env vars from a Secret
+  ## @extra celery.envVars.FROM_SECRET.secretKeyRef.key Key within a Secret when configuring env vars from a Secret
+  ## @skip celery.envVars
+  envVars:
+    <<: *commonEnvVars
+
+  ## @param celery.podAnnotations Annotations to add to the celery Pod
+  podAnnotations: {}
+
+  ## @param celery.service.type celery Service type
+  ## @param celery.service.port celery Service listening port
+  ## @param celery.service.targetPort celery container listening port
+  ## @param celery.service.annotations Annotations to add to the celery Service
+  service:
+    type: ClusterIP
+    port: 80
+    targetPort: 8000
+    annotations: {}
+
+  ## @param celery.probes.liveness.path [nullable] Configure path for celery HTTP liveness probe
+  ## @param celery.probes.liveness.targetPort [nullable] Configure port for celery HTTP liveness probe
+  ## @param celery.probes.liveness.initialDelaySeconds [nullable] Configure initial delay for celery liveness probe
+  ## @param celery.probes.liveness.initialDelaySeconds [nullable] Configure timeout for celery liveness probe
+  ## @param celery.probes.startup.path [nullable] Configure path for celery HTTP startup probe
+  ## @param celery.probes.startup.targetPort [nullable] Configure port for celery HTTP startup probe
+  ## @param celery.probes.startup.initialDelaySeconds [nullable] Configure initial delay for celery startup probe
+  ## @param celery.probes.startup.initialDelaySeconds [nullable] Configure timeout for celery startup probe
+  ## @param celery.probes.readiness.path [nullable] Configure path for celery HTTP readiness probe
+  ## @param celery.probes.readiness.targetPort [nullable] Configure port for celery HTTP readiness probe
+  ## @param celery.probes.readiness.initialDelaySeconds [nullable] Configure initial delay for celery readiness probe
+  ## @param celery.probes.readiness.initialDelaySeconds [nullable] Configure timeout for celery readiness probe
+  probes: {}
+
+  ## @param celery.resources Resource requirements for the celery container
+  resources: {}
+
+  ## @param celery.nodeSelector Node selector for the celery Pod
+  nodeSelector: {}
+
+  ## @param celery.tolerations Tolerations for the celery Pod
+  tolerations: []
+
+  ## @param celery.affinity Affinity for the celery Pod
+  affinity: {}
+
+  ## @param celery.persistence Additional volumes to create and mount on the celery. Used for debugging purposes
+  ## @extra celery.persistence.volume-name.size Size of the additional volume
+  ## @extra celery.persistence.volume-name.type Type of the additional volume, persistentVolumeClaim or emptyDir
+  ## @extra celery.persistence.volume-name.mountPath Path where the volume should be mounted to
+  persistence: {}
+
+  ## @param celery.extraVolumeMounts Additional volumes to mount on the celery.
+  extraVolumeMounts: []
+
+  ## @param celery.extraVolumes Additional volumes to mount on the celery.
+  extraVolumes: []
+

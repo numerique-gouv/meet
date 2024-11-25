@@ -1,0 +1,21 @@
+{{- $envVars := include "meet.common.env" (list . .Values.summary) -}}
+{{- $fullName := include "meet.summary.fullname" . -}}
+{{- $component := "summary" -}}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ $fullName }}
+  namespace: {{ .Release.Namespace | quote }}
+  labels:
+    {{- include "meet.common.labels" (list . $component) | nindent 4 }}
+  annotations:
+    {{- toYaml $.Values.summary.service.annotations | nindent 4 }}
+spec:
+  type: {{ .Values.summary.service.type }}
+  ports:
+    - port: {{ .Values.summary.service.port }}
+      targetPort: {{ .Values.summary.service.targetPort }}
+      protocol: TCP
+      name: http
+  selector:
+    {{- include "meet.common.selectorLabels" (list . $component) | nindent 4 }}
