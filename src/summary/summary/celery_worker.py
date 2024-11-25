@@ -90,7 +90,7 @@ def send_push_notification(filename: str, email: str, sub: str):
     logger.debug("Querying transcription …")
     with open(temp_file_path, "rb") as audio_file:
         transcription = openai_client.audio.transcriptions.create(
-            model="whisper-1", file=audio_file
+            model=settings.openai_asr_model, file=audio_file
         )
 
         transcription = transcription.text
@@ -99,7 +99,7 @@ def send_push_notification(filename: str, email: str, sub: str):
 
     instructions = get_instructions(transcription)
     summary_response = openai_client.chat.completions.create(
-        model="gpt-4o", messages=instructions
+        model=settings.openai_llm_model, messages=instructions
     )
 
     summary = summary_response.choices[0].message.content
