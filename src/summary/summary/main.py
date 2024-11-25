@@ -4,16 +4,9 @@ from fastapi import Depends, FastAPI
 from pydantic import BaseModel
 
 from .celery_worker import send_push_notification
-from .config import SettingsDeps
 from .security import verify_token
 
 app = FastAPI()
-
-
-@app.get("/")
-async def root(settings: SettingsDeps):
-    """Root endpoint that returns app name."""
-    return {"message": f"Hello World, using {settings.app_name}"}
 
 
 @app.get("/__heartbeat__")
