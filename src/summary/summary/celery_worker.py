@@ -84,7 +84,7 @@ def send_push_notification(filename: str, email: str, sub: str):
 
     logger.debug("Initiating OpenAI client")
     openai_client = openai.OpenAI(
-        api_key=settings.openai_api_key,
+        api_key=settings.openai_api_key, base_url=settings.openai_base_url
     )
 
     logger.debug("Querying transcription …")
