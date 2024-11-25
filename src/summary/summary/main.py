@@ -1,5 +1,6 @@
 """Application endpoint."""
 
+from celery.result import AsyncResult
 from fastapi import Depends, FastAPI
 from pydantic import BaseModel
 
@@ -32,5 +33,12 @@ class NotificationRequest(BaseModel):
 @app.post("/push")
 async def notify(request: NotificationRequest, token: str = Depends(verify_token)):
     """Push a notification."""
-    send_push_notification.delay(request.filename, request.email, request.sub)
-    return {"message": "Notification sent"}
+    task = send_push_notification.delay(request.filename, request.email, request.sub)
+    return {"task_id": task.id, "message": "Notification sent"}
+
+
+@app.get("/status/{task_id}")
+async def get_status(task_id: str, token: str = Depends(verify_token)):
+    """Check task status by ID."""
+    task = AsyncResult(task_id)
+    return {"task_id": task_id, "status": task.status}
