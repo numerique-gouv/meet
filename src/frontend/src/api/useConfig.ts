@@ -1,12 +1,7 @@
 import { fetchApi } from './fetchApi'
 import { keys } from './queryKeys'
 import { useQuery } from '@tanstack/react-query'
-
-// todo - refactor it in a proper place
-export enum RecordingMode {
-  Transcript = 'transcript',
-  ScreenRecording = 'screen_recording',
-}
+import { RecordingMode } from '@/features/rooms/api/startRecording'
 
 export interface ApiConfig {
   analytics?: {
