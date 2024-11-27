@@ -61,8 +61,15 @@ def post_with_retries(url, data):
 
 
 @celery.task(max_retries=1)
-def send_push_notification(filename: str, email: str, sub: str):
-    """Mock push notification."""
+def process_audio_transcribe_summarize(filename: str, email: str, sub: str):
+    """Process an audio file by transcribing it and generating a summary.
+
+    This Celery task performs the following operations:
+    1. Retrieves the audio file from MinIO storage
+    2. Transcribes the audio using OpenAI-compliant API's ASR model
+    3. Generates a summary of the transcription using OpenAI-compliant API's LLM
+    4. Sends the results via webhook
+    """
     logger.info("Notification received")
     logger.debug("filename: %s", filename)
 

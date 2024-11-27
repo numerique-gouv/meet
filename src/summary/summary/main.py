@@ -4,7 +4,7 @@ from celery.result import AsyncResult
 from fastapi import Depends, FastAPI
 from pydantic import BaseModel
 
-from .celery_worker import send_push_notification
+from .celery_worker import process_audio_transcribe_summarize
 from .security import verify_token
 
 app = FastAPI()
@@ -33,7 +33,9 @@ class NotificationRequest(BaseModel):
 @app.post("/push")
 async def notify(request: NotificationRequest, token: str = Depends(verify_token)):
     """Push a notification."""
-    task = send_push_notification.delay(request.filename, request.email, request.sub)
+    task = process_audio_transcribe_summarize.delay(
+        request.filename, request.email, request.sub
+    )
     return {"task_id": task.id, "message": "Notification sent"}
 
 
