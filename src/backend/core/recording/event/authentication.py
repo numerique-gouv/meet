@@ -47,8 +47,6 @@ class StorageEventAuthentication(BaseAuthentication):
 
     def authenticate(self, request):
         """Validate the Bearer token from the Authorization header."""
-        if not settings.RECORDING_ENABLE_STORAGE_EVENT_AUTH:
-            return MachineUser(), None
 
         if not settings.RECORDING_ENABLE_STORAGE_EVENT_AUTH:
             return MachineUser(), None

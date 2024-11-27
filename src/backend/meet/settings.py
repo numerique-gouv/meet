@@ -446,7 +446,7 @@ class Base(Configuration):
         False, environ_name="RECORDING_STORAGE_EVENT_ENABLE", environ_prefix=None
     )
     RECORDING_STORAGE_EVENT_TOKEN = values.Value(
-        None, environ_name="RECORDING_STORAGE_HOOK_TOKEN", environ_prefix=None
+        None, environ_name="RECORDING_STORAGE_EVENT_TOKEN", environ_prefix=None
     )
 
     # pylint: disable=invalid-name
