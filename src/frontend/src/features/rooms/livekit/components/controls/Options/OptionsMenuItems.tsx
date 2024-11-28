@@ -1,4 +1,3 @@
-import { menuItemRecipe } from '@/primitives/menuItemRecipe'
 import {
   RiAccountBoxLine,
   RiMegaphoneLine,
@@ -10,6 +9,7 @@ import { Dispatch, SetStateAction } from 'react'
 import { DialogState } from './OptionsButton'
 import { Separator } from '@/primitives/Separator'
 import { useSidePanel } from '../../../hooks/useSidePanel'
+import { menuRecipe } from '@/primitives/menuRecipe.ts';
 
 // @todo try refactoring it to use MenuList component
 export const OptionsMenuItems = ({
@@ -29,7 +29,7 @@ export const OptionsMenuItems = ({
       <Section>
         <MenuItem
           onAction={() => toggleEffects()}
-          className={menuItemRecipe({ icon: true })}
+          className={menuRecipe({ icon: true }).item}
         >
           <RiAccountBoxLine size={20} />
           {t('effects')}
@@ -40,13 +40,13 @@ export const OptionsMenuItems = ({
         <MenuItem
           href="https://grist.incubateur.net/o/docs/forms/1YrfNP1QSSy8p2gCxMFnSf/4"
           target="_blank"
-          className={menuItemRecipe({ icon: true })}
+          className={menuRecipe({ icon: true }).item}
         >
           <RiMegaphoneLine size={20} />
           {t('feedbacks')}
         </MenuItem>
         <MenuItem
-          className={menuItemRecipe({ icon: true })}
+          className={menuRecipe({ icon: true }).item}
           onAction={() => onOpenDialog('settings')}
         >
           <RiSettings3Line size={20} />
