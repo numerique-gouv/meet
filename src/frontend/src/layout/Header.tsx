@@ -66,7 +66,7 @@ export const Header = () => {
                 <Menu>
                   <Button
                     size="sm"
-                    invisible
+                    variant="greyscale"
                     tooltip={t('loggedInUserTooltip')}
                     tooltipType="delayed"
                   >
@@ -83,6 +83,7 @@ export const Header = () => {
                     </span>
                   </Button>
                   <MenuList
+                    variant={'light'}
                     items={[{ value: 'logout', label: t('logout') }]}
                     onAction={(value) => {
                       if (value === 'logout') {

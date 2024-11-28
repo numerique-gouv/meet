@@ -4,7 +4,6 @@ import {
   useTrackToggle,
   UseTrackToggleProps,
 } from '@livekit/components-react'
-import { HStack } from '@/styled-system/jsx'
 import { Button, Menu, MenuList } from '@/primitives'
 import {
   RemixiconComponentType,
@@ -19,6 +18,7 @@ import { Track } from 'livekit-client'
 import { Shortcut } from '@/features/shortcuts/types'
 
 import { ToggleDevice } from '@/features/rooms/livekit/components/controls/ToggleDevice.tsx'
+import { css } from '@/styled-system/css'
 
 export type ToggleSource = Exclude<
   Track.Source,
@@ -86,7 +86,12 @@ export const SelectToggleDevice = <T extends ToggleSource>({
   const selectLabel = t('choose', { keyPrefix: `join.${config.kind}` })
 
   return (
-    <HStack gap={0}>
+    <div
+      className={css({
+        display: 'flex',
+        gap: '1px',
+      })}
+    >
       <ToggleDevice {...trackProps} config={config} />
       <Menu>
         <Button
@@ -94,6 +99,7 @@ export const SelectToggleDevice = <T extends ToggleSource>({
           aria-label={selectLabel}
           groupPosition="right"
           square
+          variant={trackProps.enabled ? 'primaryDark' : 'error2'}
         >
           <RiArrowDownSLine />
         </Button>
@@ -109,6 +115,6 @@ export const SelectToggleDevice = <T extends ToggleSource>({
           }}
         />
       </Menu>
-    </HStack>
+    </div>
   )
 }

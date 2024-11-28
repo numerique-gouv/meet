@@ -63,7 +63,7 @@ const MicIndicator = ({ participant }: MicIndicatorProps) => {
     <>
       <Button
         square
-        invisible
+        variant="greyscale"
         size="sm"
         tooltip={
           isLocal(participant)

@@ -57,9 +57,9 @@ export const ToggleDevice = ({
 
   return (
     <ToggleButton
-      isSelected={enabled}
-      variant={enabled ? undefined : 'danger'}
-      toggledStyles={false}
+      isSelected={!enabled}
+      variant={enabled ? 'primaryDark' : 'error2'}
+      shySelected
       onPress={() => toggle()}
       aria-label={toggleLabel}
       tooltip={toggleLabel}

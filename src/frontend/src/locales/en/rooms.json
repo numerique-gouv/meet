@@ -29,6 +29,7 @@
   "leaveRoomPrompt": "This will make you leave the meeting.",
   "shareDialog": {
     "copy": "Copy the meeting link",
+    "copyButton": "Copy link",
     "copied": "Link copied to clipboard",
     "heading": "Your meeting is ready",
     "description": "Share this link with people you want to invite to the meeting.",

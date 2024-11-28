@@ -28,11 +28,7 @@ export const FeedbackRoute = () => {
         <VStack>
           <Heading>{t('feedback.heading')}</Heading>
           <HStack>
-            <Button
-              outline
-              variant="primary"
-              onPress={() => window.history.back()}
-            >
+            <Button variant="secondary" onPress={() => window.history.back()}>
               {t('feedback.back')}
             </Button>
             <Button variant="primary" onPress={() => setLocation('/')}>

@@ -10,7 +10,6 @@ import { JoinMeetingDialog } from '../components/JoinMeetingDialog'
 import { ProConnectButton } from '@/components/ProConnectButton'
 import { useCreateRoom } from '@/features/rooms'
 import { usePersistentUserChoices } from '@livekit/components-react'
-import { menuItemRecipe } from '@/primitives/menuItemRecipe'
 import { RiAddLine, RiLink } from '@remixicon/react'
 import { LaterMeetingDialog } from '@/features/home/components/LaterMeetingDialog'
 import { IntroSlider } from '@/features/home/components/IntroSlider'
@@ -18,6 +17,7 @@ import { MoreLink } from '@/features/home/components/MoreLink'
 import { ReactNode, useState } from 'react'
 
 import { css } from '@/styled-system/css'
+import { menuRecipe } from '@/primitives/menuRecipe.ts'
 
 const Columns = ({ children }: { children?: ReactNode }) => {
   return (
@@ -173,7 +173,9 @@ export const Home = () => {
                   </Button>
                   <RACMenu>
                     <MenuItem
-                      className={menuItemRecipe({ icon: true })}
+                      className={
+                        menuRecipe({ icon: true, variant: 'light' }).item
+                      }
                       onAction={async () => {
                         const slug = generateRoomId()
                         createRoom({ slug, username }).then((data) =>
@@ -188,7 +190,9 @@ export const Home = () => {
                       {t('createMenu.instantOption')}
                     </MenuItem>
                     <MenuItem
-                      className={menuItemRecipe({ icon: true })}
+                      className={
+                        menuRecipe({ icon: true, variant: 'light' }).item
+                      }
                       onAction={() => {
                         const slug = generateRoomId()
                         createRoom({ slug, username }).then((data) =>
@@ -207,8 +211,7 @@ export const Home = () => {
               )}
               <DialogTrigger>
                 <Button
-                  variant="primary"
-                  outline
+                  variant="secondary"
                   style={{
                     height: !isLoggedIn ? '56px' : undefined, // Temporary, Align with ProConnect Button fixed height
                   }}

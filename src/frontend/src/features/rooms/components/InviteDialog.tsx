@@ -49,8 +49,6 @@ export const InviteDialog = ({
     }
   }, [isCopied])
 
-  const [isHovered, setIsHovered] = useState(false)
-
   return (
     <StyledRACDialog {...dialogProps}>
       {({ close }) => (
@@ -65,7 +63,7 @@ export const InviteDialog = ({
           </Heading>
           <Div position="absolute" top="5" right="5">
             <Button
-              invisible
+              variant="greyscale"
               size="xs"
               onPress={() => {
                 dialogProps.onClose?.()
@@ -78,45 +76,24 @@ export const InviteDialog = ({
           </Div>
           <P>{t('shareDialog.description')}</P>
           <Button
-            variant={isCopied ? 'success' : 'primary'}
-            size="sm"
+            variant={isCopied ? 'success' : 'tertiary'}
             fullWidth
             aria-label={t('shareDialog.copy')}
-            style={{
-              justifyContent: 'start',
-            }}
             onPress={() => {
               navigator.clipboard.writeText(roomUrl)
               setIsCopied(true)
             }}
-            onHoverChange={setIsHovered}
             data-attr="share-dialog-copy"
           >
             {isCopied ? (
               <>
-                <RiCheckLine size={18} style={{ marginRight: '8px' }} />
+                <RiCheckLine size={24} style={{ marginRight: '8px' }} />
                 {t('shareDialog.copied')}
               </>
             ) : (
               <>
-                <RiFileCopyLine
-                  size={18}
-                  style={{ marginRight: '8px', minWidth: '18px' }}
-                />
-                {isHovered ? (
-                  t('shareDialog.copy')
-                ) : (
-                  <div
-                    style={{
-                      textOverflow: 'ellipsis',
-                      overflow: 'hidden',
-                      userSelect: 'none',
-                      textWrap: 'nowrap',
-                    }}
-                  >
-                    {roomUrl.replace(/^https?:\/\//, '')}
-                  </div>
-                )}
+                <RiFileCopyLine size={24} style={{ marginRight: '8px' }} />
+                {t('shareDialog.copyButton')}
               </>
             )}
           </Button>

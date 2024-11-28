@@ -26,7 +26,7 @@ export const ScreenShareToggle = (
     <ToggleButton
       isSelected={enabled}
       square
-      legacyStyle
+      variant="primaryDark"
       tooltip={t(tooltipLabel)}
       onPress={(e) =>
         buttonProps.onClick?.(

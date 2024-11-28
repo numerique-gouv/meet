@@ -12,25 +12,11 @@ export const buttonRecipe = cva({
     transition: 'background 200ms, outline 200ms, border-color 200ms',
     cursor: 'pointer',
     border: '1px solid transparent',
-    color: 'colorPalette.text',
-    backgroundColor: 'colorPalette',
-    '&[data-hovered]': {
-      backgroundColor: 'colorPalette.hover',
-    },
-    '&[data-pressed]': {
-      backgroundColor: 'colorPalette.active',
-    },
-    '&[data-selected]': {
-      backgroundColor: 'colorPalette.active',
-    },
-    '&[data-disabled]': {
-      cursor: 'auto',
-    },
   },
   variants: {
     size: {
       default: {
-        borderRadius: 8,
+        borderRadius: 4,
         paddingX: '1',
         paddingY: '0.625',
         '--square-padding': '{spacing.0.625}',
@@ -53,20 +39,137 @@ export const buttonRecipe = cva({
       },
     },
     variant: {
-      default: {
-        colorPalette: 'control',
-        borderColor: 'control.subtle',
-      },
       primary: {
-        colorPalette: 'primary',
+        backgroundColor: 'primary.800',
+        color: 'white',
+        '&[data-hovered]': {
+          backgroundColor: 'primary.action',
+        },
+        '&[data-pressed]': {
+          backgroundColor: 'primary.action',
+        },
         '&[data-disabled]': {
-          opacity: 0.3,
+          backgroundColor: 'greyscale.100',
+          color: 'greyscale.400',
+        },
+      },
+      secondary: {
+        backgroundColor: 'white',
+        color: 'primary.800',
+        borderColor: 'primary.800',
+        '&[data-hovered]': {
+          backgroundColor: 'greyscale.100',
+        },
+        '&[data-pressed]': {
+          backgroundColor: 'greyscale.100',
+        },
+      },
+      secondaryText: {
+        backgroundColor: 'transparent',
+        color: 'primary.800',
+        '&[data-hovered]': {
+          backgroundColor: 'greyscale.100',
+        },
+        '&[data-pressed]': {
+          backgroundColor: 'greyscale.100',
+        },
+        '&[data-disabled]': {
+          color: 'greyscale.400',
+        },
+      },
+      tertiary: {
+        backgroundColor: 'primary.100',
+        color: 'primary.800',
+        '&[data-hovered]': {
+          backgroundColor: 'primary.300',
+        },
+        '&[data-pressed]': {
+          backgroundColor: 'primary.300',
+        },
+      },
+      primaryDark: {
+        backgroundColor: 'primaryDark.100',
+        color: 'white',
+        '&[data-pressed]': {
+          backgroundColor: 'primaryDark.900',
+          color: 'primaryDark.100',
+        },
+        '&[data-hovered]': {
+          backgroundColor: 'primaryDark.300',
+          color: 'white',
+        },
+        '&[data-selected]': {
+          backgroundColor: 'primaryDark.900 !important',
+          color: 'primaryDark.100 !important',
+        },
+      },
+      primaryTextDark: {
+        backgroundColor: 'transparent',
+        color: 'primaryDark.800',
+        '&[data-hovered]': {
+          backgroundColor: 'primaryDark.100',
+        },
+        '&[data-pressed]': {
+          backgroundColor: 'primaryDark.700',
+          color: 'primaryDark.100',
+        },
+        '&[data-selected]': {
+          backgroundColor: 'primaryDark.700',
+          color: 'primaryDark.100',
+        },
+      },
+      greyscale: {
+        backgroundColor: 'transparent',
+        color: 'greyscale.400',
+        '&[data-hovered]': {
+          color: 'greyscale.800',
+        },
+        '&[data-pressed]': {
+          color: 'greyscale.800',
+        },
+        '&[data-selected]': {
+          color: 'greyscale.800',
+        },
+        '&[data-disabled]': {
+          color: 'greyscale.200',
+        },
+      },
+      danger: {
+        backgroundColor: 'error.400',
+        color: 'white',
+        '&[data-hovered]': {
+          backgroundColor: 'error.600',
+        },
+        '&[data-pressed]': {
+          backgroundColor: 'error.700',
+          color: 'error.200',
+        },
+      },
+      error2: {
+        backgroundColor: 'error.200',
+        color: 'error.900',
+        '&[data-hovered]': {
+          backgroundColor: 'error.300',
+        },
+        '&[data-focused]': {
+          backgroundColor: 'error.200',
+        },
+        '&[data-pressed]': {
+          backgroundColor: 'error.900',
+          color: 'error.100',
+        },
+        '&[data-selected]': {
+          backgroundColor: 'error.900 !important',
+          color: 'error.100 !important',
+        },
+        '&[data-disabled]': {
+          backgroundColor: 'error.200',
+          color: 'error.300',
         },
       },
       // @TODO: better handling of colors… this is a mess
       success: {
         colorPalette: 'success',
-        borderColor: 'success.300',
         color: 'success.subtle-text',
         backgroundColor: 'success.subtle',
         '&[data-hovered]': {
@@ -81,31 +184,6 @@ export const buttonRecipe = cva({
         '&[data-hovered]': {
           background: 'gray.100 !important',
           color: 'primary !important',
-        },
-      },
-      danger: {
-        colorPalette: 'danger',
-        borderColor: 'danger.600',
-        color: 'danger.subtle-text',
-        backgroundColor: 'danger.subtle',
-        '&[data-hovered]': {
-          backgroundColor: 'danger.200',
-        },
-        '&[data-pressed]': {
-          backgroundColor: 'danger.subtle!',
-        },
-      },
-    },
-    outline: {
-      true: {
-        color: 'colorPalette',
-        backgroundColor: 'transparent!',
-        borderColor: 'currentcolor!',
-        '&[data-hovered]': {
-          backgroundColor: 'colorPalette.subtle!',
-        },
-        '&[data-pressed]': {
-          backgroundColor: 'colorPalette.subtle!',
         },
       },
     },
@@ -130,6 +208,10 @@ export const buttonRecipe = cva({
         width: 'full',
       },
     },
+    // some toggle buttons make more sense without a "pushed button" style when selected because their content changes to mark the state
+    shySelected: {
+      true: {},
+    },
     // if the button is next to other ones to make a "button group", tell where the button is to handle radius
     groupPosition: {
       left: {
@@ -145,40 +227,21 @@ export const buttonRecipe = cva({
         borderRadius: 0,
       },
     },
-    // some toggle buttons make more sense without a "pushed button" style when selected because their content changes to mark the state
-    toggledStyles: {
-      false: {
-        '&[data-selected]': {
-          backgroundColor: 'colorPalette',
-        },
-      },
-    },
-    legacyStyle: {
-      true: {
-        borderColor: 'gray.400',
-        transition: 'border 200ms, background 200ms, color 200ms',
-        '&[data-hovered]': {
-          borderColor: 'gray.500',
-        },
-        '&[data-pressed]': {
-          borderColor: 'gray.500',
-        },
-        '&[data-selected]': {
-          backgroundColor: '#1d4ed8',
-          color: 'white',
-          borderColor: 'gray.500',
-          '&[data-hovered]': {
-            borderColor: '#6b7280',
-            backgroundColor: '#1e40af',
-          },
-        },
-      },
-    },
   },
+  compoundVariants: [
+    {
+      variant: 'primaryDark',
+      shySelected: true,
+      css: {
+        '&[data-selected]': {
+          backgroundColor: 'primaryDark.100',
+          color: 'white',
+        },
+      },
+    },
+  ],
   defaultVariants: {
     size: 'default',
-    variant: 'default',
-    outline: false,
-    toggledStyles: true,
+    variant: 'primary',
   },
 })
