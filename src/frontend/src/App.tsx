@@ -30,7 +30,7 @@ function App() {
               <Route component={NotFoundScreen} />
             </Switch>
           </Layout>
-          <ReactQueryDevtools initialIsOpen={false} position="top-left" />
+          <ReactQueryDevtools initialIsOpen={false} />
         </I18nProvider>
       </Suspense>
     </QueryClientProvider>

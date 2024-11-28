@@ -11,7 +11,7 @@ import {
 } from 'react-aria-components'
 import { Box } from './Box'
 import { StyledPopover } from './Popover'
-import { menuRecipe } from '@/primitives/menuRecipe.ts';
+import { menuRecipe } from '@/primitives/menuRecipe.ts'
 
 const StyledButton = styled(Button, {
   base: {
@@ -75,7 +75,9 @@ export const Select = <T extends string | number>({
           <ListBox>
             {items.map((item) => (
               <ListBoxItem
-                className={menuRecipe({extraPadding: true, variant: 'light'}).item}
+                className={
+                  menuRecipe({ extraPadding: true, variant: 'light' }).item
+                }
                 id={item.value}
                 key={item.value}
               >

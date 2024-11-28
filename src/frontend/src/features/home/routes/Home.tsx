@@ -17,7 +17,7 @@ import { MoreLink } from '@/features/home/components/MoreLink'
 import { ReactNode, useState } from 'react'
 
 import { css } from '@/styled-system/css'
-import { menuRecipe } from '@/primitives/menuRecipe.ts';
+import { menuRecipe } from '@/primitives/menuRecipe.ts'
 
 const Columns = ({ children }: { children?: ReactNode }) => {
   return (
@@ -173,7 +173,9 @@ export const Home = () => {
                   </Button>
                   <RACMenu>
                     <MenuItem
-                      className={menuRecipe({icon: true, variant: 'light'}).item}
+                      className={
+                        menuRecipe({ icon: true, variant: 'light' }).item
+                      }
                       onAction={async () => {
                         const slug = generateRoomId()
                         createRoom({ slug, username }).then((data) =>
@@ -188,7 +190,9 @@ export const Home = () => {
                       {t('createMenu.instantOption')}
                     </MenuItem>
                     <MenuItem
-                      className={menuRecipe({icon: true, variant: 'light'}).item}
+                      className={
+                        menuRecipe({ icon: true, variant: 'light' }).item
+                      }
                       onAction={() => {
                         const slug = generateRoomId()
                         createRoom({ slug, username }).then((data) =>

@@ -9,7 +9,7 @@ import {
   RiCloseLine,
   RiFileCopyLine,
   RiSpam2Fill,
-} from '@remixicon/react';
+} from '@remixicon/react'
 import { useEffect, useState } from 'react'
 
 // fixme - extract in a proper primitive this dialog without overlay
@@ -92,7 +92,7 @@ export const InviteDialog = ({
               </>
             ) : (
               <>
-                <RiFileCopyLine size={24} style={{ marginRight: '8px' }}/>
+                <RiFileCopyLine size={24} style={{ marginRight: '8px' }} />
                 {t('shareDialog.copyButton')}
               </>
             )}
