@@ -18,7 +18,7 @@ import { Track } from 'livekit-client'
 import { Shortcut } from '@/features/shortcuts/types'
 
 import { ToggleDevice } from '@/features/rooms/livekit/components/controls/ToggleDevice.tsx'
-import { css } from '@/styled-system/css';
+import { css } from '@/styled-system/css'
 
 export type ToggleSource = Exclude<
   Track.Source,
@@ -86,10 +86,12 @@ export const SelectToggleDevice = <T extends ToggleSource>({
   const selectLabel = t('choose', { keyPrefix: `join.${config.kind}` })
 
   return (
-    <div className={css({
-      display: 'flex',
-      gap: '1px'
-    })}>
+    <div
+      className={css({
+        display: 'flex',
+        gap: '1px',
+      })}
+    >
       <ToggleDevice {...trackProps} config={config} />
       <Menu>
         <Button
@@ -97,7 +99,7 @@ export const SelectToggleDevice = <T extends ToggleSource>({
           aria-label={selectLabel}
           groupPosition="right"
           square
-          variant={trackProps.enabled ? "primaryDark" : "error2"}
+          variant={trackProps.enabled ? 'primaryDark' : 'error2'}
         >
           <RiArrowDownSLine />
         </Button>

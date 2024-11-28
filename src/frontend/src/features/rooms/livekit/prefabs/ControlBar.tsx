@@ -112,21 +112,21 @@ export function ControlBar({
         bottom: 0,
         left: 0,
         right: 0,
-        base: {
-          display: 'flex'
-        }
+        display: 'flex',
       })}
     >
-      <div className={css({
-        display: 'flex',
-        gap: '.5rem',
-        alignItems: 'center',
-        lg: {
-          position: 'absolute',
-          left: '50%',
-          transform: 'translateX(-50%)',
-        },
-      })}>
+      <div
+        className={css({
+          display: 'flex',
+          gap: '.5rem',
+          alignItems: 'center',
+          lg: {
+            position: 'absolute',
+            left: '50%',
+            transform: 'translateX(-50%)',
+          },
+        })}
+      >
         <SelectToggleDevice
           source={Track.Source.Microphone}
           onChange={microphoneOnChange}
@@ -159,16 +159,18 @@ export function ControlBar({
         <LeaveButton />
         <StartMediaButton />
       </div>
-      <div className={css({
-        display: 'flex',
-        gap: '.5rem',
-        alignItems: 'center',
-        marginRight: '6.25rem',
-        lg: {
-          position: 'absolute',
-          right: 0
-        }
-      })}>
+      <div
+        className={css({
+          display: 'flex',
+          gap: '.5rem',
+          alignItems: 'center',
+          marginRight: '6.25rem',
+          lg: {
+            position: 'absolute',
+            right: 0,
+          },
+        })}
+      >
         <ChatToggle />
         <ParticipantsToggle />
       </div>

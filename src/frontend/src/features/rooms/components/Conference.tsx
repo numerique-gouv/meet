@@ -109,7 +109,7 @@ export const Conference = ({
           video={userConfig.videoEnabled}
           connectOptions={connectOptions}
           className={css({
-            backgroundColor: 'primaryDark.50 !important'
+            backgroundColor: 'primaryDark.50 !important',
           })}
         >
           <VideoConference />

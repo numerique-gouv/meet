@@ -9,7 +9,7 @@ import { Dispatch, SetStateAction } from 'react'
 import { DialogState } from './OptionsButton'
 import { Separator } from '@/primitives/Separator'
 import { useSidePanel } from '../../../hooks/useSidePanel'
-import { menuRecipe } from '@/primitives/menuRecipe.ts';
+import { menuRecipe } from '@/primitives/menuRecipe.ts'
 
 // @todo try refactoring it to use MenuList component
 export const OptionsMenuItems = ({

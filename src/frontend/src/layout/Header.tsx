@@ -83,7 +83,7 @@ export const Header = () => {
                     </span>
                   </Button>
                   <MenuList
-                    variant={"light"}
+                    variant={'light'}
                     items={[{ value: 'logout', label: t('logout') }]}
                     onAction={(value) => {
                       if (value === 'logout') {
