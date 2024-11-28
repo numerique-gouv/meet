@@ -29,7 +29,7 @@ echo "2. Create kind cluster with containerd registry config dir enabled"
 # https://github.com/kubernetes-sigs/kind/issues/2875
 # https://github.com/containerd/containerd/blob/main/docs/cri/config.md#registry-configuration
 # See: https://github.com/containerd/containerd/blob/main/docs/hosts.md
-cat <<EOF | kind create cluster --config=-
+cat <<EOF | kind create cluster --name visio --config=-
 kind: Cluster
 apiVersion: kind.x-k8s.io/v1alpha4
 containerdConfigPatches:
@@ -52,10 +52,6 @@ nodes:
   - containerPort: 443
     hostPort: 443
     protocol: TCP
-- role: worker
-  image: kindest/node:v1.27.3
-- role: worker
-  image: kindest/node:v1.27.3
 EOF
 
 echo "3. Add the registry config to the nodes"
@@ -68,7 +64,7 @@ echo "3. Add the registry config to the nodes"
 # We want a consistent name that works from both ends, so we tell containerd to
 # alias localhost:${reg_port} to the registry container when pulling images
 REGISTRY_DIR="/etc/containerd/certs.d/localhost:${reg_port}"
-for node in $(kind get nodes); do
+for node in $(kind get nodes --name visio); do
 	docker exec "${node}" mkdir -p "${REGISTRY_DIR}"
 	cat <<EOF | docker exec -i "${node}" cp /dev/stdin "${REGISTRY_DIR}/hosts.toml"
 [host."http://${reg_name}:5000"]
@@ -136,3 +132,8 @@ echo "6. Install ingress-nginx"
 kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/kind/deploy.yaml
 kubectl -n ingress-nginx create secret tls mkcert --key /tmp/127.0.0.1.nip.io+1-key.pem --cert /tmp/127.0.0.1.nip.io+1.pem
 kubectl -n ingress-nginx patch deployments.apps ingress-nginx-controller --type 'json' -p '[{"op": "add", "path": "/spec/template/spec/containers/0/args/-", "value":"--default-ssl-certificate=ingress-nginx/mkcert"}]'
+
+echo "7. Setup namespace"
+kubectl create ns meet
+kubectl config set-context --current --namespace=meet
+kubectl -n meet create secret generic mkcert --from-file=rootCA.pem="$(mkcert -CAROOT)/rootCA.pem"

@@ -66,6 +66,13 @@ releases:
           annotations:
             nginx.ingress.kubernetes.io/proxy-body-size: "0"
             kubernetes.io/ingress.class: nginx
+        extraVolumes:
+          - name: mkcert
+            secret:
+              secretName: mkcert
+        extraVolumeMounts:
+          - mountPath: /certs/CAs/
+            name: mkcert
 
   - name: redis
     installed: {{ eq .Environment.Name "dev" | toYaml }}
