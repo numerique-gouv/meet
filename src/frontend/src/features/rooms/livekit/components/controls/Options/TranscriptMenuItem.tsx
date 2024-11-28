@@ -14,17 +14,17 @@ import { useConfig } from '@/api/useConfig'
 export const TranscriptMenuItem = () => {
   const { t } = useTranslation('rooms', { keyPrefix: 'options.items' })
 
-  const data = useRoomData()
+  const apiRoomData = useRoomData()
 
   const { mutateAsync: startRecordingRoom } = useStartRecording()
   const { mutateAsync: stopRecordingRoom } = useStopRecording()
 
-  const { data: apiConfig } = useConfig()
+  const { data } = useConfig()
 
   const room = useRoomContext()
 
   const handleTranscript = async () => {
-    const roomId = data?.livekit?.room
+    const roomId = apiRoomData?.livekit?.room
 
     if (!roomId) {
       console.warn('No room ID found')
@@ -43,9 +43,9 @@ export const TranscriptMenuItem = () => {
   }
 
   if (
-    !apiConfig.recording?.is_enabled ||
-    !apiConfig.recording?.available_modes?.includes(RecordingMode.Transcript) ||
-    !data.is_administrable
+    !data?.recording?.is_enabled ||
+    !data?.recording?.available_modes?.includes(RecordingMode.Transcript) ||
+    !apiRoomData?.is_administrable
   ) {
     return
   }
