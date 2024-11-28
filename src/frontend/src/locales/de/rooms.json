@@ -79,7 +79,11 @@
       "support": "",
       "settings": "",
       "username": "",
-      "effects": ""
+      "effects": "",
+      "transcript": {
+        "start": "",
+        "stop": ""
+      }
     }
   },
   "effects": {

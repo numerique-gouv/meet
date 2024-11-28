@@ -78,7 +78,11 @@
       "support": "Get Help on Tchap",
       "settings": "Settings",
       "username": "Update Your Name",
-      "effects": "Apply effects"
+      "effects": "Apply effects",
+      "transcript": {
+        "start": "Start meeting transcription",
+        "stop": "Stop ongoing transcription"
+      }
     }
   },
   "effects": {
