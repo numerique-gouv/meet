@@ -7,7 +7,7 @@ import { Text, text } from '@/primitives/Text'
 import {
   RiCheckLine,
   RiCloseLine,
-  RiFileCopyLine, RiLink,
+  RiFileCopyLine,
   RiSpam2Fill,
 } from '@remixicon/react';
 import { useEffect, useState } from 'react'
@@ -48,8 +48,6 @@ export const InviteDialog = ({
       return () => clearTimeout(timeout)
     }
   }, [isCopied])
-
-  const [isHovered, setIsHovered] = useState(false)
 
   return (
     <StyledRACDialog {...dialogProps}>

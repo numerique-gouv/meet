@@ -66,7 +66,7 @@ const StyledTab = styled(RACTab, {
           color: 'box.text',
         },
         '&[data-selected]': {
-          backgroundColor: 'primaryDark.50',
+          backgroundColor: 'primary.800',
           color: 'white',
         },
       },
