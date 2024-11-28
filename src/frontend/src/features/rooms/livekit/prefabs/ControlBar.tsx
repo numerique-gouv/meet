@@ -17,6 +17,7 @@ import { HandToggle } from '../components/controls/HandToggle'
 import { SelectToggleDevice } from '../components/controls/SelectToggleDevice'
 import { LeaveButton } from '../components/controls/LeaveButton'
 import { ScreenShareToggle } from '../components/controls/ScreenShareToggle'
+import { ActivitiesToggle } from '../components/controls/ActivitiesToggle'
 import { css } from '@/styled-system/css'
 
 /** @public */
@@ -173,6 +174,7 @@ export function ControlBar({
       >
         <ChatToggle />
         <ParticipantsToggle />
+        <ActivitiesToggle />
       </div>
     </div>
   )

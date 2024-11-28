@@ -98,12 +98,14 @@
     "heading": {
       "participants": "",
       "effects": "",
-      "chat": ""
+      "chat": "",
+      "activities": ""
     },
     "content": {
       "participants": "",
       "effects": "",
-      "chat": ""
+      "chat": "",
+      "activities": ""
     },
     "closeButton": ""
   },

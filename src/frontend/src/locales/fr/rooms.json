@@ -97,12 +97,14 @@
     "heading": {
       "participants": "Participants",
       "effects": "Effets",
-      "chat": "Messages dans l'appel"
+      "chat": "Messages dans l'appel",
+      "activities": "Activités"
     },
     "content": {
       "participants": "les participants",
       "effects": "les effets",
-      "chat": "les messages"
+      "chat": "les messages",
+      "activities": "les activités"
     },
     "closeButton": "Masquer {{content}}"
   },

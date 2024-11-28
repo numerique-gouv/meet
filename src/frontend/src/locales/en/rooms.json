@@ -97,12 +97,14 @@
     "heading": {
       "participants": "Participants",
       "effects": "Effects",
-      "chat": "Messages in the chat"
+      "chat": "Messages in the chat",
+      "activities": "Activities"
     },
     "content": {
       "participants": "participants",
       "effects": "effects",
-      "chat": "messages"
+      "chat": "messages",
+      "activities": "activities"
     },
     "closeButton": "Hide {{content}}"
   },
