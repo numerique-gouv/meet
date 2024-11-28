@@ -78,7 +78,11 @@
       "support": "Obtenir de l'aide sur Tchap",
       "settings": "Paramètres",
       "username": "Choisir votre nom",
-      "effects": "Appliquer des effets"
+      "effects": "Appliquer des effets",
+      "transcript": {
+        "start": "Démarrer la transcription",
+        "stop": "Arrêter la transcription en cours"
+      }
     }
   },
   "effects": {

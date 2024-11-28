@@ -10,6 +10,7 @@ import { DialogState } from './OptionsButton'
 import { Separator } from '@/primitives/Separator'
 import { useSidePanel } from '../../../hooks/useSidePanel'
 import { menuRecipe } from '@/primitives/menuRecipe.ts'
+import { TranscriptMenuItem } from './TranscriptMenuItem'
 
 // @todo try refactoring it to use MenuList component
 export const OptionsMenuItems = ({
@@ -34,6 +35,7 @@ export const OptionsMenuItems = ({
           <RiAccountBoxLine size={20} />
           {t('effects')}
         </MenuItem>
+        <TranscriptMenuItem />
       </Section>
       <Separator />
       <Section>
