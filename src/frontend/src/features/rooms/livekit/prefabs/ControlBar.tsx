@@ -3,13 +3,9 @@ import * as React from 'react'
 
 import { supportsScreenSharing } from '@livekit/components-core'
 
-import {
-  useMaybeLayoutContext,
-  usePersistentUserChoices,
-} from '@livekit/components-react'
+import { usePersistentUserChoices } from '@livekit/components-react'
 
 import { StartMediaButton } from '../components/controls/StartMediaButton'
-import { useMediaQuery } from '../hooks/useMediaQuery'
 import { OptionsButton } from '../components/controls/Options/OptionsButton'
 import { ParticipantsToggle } from '../components/controls/Participants/ParticipantsToggle'
 import { ChatToggle } from '../components/controls/ChatToggle'
@@ -60,25 +56,9 @@ export interface ControlBarProps extends React.HTMLAttributes<HTMLDivElement> {
  * @public
  */
 export function ControlBar({
-  variation,
   saveUserChoices = true,
   onDeviceError,
 }: ControlBarProps) {
-  const [isChatOpen, setIsChatOpen] = React.useState(false)
-  const layoutContext = useMaybeLayoutContext()
-  React.useEffect(() => {
-    if (layoutContext?.widget.state?.showChat !== undefined) {
-      setIsChatOpen(layoutContext?.widget.state?.showChat)
-    }
-  }, [layoutContext?.widget.state?.showChat])
-
-  const isTooLittleSpace = useMediaQuery(
-    `(max-width: ${isChatOpen ? 1000 : 760}px)`
-  )
-
-  const defaultVariation = isTooLittleSpace ? 'minimal' : 'verbose'
-  variation ??= defaultVariation
-
   const browserSupportsScreenSharing = supportsScreenSharing()
 
   const {
