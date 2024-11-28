@@ -69,7 +69,8 @@
     "participants": {
       "open": "Masquer les participants",
       "closed": "Afficher les participants"
-    }
+    },
+    "support": "Support"
   },
   "options": {
     "buttonLabel": "Plus d'options",

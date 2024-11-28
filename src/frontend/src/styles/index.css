@@ -25,3 +25,7 @@ body,
     transition: none !important;
   }
 }
+
+body:has(.lk-video-conference) #crisp-chatbox > div > a {
+  display: none !important;
+}

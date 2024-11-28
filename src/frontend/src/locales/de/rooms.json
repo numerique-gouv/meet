@@ -70,7 +70,8 @@
     "participants": {
       "open": "",
       "closed": ""
-    }
+    },
+    "support": ""
   },
   "options": {
     "buttonLabel": "",
