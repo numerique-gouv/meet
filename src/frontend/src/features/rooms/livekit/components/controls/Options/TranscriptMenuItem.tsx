@@ -44,7 +44,8 @@ export const TranscriptMenuItem = () => {
 
   if (
     !apiConfig.recording?.is_enabled ||
-    !apiConfig.recording?.available_modes?.includes(RecordingMode.Transcript)
+    !apiConfig.recording?.available_modes?.includes(RecordingMode.Transcript) ||
+    !data.is_administrable
   ) {
     return
   }

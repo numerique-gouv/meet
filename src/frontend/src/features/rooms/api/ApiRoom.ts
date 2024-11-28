@@ -3,6 +3,7 @@ export type ApiRoom = {
   name: string
   slug: string
   is_public: boolean
+  is_administrable: boolean
   livekit?: {
     url: string
     room: string
