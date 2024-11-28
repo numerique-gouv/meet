@@ -100,57 +100,118 @@ export function ControlBar({
     [saveVideoInputEnabled]
   )
 
-  return (
+  const Square = () => (
     <div
       className={css({
+        height: '46px',
+        width: '46px',
+        backgroundColor: 'black',
+      })}
+    />
+  )
+
+  return (
+    // <div
+    //   className={css({
+    //     display: 'flex',
+    //     gap: '.5rem',
+    //     alignItems: 'center',
+    //     justifyContent: 'center',
+    //     padding: '.75rem',
+    //     borderTop: '1px solid var(--lk-border-color)',
+    //     maxHeight: 'var(--lk-control-bar-height)',
+    //     height: '80px',
+    //
+    //     backgroundColor: '#d1d5db',
+    //   })}
+    // >
+    //   <SelectToggleDevice
+    //     source={Track.Source.Microphone}
+    //     onChange={microphoneOnChange}
+    //     onDeviceError={(error) =>
+    //       onDeviceError?.({ source: Track.Source.Microphone, error })
+    //     }
+    //     onActiveDeviceChange={(deviceId) =>
+    //       saveAudioInputDeviceId(deviceId ?? '')
+    //     }
+    //   />
+    //   <SelectToggleDevice
+    //     source={Track.Source.Camera}
+    //     onChange={cameraOnChange}
+    //     onDeviceError={(error) =>
+    //       onDeviceError?.({ source: Track.Source.Camera, error })
+    //     }
+    //     onActiveDeviceChange={(deviceId) =>
+    //       saveVideoInputDeviceId(deviceId ?? '')
+    //     }
+    //   />
+    //   {browserSupportsScreenSharing && (
+    //     <ScreenShareToggle
+    //       onDeviceError={(error) =>
+    //         onDeviceError?.({ source: Track.Source.ScreenShare, error })
+    //       }
+    //     />
+    //   )}
+
+    // </div>
+    <div
+      className={css({
+        width: '100vw',
         display: 'flex',
-        gap: '.5rem',
-        alignItems: 'center',
-        justifyContent: 'center',
-        padding: '.75rem',
-        borderTop: '1px solid var(--lk-border-color)',
-        maxHeight: 'var(--lk-control-bar-height)',
-        height: '80px',
         position: 'absolute',
-        backgroundColor: '#d1d5db',
         bottom: 0,
         left: 0,
         right: 0,
       })}
     >
-      <SelectToggleDevice
-        source={Track.Source.Microphone}
-        onChange={microphoneOnChange}
-        onDeviceError={(error) =>
-          onDeviceError?.({ source: Track.Source.Microphone, error })
-        }
-        onActiveDeviceChange={(deviceId) =>
-          saveAudioInputDeviceId(deviceId ?? '')
-        }
-      />
-      <SelectToggleDevice
-        source={Track.Source.Camera}
-        onChange={cameraOnChange}
-        onDeviceError={(error) =>
-          onDeviceError?.({ source: Track.Source.Camera, error })
-        }
-        onActiveDeviceChange={(deviceId) =>
-          saveVideoInputDeviceId(deviceId ?? '')
-        }
-      />
-      {browserSupportsScreenSharing && (
-        <ScreenShareToggle
-          onDeviceError={(error) =>
-            onDeviceError?.({ source: Track.Source.ScreenShare, error })
-          }
-        />
-      )}
-      <HandToggle />
-      <ChatToggle />
-      <ParticipantsToggle />
-      <OptionsButton />
-      <LeaveButton />
-      <StartMediaButton />
+      <div
+        className={css({
+          width: '261px',
+          height: '80px',
+          display: 'flex',
+          justifyContent: 'flex-start',
+          flex: '1 1 25%',
+          alignItems: 'center',
+          gap: '0.5rem',
+          marginLeft: '0.5rem',
+        })}
+      >
+        <Square />
+        <Square />
+      </div>
+      <div
+        className={css({
+          width: '576px',
+          height: '80px',
+          flex: '1 1 25%',
+          alignItems: 'center',
+          justifyContent: 'center',
+          display: 'flex',
+          gap: '0.5rem',
+        })}
+      >
+        <Square />
+        <Square />
+        <Square />
+        <Square />
+        <Square />
+      </div>
+      <div
+        className={css({
+          width: '261px',
+          height: '80px',
+          display: 'flex',
+          justifyContent: 'flex-end',
+          flex: '1 1 25%',
+          alignItems: 'center',
+          gap: '0.5rem',
+          marginRight: '0.5rem',
+        })}
+      >
+        <Square />
+        <Square />
+        <Square />
+      </div>
     </div>
   )
 }
