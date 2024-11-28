@@ -9,6 +9,7 @@ import {
 import { useStopRecording } from '@/features/rooms/api/stopRecording'
 import { useRoomContext } from '@livekit/components-react'
 import { useRoomData } from '@/features/rooms/livekit/hooks/useRoomData'
+import { useConfig } from '@/api/useConfig'
 
 export const TranscriptMenuItem = () => {
   const { t } = useTranslation('rooms', { keyPrefix: 'options.items' })
@@ -17,6 +18,8 @@ export const TranscriptMenuItem = () => {
 
   const { mutateAsync: startRecordingRoom } = useStartRecording()
   const { mutateAsync: stopRecordingRoom } = useStopRecording()
+
+  const { data: apiConfig } = useConfig()
 
   const room = useRoomContext()
 
@@ -37,6 +40,13 @@ export const TranscriptMenuItem = () => {
     } catch (error) {
       console.error('Failed to handle transcript:', error)
     }
+  }
+
+  if (
+    !apiConfig.recording?.is_enabled ||
+    !apiConfig.recording?.available_modes?.includes(RecordingMode.Transcript)
+  ) {
+    return
   }
 
   return (
