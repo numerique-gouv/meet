@@ -302,7 +302,6 @@ build-k8s-cluster: ## build the kubernetes cluster using kind
 .PHONY: build-k8s-cluster
 
 start-tilt: ## start the kubernetes cluster using kind
-	kubectl config set-context --current --namespace=meet
 	tilt up -f ./bin/Tiltfile
 .PHONY: build-k8s-cluster
 

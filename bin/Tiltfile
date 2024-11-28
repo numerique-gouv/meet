@@ -1,7 +1,6 @@
 load('ext://uibutton', 'cmd_button', 'bool_input', 'location')
 load('ext://namespace', 'namespace_create', 'namespace_inject')
 namespace_create('meet')
-
 docker_build(
     'localhost:5001/meet-backend:latest',
     context='..',
