@@ -18,6 +18,7 @@ import { SelectToggleDevice } from '../components/controls/SelectToggleDevice'
 import { LeaveButton } from '../components/controls/LeaveButton'
 import { ScreenShareToggle } from '../components/controls/ScreenShareToggle'
 import { css } from '@/styled-system/css'
+import { SupportToggle } from '@/features/rooms/livekit/components/controls/SupportToggle.tsx'
 
 /** @public */
 export type ControlBarControls = {
@@ -103,28 +104,32 @@ export function ControlBar({
   return (
     <div
       className={css({
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        padding: '.75rem',
-        maxHeight: 'var(--lk-control-bar-height)',
-        height: '80px',
+        width: '100vw',
+        display: 'flex',
         position: 'absolute',
+        padding: '1.125rem',
         bottom: 0,
         left: 0,
         right: 0,
-        display: 'flex',
       })}
     >
       <div
         className={css({
           display: 'flex',
-          gap: '.5rem',
+          justifyContent: 'flex-start',
+          flex: '1 1 33%',
           alignItems: 'center',
-          lg: {
-            position: 'absolute',
-            left: '50%',
-            transform: 'translateX(-50%)',
-          },
+          gap: '0.5rem',
+          marginLeft: '0.5rem',
+        })}
+      ></div>
+      <div
+        className={css({
+          flex: '1 1 33%',
+          alignItems: 'center',
+          justifyContent: 'center',
+          display: 'flex',
+          gap: '0.65rem',
         })}
       >
         <SelectToggleDevice
@@ -162,17 +167,16 @@ export function ControlBar({
       <div
         className={css({
           display: 'flex',
-          gap: '.5rem',
+          justifyContent: 'flex-end',
+          flex: '1 1 33%',
           alignItems: 'center',
-          marginRight: '6.25rem',
-          lg: {
-            position: 'absolute',
-            right: 0,
-          },
+          gap: '0.5rem',
+          paddingRight: '0.25rem',
         })}
       >
         <ChatToggle />
         <ParticipantsToggle />
+        <SupportToggle />
       </div>
     </div>
   )
