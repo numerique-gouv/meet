@@ -19,7 +19,7 @@ services:
   celery_worker:
     container_name: celery_worker
     build: .
-    command: celery -A summary.celery_worker worker --pool=solo --loglevel=debug
+    command: celery -A summary.core.celery_worker worker --pool=solo --loglevel=debug
     volumes:
       - .:/app
     depends_on:

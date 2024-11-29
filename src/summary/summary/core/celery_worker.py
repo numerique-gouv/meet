@@ -12,11 +12,10 @@ from requests import Session
 from requests.adapters import HTTPAdapter
 from urllib3.util import Retry
 
-from .config import Settings
-from .prompt import get_instructions
+from summary.core.config import get_settings
+from summary.core.prompt import get_instructions
 
-settings = Settings()
-
+settings = get_settings()
 
 logger = get_task_logger(__name__)
 

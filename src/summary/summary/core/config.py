@@ -10,8 +10,10 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 class Settings(BaseSettings):
     """Configuration settings loaded from environment variables and .env file."""
 
-    app_name: str = "Awesome API"
     model_config = SettingsConfigDict(env_file=".env")
+
+    app_name: str = "app"
+    app_api_v1_str: str = "/api/v1"
     app_api_token: str
 
     # Celery settings
