@@ -167,7 +167,7 @@ celery:
   command:
     - "celery"
     - "-A"
-    - "summary.celery_worker"
+    - "summary.core.celery_worker"
     - "worker"
     - "--pool=solo"
     - "--loglevel=info"
