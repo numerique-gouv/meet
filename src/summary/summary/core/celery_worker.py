@@ -59,7 +59,7 @@ def post_with_retries(url, data):
         session.close()
 
 
-@celery.task(max_retries=1)
+@celery.task(max_retries=settings.celery_max_retries)
 def process_audio_transcribe_summarize(filename: str, email: str, sub: str):
     """Process an audio file by transcribing it and generating a summary.
 

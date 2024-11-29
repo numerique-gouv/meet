@@ -19,6 +19,7 @@ class Settings(BaseSettings):
     # Celery settings
     celery_broker_url: str = "redis://redis/0"
     celery_result_backend: str = "redis://redis/0"
+    celery_max_retries: int = 1
 
     # Minio settings
     aws_storage_bucket_name: str
