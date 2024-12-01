@@ -474,6 +474,7 @@ celery:
     targetPort: 8000
     annotations: {}
 
+  ## @param celery.probes Configure celery probes
   ## @param celery.probes.liveness.path [nullable] Configure path for celery HTTP liveness probe
   ## @param celery.probes.liveness.targetPort [nullable] Configure port for celery HTTP liveness probe
   ## @param celery.probes.liveness.initialDelaySeconds [nullable] Configure initial delay for celery liveness probe
