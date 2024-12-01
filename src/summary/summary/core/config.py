@@ -1,7 +1,7 @@
 """Application configuration and settings."""
 
 from functools import lru_cache
-from typing import Annotated
+from typing import Annotated, Optional
 
 from fastapi import Depends
 from pydantic_settings import BaseSettings, SettingsConfigDict
@@ -40,6 +40,10 @@ class Settings(BaseSettings):
     webhook_backoff_factor: float = 0.1
     webhook_api_token: str
     webhook_url: str
+
+    # Sentry
+    sentry_is_enabled: bool = False
+    sentry_dsn: Optional[str] = None
 
 
 @lru_cache

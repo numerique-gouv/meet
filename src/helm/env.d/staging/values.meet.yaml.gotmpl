@@ -271,6 +271,8 @@ celery:
       secretKeyRef:
         name: redis-summary.redis.libre.sh
         key: url
+    SENTRY_IS_ENABLED: True
+    SENTRY_DSN: https://5aead03f03505da5130af6d642c42faf@sentry.incubateur.net/202
 
   image:
     repository: lasuite/meet-summary
