@@ -159,3 +159,93 @@
 | `posthog.assetsService.port`           | Port number for the service                                 | `443`                     |
 | `posthog.assetsService.annotations`    | Additional annotations to apply to the service              | `{}`                      |
 
+### summary
+
+| Name                                                  | Description                                                                        | Value              |
+| ----------------------------------------------------- | ---------------------------------------------------------------------------------- | ------------------ |
+| `summary.command`                                     | Override the summary container command                                             | `[]`               |
+| `summary.args`                                        | Override the summary container args                                                | `[]`               |
+| `summary.replicas`                                    | Amount of summary replicas                                                         | `1`                |
+| `summary.shareProcessNamespace`                       | Enable share process namespace between containers                                  | `false`            |
+| `summary.sidecars`                                    | Add sidecars containers to summary deployment                                      | `[]`               |
+| `summary.migrateJobAnnotations`                       | Annotations for the migrate job                                                    | `{}`               |
+| `summary.securityContext`                             | Configure summary Pod security context                                             | `nil`              |
+| `summary.envVars`                                     | Configure summary container environment variables                                  | `undefined`        |
+| `summary.envVars.BY_VALUE`                            | Example environment variable by setting value directly                             |                    |
+| `summary.envVars.FROM_CONFIGMAP.configMapKeyRef.name` | Name of a ConfigMap when configuring env vars from a ConfigMap                     |                    |
+| `summary.envVars.FROM_CONFIGMAP.configMapKeyRef.key`  | Key within a ConfigMap when configuring env vars from a ConfigMap                  |                    |
+| `summary.envVars.FROM_SECRET.secretKeyRef.name`       | Name of a Secret when configuring env vars from a Secret                           |                    |
+| `summary.envVars.FROM_SECRET.secretKeyRef.key`        | Key within a Secret when configuring env vars from a Secret                        |                    |
+| `summary.podAnnotations`                              | Annotations to add to the summary Pod                                              | `{}`               |
+| `summary.service.type`                                | summary Service type                                                               | `ClusterIP`        |
+| `summary.service.port`                                | summary Service listening port                                                     | `80`               |
+| `summary.service.targetPort`                          | summary container listening port                                                   | `8000`             |
+| `summary.service.annotations`                         | Annotations to add to the summary Service                                          | `{}`               |
+| `summary.probes.liveness.path`                        | Configure path for summary HTTP liveness probe                                     | `/__heartbeat__`   |
+| `summary.probes.liveness.targetPort`                  | Configure port for summary HTTP liveness probe                                     | `undefined`        |
+| `summary.probes.liveness.initialDelaySeconds`         | Configure initial delay for summary liveness probe                                 | `30`               |
+| `summary.probes.liveness.initialDelaySeconds`         | Configure timeout for summary liveness probe                                       | `30`               |
+| `summary.probes.startup.path`                         | Configure path for summary HTTP startup probe                                      | `undefined`        |
+| `summary.probes.startup.targetPort`                   | Configure port for summary HTTP startup probe                                      | `undefined`        |
+| `summary.probes.startup.initialDelaySeconds`          | Configure initial delay for summary startup probe                                  | `undefined`        |
+| `summary.probes.startup.initialDelaySeconds`          | Configure timeout for summary startup probe                                        | `undefined`        |
+| `summary.probes.readiness.path`                       | Configure path for summary HTTP readiness probe                                    | `/__lbheartbeat__` |
+| `summary.probes.readiness.targetPort`                 | Configure port for summary HTTP readiness probe                                    | `undefined`        |
+| `summary.probes.readiness.initialDelaySeconds`        | Configure initial delay for summary readiness probe                                | `30`               |
+| `summary.probes.readiness.initialDelaySeconds`        | Configure timeout for summary readiness probe                                      | `30`               |
+| `summary.resources`                                   | Resource requirements for the summary container                                    | `{}`               |
+| `summary.nodeSelector`                                | Node selector for the summary Pod                                                  | `{}`               |
+| `summary.tolerations`                                 | Tolerations for the summary Pod                                                    | `[]`               |
+| `summary.affinity`                                    | Affinity for the summary Pod                                                       | `{}`               |
+| `summary.persistence`                                 | Additional volumes to create and mount on the summary. Used for debugging purposes | `{}`               |
+| `summary.persistence.volume-name.size`                | Size of the additional volume                                                      |                    |
+| `summary.persistence.volume-name.type`                | Type of the additional volume, persistentVolumeClaim or emptyDir                   |                    |
+| `summary.persistence.volume-name.mountPath`           | Path where the volume should be mounted to                                         |                    |
+| `summary.extraVolumeMounts`                           | Additional volumes to mount on the summary.                                        | `[]`               |
+| `summary.extraVolumes`                                | Additional volumes to mount on the summary.                                        | `[]`               |
+
+### celery
+
+| Name                                                 | Description                                                                       | Value       |
+| ---------------------------------------------------- | --------------------------------------------------------------------------------- | ----------- |
+| `celery.command`                                     | Override the celery container command                                             | `[]`        |
+| `celery.args`                                        | Override the celery container args                                                | `[]`        |
+| `celery.replicas`                                    | Amount of celery replicas                                                         | `1`         |
+| `celery.shareProcessNamespace`                       | Enable share process namespace between containers                                 | `false`     |
+| `celery.sidecars`                                    | Add sidecars containers to celery deployment                                      | `[]`        |
+| `celery.migrateJobAnnotations`                       | Annotations for the migrate job                                                   | `{}`        |
+| `celery.securityContext`                             | Configure celery Pod security context                                             | `nil`       |
+| `celery.envVars`                                     | Configure celery container environment variables                                  | `undefined` |
+| `celery.envVars.BY_VALUE`                            | Example environment variable by setting value directly                            |             |
+| `celery.envVars.FROM_CONFIGMAP.configMapKeyRef.name` | Name of a ConfigMap when configuring env vars from a ConfigMap                    |             |
+| `celery.envVars.FROM_CONFIGMAP.configMapKeyRef.key`  | Key within a ConfigMap when configuring env vars from a ConfigMap                 |             |
+| `celery.envVars.FROM_SECRET.secretKeyRef.name`       | Name of a Secret when configuring env vars from a Secret                          |             |
+| `celery.envVars.FROM_SECRET.secretKeyRef.key`        | Key within a Secret when configuring env vars from a Secret                       |             |
+| `celery.podAnnotations`                              | Annotations to add to the celery Pod                                              | `{}`        |
+| `celery.service.type`                                | celery Service type                                                               | `ClusterIP` |
+| `celery.service.port`                                | celery Service listening port                                                     | `80`        |
+| `celery.service.targetPort`                          | celery container listening port                                                   | `8000`      |
+| `celery.service.annotations`                         | Annotations to add to the celery Service                                          | `{}`        |
+| `celery.probes`                                      | Configure celery probes                                                           | `{}`        |
+| `celery.probes.liveness.path`                        | Configure path for celery HTTP liveness probe                                     | `undefined` |
+| `celery.probes.liveness.targetPort`                  | Configure port for celery HTTP liveness probe                                     | `undefined` |
+| `celery.probes.liveness.initialDelaySeconds`         | Configure initial delay for celery liveness probe                                 | `undefined` |
+| `celery.probes.liveness.initialDelaySeconds`         | Configure timeout for celery liveness probe                                       | `undefined` |
+| `celery.probes.startup.path`                         | Configure path for celery HTTP startup probe                                      | `undefined` |
+| `celery.probes.startup.targetPort`                   | Configure port for celery HTTP startup probe                                      | `undefined` |
+| `celery.probes.startup.initialDelaySeconds`          | Configure initial delay for celery startup probe                                  | `undefined` |
+| `celery.probes.startup.initialDelaySeconds`          | Configure timeout for celery startup probe                                        | `undefined` |
+| `celery.probes.readiness.path`                       | Configure path for celery HTTP readiness probe                                    | `undefined` |
+| `celery.probes.readiness.targetPort`                 | Configure port for celery HTTP readiness probe                                    | `undefined` |
+| `celery.probes.readiness.initialDelaySeconds`        | Configure initial delay for celery readiness probe                                | `undefined` |
+| `celery.probes.readiness.initialDelaySeconds`        | Configure timeout for celery readiness probe                                      | `undefined` |
+| `celery.resources`                                   | Resource requirements for the celery container                                    | `{}`        |
+| `celery.nodeSelector`                                | Node selector for the celery Pod                                                  | `{}`        |
+| `celery.tolerations`                                 | Tolerations for the celery Pod                                                    | `[]`        |
+| `celery.affinity`                                    | Affinity for the celery Pod                                                       | `{}`        |
+| `celery.persistence`                                 | Additional volumes to create and mount on the celery. Used for debugging purposes | `{}`        |
+| `celery.persistence.volume-name.size`                | Size of the additional volume                                                     |             |
+| `celery.persistence.volume-name.type`                | Type of the additional volume, persistentVolumeClaim or emptyDir                  |             |
+| `celery.persistence.volume-name.mountPath`           | Path where the volume should be mounted to                                        |             |
+| `celery.extraVolumeMounts`                           | Additional volumes to mount on the celery.                                        | `[]`        |
+| `celery.extraVolumes`                                | Additional volumes to mount on the celery.                                        | `[]`        |
