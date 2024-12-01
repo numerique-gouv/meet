@@ -12,6 +12,7 @@ dependencies = [
     "minio==7.2.9",
     "openai==1.51.2",
     "requests==2.32.3",
+    "sentry-sdk[fastapi, celery]==2.19.0",
 ]
 
 [project.optional-dependencies]

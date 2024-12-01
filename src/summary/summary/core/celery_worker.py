@@ -5,7 +5,8 @@ import tempfile
 from pathlib import Path
 
 import openai
-from celery import Celery
+import sentry_sdk
+from celery import Celery, signals
 from celery.utils.log import get_task_logger
 from minio import Minio
 from requests import Session
@@ -25,6 +26,12 @@ celery = Celery(
     backend=settings.celery_result_backend,
     broker_connection_retry_on_startup=True,
 )
+
+if settings.sentry_dsn and settings.sentry_is_enabled:
+    @signals.celeryd_init.connect
+    def init_sentry(**_kwargs):
+        """Initialize sentry."""
+        sentry_sdk.init(dsn=settings.sentry_dsn, enable_tracing=True)
 
 
 def save_audio_stream(audio_stream, chunk_size=32 * 1024):
