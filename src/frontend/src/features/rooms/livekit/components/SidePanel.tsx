@@ -68,7 +68,7 @@ const StyledSidePanel = ({
     >
       <Button
         invisible
-        variant="greyscale"
+        variant="tertiaryText"
         size="xs"
         onPress={onClose}
         aria-label={closeButtonTooltip}

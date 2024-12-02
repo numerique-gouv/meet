@@ -10,7 +10,7 @@ export const SettingsButton = () => {
     <DialogTrigger>
       <Button
         square
-        variant="greyscale"
+        variant="secondaryText"
         aria-label={t('settingsButtonLabel')}
         tooltip={t('settingsButtonLabel')}
       >

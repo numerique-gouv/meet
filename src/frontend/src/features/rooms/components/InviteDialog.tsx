@@ -63,7 +63,8 @@ export const InviteDialog = ({
           </Heading>
           <Div position="absolute" top="5" right="5">
             <Button
-              variant="greyscale"
+              invisible
+              variant="tertiaryText"
               size="xs"
               onPress={() => {
                 dialogProps.onClose?.()

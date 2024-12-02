@@ -185,7 +185,7 @@ export const IntroSlider = () => {
         <ButtonContainer>
           <ButtonVerticalCenter>
             <Button
-              variant="greyscale"
+              variant="secondaryText"
               square
               aria-label={t('previous.label')}
               tooltip={t('previous.tooltip')}
@@ -221,7 +221,7 @@ export const IntroSlider = () => {
         <ButtonContainer>
           <ButtonVerticalCenter>
             <Button
-              variant="greyscale"
+              variant="secondaryText"
               square
               aria-label={t('next.label')}
               tooltip={t('next.tooltip')}
