@@ -49,6 +49,7 @@ class RecordingStatusChoices(models.TextChoices):
     ABORTED = "aborted", _("Aborted")
     FAILED_TO_START = "failed_to_start", _("Failed to Start")
     FAILED_TO_STOP = "failed_to_stop", _("Failed to Stop")
+    NOTIFICATION_SUCCEEDED = "notification_succeeded", _("Notification succeeded")
 
     @classmethod
     def is_final(cls, status):
@@ -462,7 +463,23 @@ class BaseAccess(BaseModel):
 
 
 class Recording(BaseModel):
-    """Model for recordings that take place in a room"""
+    """Model for recordings that take place in a room.
+
+     Recording Status Flow:
+    1. INITIATED: Initial state when recording is requested
+    2. ACTIVE: Recording is currently in progress
+    3. STOPPED: Recording has been stopped by user/system
+    4. SAVED: Recording has been successfully processed and stored
+    4. NOTIFICATION_SUCCEEDED: External service has been notified of this recording
+
+    Error States:
+    - FAILED_TO_START: Worker failed to initialize recording
+    - FAILED_TO_STOP: Worker failed during stop operation
+    - ABORTED: Recording was terminated before completion
+
+    Warning: Worker failures may lead to database inconsistency between the actual
+    recording state and its status in the database.
+    """
 
     room = models.ForeignKey(
         Room,
@@ -471,7 +488,7 @@ class Recording(BaseModel):
         verbose_name=_("Room"),
     )
     status = models.CharField(
-        max_length=20,
+        max_length=50,
         choices=RecordingStatusChoices.choices,
         default=RecordingStatusChoices.INITIATED,
     )
@@ -543,22 +560,7 @@ class Recording(BaseModel):
 
 
 class RecordingAccess(BaseAccess):
-    """Relation model to give access to a recording for a user or a team with a role.
-
-    Recording Status Flow:
-    1. INITIATED: Initial state when recording is requested
-    2. ACTIVE: Recording is currently in progress
-    3. STOPPED: Recording has been stopped by user/system
-    4. SAVED: Recording has been successfully processed and stored
-
-    Error States:
-    - FAILED_TO_START: Worker failed to initialize recording
-    - FAILED_TO_STOP: Worker failed during stop operation
-    - ABORTED: Recording was terminated before completion
-
-    Warning: Worker failures may lead to database inconsistency between the actual
-    recording state and its status in the database.
-    """
+    """Relation model to give access to a recording for a user or a team with a role."""
 
     recording = models.ForeignKey(
         Recording,

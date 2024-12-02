@@ -448,6 +448,12 @@ class Base(Configuration):
     RECORDING_STORAGE_EVENT_TOKEN = values.Value(
         None, environ_name="RECORDING_STORAGE_EVENT_TOKEN", environ_prefix=None
     )
+    SUMMARY_SERVICE_ENDPOINT = values.Value(
+        None, environ_name="SUMMARY_SERVICE_ENDPOINT", environ_prefix=None
+    )
+    SUMMARY_SERVICE_API_TOKEN = values.Value(
+        None, environ_name="SUMMARY_SERVICE_API_TOKEN", environ_prefix=None
+    )
 
     # pylint: disable=invalid-name
     @property
