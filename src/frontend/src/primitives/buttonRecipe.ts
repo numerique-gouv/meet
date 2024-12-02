@@ -87,6 +87,16 @@ export const buttonRecipe = cva({
           backgroundColor: 'primary.300',
         },
       },
+      tertiaryText: {
+        backgroundColor: 'transparent',
+        color: 'primary.900',
+        '&[data-hovered]': {
+          backgroundColor: 'primary.300',
+        },
+        '&[data-pressed]': {
+          backgroundColor: 'primary.300',
+        },
+      },
       primaryDark: {
         backgroundColor: 'primaryDark.100',
         color: 'white',

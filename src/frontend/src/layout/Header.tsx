@@ -66,7 +66,7 @@ export const Header = () => {
                 <Menu>
                   <Button
                     size="sm"
-                    variant="greyscale"
+                    variant="secondaryText"
                     tooltip={t('loggedInUserTooltip')}
                     tooltipType="delayed"
                   >

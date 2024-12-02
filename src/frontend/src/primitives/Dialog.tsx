@@ -112,7 +112,7 @@ export const Dialog = ({
                     {!isAlert && (
                       <Div position="absolute" top="5" right="5">
                         <Button
-                          variant="greyscale"
+                          variant="tertiaryText"
                           invisible
                           size="xs"
                           onPress={() => close()}
