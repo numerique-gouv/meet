@@ -15,6 +15,6 @@ export const UserAware = ({ children }: { children: React.ReactNode }) => {
   return isLoggedIn !== undefined ? (
     children
   ) : (
-    <LoadingScreen header={false} delay={1000} />
+    <LoadingScreen header={false} footer={false} delay={1000} />
   )
 }

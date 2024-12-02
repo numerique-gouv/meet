@@ -24,5 +24,19 @@
   "notFound": {
     "heading": ""
   },
-  "submit": "OK"
+  "submit": "OK",
+  "footer": {
+    "links": {
+      "legifrance": "",
+      "infogouv": "",
+      "servicepublic": "",
+      "datagouv": "",
+      "legalsTerms": "",
+      "data": "",
+      "accessibility": "",
+      "ariaLabel": ""
+    },
+    "mentions": "",
+    "license": ""
+  }
 }
