@@ -9,6 +9,10 @@ export const SupportToggle = () => {
   const [isOpened, setIsOpened] = useState($crisp.is('chat:opened'))
 
   useEffect(() => {
+    if (!Crisp) {
+      return
+    }
+
     Crisp.chat.onChatOpened(() => {
       setIsOpened(true)
     })
