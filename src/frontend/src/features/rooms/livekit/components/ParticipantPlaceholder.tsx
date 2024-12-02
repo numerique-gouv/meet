@@ -10,7 +10,7 @@ const StyledParticipantPlaceHolder = styled('div', {
   base: {
     width: '100%',
     height: '100%',
-    backgroundColor: '#3d4043', // fixme - copied from gmeet
+    backgroundColor: 'primaryDark.100',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
