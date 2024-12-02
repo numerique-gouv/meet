@@ -35,6 +35,40 @@ const config: Config = {
   exclude: [],
   jsxFramework: 'react',
   outdir: 'src/styled-system',
+  globalFontface: {
+    Marianne: [
+      {
+        src: 'url(/fonts/Marianne-Regular-subset.woff2) format("woff2")',
+        fontWeight: 400,
+        fontStyle: 'normal',
+        fontDisplay: 'swap',
+      },
+      {
+        path: 'url(/fonts/Marianne-Regular_Italic-subset.woff2) format("woff2")',
+        fontWeight: 400,
+        fontStyle: 'italic',
+        fontDisplay: 'swap',
+      },
+      {
+        path: 'url(/fonts/Marianne-Medium-subset.woff2) format("woff2")',
+        fontWeight: 500,
+        fontStyle: 'normal',
+        fontDisplay: 'swap',
+      },
+      {
+        path: 'url(/fonts/Marianne-Bold-subset.woff2) format("woff2")',
+        fontWeight: 700,
+        fontStyle: 'normal',
+        fontDisplay: 'swap',
+      },
+      {
+        path: 'url(/fonts/Marianne-ExtraBold-subset.woff2) format("woff2")',
+        fontWeight: 800,
+        fontStyle: 'normal',
+        fontDisplay: 'swap',
+      },
+    ],
+  },
   theme: {
     ...pandaPreset.theme,
     // media queries are defined in em so that zooming with text-only mode triggers breakpoints
