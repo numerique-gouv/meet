@@ -21,7 +21,7 @@ export const QueryAware = ({
   }
 
   if (status === 'pending') {
-    return <LoadingScreen header={undefined} />
+    return <LoadingScreen header={undefined} footer={undefined} />
   }
 
   return children

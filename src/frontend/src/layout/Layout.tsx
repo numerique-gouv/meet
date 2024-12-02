@@ -3,6 +3,7 @@ import { css } from '@/styled-system/css'
 import { Header } from './Header'
 import { layoutStore } from '@/stores/layout'
 import { useSnapshot } from 'valtio'
+import { Footer } from '@/layout/Footer'
 
 export type Layout = 'fullpage' | 'centered'
 
@@ -15,28 +16,33 @@ export type Layout = 'fullpage' | 'centered'
 export const Layout = ({ children }: { children: ReactNode }) => {
   const layoutSnap = useSnapshot(layoutStore)
   const showHeader = layoutSnap.showHeader
+  const showFooter = layoutSnap.showFooter
 
   return (
-    <div
-      className={css({
-        height: '100%',
-        display: 'flex',
-        flexDirection: 'column',
-        backgroundColor: 'white',
-        color: 'default.text',
-      })}
-    >
-      {showHeader && <Header />}
-      <main
+    <>
+      <div
         className={css({
-          flexGrow: 1,
-          overflow: 'auto',
+          height: '100%',
           display: 'flex',
+          minHeight: 'fit-content',
           flexDirection: 'column',
+          backgroundColor: 'white',
+          color: 'default.text',
         })}
       >
-        {children}
-      </main>
-    </div>
+        {showHeader && <Header />}
+        <main
+          className={css({
+            flexGrow: 1,
+            overflow: 'auto',
+            display: 'flex',
+            flexDirection: 'column',
+          })}
+        >
+          {children}
+        </main>
+      </div>
+      {showFooter && <Footer />}
+    </>
   )
 }

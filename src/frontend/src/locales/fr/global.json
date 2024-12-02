@@ -24,5 +24,19 @@
   "notFound": {
     "heading": "Page introuvable"
   },
-  "submit": "OK"
+  "submit": "OK",
+  "footer": {
+    "links": {
+      "legifrance": "legifrance.gouv.fr",
+      "infogouv": "info.gouv.fr",
+      "servicepublic": "service-public.fr",
+      "datagouv": "data.gouv.fr",
+      "legalsTerms": "Mentions légales",
+      "data": "Données personnelles et cookie",
+      "accessibility": "Accessibilités : audit en cours",
+      "ariaLabel": "nouvelle fenêtre"
+    },
+    "mentions": "Sauf mention contraire, les contenus de ce site sont disponibles sous",
+    "license": "licence etalab 2.0"
+  }
 }
