@@ -32,6 +32,7 @@ from core.recording.event.exceptions import (
     InvalidFileTypeError,
     ParsingEventDataError,
 )
+from core.recording.event.notification import notification_service
 from core.recording.event.parsers import get_parser
 from core.recording.worker.exceptions import (
     RecordingStartError,
@@ -448,7 +449,17 @@ class RecordingViewSet(
                 " in an error state or has already been saved."
             )
 
-        recording.status = models.RecordingStatusChoices.SAVED
+        # Attempt to notify external services about the recording
+        # This is a non-blocking operation - failures are logged but don't interrupt the flow
+        notification_succeeded = notification_service.notify_external_services(
+            recording
+        )
+
+        recording.status = (
+            models.RecordingStatusChoices.NOTIFICATION_SUCCEEDED
+            if notification_succeeded
+            else models.RecordingStatusChoices.SAVED
+        )
         recording.save()
 
         return drf_response.Response(
