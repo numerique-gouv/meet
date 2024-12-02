@@ -120,6 +120,11 @@ backend:
         secretKeyRef:
             name: backend
             key: RECORDING_STORAGE_EVENT_TOKEN
+    SUMMARY_SERVICE_ENDPOINT: http://meet-summary:80/api/v1/tasks/
+    SUMMARY_SERVICE_API_TOKEN:
+        secretKeyRef:
+            name: summary
+            key: APP_API_TOKEN
 
   createsuperuser:
     command:
