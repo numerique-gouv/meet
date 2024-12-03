@@ -71,6 +71,10 @@
       "open": "",
       "closed": ""
     },
+    "transcript": {
+      "open": "",
+      "closed": ""
+    },
     "support": ""
   },
   "options": {
@@ -102,12 +106,14 @@
     "heading": {
       "participants": "",
       "effects": "",
-      "chat": ""
+      "chat": "",
+      "transcript": ""
     },
     "content": {
       "participants": "",
       "effects": "",
-      "chat": ""
+      "chat": "",
+      "transcript": ""
     },
     "closeButton": ""
   },
