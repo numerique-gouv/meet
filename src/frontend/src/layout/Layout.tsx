@@ -22,12 +22,11 @@ export const Layout = ({ children }: { children: ReactNode }) => {
     <>
       <div
         className={css({
-          height: '100%',
           display: 'flex',
-          minHeight: 'fit-content',
           flexDirection: 'column',
           backgroundColor: 'white',
           color: 'default.text',
+          height: { lg: '100%' },
         })}
       >
         {showHeader && <Header />}
