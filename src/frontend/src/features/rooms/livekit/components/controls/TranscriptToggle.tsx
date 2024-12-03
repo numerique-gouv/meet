@@ -1,11 +1,9 @@
 import { ToggleButton } from '@/primitives'
 import { RiBardLine } from '@remixicon/react'
 import { useTranslation } from 'react-i18next'
-import { useSidePanel } from '@/features/rooms/livekit/hooks/useSidePanel'
+import { useSidePanel } from '../../hooks/useSidePanel'
+import { useHasTranscriptAccess } from '../../hooks/useHasTranscriptAccess'
 import { css } from '@/styled-system/css'
-import { useFeatureFlagEnabled } from 'posthog-js/react'
-import { useIsAnalyticsEnabled } from '@/features/analytics/hooks/useIsAnalyticsEnabled'
-import { useIsTranscriptEnabled } from '@/features/rooms/livekit/hooks/useIsTranscriptEnabled'
 
 export const TranscriptToggle = () => {
   const { t } = useTranslation('rooms', { keyPrefix: 'controls.transcript' })
@@ -13,12 +11,9 @@ export const TranscriptToggle = () => {
   const { isTranscriptOpen, toggleTranscript } = useSidePanel()
   const tooltipLabel = isTranscriptOpen ? 'open' : 'closed'
 
-  const featureEnabled = useFeatureFlagEnabled('transcription-summary')
-  const isAnalyticsEnabled = useIsAnalyticsEnabled()
-  const isTranscriptEnabled = useIsTranscriptEnabled()
+  const hasTranscriptAccess = useHasTranscriptAccess()
 
-  if (!featureEnabled && isAnalyticsEnabled) return
-  if (!isTranscriptEnabled) return
+  if (!hasTranscriptAccess) return
 
   return (
     <div
