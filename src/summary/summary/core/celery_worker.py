@@ -1,6 +1,7 @@
 """Celery workers."""
 
 import json
+import os
 import tempfile
 from pathlib import Path
 
@@ -28,6 +29,7 @@ celery = Celery(
 )
 
 if settings.sentry_dsn and settings.sentry_is_enabled:
+
     @signals.celeryd_init.connect
     def init_sentry(**_kwargs):
         """Initialize sentry."""
@@ -100,15 +102,20 @@ def process_audio_transcribe_summarize(filename: str, email: str, sub: str):
         api_key=settings.openai_api_key, base_url=settings.openai_base_url
     )
 
-    logger.debug("Querying transcription …")
-    with open(temp_file_path, "rb") as audio_file:
-        transcription = openai_client.audio.transcriptions.create(
-            model=settings.openai_asr_model, file=audio_file
-        )
+    try:
+        logger.debug("Querying transcription …")
+        with open(temp_file_path, "rb") as audio_file:
+            transcription = openai_client.audio.transcriptions.create(
+                model=settings.openai_asr_model, file=audio_file
+            )
 
-        transcription = transcription.text
+            transcription = transcription.text
 
-        logger.debug("Transcription: \n %s", transcription)
+            logger.debug("Transcription: \n %s", transcription)
+    finally:
+        if os.path.exists(temp_file_path):
+            os.remove(temp_file_path)
+            logger.debug("Temporary file removed: %s", temp_file_path)
 
     instructions = get_instructions(transcription)
     summary_response = openai_client.chat.completions.create(
