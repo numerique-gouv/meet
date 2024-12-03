@@ -119,6 +119,18 @@
   "chat": {
     "disclaimer": "Les messages sont visibles par les participants uniquement au moment de\nleur envoi. Tous les messages sont supprimés à la fin de l'appel."
   },
+  "transcript": {
+    "start": {
+      "heading": "Démarrer l'assistant !",
+      "body": "L'assistant démarre automatiquement l'enregistrement sonore de votre réunion (limité à 1h). À la fin, vous recevrez un résumé clair et concis des échanges directement par e-mail.",
+      "button": "Démarrer"
+    },
+    "stop": {
+      "heading": "Enregistrement en cours …",
+      "body": "L'enregistrement de votre réunion est en cours. Vous recevrez un compte-rendu par email une fois la réunion terminée.",
+      "button": "Arrêter l'enregistrement"
+    }
+  },
   "rating": {
     "submit": "Envoyer",
     "question": "Que pensez-vous de la qualité de votre appel ?",

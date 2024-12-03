@@ -120,6 +120,18 @@
   "chat": {
     "disclaimer": ""
   },
+  "transcript": {
+    "start": {
+      "heading": "",
+      "body": "",
+      "button": ""
+    },
+    "stop": {
+      "heading": "",
+      "body": "",
+      "button": ""
+    }
+  },
   "rating": {
     "submit": "",
     "question": "",

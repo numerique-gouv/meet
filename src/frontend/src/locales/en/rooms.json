@@ -119,6 +119,18 @@
   "chat": {
     "disclaimer": "The messages are visible to participants only at the time they are sent. All messages are deleted at the end of the call."
   },
+  "transcript": {
+    "start": {
+      "heading": "Start the Assistant!",
+      "body": "The assistant automatically starts recording your meeting audio (limited to 1 hour). At the end, you'll receive a clear and concise summary of the discussion directly via email.",
+      "button": "Start"
+    },
+    "stop": {
+      "heading": "Recording in Progress...",
+      "body": "Your meeting is currently being recorded. You will receive a summary via email once the meeting ends.",
+      "button": "Stop Recording"
+    }
+  },
   "rating": {
     "submit": "Submit",
     "question": "What do you think about the quality of your call?",
