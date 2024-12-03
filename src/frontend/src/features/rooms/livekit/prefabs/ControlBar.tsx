@@ -13,8 +13,10 @@ import { HandToggle } from '../components/controls/HandToggle'
 import { SelectToggleDevice } from '../components/controls/SelectToggleDevice'
 import { LeaveButton } from '../components/controls/LeaveButton'
 import { ScreenShareToggle } from '../components/controls/ScreenShareToggle'
+import { SupportToggle } from '../components/controls/SupportToggle'
+import { TranscriptToggle } from '../components/controls/TranscriptToggle'
+
 import { css } from '@/styled-system/css'
-import { SupportToggle } from '@/features/rooms/livekit/components/controls/SupportToggle.tsx'
 
 /** @public */
 export type ControlBarControls = {
@@ -156,6 +158,7 @@ export function ControlBar({
       >
         <ChatToggle />
         <ParticipantsToggle />
+        <TranscriptToggle />
         <SupportToggle />
       </div>
     </div>

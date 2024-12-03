@@ -70,6 +70,10 @@
       "open": "Hide everyone",
       "closed": "See everyone"
     },
+    "transcript": {
+      "open": "Hide AI assistant",
+      "closed": "Show AI assistant"
+    },
     "support": "Support"
   },
   "options": {
@@ -101,12 +105,14 @@
     "heading": {
       "participants": "Participants",
       "effects": "Effects",
-      "chat": "Messages in the chat"
+      "chat": "Messages in the chat",
+      "transcript": "AI Assistant"
     },
     "content": {
       "participants": "participants",
       "effects": "effects",
-      "chat": "messages"
+      "chat": "messages",
+      "transcript": "AI assistant"
     },
     "closeButton": "Hide {{content}}"
   },

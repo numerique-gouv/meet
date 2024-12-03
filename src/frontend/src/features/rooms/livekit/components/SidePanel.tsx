@@ -10,6 +10,7 @@ import { useSidePanel } from '../hooks/useSidePanel'
 import { ReactNode } from 'react'
 import { Effects } from './Effects'
 import { Chat } from '../prefabs/Chat'
+import { Transcript } from './Transcript'
 
 type StyledSidePanelProps = {
   title: string
@@ -106,6 +107,7 @@ export const SidePanel = () => {
     isEffectsOpen,
     isChatOpen,
     isSidePanelOpen,
+    isTranscriptOpen,
   } = useSidePanel()
   const { t } = useTranslation('rooms', { keyPrefix: 'sidePanel' })
 
@@ -126,6 +128,9 @@ export const SidePanel = () => {
       </Panel>
       <Panel isOpen={isChatOpen}>
         <Chat />
+      </Panel>
+      <Panel isOpen={isTranscriptOpen}>
+        <Transcript />
       </Panel>
     </StyledSidePanel>
   )
