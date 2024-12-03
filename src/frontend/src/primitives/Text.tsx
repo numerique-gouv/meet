@@ -55,6 +55,14 @@ export const text = cva({
         textAlign: 'inherit',
       },
     },
+    wrap: {
+      balance: {
+        textWrap: 'balance',
+      },
+      pretty: {
+        textWrap: 'pretty',
+      },
+    },
     bold: {
       true: {
         fontWeight: 'bold',
