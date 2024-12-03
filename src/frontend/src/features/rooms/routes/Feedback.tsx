@@ -23,7 +23,7 @@ export const FeedbackRoute = () => {
   const { t } = useTranslation('rooms')
   const [, setLocation] = useLocation()
   return (
-    <Screen layout="centered">
+    <Screen layout="centered" footer={false}>
       <Center>
         <VStack>
           <Heading>{t('feedback.heading')}</Heading>

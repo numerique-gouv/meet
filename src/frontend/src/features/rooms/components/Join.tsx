@@ -13,7 +13,7 @@ export const Join = ({
   const { user } = useUser()
 
   return (
-    <Screen layout="centered">
+    <Screen layout="centered" footer={false}>
       <CenteredContent title={t('join.heading')}>
         <PreJoin
           persistUserChoices

@@ -126,6 +126,7 @@ export const Footer = () => {
       className={css({
         borderTop: '2px solid rgb(0 0 145)',
         paddingY: '2rem',
+        marginTop: { base: '50px', sm: '100px' },
       })}
     >
       <InnerContainer>
@@ -145,7 +146,7 @@ export const Footer = () => {
                 height: '80px',
                 backgroundColor: 'rgb(77 77 77)',
                 width: '1px',
-                display: { base: 'none', xs: 'block' },
+                display: { base: 'none', sm: 'block' },
               })}
             />
             <p
@@ -153,12 +154,7 @@ export const Footer = () => {
                 display: 'none',
                 fontWeight: '700',
                 fontFamily: 'Marianne',
-                xs: {
-                  display: 'block',
-                  fontSize: '0.75rem',
-                  lineHeight: '1rem',
-                },
-                xsm: {
+                sm: {
                   display: 'block',
                   fontSize: '1rem',
                   lineHeight: '1.5rem',
