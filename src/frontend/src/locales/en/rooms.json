@@ -82,11 +82,7 @@
       "feedbacks": "Give us feedbacks",
       "settings": "Settings",
       "username": "Update Your Name",
-      "effects": "Apply effects",
-      "transcript": {
-        "start": "Start meeting transcription",
-        "stop": "Stop ongoing transcription"
-      }
+      "effects": "Apply effects"
     }
   },
   "effects": {
