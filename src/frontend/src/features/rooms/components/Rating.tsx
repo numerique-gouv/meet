@@ -121,7 +121,13 @@ const OpenFeedback = ({
         >
           {t('submit')}
         </Button>
-        <Button invisible size="sm" fullWidth onPress={onNext}>
+        <Button
+          invisible
+          variant="secondary"
+          size="sm"
+          fullWidth
+          onPress={onNext}
+        >
           {t('skip')}
         </Button>
       </VStack>
