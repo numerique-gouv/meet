@@ -163,5 +163,8 @@
     "raisedHands": "Raised hands",
     "lowerParticipantHand": "Lower {{name}}'s hand",
     "lowerParticipantsHand": "Lower all hands"
+  },
+  "recording": {
+    "label": "Recording"
   }
 }

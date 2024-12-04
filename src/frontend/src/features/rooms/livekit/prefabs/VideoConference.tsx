@@ -28,6 +28,7 @@ import { FocusLayout } from '../components/FocusLayout'
 import { ParticipantTile } from '../components/ParticipantTile'
 import { SidePanel } from '../components/SidePanel'
 import { useSidePanel } from '../hooks/useSidePanel'
+import { RecordingStateToast } from '../components/RecordingStateToast'
 
 const LayoutWrapper = styled(
   'div',
@@ -212,6 +213,7 @@ export function VideoConference({ ...props }: VideoConferenceProps) {
       )}
       <RoomAudioRenderer />
       <ConnectionStateToast />
+      <RecordingStateToast />
     </div>
   )
 }

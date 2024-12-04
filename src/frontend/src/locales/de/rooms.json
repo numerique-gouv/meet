@@ -164,5 +164,8 @@
     "raisedHands": "",
     "lowerParticipantHand": "",
     "lowerParticipantsHand": ""
+  },
+  "recording": {
+    "label": ""
   }
 }
