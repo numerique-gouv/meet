@@ -116,10 +116,10 @@ const config: Config = {
         '80%': { transform: 'rotate(20deg)' },
         '100%': { transform: 'rotate(0)' },
       },
-      pulse_mic: {
-        '0%': { color: 'primary', opacity: '1' },
-        '50%': { color: 'primary', opacity: '0.8' },
-        '100%': { color: 'primary', opacity: '1' },
+      pulse_background: {
+        '0%': { opacity: '1' },
+        '50%': { opacity: '0.65' },
+        '100%': { opacity: '1' },
       },
     },
     tokens: defineTokens({

@@ -84,9 +84,12 @@ const MicIndicator = ({ participant }: MicIndicatorProps) => {
           <RiMicOffFill color={'gray'} />
         ) : (
           <RiMicFill
-            style={{
-              animation: isSpeaking ? 'pulse_mic 800ms infinite' : undefined,
-            }}
+            className={css({
+              color: isSpeaking ? 'primaryDark.300' : 'primaryDark.50',
+              animation: isSpeaking
+                ? 'pulse_background 800ms infinite'
+                : undefined,
+            })}
           />
         )}
       </Button>
