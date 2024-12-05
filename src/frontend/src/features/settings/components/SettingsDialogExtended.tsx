@@ -6,12 +6,14 @@ import { Heading } from 'react-aria-components'
 import { useTranslation } from 'react-i18next'
 import {
   RiAccountCircleLine,
+  RiNotification3Line,
   RiSettings3Line,
   RiSpeakerLine,
 } from '@remixicon/react'
 import { AccountTab } from './tabs/AccountTab'
-import { GeneralTab } from '@/features/settings/components/tabs/GeneralTab.tsx'
-import { AudioTab } from '@/features/settings/components/tabs/AudioTab.tsx'
+import { NotificationsTab } from './tabs/NotificationsTab'
+import { GeneralTab } from './tabs/GeneralTab'
+import { AudioTab } from './tabs/AudioTab'
 import { useSize } from '@/features/rooms/livekit/hooks/useResizeObserver'
 import { useRef } from 'react'
 
@@ -81,12 +83,17 @@ export const SettingsDialogExtended = (props: SettingsDialogExtended) => {
               <RiSettings3Line />
               {isWideScreen && t('tabs.general')}
             </Tab>
+            <Tab icon highlight id="4">
+              <RiNotification3Line />
+              {isWideScreen && t('tabs.notifications')}
+            </Tab>
           </TabList>
         </div>
         <div className={tabPanelContainerStyle}>
           <AccountTab id="1" onOpenChange={props.onOpenChange} />
           <AudioTab id="2" />
           <GeneralTab id="3" />
+          <NotificationsTab id="4" />
         </div>
       </Tabs>
     </Dialog>
