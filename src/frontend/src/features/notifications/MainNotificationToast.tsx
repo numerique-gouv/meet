@@ -16,11 +16,11 @@ export const MainNotificationToast = () => {
       if (isMobileBrowser()) {
         return
       }
-      triggerNotificationSound(NotificationType.Joined)
+      triggerNotificationSound(NotificationType.ParticipantJoined)
       toastQueue.add(
         {
           participant,
-          type: NotificationType.Joined,
+          type: NotificationType.ParticipantJoined,
         },
         {
           timeout: 5000,
@@ -67,7 +67,7 @@ export const MainNotificationToast = () => {
       const existingToast = toastQueue.visibleToasts.find(
         (toast) =>
           toast.content.participant === participant &&
-          toast.content.type === NotificationType.Raised
+          toast.content.type === NotificationType.HandRaised
       )
 
       if (existingToast && prevMetadata.raised && !metadata.raised) {
@@ -76,11 +76,11 @@ export const MainNotificationToast = () => {
       }
 
       if (!existingToast && !prevMetadata.raised && metadata.raised) {
-        triggerNotificationSound(NotificationType.Raised)
+        triggerNotificationSound(NotificationType.HandRaised)
         toastQueue.add(
           {
             participant,
-            type: NotificationType.Raised,
+            type: NotificationType.HandRaised,
           },
           { timeout: 5000 }
         )

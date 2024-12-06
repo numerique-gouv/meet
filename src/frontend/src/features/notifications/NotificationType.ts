@@ -1,6 +1,5 @@
 export enum NotificationType {
-  Joined = 'joined',
-  Default = 'default',
-  Raised = 'raised',
-  Lowered = 'lowered',
+  ParticipantJoined = 'participantJoined',
+  HandRaised = 'handRaised',
+  // todo - implement message received notification
 }
