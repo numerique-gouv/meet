@@ -1,0 +1,188 @@
+image:
+  repository: localhost:5001/meet-backend
+  pullPolicy: Always
+  tag: "latest"
+
+backend:
+  replicas: 1
+  envVars:
+    DJANGO_CSRF_TRUSTED_ORIGINS: https://meet.127.0.0.1.nip.io,http://meet.127.0.0.1.nip.io
+    DJANGO_CONFIGURATION: Production
+    DJANGO_ALLOWED_HOSTS: meet.127.0.0.1.nip.io
+    DJANGO_SECRET_KEY: {{ .Values.djangoSecretKey }}
+    DJANGO_SETTINGS_MODULE: meet.settings
+    DJANGO_SILENCED_SYSTEM_CHECKS: security.W004, security.W008
+    DJANGO_SUPERUSER_PASSWORD: admin
+    DJANGO_EMAIL_HOST: "mailcatcher"
+    DJANGO_EMAIL_PORT: 1025
+    DJANGO_EMAIL_USE_SSL: False
+    OIDC_OP_JWKS_ENDPOINT: https://keycloak.127.0.0.1.nip.io/realms/meet/protocol/openid-connect/certs
+    OIDC_OP_AUTHORIZATION_ENDPOINT: https://keycloak.127.0.0.1.nip.io/realms/meet/protocol/openid-connect/auth
+    OIDC_OP_TOKEN_ENDPOINT: https://keycloak.127.0.0.1.nip.io/realms/meet/protocol/openid-connect/token
+    OIDC_OP_USER_ENDPOINT: https://keycloak.127.0.0.1.nip.io/realms/meet/protocol/openid-connect/userinfo
+    OIDC_OP_LOGOUT_ENDPOINT: https://keycloak.127.0.0.1.nip.io/realms/meet/protocol/openid-connect/session/end
+    OIDC_RP_CLIENT_ID:
+      secretKeyRef:
+        name: backend
+        key: OIDC_RP_CLIENT_ID
+    OIDC_RP_CLIENT_SECRET:
+      secretKeyRef:
+        name: backend
+        key: OIDC_RP_CLIENT_SECRET
+    OIDC_RP_SIGN_ALGO: RS256
+    OIDC_RP_SCOPES: "openid email"
+    OIDC_REDIRECT_ALLOWED_HOSTS: https://meet.127.0.0.1.nip.io
+    OIDC_AUTH_REQUEST_EXTRA_PARAMS: "{'acr_values': 'eidas1'}"
+    OIDC_VERIFY_SSL: False
+    LOGIN_REDIRECT_URL: https://meet.127.0.0.1.nip.io
+    LOGIN_REDIRECT_URL_FAILURE: https://meet.127.0.0.1.nip.io
+    LOGOUT_REDIRECT_URL: https://meet.127.0.0.1.nip.io
+    DB_HOST: postgres-postgresql
+    DB_NAME: meet
+    DB_USER: dinum
+    DB_PASSWORD: pass
+    DB_PORT: 5432
+    POSTGRES_DB: meet
+    POSTGRES_USER: dinum
+    POSTGRES_PASSWORD: pass
+    REDIS_URL: redis://default:pass@redis-master:6379/1
+    STORAGES_STATICFILES_BACKEND: django.contrib.staticfiles.storage.StaticFilesStorage
+    {{- with .Values.livekit.keys }}
+    {{- range $key, $value := . }}
+    LIVEKIT_API_SECRET: {{ $value }}
+    LIVEKIT_API_KEY: {{ $key }}
+    {{- end }}
+    {{- end }}
+    LIVEKIT_API_URL: https://livekit.127.0.0.1.nip.io/
+    ALLOW_UNREGISTERED_ROOMS: False
+    FRONTEND_SILENCE_LIVEKIT_DEBUG: False
+    FRONTEND_SUPPORT: "{'id': '58ea6697-8eba-4492-bc59-ad6562585041'}"
+    AWS_S3_ENDPOINT_URL: http://minio.meet.svc.cluster.local:9000
+    AWS_S3_ACCESS_KEY_ID: meet
+    AWS_S3_SECRET_ACCESS_KEY: password
+    AWS_STORAGE_BUCKET_NAME: meet-media-storage
+    AWS_S3_REGION_NAME: local
+    RECORDING_ENABLE: True
+    RECORDING_VERIFY_SSL: False
+    RECORDING_STORAGE_EVENT_ENABLE: True
+    RECORDING_STORAGE_EVENT_TOKEN: password
+    SUMMARY_SERVICE_ENDPOINT: http://meet-summary:80/api/v1/tasks/
+    SUMMARY_SERVICE_API_TOKEN: password
+
+
+  migrate:
+    command:
+      - "/bin/sh"
+      - "-c"
+      - |
+        python manage.py migrate --no-input &&
+        python manage.py create_demo --force
+    restartPolicy: Never
+
+  command:
+    - "gunicorn"
+    - "-c"
+    - "/usr/local/etc/gunicorn/meet.py"
+    - "meet.wsgi:application"
+    - "--reload"
+
+  createsuperuser:
+    command:
+      - "/bin/sh"
+      - "-c"
+      - |
+        python manage.py createsuperuser --email admin@example.com --password admin
+    restartPolicy: Never
+
+frontend:
+  envVars:
+    VITE_PORT: 8080
+    VITE_HOST: 0.0.0.0
+    VITE_API_BASE_URL: https://meet.127.0.0.1.nip.io/
+
+  replicas: 1
+
+  image:
+    repository: localhost:5001/meet-frontend
+    pullPolicy: Always
+    tag: "latest"
+
+ingress:
+  enabled: true
+  host: meet.127.0.0.1.nip.io
+
+ingressAdmin:
+  enabled: true
+  host: meet.127.0.0.1.nip.io
+
+posthog:
+  ingress:
+    enabled: false
+
+  ingressAssets:
+    enabled: false
+
+summary:
+  replicas: 1
+  envVars:
+    APP_NAME: summary-microservice
+    APP_API_TOKEN: password
+    AWS_STORAGE_BUCKET_NAME: meet-media-storage
+    AWS_S3_ENDPOINT_URL: minio.meet.svc.cluster.local:9000
+    AWS_S3_ACCESS_KEY_ID: meet
+    AWS_S3_SECRET_ACCESS_KEY: password
+    OPENAI_API_KEY: password
+    OPENAI_BASE_URL: https://albertine.beta.numerique.gouv.fr/v1
+    OPENAI_ASR_MODEL: openai/whisper-large-v3
+    OPENAI_LLM_MODEL: meta-llama/Llama-3.1-8B-Instruct
+    AWS_S3_SECURE_ACCESS: False
+    WEBHOOK_API_TOKEN: password
+    WEBHOOK_URL: https://www.mock-impress.com/webhook/
+    CELERY_BROKER_URL: redis://default:pass@redis-master:6379/1
+    CELERY_RESULT_BACKEND: redis://default:pass@redis-master:6379/1
+
+  image:
+    repository: localhost:5001/meet-summary
+    pullPolicy: Always
+    tag: "latest"
+
+  command:
+    - "uvicorn"
+    - "summary.main:app"
+    - "--host"
+    - "0.0.0.0"
+    - "--port"
+    - "8000"
+    - "--reload"
+
+celery:
+  replicas: 1
+  envVars:
+    APP_NAME: summary-microservice
+    APP_API_TOKEN: password
+    AWS_STORAGE_BUCKET_NAME: meet-media-storage
+    AWS_S3_ENDPOINT_URL: minio.meet.svc.cluster.local:9000
+    AWS_S3_ACCESS_KEY_ID: meet
+    AWS_S3_SECRET_ACCESS_KEY: password
+    OPENAI_API_KEY: password
+    OPENAI_BASE_URL: https://albertine.beta.numerique.gouv.fr/v1
+    OPENAI_ASR_MODEL: openai/whisper-large-v3
+    OPENAI_LLM_MODEL: meta-llama/Llama-3.1-8B-Instruct
+    AWS_S3_SECURE_ACCESS: False
+    WEBHOOK_API_TOKEN: password
+    WEBHOOK_URL: https://www.mock-impress.com/webhook/
+    CELERY_BROKER_URL: redis://default:pass@redis-master:6379/1
+    CELERY_RESULT_BACKEND: redis://default:pass@redis-master:6379/1
+
+  image:
+    repository: localhost:5001/meet-summary
+    pullPolicy: Always
+    tag: "latest"
+
+  command:
+    - "celery"
+    - "-A"
+    - "summary.core.celery_worker"
+    - "worker"
+    - "--pool=solo"
+    - "--loglevel=info"
