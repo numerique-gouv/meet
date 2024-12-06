@@ -4,9 +4,9 @@ import useSound from 'use-sound'
 export const useNotificationSound = () => {
   const [play] = useSound('./sounds/notifications.mp3', {
     sprite: {
-      joined: [0, 1150],
-      raised: [1400, 180],
-      message: [1580, 300],
+      participantJoined: [0, 1150],
+      handRaised: [1400, 180],
+      messageReceived: [1580, 300],
       waiting: [2039, 710],
       success: [2740, 1304],
     },
