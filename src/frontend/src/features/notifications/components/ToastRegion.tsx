@@ -17,10 +17,10 @@ export function ToastRegion({ state, ...props }: ToastRegionProps) {
   return (
     <div {...regionProps} ref={ref} className="toast-region">
       {state.visibleToasts.map((toast) => {
-        if (toast.content?.type === NotificationType.Joined) {
+        if (toast.content?.type === NotificationType.ParticipantJoined) {
           return <ToastJoined key={toast.key} toast={toast} state={state} />
         }
-        if (toast.content?.type === NotificationType.Raised) {
+        if (toast.content?.type === NotificationType.HandRaised) {
           return <ToastRaised key={toast.key} toast={toast} state={state} />
         }
         return <Toast key={toast.key} toast={toast} state={state} />

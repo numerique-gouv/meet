@@ -19,6 +19,19 @@
     },
     "permissionsRequired": "Autorisations nécessaires"
   },
+  "notifications": {
+    "heading": "Notifications sonores",
+    "label": "la notification sonore pour",
+    "actions": {
+      "disable": "Désactiver",
+      "enable": "Activer"
+    },
+    "items": {
+      "participantJoined": "Un nouveau participant",
+      "handRaised": "Une main levée",
+      "messageReceived": "Un message reçu"
+    }
+  },
   "dialog": {
     "heading": "Paramètres"
   },
@@ -30,6 +43,7 @@
   "tabs": {
     "account": "Profile",
     "audio": "Audio",
-    "general": "Général"
+    "general": "Général",
+    "notifications": "Notifications"
   }
 }
