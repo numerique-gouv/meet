@@ -145,7 +145,7 @@ class OIDCLogoutCallbackView(MozillaOIDCOIDCLogoutView):
 
 
 class OIDCAuthenticationCallbackView(MozillaOIDCAuthenticationCallbackView):
-    """Custom callback view for handling the silent loging flow."""
+    """Custom callback view for handling the silent login flow."""
 
     @property
     def failure_url(self):
@@ -162,7 +162,7 @@ class OIDCAuthenticationCallbackView(MozillaOIDCAuthenticationCallbackView):
 
 
 class OIDCAuthenticationRequestView(MozillaOIDCAuthenticationRequestView):
-    """Custom authentication view for handling the silent loging flow."""
+    """Custom authentication view for handling the silent login flow."""
 
     def get_extra_params(self, request):
         """Handle 'prompt' extra parameter for the silent login flow
