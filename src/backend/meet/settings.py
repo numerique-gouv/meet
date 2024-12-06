@@ -324,8 +324,7 @@ class Base(Configuration):
     OIDC_AUTHENTICATE_CLASS = "core.authentication.views.OIDCAuthenticationRequestView"
     OIDC_CALLBACK_CLASS = "core.authentication.views.OIDCAuthenticationCallbackView"
     OIDC_CREATE_USER = values.BooleanValue(
-        default=True,
-        environ_name="OIDC_CREATE_USER",
+        default=True, environ_name="OIDC_CREATE_USER", environ_prefix=None
     )
     OIDC_FALLBACK_TO_EMAIL_FOR_IDENTIFICATION = values.BooleanValue(
         default=False,
