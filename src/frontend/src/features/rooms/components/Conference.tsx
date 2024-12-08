@@ -65,6 +65,7 @@ export const Conference = ({
 
   const roomOptions = useMemo((): RoomOptions => {
     return {
+      adaptiveStream: true,
       publishDefaults: {
         videoCodec: 'vp9',
       },
