@@ -65,6 +65,9 @@ export const Conference = ({
 
   const roomOptions = useMemo((): RoomOptions => {
     return {
+      publishDefaults: {
+        videoCodec: 'vp9',
+      },
       videoCaptureDefaults: {
         deviceId: userConfig.videoDeviceId ?? undefined,
       },
