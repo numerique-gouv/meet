@@ -329,6 +329,9 @@ class Base(Configuration):
     OIDC_VERIFY_SSL = values.BooleanValue(
         default=True, environ_name="OIDC_VERIFY_SSL", environ_prefix=None
     )
+    OIDC_VERIFY_SSL = values.BooleanValue(
+        default=True, environ_name="OIDC_VERIFY_SSL", environ_prefix=None
+    )
     OIDC_FALLBACK_TO_EMAIL_FOR_IDENTIFICATION = values.BooleanValue(
         default=False,
         environ_name="OIDC_FALLBACK_TO_EMAIL_FOR_IDENTIFICATION",
