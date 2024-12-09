@@ -8,16 +8,16 @@ dependencies = [
     "pydantic>=2.5.0",
     "pydantic-settings>=2.1.0",
     "celery==5.4.0",
-    "redis==4.5.4",
-    "minio==7.2.9",
-    "openai==1.55.3",
+    "redis==5.2.1",
+    "minio==7.2.12",
+    "openai==1.57.1",
     "requests==2.32.3",
     "sentry-sdk[fastapi, celery]==2.19.0",
 ]
 
 [project.optional-dependencies]
 dev = [
-    "ruff==0.7.4",
+    "ruff==0.8.2",
 ]
 
 [build-system]
