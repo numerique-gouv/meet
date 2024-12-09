@@ -32,6 +32,7 @@
     "react-aria-components": "1.5.0",
     "react-dom": "18.3.1",
     "react-i18next": "15.1.1",
+    "react-modal": "^3.16.1",
     "use-sound": "4.0.3",
     "valtio": "2.1.2",
     "wouter": "3.3.5"

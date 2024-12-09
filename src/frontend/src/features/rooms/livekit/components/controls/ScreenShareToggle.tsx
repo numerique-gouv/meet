@@ -4,13 +4,20 @@ import { useTranslation } from 'react-i18next'
 import { useTrackToggle, UseTrackToggleProps } from '@livekit/components-react'
 import { Track } from 'livekit-client'
 import React from 'react'
+import { type ButtonRecipeProps } from '@/primitives/buttonRecipe'
+import { ToggleButtonProps } from '@/primitives/ToggleButton'
 
-export const ScreenShareToggle = (
-  props: Omit<
-    UseTrackToggleProps<Track.Source.ScreenShare>,
-    'source' | 'captureOptions'
-  >
-) => {
+type Props = Omit<
+  UseTrackToggleProps<Track.Source.ScreenShare>,
+  'source' | 'captureOptions'
+> &
+  Pick<NonNullable<ButtonRecipeProps>, 'variant'> &
+  ToggleButtonProps
+
+export const ScreenShareToggle = ({
+  variant = 'primaryDark',
+  ...props
+}: Props) => {
   const { t } = useTranslation('rooms', { keyPrefix: 'controls.screenShare' })
   const { buttonProps, enabled } = useTrackToggle({
     ...props,
@@ -26,18 +33,19 @@ export const ScreenShareToggle = (
     <ToggleButton
       isSelected={enabled}
       square
-      variant="primaryDark"
+      variant={variant}
       tooltip={t(tooltipLabel)}
       onPress={(e) =>
         buttonProps.onClick?.(
           e as unknown as React.MouseEvent<HTMLButtonElement, MouseEvent>
         )
       }
-      style={{
-        maxWidth: '46px',
-        maxHeight: '46px',
-      }}
+      // style={{
+      //   maxWidth: '46px',
+      //   maxHeight: '46px',
+      // }}
       data-attr={`controls-screenshare-${tooltipLabel}`}
+      {...props}
     >
       <Div position="relative">
         <RiRectangleLine size={28} />
