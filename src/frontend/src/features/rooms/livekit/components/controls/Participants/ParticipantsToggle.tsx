@@ -4,8 +4,12 @@ import { ToggleButton } from '@/primitives'
 import { css } from '@/styled-system/css'
 import { useParticipants } from '@livekit/components-react'
 import { useSidePanel } from '../../../hooks/useSidePanel'
+import { ToggleButtonProps } from '@/primitives/ToggleButton'
 
-export const ParticipantsToggle = () => {
+export const ParticipantsToggle = ({
+  onPress,
+  ...props
+}: ToggleButtonProps) => {
   const { t } = useTranslation('rooms', { keyPrefix: 'controls.participants' })
 
   /**
@@ -33,8 +37,12 @@ export const ParticipantsToggle = () => {
         aria-label={t(tooltipLabel)}
         tooltip={t(tooltipLabel)}
         isSelected={isParticipantsOpen}
-        onPress={() => toggleParticipants()}
+        onPress={(e) => {
+          toggleParticipants()
+          onPress?.(e)
+        }}
         data-attr={`controls-participants-${tooltipLabel}`}
+        {...props}
       >
         <RiGroupLine />
       </ToggleButton>

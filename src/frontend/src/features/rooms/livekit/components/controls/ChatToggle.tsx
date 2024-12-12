@@ -5,8 +5,12 @@ import { css } from '@/styled-system/css'
 import { ToggleButton } from '@/primitives'
 import { chatStore } from '@/stores/chat'
 import { useSidePanel } from '../../hooks/useSidePanel'
+import { ToggleButtonProps } from '@/primitives/ToggleButton'
 
-export const ChatToggle = () => {
+export const ChatToggle = ({
+  onPress,
+  ...props
+}: Partial<ToggleButtonProps>) => {
   const { t } = useTranslation('rooms', { keyPrefix: 'controls.chat' })
 
   const chatSnap = useSnapshot(chatStore)
@@ -27,8 +31,12 @@ export const ChatToggle = () => {
         aria-label={t(tooltipLabel)}
         tooltip={t(tooltipLabel)}
         isSelected={isChatOpen}
-        onPress={() => toggleChat()}
+        onPress={(e) => {
+          toggleChat()
+          onPress?.(e)
+        }}
         data-attr={`controls-chat-${tooltipLabel}`}
+        {...props}
       >
         <RiChat1Line />
       </ToggleButton>
