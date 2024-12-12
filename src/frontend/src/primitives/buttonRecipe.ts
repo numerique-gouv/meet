@@ -1,9 +1,5 @@
 import { type RecipeVariantProps, cva } from '@/styled-system/css'
 
-export type ButtonRecipe = typeof buttonRecipe
-
-export type ButtonRecipeProps = RecipeVariantProps<ButtonRecipe>
-
 export const buttonRecipe = cva({
   base: {
     display: 'flex',
@@ -222,6 +218,16 @@ export const buttonRecipe = cva({
     shySelected: {
       true: {},
     },
+    description: {
+      true: {
+        flexDirection: 'column',
+        gap: '0.5rem',
+        '& span': {
+          fontSize: '13px',
+          textAlign: 'center',
+        },
+      },
+    },
     // if the button is next to other ones to make a "button group", tell where the button is to handle radius
     groupPosition: {
       left: {
@@ -255,3 +261,7 @@ export const buttonRecipe = cva({
     variant: 'primary',
   },
 })
+
+export type ButtonRecipe = typeof buttonRecipe
+
+export type ButtonRecipeProps = RecipeVariantProps<ButtonRecipe>

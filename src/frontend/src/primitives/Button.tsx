@@ -5,10 +5,14 @@ import {
 import { type RecipeVariantProps } from '@/styled-system/css'
 import { buttonRecipe, type ButtonRecipe } from './buttonRecipe'
 import { TooltipWrapper, type TooltipWrapperProps } from './TooltipWrapper'
+import { ReactNode } from 'react'
 
 export type ButtonProps = RecipeVariantProps<ButtonRecipe> &
   RACButtonsProps &
-  TooltipWrapperProps
+  TooltipWrapperProps & {
+    // Use tooltip as description below the button.
+    description?: boolean
+  }
 
 export const Button = ({
   tooltip,
@@ -22,7 +26,10 @@ export const Button = ({
       <RACButton
         className={buttonRecipe(variantProps)}
         {...(componentProps as RACButtonsProps)}
-      />
+      >
+        {componentProps.children as ReactNode}
+        {props.description && <span>{tooltip}</span>}
+      </RACButton>
     </TooltipWrapper>
   )
 }
