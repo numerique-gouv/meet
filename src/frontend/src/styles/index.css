@@ -29,3 +29,12 @@ body,
 body:has(.lk-video-conference) #crisp-chatbox > div > a {
   display: none !important;
 }
+
+@keyframes slide-full {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}

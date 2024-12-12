@@ -20,7 +20,7 @@ import {
   useCreateLayoutContext,
 } from '@livekit/components-react'
 
-import { ControlBar } from './ControlBar'
+import { ControlBar } from './ControlBar/ControlBar'
 import { styled } from '@/styled-system/jsx'
 import { cva } from '@/styled-system/css'
 import { MainNotificationToast } from '@/features/notifications/MainNotificationToast'
