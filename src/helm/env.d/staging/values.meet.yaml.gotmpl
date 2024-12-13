@@ -223,7 +223,7 @@ summary:
       secretKeyRef:
         name: summary
         key: WEBHOOK_API_TOKEN
-    WEBHOOK_URL: https://www.mock-impress.com/webhook/
+    WEBHOOK_URL: https://impress-staging.beta.numerique.gouv.fr/api/v1.0/documents/create-for-owner/
     CELERY_BROKER_URL:
       secretKeyRef:
         name: redis-summary.redis.libre.sh
@@ -274,7 +274,7 @@ celery:
       secretKeyRef:
         name: summary
         key: WEBHOOK_API_TOKEN
-    WEBHOOK_URL: https://www.mock-impress.com/webhook/
+    WEBHOOK_URL: https://impress-staging.beta.numerique.gouv.fr/api/v1.0/documents/create-for-owner/
     CELERY_BROKER_URL:
       secretKeyRef:
         name: redis-summary.redis.libre.sh
