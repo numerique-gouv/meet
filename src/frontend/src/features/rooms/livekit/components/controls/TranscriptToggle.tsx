@@ -4,8 +4,13 @@ import { useTranslation } from 'react-i18next'
 import { useSidePanel } from '../../hooks/useSidePanel'
 import { useHasTranscriptAccess } from '../../hooks/useHasTranscriptAccess'
 import { css } from '@/styled-system/css'
+import { ToggleButtonProps } from '@/primitives/ToggleButton'
 
-export const TranscriptToggle = () => {
+export const TranscriptToggle = ({
+  variant = 'primaryDark',
+  onPress,
+  ...props
+}: ToggleButtonProps) => {
   const { t } = useTranslation('rooms', { keyPrefix: 'controls.transcript' })
 
   const { isTranscriptOpen, toggleTranscript } = useSidePanel()
@@ -24,11 +29,15 @@ export const TranscriptToggle = () => {
     >
       <ToggleButton
         square
-        variant="primaryTextDark"
+        variant={variant}
         aria-label={t(tooltipLabel)}
         tooltip={t(tooltipLabel)}
         isSelected={isTranscriptOpen}
-        onPress={() => toggleTranscript()}
+        onPress={(e) => {
+          toggleTranscript()
+          onPress?.(e)
+        }}
+        {...props}
       >
         <RiBardLine />
       </ToggleButton>
