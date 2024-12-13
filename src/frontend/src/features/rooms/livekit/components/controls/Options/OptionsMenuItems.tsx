@@ -5,20 +5,16 @@ import {
 } from '@remixicon/react'
 import { MenuItem, Menu as RACMenu, Section } from 'react-aria-components'
 import { useTranslation } from 'react-i18next'
-import { Dispatch, SetStateAction } from 'react'
-import { DialogState } from './OptionsButton'
 import { Separator } from '@/primitives/Separator'
 import { useSidePanel } from '../../../hooks/useSidePanel'
 import { menuRecipe } from '@/primitives/menuRecipe.ts'
+import { useSettingsDialog } from '../SettingsDialogContext'
 
 // @todo try refactoring it to use MenuList component
-export const OptionsMenuItems = ({
-  onOpenDialog,
-}: {
-  onOpenDialog: Dispatch<SetStateAction<DialogState>>
-}) => {
+export const OptionsMenuItems = () => {
   const { t } = useTranslation('rooms', { keyPrefix: 'options.items' })
   const { toggleEffects } = useSidePanel()
+  const { setDialogOpen } = useSettingsDialog()
   return (
     <RACMenu
       style={{
@@ -47,7 +43,7 @@ export const OptionsMenuItems = ({
         </MenuItem>
         <MenuItem
           className={menuRecipe({ icon: true }).item}
-          onAction={() => onOpenDialog('settings')}
+          onAction={() => setDialogOpen(true)}
         >
           <RiSettings3Line size={20} />
           {t('settings')}
