@@ -508,6 +508,7 @@ class Base(Configuration):
             scope = sentry_sdk.get_global_scope()
             scope.set_tag("application", "backend")
 
+
 class Build(Base):
     """Settings used when the application is built.
 
