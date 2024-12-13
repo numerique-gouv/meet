@@ -122,6 +122,11 @@ backend:
         secretKeyRef:
             name: backend
             key: RECORDING_STORAGE_EVENT_TOKEN
+    SUMMARY_SERVICE_ENDPOINT: http://meet-summary:80/api/v1/tasks/
+    SUMMARY_SERVICE_API_TOKEN:
+        secretKeyRef:
+            name: summary
+            key: APP_API_TOKEN
 
   createsuperuser:
     command:
@@ -173,7 +178,113 @@ posthog:
       nginx.ingress.kubernetes.io/backend-protocol: https
 
 summary:
-  replicas: 0
+  replicas: 1
+  envVars:
+    APP_NAME: summary-microservice
+    APP_API_TOKEN:
+      secretKeyRef:
+        name: summary
+        key: APP_API_TOKEN
+    AWS_S3_ENDPOINT_URL:
+      secretKeyRef:
+        name: meet-media-storage.bucket.libre.sh
+        key: url
+    AWS_S3_ACCESS_KEY_ID:
+      secretKeyRef:
+        name: meet-media-storage.bucket.libre.sh
+        key: accessKey
+    AWS_S3_SECRET_ACCESS_KEY:
+      secretKeyRef:
+        name: meet-media-storage.bucket.libre.sh
+        key: secretKey
+    AWS_STORAGE_BUCKET_NAME:
+      secretKeyRef:
+        name: meet-media-storage.bucket.libre.sh
+        key: bucket
+    AWS_S3_REGION_NAME: local
+    OPENAI_API_KEY:
+      secretKeyRef:
+        name: summary
+        key: OPENAI_API_KEY
+    OPENAI_BASE_URL: https://albertine.beta.numerique.gouv.fr/v1
+    OPENAI_ASR_MODEL: openai/whisper-large-v3
+    OPENAI_LLM_MODEL: meta-llama/Llama-3.1-8B-Instruct
+    WEBHOOK_API_TOKEN:
+      secretKeyRef:
+        name: summary
+        key: WEBHOOK_API_TOKEN
+    WEBHOOK_URL: https://docs.numerique.gouv.fr/api/v1.0/documents/create-for-owner/
+    CELERY_BROKER_URL:
+      secretKeyRef:
+        name: redis-summary.redis.libre.sh
+        key: url
+    CELERY_RESULT_BACKEND:
+      secretKeyRef:
+        name: redis-summary.redis.libre.sh
+        key: url
+
+  image:
+    repository: lasuite/meet-summary
+    pullPolicy: Always
+    tag: "v0.1.10"
 
 celery:
-   replicas: 0
+  replicas: 1
+  envVars:
+    APP_NAME: summary-microservice
+    APP_API_TOKEN:
+      secretKeyRef:
+        name: summary
+        key: APP_API_TOKEN
+    AWS_S3_ENDPOINT_URL:
+      secretKeyRef:
+        name: meet-media-storage.bucket.libre.sh
+        key: endpoint
+    AWS_S3_ACCESS_KEY_ID:
+      secretKeyRef:
+        name: meet-media-storage.bucket.libre.sh
+        key: accessKey
+    AWS_S3_SECRET_ACCESS_KEY:
+      secretKeyRef:
+        name: meet-media-storage.bucket.libre.sh
+        key: secretKey
+    AWS_STORAGE_BUCKET_NAME:
+      secretKeyRef:
+        name: meet-media-storage.bucket.libre.sh
+        key: bucket
+    AWS_S3_REGION_NAME: local
+    OPENAI_API_KEY:
+      secretKeyRef:
+        name: summary
+        key: OPENAI_API_KEY
+    OPENAI_BASE_URL: https://albertine.beta.numerique.gouv.fr/v1
+    OPENAI_ASR_MODEL: openai/whisper-large-v3
+    OPENAI_LLM_MODEL: meta-llama/Llama-3.1-8B-Instruct
+    WEBHOOK_API_TOKEN:
+      secretKeyRef:
+        name: summary
+        key: WEBHOOK_API_TOKEN
+    WEBHOOK_URL: https://docs.numerique.gouv.fr/api/v1.0/documents/create-for-owner/
+    CELERY_BROKER_URL:
+      secretKeyRef:
+        name: redis-summary.redis.libre.sh
+        key: url
+    CELERY_RESULT_BACKEND:
+      secretKeyRef:
+        name: redis-summary.redis.libre.sh
+        key: url
+    SENTRY_IS_ENABLED: True
+    SENTRY_DSN: https://5aead03f03505da5130af6d642c42faf@sentry.incubateur.net/202
+
+  image:
+    repository: lasuite/meet-summary
+    pullPolicy: Always
+    tag: "v0.1.10"
+
+  command:
+    - "celery"
+    - "-A"
+    - "summary.core.celery_worker"
+    - "worker"
+    - "--pool=solo"
+    - "--loglevel=info"
