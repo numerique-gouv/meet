@@ -116,6 +116,12 @@ backend:
         name: meet-media-storage.bucket.libre.sh
         key: bucket
     AWS_S3_REGION_NAME: local
+    RECORDING_ENABLE: True
+    RECORDING_STORAGE_EVENT_ENABLE: True
+    RECORDING_STORAGE_EVENT_TOKEN:
+        secretKeyRef:
+            name: backend
+            key: RECORDING_STORAGE_EVENT_TOKEN
 
   createsuperuser:
     command:
