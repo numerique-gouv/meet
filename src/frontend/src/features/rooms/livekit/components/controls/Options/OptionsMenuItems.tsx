@@ -9,6 +9,7 @@ import { Separator } from '@/primitives/Separator'
 import { useSidePanel } from '../../../hooks/useSidePanel'
 import { menuRecipe } from '@/primitives/menuRecipe.ts'
 import { useSettingsDialog } from '../SettingsDialogContext'
+import { GRIST_FORM } from '@/utils/constants'
 
 // @todo try refactoring it to use MenuList component
 export const OptionsMenuItems = () => {
@@ -34,7 +35,7 @@ export const OptionsMenuItems = () => {
       <Separator />
       <Section>
         <MenuItem
-          href="https://grist.incubateur.net/o/docs/forms/1YrfNP1QSSy8p2gCxMFnSf/4"
+          href={GRIST_FORM}
           target="_blank"
           className={menuRecipe({ icon: true }).item}
         >

@@ -2,9 +2,7 @@ import { css } from '@/styled-system/css'
 import { RiErrorWarningLine, RiExternalLinkLine } from '@remixicon/react'
 import { useTranslation } from 'react-i18next'
 import { Text, A } from '@/primitives'
-
-const GRIST_FORM =
-  'https://grist.numerique.gouv.fr/o/docs/forms/1YrfNP1QSSy8p2gCxMFnSf/4'
+import { GRIST_FORM } from '@/utils/constants'
 
 export const FeedbackBanner = () => {
   const { t } = useTranslation()
