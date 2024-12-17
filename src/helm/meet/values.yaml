@@ -4,6 +4,40 @@
 
 ## @section General configuration
 
+## @param djangoSuperUserEmail Email of Django super user
+djangoSuperUserEmail: changeme
+
+## @param djangoSuperUserPass Password of Django super user
+djangoSuperUserPass: changeme
+
+## @param djangoSecretKey Secret key for Django
+djangoSecretKey: changeme
+
+## @param oidc.clientId Client Id for oidc connexion
+## @param oidc.clientSecret Client Secret for oidc connexion
+oidc:
+  clientId: changeme
+  clientSecret: changeme
+
+## @param livekitApi.secret Secret for livekit connexion
+## @param livekitApi.key Key for livekit connexion
+livekitApi:
+  secret: changeme
+  key: changeme
+
+## @param recordingStorageEventToken Blabla
+recordingStorageEventToken: changeme
+
+## @param appApiToken Blabla
+appApiToken: changeme
+
+## @param openaiApiKey Blabla
+openaiApiKey: changeme
+
+## @param webhookApiToken Blabla
+webhookApiToken: changeme
+
+
 ## @param image.repository Repository to use to pull meet's container image
 ## @param image.tag meet's container tag
 ## @param image.pullPolicy Container image pull policy
@@ -104,6 +138,45 @@ backend:
   ## @skip backend.envVars
   envVars:
     <<: *commonEnvVars
+    DJANGO_SECRET_KEY:
+      secretKeyRef:
+        name: backend
+        key: DJANGO_SECRET_KEY
+    DJANGO_SETTINGS_MODULE: meet.settings
+    DJANGO_SUPERUSER_EMAIL:
+      secretKeyRef:
+        name: backend
+        key: DJANGO_SUPERUSER_EMAIL
+    DJANGO_SUPERUSER_PASSWORD:
+      secretKeyRef:
+        name: backend
+        key: DJANGO_SUPERUSER_PASSWORD
+    OIDC_RP_CLIENT_ID:
+      secretKeyRef:
+        name: backend
+        key: OIDC_RP_CLIENT_ID
+    OIDC_RP_CLIENT_SECRET:
+      secretKeyRef:
+        name: backend
+        key: OIDC_RP_CLIENT_SECRET
+    STORAGES_STATICFILES_BACKEND: django.contrib.staticfiles.storage.StaticFilesStorage
+    LIVEKIT_API_SECRET:
+      secretKeyRef:
+        name: backend
+        key: LIVEKIT_API_SECRET
+    LIVEKIT_API_KEY:
+      secretKeyRef:
+        name: backend
+        key: LIVEKIT_API_KEY
+    RECORDING_STORAGE_EVENT_TOKEN:
+        secretKeyRef:
+            name: backend
+            key: RECORDING_STORAGE_EVENT_TOKEN
+    SUMMARY_SERVICE_ENDPOINT: http://meet-summary:80/api/v1/tasks/
+    SUMMARY_SERVICE_API_TOKEN:
+        secretKeyRef:
+            name: summary
+            key: APP_API_TOKEN
 
   ## @param backend.podAnnotations Annotations to add to the backend Pod
   podAnnotations: {}
@@ -126,6 +199,16 @@ backend:
       - "manage.py"
       - "migrate"
       - "--no-input"
+    restartPolicy: Never
+
+ ## @param backend.createsuperuser.command backend migrate command
+ ## @param backend.createsuperuser.restartPolicy backend migrate job restart policy
+  createsuperuser:
+    command:
+      - "/bin/sh"
+      - "-c"
+      - |
+        python manage.py createsuperuser --email $DJANGO_SUPERUSER_EMAIL --password $DJANGO_SUPERUSER_PASSWORD
     restartPolicy: Never
 
   ## @param backend.probes.liveness.path [nullable] Configure path for backend HTTP liveness probe
