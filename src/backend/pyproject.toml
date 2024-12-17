@@ -26,6 +26,7 @@ readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
     "boto3==1.35.76",
+    "brevo-python==1.1.2",
     "Brotli==1.1.0",
     "celery[redis]==5.4.0",
     "django-configurations==2.5.1",
