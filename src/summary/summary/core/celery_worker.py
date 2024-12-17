@@ -125,8 +125,10 @@ def process_audio_transcribe_summarize(filename: str, email: str, sub: str):
     summary = summary_response.choices[0].message.content
     logger.debug("Summary: \n %s", summary)
 
+    # fixme - generate a title using LLM
     data = {
-        "summary": summary,
+        "title": "Votre résumé",
+        "content": summary,
         "email": email,
         "sub": sub,
     }
