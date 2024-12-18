@@ -1,7 +1,7 @@
 image:
   repository: lasuite/meet-backend
   pullPolicy: Always
-  tag: "v0.1.11"
+  tag: "v0.1.12"
 
 backend:
   migrateJobAnnotations:
@@ -140,7 +140,7 @@ frontend:
   image:
     repository: lasuite/meet-frontend
     pullPolicy: Always
-    tag: "v0.1.11"
+    tag: "v0.1.12"
 
 ingress:
   enabled: true
@@ -226,7 +226,7 @@ summary:
   image:
     repository: lasuite/meet-summary
     pullPolicy: Always
-    tag: "v0.1.10"
+    tag: "v0.1.12"
 
 celery:
   replicas: 1
@@ -279,7 +279,7 @@ celery:
   image:
     repository: lasuite/meet-summary
     pullPolicy: Always
-    tag: "v0.1.10"
+    tag: "v0.1.12"
 
   command:
     - "celery"
