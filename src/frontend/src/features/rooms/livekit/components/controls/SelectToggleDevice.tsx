@@ -67,10 +67,12 @@ type SelectToggleDeviceProps<T extends ToggleSource> =
   UseTrackToggleProps<T> & {
     onActiveDeviceChange: (deviceId: string) => void
     source: SelectToggleSource
+    hideMenu?: boolean
   }
 
 export const SelectToggleDevice = <T extends ToggleSource>({
   onActiveDeviceChange,
+  hideMenu,
   ...props
 }: SelectToggleDeviceProps<T>) => {
   const config = selectToggleDeviceConfig[props.source]
@@ -92,29 +94,41 @@ export const SelectToggleDevice = <T extends ToggleSource>({
         gap: '1px',
       })}
     >
-      <ToggleDevice {...trackProps} config={config} />
-      <Menu>
-        <Button
-          tooltip={selectLabel}
-          aria-label={selectLabel}
-          groupPosition="right"
-          square
-          variant={trackProps.enabled ? 'primaryDark' : 'error2'}
-        >
-          <RiArrowDownSLine />
-        </Button>
-        <MenuList
-          items={devices.map((d) => ({
-            value: d.deviceId,
-            label: d.label,
-          }))}
-          selectedItem={activeDeviceId}
-          onAction={(value) => {
-            setActiveMediaDevice(value as string)
-            onActiveDeviceChange(value as string)
-          }}
-        />
-      </Menu>
+      <ToggleDevice
+        {...trackProps}
+        config={config}
+        toggleButtonProps={{
+          ...(hideMenu
+            ? {
+                groupPosition: undefined,
+              }
+            : {}),
+        }}
+      />
+      {!hideMenu && (
+        <Menu>
+          <Button
+            tooltip={selectLabel}
+            aria-label={selectLabel}
+            groupPosition="right"
+            square
+            variant={trackProps.enabled ? 'primaryDark' : 'error2'}
+          >
+            <RiArrowDownSLine />
+          </Button>
+          <MenuList
+            items={devices.map((d) => ({
+              value: d.deviceId,
+              label: d.label,
+            }))}
+            selectedItem={activeDeviceId}
+            onAction={(value) => {
+              setActiveMediaDevice(value as string)
+              onActiveDeviceChange(value as string)
+            }}
+          />
+        </Menu>
+      )}
     </div>
   )
 }
