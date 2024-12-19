@@ -82,7 +82,8 @@
       "feedbacks": "Give us feedbacks",
       "settings": "Settings",
       "username": "Update Your Name",
-      "effects": "Apply effects"
+      "effects": "Apply effects",
+      "switch_camera": "Switch camera"
     }
   },
   "effects": {

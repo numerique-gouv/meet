@@ -82,7 +82,8 @@
       "feedbacks": "Partager votre avis",
       "settings": "Paramètres",
       "username": "Choisir votre nom",
-      "effects": "Appliquer des effets"
+      "effects": "Appliquer des effets",
+      "switch_camera": "Changer de caméra"
     }
   },
   "effects": {
