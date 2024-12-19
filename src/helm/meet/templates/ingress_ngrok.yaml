@@ -1,0 +1,47 @@
+
+{{- if .Values.ingressNgrok.enabled -}}
+
+{{- $fullName := include "meet.ingressNgrok.fullname" . -}}
+{{- if and .Values.ingressNgrok.className (not (semverCompare ">=1.18-0" .Capabilities.KubeVersion.GitVersion)) }}
+  {{- if not (hasKey .Values.ingressNgrok.annotations "kubernetes.io/ingress.class") }}
+  {{- $_ := set .Values.ingressNgrok.annotations "kubernetes.io/ingress.class" .Values.ingress.className}}
+  {{- end }}
+{{- end }}
+{{- if semverCompare ">=1.19-0" .Capabilities.KubeVersion.GitVersion -}}
+apiVersion: networking.k8s.io/v1
+{{- else if semverCompare ">=1.14-0" .Capabilities.KubeVersion.GitVersion -}}
+apiVersion: networking.k8s.io/v1beta1
+{{- else -}}
+apiVersion: extensions/v1beta1
+{{- end }}
+kind: Ingress
+metadata:
+  name: {{ $fullName }}
+  namespace: {{ .Release.Namespace | quote }}
+  labels:
+    {{- include "meet.labels" . | nindent 4 }}
+  {{- with .Values.ingressNgrok.annotations }}
+  annotations:
+  {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  ingressClassName: {{ $.Values.ingressNgrok.className }}
+  rules:
+    - host: {{ $.Values.ingressNgrok.host }}
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ include "meet.frontend.fullname" $ }}
+                port:
+                  number: {{ $.Values.frontend.service.port }}
+          - path: /api
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ include "meet.backend.fullname" $ }}
+                port:
+                  number: {{ $.Values.backend.service.port }}
+{{- end }}

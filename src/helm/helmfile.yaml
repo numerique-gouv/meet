@@ -3,6 +3,12 @@ environments:
     values:
       - version: 0.0.1
       - env.d/{{ .Environment.Name }}/values.secrets.yaml
+  dev-ngrok:
+    values:
+      - version: 0.0.1
+      - env.d/{{ .Environment.Name }}/values.secrets.yaml
+    secrets:
+      - env.d/{{ .Environment.Name }}/secrets.enc.yaml
   dev:
     values:
       - version: 0.0.1
@@ -33,6 +39,8 @@ repositories:
   oci: true
 - name: livekit
   url: https://helm.livekit.io
+- name: ngrok
+  url: https://charts.ngrok.com
 
 releases:
   - name: postgres
@@ -91,7 +99,7 @@ releases:
 {{ readFile "../../docker/auth/realm.json" | replace "http://localhost:3200" "https://meet.127.0.0.1.nip.io" | indent 14 }}
 
   - name: minio
-    installed: {{ regexMatch "^dev.*" .Environment.Name | toYaml }}
+    installed: {{ regexMatch "^dev(?!.*ngrok).*" .Environment.Name | toYaml }}
     namespace: {{ .Namespace }}
     missingFileHandler: Warn
     chart: bitnami/minio
@@ -157,7 +165,7 @@ releases:
       - env.d/{{ .Environment.Name }}/secrets.enc.yaml
 
   - name: livekit
-    installed: {{ regexMatch "^dev.*" .Environment.Name | toYaml }}
+    installed: {{ regexMatch "^dev(?!.*ngrok).*" .Environment.Name | toYaml }}
     missingFileHandler: Warn
     namespace: {{ .Namespace }}
     chart: livekit/livekit-server
@@ -168,7 +176,7 @@ releases:
       - env.d/{{ .Environment.Name }}/secrets.enc.yaml
 
   - name: livekit-egress
-    installed: {{ regexMatch "^dev.*" .Environment.Name | toYaml }}
+    installed: {{ regexMatch "^dev(?!.*ngrok).*" .Environment.Name | toYaml }}
     missingFileHandler: Warn
     namespace: {{ .Namespace }}
     chart: livekit/egress
