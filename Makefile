@@ -308,3 +308,21 @@ start-tilt: ## start the kubernetes cluster using kind
 start-tilt-keycloak: ## start the kubernetes cluster using kind, without Pro Connect for authentication, use keycloak
 	DEV_ENV=dev-keycloak tilt up -f ./bin/Tiltfile
 .PHONY: build-k8s-cluster
+
+start-tilt-ngrok: ## start the kubernetes cluster using kind with ngrok
+	DEV_ENV=dev-ngrok tilt up -f ./bin/Tiltfile
+.PHONY: start-tilt-ngrok
+
+install-ngrok-ingress-controller:
+	@echo "Please provide the following information:"
+	@read -p "Enter your Kubernetes namespace: " NAMESPACE; \
+	read -p "Enter your Ngrok authtoken: " NGROK_AUTHTOKEN; \
+	read -p "Enter your Ngrok API key: " NGROK_API_KEY; \
+	echo "\nInstalling Ngrok Ingress Controller..."; \
+	helm install ngrok-ingress-controller ngrok/kubernetes-ingress-controller \
+		--namespace $$NAMESPACE \
+		--create-namespace \
+		--set credentials.apiKey=$$NGROK_API_KEY \
+		--set credentials.authtoken=$$NGROK_AUTHTOKEN
+.PHONY: install-ngrok-ingress-controller
+

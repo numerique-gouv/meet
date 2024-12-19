@@ -167,6 +167,15 @@ Requires top level scope
 {{- end }}
 
 {{/*
+Full name for the Ngrok
+
+Requires top level scope
+*/}}
+{{- define "meet.ingressNgrok.fullname" -}}
+{{ include "meet.fullname" . }}-ngrok
+{{- end }}
+
+{{/*
 Full name for the summary
 
 Requires top level scope
