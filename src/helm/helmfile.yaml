@@ -113,7 +113,7 @@ releases:
         architecture: standalone
 
   - name: extra
-    installed: {{ not (regexMatch "^dev.*" .Environment.Name) | toYaml }}
+    installed: {{ regexMatch "^dev.*" .Environment.Name | toYaml }}
     missingFileHandler: Warn
     namespace: {{ .Namespace }}
     chart: ./extra
