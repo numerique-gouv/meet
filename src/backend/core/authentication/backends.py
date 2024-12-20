@@ -1,7 +1,7 @@
 """Authentication Backends for the Meet core app."""
 
 from django.conf import settings
-from django.core.exceptions import SuspiciousOperation
+from django.core.exceptions import ImproperlyConfigured, SuspiciousOperation
 from django.utils.translation import gettext_lazy as _
 
 import requests
@@ -10,6 +10,11 @@ from mozilla_django_oidc.auth import (
 )
 
 from core.models import User
+from core.services.marketing_service import (
+    ContactCreationError,
+    ContactData,
+    get_marketing_service,
+)
 
 
 class OIDCAuthenticationBackend(MozillaOIDCAuthenticationBackend):
@@ -86,6 +91,10 @@ class OIDCAuthenticationBackend(MozillaOIDCAuthenticationBackend):
                 password="!",  # noqa: S106
                 **claims,
             )
+
+            if settings.SIGNUP_NEW_USER_TO_MARKETING_EMAIL:
+                self.signup_to_marketing_email(email)
+
         elif not user:
             return None
 
@@ -95,6 +104,26 @@ class OIDCAuthenticationBackend(MozillaOIDCAuthenticationBackend):
         self.update_user_if_needed(user, claims)
 
         return user
+
+    @staticmethod
+    def signup_to_marketing_email(email):
+        """Pragmatic approach to newsletter signup during authentication flow.
+
+        Details:
+        1. Uses a very short timeout (1s) to prevent blocking the auth process
+        2. Silently fails if the marketing service is down/slow to prioritize user experience
+        3. Trade-off: May miss some signups but ensures auth flow remains fast
+
+        Note: For a more robust solution, consider using Async task processing (Celery/Django-Q)
+        """
+        try:
+            marketing_service = get_marketing_service()
+            contact_data = ContactData(
+                email=email, attributes={"VISIO_SOURCE": ["SIGNIN"]}
+            )
+            marketing_service.create_contact(contact_data, timeout=1)
+        except (ContactCreationError, ImproperlyConfigured, ImportError):
+            pass
 
     def get_existing_user(self, sub, email):
         """Fetch existing user by sub or email."""
