@@ -458,6 +458,15 @@ class Base(Configuration):
     )
 
     # Marketing and communication settings
+    SIGNUP_NEW_USER_TO_MARKETING_EMAIL = values.BooleanValue(
+        True,
+        environ_name="SIGNUP_NEW_USERS_TO_NEWSLETTER",
+        environ_prefix=None,
+        help_text=(
+            "When enabled, new users are automatically added to Brevo mailing list "
+            "for product updates, marketing communications, and customized emails. "
+        ),
+    )
 
     BREVO_API_KEY = values.Value(
         None, environ_name="BREVO_API_KEY", environ_prefix=None
