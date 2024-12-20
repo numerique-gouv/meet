@@ -301,6 +301,36 @@ build-k8s-cluster: ## build the kubernetes cluster using kind
 	./bin/start-kind.sh
 .PHONY: build-k8s-cluster
 
+install-secret:
+	if kubectl -n meet get secrets bitwarden-cli-visio; then \
+		echo "Secret already present"; \
+	else \
+		echo "Please provide the following information:"; \
+		read -p "Enter your vaultwarden email login: " LOGIN; \
+		read -p "Enter your vaultwarden password: " PASSWORD; \
+		read -p "Enter your vaultwarden server url: " URL; \
+		echo "\nCreate vaultwarden secret"; \
+		echo "apiVersion: v1" > /tmp/secret.yaml; \
+		echo "kind: Secret" >> /tmp/secret.yaml; \
+		echo "metadata:" >> /tmp/secret.yaml; \
+		echo "  name: bitwarden-cli-visio" >> /tmp/secret.yaml; \
+		echo "  namespace: meet" >> /tmp/secret.yaml; \
+		echo "type: Opaque" >> /tmp/secret.yaml; \
+		echo "stringData:" >> /tmp/secret.yaml; \
+		echo "  BW_HOST: $$URL" >> /tmp/secret.yaml; \
+		echo "  BW_PASSWORD: $$PASSWORD" >> /tmp/secret.yaml; \
+		echo "  BW_USERNAME: $$LOGIN" >> /tmp/secret.yaml; \
+		kubectl -n meet apply -f /tmp/secret.yaml;\
+		rm -f /tmp/secret.yaml; \
+		helm repo add external-secrets https://charts.external-secrets.io; \
+		helm upgrade --install external-secrets \
+      external-secrets/external-secrets \
+       -n meet \
+       --create-namespace \
+       --set installCRDs=true; \
+	fi
+.PHONY: build-k8s-cluster
+
 start-tilt: ## start the kubernetes cluster using kind
 	tilt up -f ./bin/Tiltfile
 .PHONY: build-k8s-cluster
