@@ -55,7 +55,7 @@ export function MobileControlBar({
           className={css({
             display: 'flex',
             justifyContent: 'space-between',
-            width: '422px',
+            width: '330px',
           })}
         >
           <LeaveButton />
@@ -68,6 +68,7 @@ export function MobileControlBar({
             onActiveDeviceChange={(deviceId) =>
               saveAudioInputDeviceId(deviceId ?? '')
             }
+            hideMenu={true}
           />
           <SelectToggleDevice
             source={Track.Source.Camera}
@@ -78,6 +79,7 @@ export function MobileControlBar({
             onActiveDeviceChange={(deviceId) =>
               saveVideoInputDeviceId(deviceId ?? '')
             }
+            hideMenu={true}
           />
           <HandToggle />
           <Button

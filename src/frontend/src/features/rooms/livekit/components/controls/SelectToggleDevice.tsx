@@ -67,11 +67,13 @@ type SelectToggleDeviceProps<T extends ToggleSource> =
   UseTrackToggleProps<T> & {
     onActiveDeviceChange: (deviceId: string) => void
     source: SelectToggleSource
+    hideMenu?: boolean
     variant?: 'dark' | 'light'
   }
 
 export const SelectToggleDevice = <T extends ToggleSource>({
   onActiveDeviceChange,
+  hideMenu,
   variant = 'light',
   ...props
 }: SelectToggleDeviceProps<T>) => {
@@ -94,30 +96,42 @@ export const SelectToggleDevice = <T extends ToggleSource>({
         gap: '1px',
       })}
     >
-      <ToggleDevice {...trackProps} config={config} />
-      <Menu variant={variant}>
-        <Button
-          tooltip={selectLabel}
-          aria-label={selectLabel}
-          groupPosition="right"
-          square
-          variant={trackProps.enabled ? 'primaryDark' : 'error2'}
-        >
-          <RiArrowDownSLine />
-        </Button>
-        <MenuList
-          items={devices.map((d) => ({
-            value: d.deviceId,
-            label: d.label,
-          }))}
-          selectedItem={activeDeviceId}
-          onAction={(value) => {
-            setActiveMediaDevice(value as string)
-            onActiveDeviceChange(value as string)
-          }}
-          variant={variant}
-        />
-      </Menu>
+      <ToggleDevice
+        {...trackProps}
+        config={config}
+        toggleButtonProps={{
+          ...(hideMenu
+            ? {
+                groupPosition: undefined,
+              }
+            : {}),
+        }}
+      />
+      {!hideMenu && (
+        <Menu variant={variant}>
+          <Button
+            tooltip={selectLabel}
+            aria-label={selectLabel}
+            groupPosition="right"
+            square
+            variant={trackProps.enabled ? 'primaryDark' : 'error2'}
+          >
+            <RiArrowDownSLine />
+          </Button>
+          <MenuList
+            items={devices.map((d) => ({
+              value: d.deviceId,
+              label: d.label,
+            }))}
+            selectedItem={activeDeviceId}
+            onAction={(value) => {
+              setActiveMediaDevice(value as string)
+              onActiveDeviceChange(value as string)
+            }}
+            variant={variant}
+          />
+        </Menu>
+      )}
     </div>
   )
 }
