@@ -1,12 +1,15 @@
 """Unit tests for the Authentication Backends."""
 
-from django.core.exceptions import SuspiciousOperation
+from unittest import mock
+
+from django.core.exceptions import ImproperlyConfigured, SuspiciousOperation
 
 import pytest
 
 from core import models
 from core.authentication.backends import OIDCAuthenticationBackend
 from core.factories import UserFactory
+from core.services import marketing_service
 
 pytestmark = pytest.mark.django_db
 
@@ -412,3 +415,139 @@ def test_update_user_when_no_update_needed(django_assert_num_queries, claims):
     user.refresh_from_db()
 
     assert user.email == "john.doe@example.com"
+
+
+@mock.patch.object(OIDCAuthenticationBackend, "signup_to_marketing_email")
+def test_marketing_signup_new_user_enabled(mock_signup, monkeypatch, settings):
+    """Test marketing signup for new user with settings enabled."""
+    settings.SIGNUP_NEW_USER_TO_MARKETING_EMAIL = True
+
+    klass = OIDCAuthenticationBackend()
+    email = "test@example.com"
+
+    def get_userinfo_mocked(*args):
+        return {"sub": "123", "email": email}
+
+    monkeypatch.setattr(OIDCAuthenticationBackend, "get_userinfo", get_userinfo_mocked)
+
+    user = klass.get_or_create_user("test-token", None, None)
+
+    assert user.email == email
+    mock_signup.assert_called_once_with(email)
+
+
+@mock.patch.object(OIDCAuthenticationBackend, "signup_to_marketing_email")
+def test_marketing_signup_new_user_disabled(mock_signup, monkeypatch, settings):
+    """Test no marketing signup for new user with settings disabled."""
+    settings.SIGNUP_NEW_USER_TO_MARKETING_EMAIL = False
+
+    klass = OIDCAuthenticationBackend()
+    email = "test@example.com"
+
+    def get_userinfo_mocked(*args):
+        return {"sub": "123", "email": email}
+
+    monkeypatch.setattr(OIDCAuthenticationBackend, "get_userinfo", get_userinfo_mocked)
+
+    user = klass.get_or_create_user("test-token", None, None)
+
+    assert user.email == email
+    mock_signup.assert_not_called()
+
+
+@mock.patch.object(OIDCAuthenticationBackend, "signup_to_marketing_email")
+def test_marketing_signup_new_user_default_disabled(mock_signup, monkeypatch):
+    """Test no marketing signup for new user with settings by default disabled."""
+
+    klass = OIDCAuthenticationBackend()
+    email = "test@example.com"
+
+    def get_userinfo_mocked(*args):
+        return {"sub": "123", "email": email}
+
+    monkeypatch.setattr(OIDCAuthenticationBackend, "get_userinfo", get_userinfo_mocked)
+
+    user = klass.get_or_create_user("test-token", None, None)
+
+    assert user.email == email
+    mock_signup.assert_not_called()
+
+
+@pytest.mark.parametrize(
+    "is_signup_enabled",
+    [True, False],
+)
+@mock.patch.object(OIDCAuthenticationBackend, "signup_to_marketing_email")
+def test_marketing_signup_existing_user(
+    mock_signup, monkeypatch, settings, is_signup_enabled
+):
+    """Test no marketing signup for existing user regardless of settings."""
+
+    settings.SIGNUP_NEW_USER_TO_MARKETING_EMAIL = is_signup_enabled
+
+    klass = OIDCAuthenticationBackend()
+    db_user = UserFactory(email="test@example.com")
+
+    def get_userinfo_mocked(*args):
+        return {"sub": db_user.sub, "email": db_user.email}
+
+    monkeypatch.setattr(OIDCAuthenticationBackend, "get_userinfo", get_userinfo_mocked)
+
+    user = klass.get_or_create_user("test-token", None, None)
+    assert user == db_user
+    mock_signup.assert_not_called()
+
+
+@mock.patch("core.authentication.backends.get_marketing_service")
+def test_signup_to_marketing_email_success(mock_marketing):
+    """Test successful marketing signup."""
+
+    email = "test@example.com"
+
+    # Call the method
+    OIDCAuthenticationBackend.signup_to_marketing_email(email)
+
+    # Verify service interaction
+    mock_service = mock_marketing.return_value
+    mock_service.create_contact.assert_called_once()
+
+
+@pytest.mark.parametrize(
+    "error",
+    [
+        ImportError,
+        ImproperlyConfigured,
+    ],
+)
+@mock.patch("core.authentication.backends.get_marketing_service")
+def test_marketing_signup_handles_service_initialization_errors(
+    mock_marketing, error, settings
+):
+    """Tests errors that occur when trying to get/initialize the marketing service."""
+    settings.SIGNUP_NEW_USER_TO_MARKETING_EMAIL = True
+
+    mock_marketing.side_effect = error
+
+    # Should not raise any exception
+    OIDCAuthenticationBackend.signup_to_marketing_email("test@example.com")
+
+
+@pytest.mark.parametrize(
+    "error",
+    [
+        marketing_service.ContactCreationError,
+        ImproperlyConfigured,
+        ImportError,
+    ],
+)
+@mock.patch("core.authentication.backends.get_marketing_service")
+def test_marketing_signup_handles_contact_creation_errors(
+    mock_marketing, error, settings
+):
+    """Tests errors that occur during the contact creation process."""
+
+    settings.SIGNUP_NEW_USER_TO_MARKETING_EMAIL = True
+    mock_marketing.return_value.create_contact.side_effect = error
+
+    # Should not raise any exception
+    OIDCAuthenticationBackend.signup_to_marketing_email("test@example.com")

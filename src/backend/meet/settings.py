@@ -458,6 +458,15 @@ class Base(Configuration):
     )
 
     # Marketing and communication settings
+    SIGNUP_NEW_USER_TO_MARKETING_EMAIL = values.BooleanValue(
+        False,
+        environ_name="SIGNUP_NEW_USERS_TO_NEWSLETTER",
+        environ_prefix=None,
+        help_text=(
+            "When enabled, new users are automatically added to mailing list "
+            "for product updates, marketing communications, and customized emails. "
+        ),
+    )
     MARKETING_SERVICE_CLASS = values.Value(
         "core.services.marketing_service.BrevoMarketingService",
         environ_name="MARKETING_SERVICE_CLASS",
