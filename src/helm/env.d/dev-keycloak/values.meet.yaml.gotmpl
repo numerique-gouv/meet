@@ -21,14 +21,8 @@ backend:
     OIDC_OP_TOKEN_ENDPOINT: https://keycloak.127.0.0.1.nip.io/realms/meet/protocol/openid-connect/token
     OIDC_OP_USER_ENDPOINT: https://keycloak.127.0.0.1.nip.io/realms/meet/protocol/openid-connect/userinfo
     OIDC_OP_LOGOUT_ENDPOINT: https://keycloak.127.0.0.1.nip.io/realms/meet/protocol/openid-connect/session/end
-    OIDC_RP_CLIENT_ID:
-      secretKeyRef:
-        name: backend
-        key: OIDC_RP_CLIENT_ID
-    OIDC_RP_CLIENT_SECRET:
-      secretKeyRef:
-        name: backend
-        key: OIDC_RP_CLIENT_SECRET
+    OIDC_RP_CLIENT_ID: meet
+    OIDC_RP_CLIENT_SECRET: ThisIsAnExampleKeyForDevPurposeOnly
     OIDC_RP_SIGN_ALGO: RS256
     OIDC_RP_SCOPES: "openid email"
     OIDC_REDIRECT_ALLOWED_HOSTS: https://meet.127.0.0.1.nip.io
@@ -118,7 +112,7 @@ ingressAdmin:
 posthog:
   ingress:
     enabled: false
-
+  
   ingressAssets:
     enabled: false
 
@@ -140,12 +134,12 @@ summary:
     WEBHOOK_URL: https://www.mock-impress.com/webhook/
     CELERY_BROKER_URL: redis://default:pass@redis-master:6379/1
     CELERY_RESULT_BACKEND: redis://default:pass@redis-master:6379/1
-
+  
   image:
     repository: localhost:5001/meet-summary
     pullPolicy: Always
     tag: "latest"
-
+  
   command:
     - "uvicorn"
     - "summary.main:app"
@@ -173,7 +167,7 @@ celery:
     WEBHOOK_URL: https://www.mock-impress.com/webhook/
     CELERY_BROKER_URL: redis://default:pass@redis-master:6379/1
     CELERY_RESULT_BACKEND: redis://default:pass@redis-master:6379/1
-
+  
   image:
     repository: localhost:5001/meet-summary
     pullPolicy: Always
