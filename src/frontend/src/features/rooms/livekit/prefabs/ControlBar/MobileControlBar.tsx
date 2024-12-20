@@ -23,6 +23,7 @@ import { LinkButton } from '@/primitives'
 import { useSettingsDialog } from '../../components/controls/SettingsDialogContext'
 import { ResponsiveMenu } from './ResponsiveMenu'
 import { TranscriptToggle } from '../../components/controls/TranscriptToggle'
+import { CameraSwitchButton } from '../../components/controls/CameraSwitchButton'
 
 export function MobileControlBar({
   onDeviceError,
@@ -176,6 +177,7 @@ export function MobileControlBar({
             >
               <RiSettings3Line size={20} />
             </Button>
+            <CameraSwitchButton onPress={() => setIsMenuOpened(false)} />
           </div>
         </div>
       </ResponsiveMenu>
