@@ -457,6 +457,25 @@ class Base(Configuration):
         None, environ_name="SUMMARY_SERVICE_API_TOKEN", environ_prefix=None
     )
 
+    # Marketing and communication settings
+    SIGNUP_NEW_USER_TO_MARKETING_EMAIL = values.BooleanValue(
+        True,
+        environ_name="SIGNUP_NEW_USERS_TO_NEWSLETTER",
+        environ_prefix=None,
+        help_text=(
+            "When enabled, new users are automatically added to Brevo mailing list "
+            "for product updates, marketing communications, and customized emails. "
+        ),
+    )
+
+    BREVO_API_KEY = values.Value(
+        None, environ_name="BREVO_API_KEY", environ_prefix=None
+    )
+    BREVO_API_CONTACT_LIST_IDS = values.ListValue(
+        [], environ_name="BREVO_API_CONTACT_LIST_IDS", environ_prefix=None
+    )
+    BREVO_API_CONTACT_ATTRIBUTES = values.DictValue({"VISIO_USER": True})
+
     # pylint: disable=invalid-name
     @property
     def ENVIRONMENT(self):
