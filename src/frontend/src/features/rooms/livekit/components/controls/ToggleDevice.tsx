@@ -7,17 +7,20 @@ import { SelectToggleDeviceConfig } from './SelectToggleDevice'
 import useLongPress from '@/features/shortcuts/useLongPress'
 import { ActiveSpeaker } from '@/features/rooms/components/ActiveSpeaker'
 import { useIsSpeaking, useLocalParticipant } from '@livekit/components-react'
+import { ToggleButtonProps } from '@/primitives/ToggleButton'
 
 export type ToggleDeviceProps = {
   enabled: boolean
   toggle: () => void
   config: SelectToggleDeviceConfig
+  toggleButtonProps?: Partial<ToggleButtonProps>
 }
 
 export const ToggleDevice = ({
   config,
   enabled,
   toggle,
+  toggleButtonProps,
 }: ToggleDeviceProps) => {
   const { t } = useTranslation('rooms', { keyPrefix: 'join' })
 
@@ -64,6 +67,7 @@ export const ToggleDevice = ({
       aria-label={toggleLabel}
       tooltip={toggleLabel}
       groupPosition="left"
+      {...toggleButtonProps}
     >
       <Icon />
     </ToggleButton>
