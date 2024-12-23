@@ -2,11 +2,11 @@ apiVersion: v1
 entries:
   meet:
   - apiVersion: v2
-    created: "2024-12-23T08:25:06.342728339Z"
-    digest: 2c98db34866c11b7407efd7aa83fd81d79499661c82f521964db49119782acd3
+    created: "2024-12-23T11:22:57.504375201Z"
+    digest: ebc9f958e1b7f0cfa556e461826295c1a1e8b38a63b1d8d347cb5c10f882198e
     name: meet
     type: application
     urls:
     - https://numerique-gouv.github.io/meet/meet-0.0.1.tgz
     version: 0.0.1
-generated: "2024-12-23T08:25:06.341370174Z"
+generated: "2024-12-23T11:22:57.501946188Z"
