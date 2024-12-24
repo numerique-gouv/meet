@@ -6,26 +6,7 @@ environments:
   dev:
     values:
       - version: 0.0.1
-    secrets:
-      - env.d/{{ .Environment.Name }}/secrets.enc.yaml
-  staging:
-    values:
-      - version: 0.0.1
-        addRedirect: True
-        enablePermanentRedirect: True
-        oldDomain: meet-staging.beta.numerique.gouv.fr
-        newDomain: visio-staging.beta.numerique.gouv.fr
-    secrets:
-      - env.d/{{ .Environment.Name }}/secrets.enc.yaml
-  production:
-    values:
-      - version: 0.0.1
-        addRedirect: True
-        enablePermanentRedirect: True
-        oldDomain: meet.numerique.gouv.fr
-        newDomain: visio.numerique.gouv.fr
-    secrets:
-      - env.d/{{ .Environment.Name }}/secrets.enc.yaml
+      - env.d/{{ .Environment.Name }}/values.secrets.yaml
 
 repositories:
 - name: bitnami
@@ -132,7 +113,7 @@ releases:
         architecture: standalone
 
   - name: extra
-    installed: {{ not (regexMatch "^dev.*" .Environment.Name) | toYaml }}
+    installed: {{ regexMatch "^dev.*" .Environment.Name | toYaml }}
     missingFileHandler: Warn
     namespace: {{ .Namespace }}
     chart: ./extra
