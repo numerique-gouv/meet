@@ -2,8 +2,6 @@ name: Release Charts
 
 on:
   push:
-    branches:
-      - main
 
 jobs:
   release:
@@ -21,9 +19,14 @@ jobs:
       - name: Cleanup
         run: rm -rf ./src/helm/extra
 
-      - name: Publish Helm charts
-        uses: stefanprodan/helm-gh-pages@v1.7.0
+      - name: Install Helm
+        uses: azure/setup-helm@v4
+        env:
+          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+
+      - name: Run chart-releaser
+        uses: helm/chart-releaser-action@v1.6.0
         with:
-          charts_dir: ./src/helm/
-          linting: off
-          token: ${{ secrets.GITHUB_TOKEN }}
+          charts_dir: ./src/helm
+        env:
+          CR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
