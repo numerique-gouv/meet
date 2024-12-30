@@ -49,6 +49,7 @@ backend:
     LIVEKIT_API_URL: https://livekit.127.0.0.1.nip.io/
     ALLOW_UNREGISTERED_ROOMS: False
     FRONTEND_SILENCE_LIVEKIT_DEBUG: False
+    FRONTEND_ANALYTICS: "{'id': 'phc_RPYko028Oqtj0c9exLIWwrlrjLxSdxT0ntW0Lam4iom', 'host': 'https://product-meet.127.0.0.1.nip.io'}"
     FRONTEND_SUPPORT: "{'id': '58ea6697-8eba-4492-bc59-ad6562585041'}"
     AWS_S3_ENDPOINT_URL: http://minio.meet.svc.cluster.local:9000
     AWS_S3_ACCESS_KEY_ID: meet
@@ -110,10 +111,22 @@ ingressAdmin:
 
 posthog:
   ingress:
-    enabled: false
+    enabled: true
+    host: product-meet.127.0.0.1.nip.io
+    className: nginx
+    annotations:
+      cert-manager.io/cluster-issuer: letsencrypt-prod
+      nginx.ingress.kubernetes.io/upstream-vhost: eu.i.posthog.com
+      nginx.ingress.kubernetes.io/backend-protocol: https
 
   ingressAssets:
-    enabled: false
+    enabled: true
+    host: product-meet.127.0.0.1.nip.io
+    className: nginx
+    annotations:
+      cert-manager.io/cluster-issuer: letsencrypt-prod
+      nginx.ingress.kubernetes.io/upstream-vhost: eu-assets.i.posthog.com
+      nginx.ingress.kubernetes.io/backend-protocol: https
 
 summary:
   replicas: 1
