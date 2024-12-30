@@ -118,6 +118,8 @@ posthog:
       cert-manager.io/cluster-issuer: letsencrypt-prod
       nginx.ingress.kubernetes.io/upstream-vhost: eu.i.posthog.com
       nginx.ingress.kubernetes.io/backend-protocol: https
+      nginx.ingress.kubernetes.io/enable-cors: "true"
+      nginx.ingress.kubernetes.io/cors-allow-origin: "https://meet.127.0.0.1.nip.io"
 
   ingressAssets:
     enabled: true
@@ -127,6 +129,8 @@ posthog:
       cert-manager.io/cluster-issuer: letsencrypt-prod
       nginx.ingress.kubernetes.io/upstream-vhost: eu-assets.i.posthog.com
       nginx.ingress.kubernetes.io/backend-protocol: https
+      nginx.ingress.kubernetes.io/enable-cors: "true"
+      nginx.ingress.kubernetes.io/cors-allow-origin: "https://meet.127.0.0.1.nip.io"
 
 summary:
   replicas: 1
