@@ -189,6 +189,7 @@ class User(AbstractBaseUser, BaseModel, auth_models.PermissionsMixin):
 
     class Meta:
         db_table = "meet_user"
+        ordering = ("-created_at",)
         verbose_name = _("user")
         verbose_name_plural = _("users")
 
@@ -304,6 +305,7 @@ class ResourceAccess(BaseModel):
 
     class Meta:
         db_table = "meet_resource_access"
+        ordering = ("-created_at",)
         verbose_name = _("Resource access")
         verbose_name_plural = _("Resource accesses")
         constraints = [

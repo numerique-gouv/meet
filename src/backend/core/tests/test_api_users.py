@@ -66,7 +66,7 @@ def test_api_users_list_query_email():
 
     assert response.status_code == 200
     user_ids = [user["id"] for user in response.json()["results"]]
-    assert user_ids == [str(nicole.id), str(frank.id)]
+    assert user_ids == [str(frank.id), str(nicole.id)]
 
 
 def test_api_users_retrieve_me_anonymous():
