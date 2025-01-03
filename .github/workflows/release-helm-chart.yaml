@@ -1,0 +1,51 @@
+name: Release Chart
+run-name: Release Chart
+
+on:
+  pull_request:
+    branches:
+      - 'main'
+  push:
+    paths:
+      - ./src/helm/meet/**
+
+jobs:
+  lint-helmfile:
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/helmfile/helmfile:latest
+    steps:
+      - uses: numerique-gouv/action-helmfile-lint@main
+        with:
+          app-id: ${{ secrets.APP_ID }}
+          age-key: ${{ secrets.SOPS_PRIVATE }}
+          private-key: ${{ secrets.PRIVATE_KEY }}
+          helmfile-src: "src/helm"
+          repositories: "meet,secrets"
+
+  release:
+    needs: helmfile-lint
+    if: github.event_name == 'push'
+    permissions:
+      contents: write
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Cleanup
+        run: rm -rf ./src/helm/extra
+
+      - name: Install Helm
+        uses: azure/setup-helm@v4
+        env:
+          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+
+      - name: Publish Helm charts
+        uses: numerique-gouv/helm-gh-pages@add-overwrite-option
+        with:
+          charts_dir: ./src/helm
+          linting: off
+          token: ${{ secrets.GITHUB_TOKEN }}
