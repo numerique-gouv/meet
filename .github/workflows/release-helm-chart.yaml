@@ -2,14 +2,30 @@ name: Release Chart
 run-name: Release Chart
 
 on:
+  pull_request:
+    branches:
+      - 'main'
   push:
     paths:
-      - src/helm/meet/**
+      - ./src/helm/meet/**
 
 jobs:
+  lint-helmfile:
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/helmfile/helmfile:latest
+    steps:
+      - uses: numerique-gouv/action-helmfile-lint@main
+        with:
+          app-id: ${{ secrets.APP_ID }}
+          age-key: ${{ secrets.SOPS_PRIVATE }}
+          private-key: ${{ secrets.PRIVATE_KEY }}
+          helmfile-src: "src/helm"
+          repositories: "meet,secrets"
+
   release:
-    # depending on default permission settings for your org (contents being read-only or read-write for workloads), you will have to add permissions
-    # see: https://docs.github.com/en/actions/security-guides/automatic-token-authentication#modifying-the-permissions-for-the-github_token
+    needs: helmfile-lint
+    if: github.event_name == 'push'
     permissions:
       contents: write
     runs-on: ubuntu-latest
