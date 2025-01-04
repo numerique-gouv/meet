@@ -14,6 +14,21 @@ from django.conf import settings
 
 from livekit.api import AccessToken, VideoGrants
 
+from functools import lru_cache
+import secrets
+import string
+
+
+def generate_random_passphrase(length=26):
+    """Generate a random passphrase using letters and digits"""
+    alphabet = string.ascii_letters + string.digits
+    return ''.join(secrets.choice(alphabet) for _ in range(length))
+
+@lru_cache()
+def get_cached_passphrase(room_slug):
+    """Get or generate a cached passphrase for a room slug"""
+    return generate_random_passphrase()
+
 
 def generate_color(identity: str) -> str:
     """Generates a consistent HSL color based on a given identity string.

@@ -139,11 +139,10 @@ class RoomSerializer(serializers.ModelSerializer):
                 "token": utils.generate_token(
                     room=slug, user=request.user, username=username
                 ),
+                "passphrase": utils.get_cached_passphrase(slug)
             }
-
+            
         output["is_administrable"] = is_admin
-
-        output['passphrase'] = "thisisapassphrase"
 
         return output
 

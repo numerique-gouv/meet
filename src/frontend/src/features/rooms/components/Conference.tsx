@@ -110,7 +110,7 @@ export const Conference = ({
     }
     if (e2eeEnabled) {
       keyProvider
-        .setKey(data.passphrase)
+        .setKey(data.livekit?.passphrase)
         .then(() => {
           room.setE2EEEnabled(true).catch((e) => {
             if (e instanceof DeviceUnsupportedError) {
