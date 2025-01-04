@@ -2,7 +2,12 @@ import { useEffect, useMemo, useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { useTranslation } from 'react-i18next'
 import { LiveKitRoom, type LocalUserChoices } from '@livekit/components-react'
-import { Room, RoomOptions } from 'livekit-client'
+import {
+  Room,
+  RoomOptions,
+  ExternalE2EEKeyProvider,
+  DeviceUnsupportedError,
+} from 'livekit-client'
 import { keys } from '@/api/queryKeys'
 import { queryClient } from '@/api/queryClient'
 import { Screen } from '@/layout/Screen'
@@ -63,12 +68,31 @@ export const Conference = ({
     retry: false,
   })
 
+  const e2eePassphrase = typeof window !== 'undefined' && 'thisisapassphrase'
+
+  const worker =
+    typeof window !== 'undefined' &&
+    e2eePassphrase &&
+    new Worker(new URL('livekit-client/e2ee-worker', import.meta.url))
+
+  const e2eeEnabled = !!(e2eePassphrase && worker)
+  const keyProvider = new ExternalE2EEKeyProvider()
+
+  const [e2eeSetupComplete, setE2eeSetupComplete] = useState(false)
+
   const roomOptions = useMemo((): RoomOptions => {
+    // todo - explain why
+    const videoCodec = e2eeEnabled ? undefined : 'vp9'
+
+    const e2ee = e2eeEnabled ? { keyProvider, worker } : undefined
+
     return {
       adaptiveStream: true,
       dynacast: true,
       publishDefaults: {
-        videoCodec: 'vp9',
+        // todo - explain why
+        red: !e2eeEnabled,
+        videoCodec,
       },
       videoCaptureDefaults: {
         deviceId: userConfig.videoDeviceId ?? undefined,
@@ -76,11 +100,34 @@ export const Conference = ({
       audioCaptureDefaults: {
         deviceId: userConfig.audioDeviceId ?? undefined,
       },
+      e2ee,
     }
     // do not rely on the userConfig object directly as its reference may change on every render
   }, [userConfig.videoDeviceId, userConfig.audioDeviceId])
 
   const room = useMemo(() => new Room(roomOptions), [roomOptions])
+
+  useEffect(() => {
+    if (e2eeEnabled) {
+      keyProvider
+        .setKey('thisisapassphrase')
+        .then(() => {
+          room.setE2EEEnabled(true).catch((e) => {
+            if (e instanceof DeviceUnsupportedError) {
+              alert(
+                `You're trying to join an encrypted meeting, but your browser does not support it. Please update it to the latest version and try again.`
+              )
+              console.error(e)
+            } else {
+              throw e
+            }
+          })
+        })
+        .then(() => setE2eeSetupComplete(true))
+    } else {
+      setE2eeSetupComplete(true)
+    }
+  }, [e2eeEnabled, room, e2eePassphrase])
 
   const [showInviteDialog, setShowInviteDialog] = useState(mode === 'create')
 
@@ -102,6 +149,10 @@ export const Conference = ({
     peerConnectionTimeout: 60000, // Default: 15s. Extended for slow TURN/TLS negotiation
   }
 
+  const handleEncryptionError = () => {
+    console.log('error')
+  }
+
   return (
     <QueryAware status={isFetchError ? createStatus : fetchStatus}>
       <Screen header={false} footer={false}>
@@ -109,13 +160,14 @@ export const Conference = ({
           room={room}
           serverUrl={data?.livekit?.url}
           token={data?.livekit?.token}
-          connect={true}
+          connect={e2eeSetupComplete}
           audio={userConfig.audioEnabled}
           video={userConfig.videoEnabled}
           connectOptions={connectOptions}
           className={css({
             backgroundColor: 'primaryDark.50 !important',
           })}
+          onEncryptionError={handleEncryptionError}
         >
           <VideoConference />
           {showInviteDialog && (
