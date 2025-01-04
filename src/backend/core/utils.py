@@ -18,6 +18,9 @@ import secrets
 import string
 
 from django.core.cache import cache
+from cryptography.fernet import Fernet
+
+import base64
 
 
 def generate_random_passphrase(length=26):
@@ -28,15 +31,21 @@ def generate_random_passphrase(length=26):
 def get_cached_passphrase(room_id):
     """Get or generate a cached passphrase for a room slug"""
 
+    cypher = Fernet(settings.PASSPHRASE_ENCRYPTION_KEY.encode())
+
     # todo - discuss this hardcoded key prefix
-    passphrase = cache.get(f"room_passphrase:{room_id}")
+    encrypted_passphrase = cache.get(f"room_passphrase:{room_id}")
 
-    if passphrase is None:
+    if encrypted_passphrase is None:
         passphrase = generate_random_passphrase()
-        # Store in cache with a timeout (e.g., 24 hours = 86400 seconds)
-        cache.set(f"room_passphrase:{room_id}", passphrase, timeout=86400)
+        encrypted_passphrase = cypher.encrypt(passphrase.encode()).decode()
 
-    return passphrase
+        # Store in cache with a timeout (e.g., 24 hours = 86400 seconds)
+        cache.set(f"room_passphrase:{room_id}", encrypted_passphrase, timeout=86400)
+
+        return passphrase
+
+    return cypher.decrypt(encrypted_passphrase.encode()).decode()
 
 
 def generate_color(identity: str) -> str:
