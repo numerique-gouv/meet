@@ -14,9 +14,10 @@ from django.conf import settings
 
 from livekit.api import AccessToken, VideoGrants
 
-from functools import lru_cache
 import secrets
 import string
+
+from django.core.cache import cache
 
 
 def generate_random_passphrase(length=26):
@@ -24,10 +25,18 @@ def generate_random_passphrase(length=26):
     alphabet = string.ascii_letters + string.digits
     return ''.join(secrets.choice(alphabet) for _ in range(length))
 
-@lru_cache()
-def get_cached_passphrase(room_slug):
+def get_cached_passphrase(room_id):
     """Get or generate a cached passphrase for a room slug"""
-    return generate_random_passphrase()
+
+    # todo - discuss this hardcoded key prefix
+    passphrase = cache.get(f"room_passphrase:{room_id}")
+
+    if passphrase is None:
+        passphrase = generate_random_passphrase()
+        # Store in cache with a timeout (e.g., 24 hours = 86400 seconds)
+        cache.set(f"room_passphrase:{room_id}", passphrase, timeout=86400)
+
+    return passphrase
 
 
 def generate_color(identity: str) -> str:
