@@ -68,14 +68,11 @@ export const Conference = ({
     retry: false,
   })
 
-  const e2eePassphrase = typeof window !== 'undefined' && 'thisisapassphrase'
-
   const worker =
     typeof window !== 'undefined' &&
-    e2eePassphrase &&
     new Worker(new URL('livekit-client/e2ee-worker', import.meta.url))
 
-  const e2eeEnabled = !!(e2eePassphrase && worker)
+  const e2eeEnabled = !!worker
   const keyProvider = new ExternalE2EEKeyProvider()
 
   const [e2eeSetupComplete, setE2eeSetupComplete] = useState(false)
@@ -108,9 +105,12 @@ export const Conference = ({
   const room = useMemo(() => new Room(roomOptions), [roomOptions])
 
   useEffect(() => {
+    if (!data) {
+      return
+    }
     if (e2eeEnabled) {
       keyProvider
-        .setKey('thisisapassphrase')
+        .setKey(data.passphrase)
         .then(() => {
           room.setE2EEEnabled(true).catch((e) => {
             if (e instanceof DeviceUnsupportedError) {
@@ -127,7 +127,7 @@ export const Conference = ({
     } else {
       setE2eeSetupComplete(true)
     }
-  }, [e2eeEnabled, room, e2eePassphrase])
+  }, [e2eeEnabled, room, data])
 
   const [showInviteDialog, setShowInviteDialog] = useState(mode === 'create')
 

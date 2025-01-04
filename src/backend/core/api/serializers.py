@@ -143,6 +143,8 @@ class RoomSerializer(serializers.ModelSerializer):
 
         output["is_administrable"] = is_admin
 
+        output['passphrase'] = "thisisapassphrase"
+
         return output
 
 
