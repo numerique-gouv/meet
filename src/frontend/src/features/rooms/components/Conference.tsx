@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { useTranslation } from 'react-i18next'
 import { LiveKitRoom, type LocalUserChoices } from '@livekit/components-react'
@@ -21,6 +21,9 @@ import { InviteDialog } from './InviteDialog'
 import { VideoConference } from '../livekit/prefabs/VideoConference'
 import posthog from 'posthog-js'
 import { css } from '@/styled-system/css'
+
+// todo - release worker when quitting the room, same for the key provider?
+// todo - check, seems the demo app from livekit trigger the web worker twice because of re-rendering
 
 export const Conference = ({
   roomId,
@@ -68,19 +71,40 @@ export const Conference = ({
     retry: false,
   })
 
-  const worker =
-    typeof window !== 'undefined' &&
-    new Worker(new URL('livekit-client/e2ee-worker', import.meta.url))
+  const e2eeEnabled = true
 
-  const e2eeEnabled = !!worker
-  const keyProvider = new ExternalE2EEKeyProvider()
+  const workerRef = useRef<Worker | null>(null)
+  const keyProvider = useRef<any | null>(null)
+
+  const getKeyProvider = () => {
+    if (!keyProvider.current && typeof window !== 'undefined') {
+      keyProvider.current = new ExternalE2EEKeyProvider()
+    }
+    return keyProvider.current
+  }
+
+  const getWorker = () => {
+    if (!e2eeEnabled) {
+      return
+    }
+    if (!workerRef.current && typeof window !== 'undefined') {
+      workerRef.current = new Worker(
+        new URL('livekit-client/e2ee-worker', import.meta.url)
+      )
+    }
+    return workerRef.current
+  }
+
+  const e2eePassphrase = data?.livekit?.passphrase
 
   const [e2eeSetupComplete, setE2eeSetupComplete] = useState(false)
 
   const roomOptions = useMemo((): RoomOptions => {
+    const worker = getWorker()
+    const keyProvider = getKeyProvider()
+
     // todo - explain why
     const videoCodec = e2eeEnabled ? undefined : 'vp9'
-
     const e2ee = e2eeEnabled ? { keyProvider, worker } : undefined
 
     return {
@@ -105,12 +129,11 @@ export const Conference = ({
   const room = useMemo(() => new Room(roomOptions), [roomOptions])
 
   useEffect(() => {
-    if (!data) {
-      return
-    }
-    if (e2eeEnabled) {
+    console.log('enter', e2eePassphrase)
+    if (e2eePassphrase) {
+      const keyProvider = getKeyProvider()
       keyProvider
-        .setKey(data.livekit?.passphrase)
+        .setKey(e2eePassphrase)
         .then(() => {
           room.setE2EEEnabled(true).catch((e) => {
             if (e instanceof DeviceUnsupportedError) {
@@ -124,10 +147,8 @@ export const Conference = ({
           })
         })
         .then(() => setE2eeSetupComplete(true))
-    } else {
-      setE2eeSetupComplete(true)
     }
-  }, [e2eeEnabled, room, data])
+  }, [room, e2eePassphrase])
 
   const [showInviteDialog, setShowInviteDialog] = useState(mode === 'create')
 
