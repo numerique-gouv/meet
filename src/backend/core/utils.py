@@ -28,24 +28,32 @@ def generate_random_passphrase(length=26):
     alphabet = string.ascii_letters + string.digits
     return ''.join(secrets.choice(alphabet) for _ in range(length))
 
-def get_cached_passphrase(room_id):
-    """Get or generate a cached passphrase for a room slug"""
 
+def build_room_passphrase_key(room_id: str) -> str:
+    """Build cache key for room passphrase."""
+    return f"room_passphrase:{room_id}"
+
+def get_cached_passphrase(room_id: str) -> str:
+    """Get or generate encrypted passphrase for a room.
+
+    Retrieves existing passphrase from cache or generates,
+    encrypts and caches a new one if not found.
+    """
     cypher = Fernet(settings.PASSPHRASE_ENCRYPTION_KEY.encode())
-
-    # todo - discuss this hardcoded key prefix
-    encrypted_passphrase = cache.get(f"room_passphrase:{room_id}")
+    cache_key = build_room_passphrase_key(room_id)
+    encrypted_passphrase = cache.get(cache_key)
 
     if encrypted_passphrase is None:
         passphrase = generate_random_passphrase()
         encrypted_passphrase = cypher.encrypt(passphrase.encode()).decode()
-
-        # Store in cache with a timeout (e.g., 24 hours = 86400 seconds)
-        cache.set(f"room_passphrase:{room_id}", encrypted_passphrase, timeout=86400)
-
+        cache.set(cache_key, encrypted_passphrase, timeout=86400)  # 24 hours
         return passphrase
 
     return cypher.decrypt(encrypted_passphrase.encode()).decode()
+
+def clear_room_passphrase(room_id: str) -> None:
+    """Remove room passphrase from cache."""
+    cache.delete(build_room_passphrase_key(room_id))
 
 
 def generate_color(identity: str) -> str:
