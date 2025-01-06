@@ -47,6 +47,8 @@ from core.recording.worker.mediator import (
 
 from . import permissions, serializers
 
+from livekit import api as livekit_api
+
 # pylint: disable=too-many-ancestors
 
 logger = getLogger(__name__)
@@ -210,6 +212,10 @@ class RoomViewSet(
         Allow unregistered rooms when activated.
         For unregistered rooms we only return a null id and the livekit room and token.
         """
+
+        # todo - determine whether encryption is needed store a shared secret in memory or in redis
+        # todo - check if a secret already exists, else create one.
+
         try:
             instance = self.get_object()
         except Http404:
@@ -342,6 +348,36 @@ class RoomViewSet(
         return drf_response.Response(
             {"message": f"Recording stopped for room {room.slug}."}
         )
+
+    @decorators.action(
+        detail=False,
+        methods=["post"],
+        url_path="livekit-webhook",
+        permission_classes=[],
+        authentication_classes=[],
+    )
+    def handle_livekit_webhook(self, request, pk=None):  # pylint: disable=unused-argument
+        """Handle LiveKit webhook events."""
+        auth_token = request.headers.get("Authorization")
+        if not auth_token:
+            return drf_response.Response(
+                {"error": "Missing LiveKit authentication token"},
+                status=drf_status.HTTP_401_UNAUTHORIZED
+            )
+
+        token_verifier = livekit_api.TokenVerifier()
+        webhook_receiver = livekit_api.WebhookReceiver(token_verifier)
+
+        webhook_data = webhook_receiver.receive(request.body.decode("utf-8"), auth_token)
+
+        # Todo - livekit triggers a webhook for all events, see if we can restrict webhook to a limited number of events.
+        # Todo - handle Egress stopped / aborted events.
+
+        if webhook_data.event == "room_finished":
+            room_id = webhook_data.room.name
+            utils.clear_cache_passphrase(room_id)
+
+        return drf_response.Response({"message": f"Event processed"})
 
 
 class ResourceAccessListModelMixin:

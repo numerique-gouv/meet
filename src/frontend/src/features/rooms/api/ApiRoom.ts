@@ -8,6 +8,7 @@ export type ApiRoom = {
     url: string
     room: string
     token: string
+    passphrase: string
   }
   configuration?: {
     [key: string]: string | number | boolean

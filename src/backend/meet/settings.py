@@ -483,6 +483,8 @@ class Base(Configuration):
     )
     BREVO_API_CONTACT_ATTRIBUTES = values.DictValue({"VISIO_USER": True})
 
+    PASSPHRASE_ENCRYPTION_KEY = values.Value(environ_name="PASSPHRASE_ENCRYPTION_KEY", environ_prefix=None)
+
     # pylint: disable=invalid-name
     @property
     def ENVIRONMENT(self):

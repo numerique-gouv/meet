@@ -15,8 +15,9 @@ import {
   VideoTrack,
   TrackRefContext,
   ParticipantContextIfNeeded,
+  useIsSpeaking,
 } from '@livekit/components-react'
-import React from 'react'
+import React, { useEffect } from 'react'
 import {
   isTrackReference,
   isTrackReferencePinned,

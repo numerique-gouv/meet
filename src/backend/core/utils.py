@@ -14,6 +14,47 @@ from django.conf import settings
 
 from livekit.api import AccessToken, VideoGrants
 
+import secrets
+import string
+
+from django.core.cache import cache
+from cryptography.fernet import Fernet
+
+import base64
+
+
+def generate_random_passphrase(length=26):
+    """Generate a random passphrase using letters and digits"""
+    alphabet = string.ascii_letters + string.digits
+    return ''.join(secrets.choice(alphabet) for _ in range(length))
+
+
+def build_room_passphrase_key(room_id: str) -> str:
+    """Build cache key for room passphrase."""
+    return f"room_passphrase:{room_id}"
+
+def get_cached_passphrase(room_id: str) -> str:
+    """Get or generate encrypted passphrase for a room.
+
+    Retrieves existing passphrase from cache or generates,
+    encrypts and caches a new one if not found.
+    """
+    cypher = Fernet(settings.PASSPHRASE_ENCRYPTION_KEY.encode())
+    cache_key = build_room_passphrase_key(room_id)
+    encrypted_passphrase = cache.get(cache_key)
+
+    if encrypted_passphrase is None:
+        passphrase = generate_random_passphrase()
+        encrypted_passphrase = cypher.encrypt(passphrase.encode()).decode()
+        cache.set(cache_key, encrypted_passphrase, timeout=86400)  # 24 hours
+        return passphrase
+
+    return cypher.decrypt(encrypted_passphrase.encode()).decode()
+
+def clear_room_passphrase(room_id: str) -> None:
+    """Remove room passphrase from cache."""
+    cache.delete(build_room_passphrase_key(room_id))
+
 
 def generate_color(identity: str) -> str:
     """Generates a consistent HSL color based on a given identity string.
