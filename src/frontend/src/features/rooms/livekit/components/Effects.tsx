@@ -5,11 +5,9 @@ import { Text, P, ToggleButton, Div, H } from '@/primitives'
 import { useTranslation } from 'react-i18next'
 import { HStack, styled, VStack } from '@/styled-system/jsx'
 import {
-  BackgroundBlur,
-  BackgroundOptions,
-  ProcessorWrapper,
-  BackgroundTransformer,
-} from '@livekit/track-processors'
+  BackgroundBlurFactory,
+  BackgroundBlurProcessorInterface,
+} from './blur/index'
 
 const Information = styled('div', {
   base: {
@@ -27,6 +25,8 @@ enum BlurRadius {
   NORMAL = 10,
 }
 
+const isSupported = BackgroundBlurFactory.isSupported()
+
 export const Effects = () => {
   const { t } = useTranslation('rooms', { keyPrefix: 'effects' })
   const { isCameraEnabled, cameraTrack, localParticipant } =
@@ -37,15 +37,12 @@ export const Effects = () => {
   const localCameraTrack = cameraTrack?.track as LocalVideoTrack
 
   const getProcessor = () => {
-    return localCameraTrack?.getProcessor() as ProcessorWrapper<BackgroundOptions>
+    return localCameraTrack?.getProcessor() as BackgroundBlurProcessorInterface
   }
 
   const getBlurRadius = (): BlurRadius => {
     const processor = getProcessor()
-    return (
-      (processor?.transformer as BackgroundTransformer)?.options?.blurRadius ||
-      BlurRadius.NONE
-    )
+    return processor?.options.blurRadius || BlurRadius.NONE
   }
 
   const toggleBlur = async (blurRadius: number) => {
@@ -61,9 +58,11 @@ export const Effects = () => {
       if (blurRadius == currentBlurRadius && processor) {
         await localCameraTrack.stopProcessor()
       } else if (!processor) {
-        await localCameraTrack.setProcessor(BackgroundBlur(blurRadius))
+        await localCameraTrack.setProcessor(
+          BackgroundBlurFactory.getProcessor({ blurRadius })!
+        )
       } else {
-        await processor?.updateTransformerOptions({ blurRadius })
+        processor?.update({ blurRadius })
       }
     } catch (error) {
       console.error('Error applying blur:', error)
@@ -147,7 +146,7 @@ export const Effects = () => {
         >
           {t('heading')}
         </H>
-        {ProcessorWrapper.isSupported ? (
+        {isSupported ? (
           <HStack>
             <ToggleButton
               size={'sm'}
