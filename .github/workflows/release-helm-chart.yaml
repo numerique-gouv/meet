@@ -10,21 +10,7 @@ on:
       - ./src/helm/meet/**
 
 jobs:
-  lint-helmfile:
-    runs-on: ubuntu-latest
-    container:
-      image: ghcr.io/helmfile/helmfile:latest
-    steps:
-      - uses: numerique-gouv/action-helmfile-lint@main
-        with:
-          app-id: ${{ secrets.APP_ID }}
-          age-key: ${{ secrets.SOPS_PRIVATE }}
-          private-key: ${{ secrets.PRIVATE_KEY }}
-          helmfile-src: "src/helm"
-          repositories: "meet,secrets"
-
   release:
-    needs: helmfile-lint
     if: github.event_name == 'push'
     permissions:
       contents: write
@@ -47,5 +33,5 @@ jobs:
         uses: numerique-gouv/helm-gh-pages@add-overwrite-option
         with:
           charts_dir: ./src/helm
-          linting: off
+          linting: on
           token: ${{ secrets.GITHUB_TOKEN }}
