@@ -15,6 +15,11 @@ from django.conf import settings
 from livekit.api import AccessToken, VideoGrants
 
 
+def generate_pin_code(n: int) -> str:
+    """Generate a n-digit pin code"""
+    return f"{''.join([str(random.randint(0, 9)) for _ in range(n)])}"
+
+
 def generate_color(identity: str) -> str:
     """Generates a consistent HSL color based on a given identity string.
 

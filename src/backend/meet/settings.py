@@ -483,6 +483,18 @@ class Base(Configuration):
     )
     BREVO_API_CONTACT_ATTRIBUTES = values.DictValue({"VISIO_USER": True})
 
+    # SIP Telephony
+    ROOM_PIN_CODE_LENGTH = values.PositiveIntegerValue(
+        9,  # this value cannot exceed 100 digits due to database constraints
+        environ_name="ROOM_PIN_CODE_LENGTH",
+        environ_prefix=None,
+    )
+    ROOM_PIN_CODE_GENERATION_MAX_RETRY = values.PositiveIntegerValue(
+        3,
+        environ_name="ROOM_PIN_CODE_GENERATION_MAX_RETRY",
+        environ_prefix=None,
+    )
+
     # pylint: disable=invalid-name
     @property
     def ENVIRONMENT(self):

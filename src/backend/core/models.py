@@ -11,12 +11,14 @@ from django.contrib.auth import models as auth_models
 from django.contrib.auth.base_user import AbstractBaseUser
 from django.core import mail, validators
 from django.core.exceptions import PermissionDenied, ValidationError
-from django.db import models
+from django.db import IntegrityError, models
 from django.utils.functional import lazy
 from django.utils.text import capfirst, slugify
 from django.utils.translation import gettext_lazy as _
 
 from timezone_field import TimeZoneField
+
+from core import utils
 
 logger = getLogger(__name__)
 
@@ -361,12 +363,22 @@ class Room(Resource):
         primary_key=True,
     )
     slug = models.SlugField(max_length=100, blank=True, null=True, unique=True)
-
     configuration = models.JSONField(
         blank=True,
         default=dict,
         verbose_name=_("Visio room configuration"),
         help_text=_("Values for Visio parameters to configure the room."),
+    )
+    pin_code = models.CharField(
+        max_length=100,
+        unique=True,
+        blank=True,
+        null=True,
+        verbose_name=_("Room PIN code"),
+        help_text=_(
+            "Unique n-digit code that identifies this room. Automatically generated on creation."
+            " Displayed with '#' suffix."
+        ),
     )
 
     class Meta:
@@ -377,6 +389,23 @@ class Room(Resource):
 
     def __str__(self):
         return capfirst(self.name)
+
+    def save(self, *args, **kwargs):
+        """Generate a unique n-digit pin code for new rooms.
+
+        This uses the DB to ensure uniqueness of the code. Better than checking separately
+        with the DB and then saving, which introduces a race condition.
+        """
+
+        if self.pk or self.pin_code:
+            return super().save(*args, **kwargs)
+
+        while True:
+            try:
+                self.pin_code = utils.generate_pin_code(n=settings.ROOM_PIN_CODE_LENGTH)
+                return super().save(*args, **kwargs)
+            except IntegrityError:
+                continue
 
     def clean_fields(self, exclude=None):
         """
