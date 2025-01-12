@@ -141,6 +141,13 @@ class RoomSerializer(serializers.ModelSerializer):
                 ),
             }
 
+            # Todo - discuss this part, retrieve phone number from a setting? Dynamically?
+            # Todo - is it the right place?
+            # Todo - discuss the method `to_representation` which is quite dirty IMO
+            pin_code = self.instance.pin_code
+            if pin_code is not None:
+                output["livekit"]["sip"] = {"pin_code": pin_code, "phone_number": "wip"}
+
         output["is_administrable"] = is_admin
 
         return output
