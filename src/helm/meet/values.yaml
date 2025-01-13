@@ -73,6 +73,8 @@ ingressAdmin:
 ## @section backend
 
 backend:
+  ## @param backend.dpAnnotations Annotations to add to the backend Deployment
+  dpAnnotations: {}
 
   ## @param backend.command Override the backend container command
   command: []
@@ -193,6 +195,9 @@ frontend:
     repository: lasuite/meet-frontend
     pullPolicy: IfNotPresent
     tag: "latest"
+
+  ## @param frontend.dpAnnotations Annotations to add to the frontend Deployment
+  dpAnnotations: {}
 
   ## @param frontend.command Override the frontend container command
   command: []
@@ -347,6 +352,9 @@ posthog:
 
 summary:
 
+  ## @param summary.dpAnnotations Annotations to add to the summary Deployment
+  dpAnnotations: {}
+
   ## @param summary.command Override the summary container command
   command: []
 
@@ -439,6 +447,8 @@ summary:
 ## @section celery
 
 celery:
+  ## @param celery.dpAnnotations Annotations to add to the celery Deployment
+  dpAnnotations: {}
 
   ## @param celery.command Override the celery container command
   command: []
