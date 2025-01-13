@@ -37,6 +37,7 @@
 
 | Name                                                  | Description                                                                        | Value                                           |
 | ----------------------------------------------------- | ---------------------------------------------------------------------------------- | ----------------------------------------------- |
+| `backend.dpAnnotations`                               | Annotations to add to the backend Deployment                                       | `{}`                                            |
 | `backend.command`                                     | Override the backend container command                                             | `[]`                                            |
 | `backend.args`                                        | Override the backend container args                                                | `[]`                                            |
 | `backend.replicas`                                    | Amount of backend replicas                                                         | `3`                                             |
@@ -87,6 +88,7 @@
 | `frontend.image.repository`                            | Repository to use to pull meet's frontend container image                           | `lasuite/meet-frontend` |
 | `frontend.image.tag`                                   | meet's frontend container tag                                                       | `latest`                |
 | `frontend.image.pullPolicy`                            | frontend container image pull policy                                                | `IfNotPresent`          |
+| `frontend.dpAnnotations`                               | Annotations to add to the frontend Deployment                                       | `{}`                    |
 | `frontend.command`                                     | Override the frontend container command                                             | `[]`                    |
 | `frontend.args`                                        | Override the frontend container args                                                | `[]`                    |
 | `frontend.replicas`                                    | Amount of frontend replicas                                                         | `3`                     |
@@ -163,6 +165,7 @@
 
 | Name                                                  | Description                                                                        | Value              |
 | ----------------------------------------------------- | ---------------------------------------------------------------------------------- | ------------------ |
+| `summary.dpAnnotations`                               | Annotations to add to the summary Deployment                                       | `{}`               |
 | `summary.command`                                     | Override the summary container command                                             | `[]`               |
 | `summary.args`                                        | Override the summary container args                                                | `[]`               |
 | `summary.replicas`                                    | Amount of summary replicas                                                         | `1`                |
@@ -208,6 +211,7 @@
 
 | Name                                                 | Description                                                                       | Value       |
 | ---------------------------------------------------- | --------------------------------------------------------------------------------- | ----------- |
+| `celery.dpAnnotations`                               | Annotations to add to the celery Deployment                                       | `{}`        |
 | `celery.command`                                     | Override the celery container command                                             | `[]`        |
 | `celery.args`                                        | Override the celery container args                                                | `[]`        |
 | `celery.replicas`                                    | Amount of celery replicas                                                         | `1`         |

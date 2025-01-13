@@ -5,6 +5,10 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ $fullName }}
+  annotations:
+   {{- with .Values.summary.dpAnnotations }}
+   {{- toYaml . | nindent 4 }}
+   {{- end }}
   namespace: {{ .Release.Namespace | quote }}
   labels:
     {{- include "meet.common.labels" (list . $component) | nindent 4 }}
