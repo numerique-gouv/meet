@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 mkdir -p "$(dirname -- "${BASH_SOURCE[0]}")/../.git/hooks/"
 PRE_COMMIT_FILE="$(dirname -- "${BASH_SOURCE[0]}")/../.git/hooks/pre-commit"
