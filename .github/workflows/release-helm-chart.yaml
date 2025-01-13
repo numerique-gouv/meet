@@ -2,16 +2,14 @@ name: Release Chart
 run-name: Release Chart
 
 on:
-  pull_request:
+  push:
     branches:
       - 'main'
-  push:
     paths:
       - ./src/helm/meet/**
 
 jobs:
   release:
-    if: github.event_name == 'push'
     permissions:
       contents: write
     runs-on: ubuntu-latest
