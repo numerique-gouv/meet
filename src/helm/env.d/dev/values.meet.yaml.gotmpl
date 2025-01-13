@@ -73,7 +73,7 @@ backend:
     AWS_STORAGE_BUCKET_NAME: meet-media-storage
     AWS_S3_REGION_NAME: local
     RECORDING_ENABLE: True
-    RECORDING_VERIFY_SSL: False
+    RECORDING_VERIFY_SSL: True
     RECORDING_STORAGE_EVENT_ENABLE: True
     RECORDING_STORAGE_EVENT_TOKEN: password
     SUMMARY_SERVICE_ENDPOINT: http://meet-summary:80/api/v1/tasks/
@@ -103,6 +103,21 @@ backend:
       - |
         python manage.py createsuperuser --email admin@example.com --password admin
     restartPolicy: Never
+
+  # Extra volume mounts to manage our local custom CA and avoid to set ssl_verify: false
+  extraVolumeMounts:
+    - name: certs
+      mountPath: /usr/local/lib/python3.12/site-packages/certifi/cacert.pem
+      subPath: cacert.pem
+
+  # Extra volumes to manage our local custom CA and avoid to set ssl_verify: false
+  extraVolumes:
+    - name: certs
+      configMap:
+        name: certifi
+        items:
+        - key: cacert.pem
+          path: cacert.pem
 
 frontend:
   envVars:
