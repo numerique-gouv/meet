@@ -3,7 +3,7 @@ set -o errexit
 
 CURRENT_DIR=$(pwd)
 NAMESPACE=${1:-meet}
-SECRET_NAME=${2:-bitwarden-cli-visio}
+SECRET_NAME=${2:-bitwarden-cli-meet}
 TEMP_SECRET_FILE=$(mktemp)
 
 

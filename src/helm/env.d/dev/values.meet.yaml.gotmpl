@@ -3,12 +3,12 @@ secrets:
     itemId: a25effec-eaea-4ce1-9ed8-3a3cc1c734db
     field: username
     podVariable: OIDC_RP_CLIENT_ID
-    clusterSecretStore: bitwarden-login-visio
+    clusterSecretStore: bitwarden-login-meet
   - name: oidcPass
     itemId: a25effec-eaea-4ce1-9ed8-3a3cc1c734db
     field: password
     podVariable: OIDC_RP_CLIENT_SECRET
-    clusterSecretStore: bitwarden-login-visio
+    clusterSecretStore: bitwarden-login-meet
 image:
   repository: localhost:5001/meet-backend
   pullPolicy: Always
