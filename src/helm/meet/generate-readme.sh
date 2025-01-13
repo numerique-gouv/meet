@@ -7,4 +7,4 @@ if [ "$?" -ne "0" ]; then
 	docker build -t readme-generator-for-helm:latest .
 	cd $(dirname -- "${BASH_SOURCE[0]}")
 fi
-docker run --rm -it -v ./values.yaml:/app/values.yaml -v ./README.md:/app/README.md readme-generator-for-helm:latest readme-generator -v values.yaml -r README.md
+docker run --rm -it -v .:/source -w /source readme-generator-for-helm:latest readme-generator -v values.yaml -r README.md
