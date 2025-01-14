@@ -1,4 +1,5 @@
 import { ProcessorOptions, Track } from 'livekit-client'
+import posthog from 'posthog-js'
 import {
   FilesetResolver,
   ImageSegmenter,
@@ -89,6 +90,8 @@ export class BackgroundBlurCustomProcessor
     this.segmentationMask = new ImageData(PROCESSING_WIDTH, PROCESSING_HEIGHT)
     await this.initSegmenter()
     this._initWorker()
+
+    posthog.capture('firefox-blurring-init')
   }
 
   update(opts: BackgroundOptions): void {
