@@ -6,13 +6,19 @@ import { useTranslation } from 'react-i18next'
 import { SelectToggleDeviceConfig } from './SelectToggleDevice'
 import useLongPress from '@/features/shortcuts/useLongPress'
 import { ActiveSpeaker } from '@/features/rooms/components/ActiveSpeaker'
-import { useIsSpeaking, useLocalParticipant } from '@livekit/components-react'
+import {
+  useIsSpeaking,
+  useLocalParticipant,
+  useMaybeRoomContext,
+} from '@livekit/components-react'
+import { ButtonRecipeProps } from '@/primitives/buttonRecipe'
 import { ToggleButtonProps } from '@/primitives/ToggleButton'
 
 export type ToggleDeviceProps = {
   enabled: boolean
   toggle: () => void
   config: SelectToggleDeviceConfig
+  variant?: NonNullable<ButtonRecipeProps>['variant']
   toggleButtonProps?: Partial<ToggleButtonProps>
 }
 
@@ -20,6 +26,7 @@ export const ToggleDevice = ({
   config,
   enabled,
   toggle,
+  variant = 'primaryDark',
   toggleButtonProps,
 }: ToggleDeviceProps) => {
   const { t } = useTranslation('rooms', { keyPrefix: 'join' })
@@ -51,17 +58,15 @@ export const ToggleDevice = ({
 
   const Icon = enabled ? iconOn : iconOff
 
-  const { localParticipant } = useLocalParticipant()
-  const isSpeaking = useIsSpeaking(localParticipant)
-
-  if (kind === 'audioinput' && pushToTalk) {
-    return <ActiveSpeaker isSpeaking={isSpeaking} pushToTalk />
+  const context = useMaybeRoomContext()
+  if (kind === 'audioinput' && pushToTalk && context) {
+    return <ActiveSpeakerWrapper />
   }
 
   return (
     <ToggleButton
       isSelected={!enabled}
-      variant={enabled ? 'primaryDark' : 'error2'}
+      variant={enabled ? variant : 'error2'}
       shySelected
       onPress={() => toggle()}
       aria-label={toggleLabel}
@@ -72,4 +77,10 @@ export const ToggleDevice = ({
       <Icon />
     </ToggleButton>
   )
+}
+
+const ActiveSpeakerWrapper = () => {
+  const { localParticipant } = useLocalParticipant()
+  const isSpeaking = useIsSpeaking(localParticipant)
+  return <ActiveSpeaker isSpeaking={isSpeaking} pushToTalk />
 }
