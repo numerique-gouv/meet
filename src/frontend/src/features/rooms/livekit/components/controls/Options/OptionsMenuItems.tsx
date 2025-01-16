@@ -3,7 +3,7 @@ import {
   RiMegaphoneLine,
   RiSettings3Line,
 } from '@remixicon/react'
-import { MenuItem, Menu as RACMenu, Section } from 'react-aria-components'
+import { MenuItem, Menu as RACMenu, MenuSection } from 'react-aria-components'
 import { useTranslation } from 'react-i18next'
 import { Separator } from '@/primitives/Separator'
 import { useSidePanel } from '../../../hooks/useSidePanel'
@@ -23,7 +23,7 @@ export const OptionsMenuItems = () => {
         width: '300px',
       }}
     >
-      <Section>
+      <MenuSection>
         <MenuItem
           onAction={() => toggleEffects()}
           className={menuRecipe({ icon: true }).item}
@@ -31,9 +31,9 @@ export const OptionsMenuItems = () => {
           <RiAccountBoxLine size={20} />
           {t('effects')}
         </MenuItem>
-      </Section>
+      </MenuSection>
       <Separator />
-      <Section>
+      <MenuSection>
         <MenuItem
           href={GRIST_FORM}
           target="_blank"
@@ -49,7 +49,7 @@ export const OptionsMenuItems = () => {
           <RiSettings3Line size={20} />
           {t('settings')}
         </MenuItem>
-      </Section>
+      </MenuSection>
     </RACMenu>
   )
 }
