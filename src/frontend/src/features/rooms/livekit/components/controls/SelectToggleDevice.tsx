@@ -19,6 +19,7 @@ import { Shortcut } from '@/features/shortcuts/types'
 
 import { ToggleDevice } from '@/features/rooms/livekit/components/controls/ToggleDevice.tsx'
 import { css } from '@/styled-system/css'
+import { ButtonRecipeProps } from '@/primitives/buttonRecipe'
 
 export type ToggleSource = Exclude<
   Track.Source,
@@ -67,14 +68,16 @@ type SelectToggleDeviceProps<T extends ToggleSource> =
   UseTrackToggleProps<T> & {
     onActiveDeviceChange: (deviceId: string) => void
     source: SelectToggleSource
+    variant?: NonNullable<ButtonRecipeProps>['variant']
+    menuVariant?: 'dark' | 'light'
     hideMenu?: boolean
-    variant?: 'dark' | 'light'
   }
 
 export const SelectToggleDevice = <T extends ToggleSource>({
   onActiveDeviceChange,
   hideMenu,
-  variant = 'light',
+  variant = 'primaryDark',
+    menuVariant = 'light',
   ...props
 }: SelectToggleDeviceProps<T>) => {
   const config = selectToggleDeviceConfig[props.source]
@@ -99,6 +102,7 @@ export const SelectToggleDevice = <T extends ToggleSource>({
       <ToggleDevice
         {...trackProps}
         config={config}
+        variant={variant}
         toggleButtonProps={{
           ...(hideMenu
             ? {
@@ -108,13 +112,13 @@ export const SelectToggleDevice = <T extends ToggleSource>({
         }}
       />
       {!hideMenu && (
-        <Menu variant={variant}>
+        <Menu variant={menuVariant}>
           <Button
             tooltip={selectLabel}
             aria-label={selectLabel}
             groupPosition="right"
             square
-            variant={trackProps.enabled ? 'primaryDark' : 'error2'}
+            variant={trackProps.enabled ? variant : 'error2'}
           >
             <RiArrowDownSLine />
           </Button>
@@ -128,7 +132,7 @@ export const SelectToggleDevice = <T extends ToggleSource>({
               setActiveMediaDevice(value as string)
               onActiveDeviceChange(value as string)
             }}
-            variant={variant}
+            variant={menuVariant}
           />
         </Menu>
       )}
