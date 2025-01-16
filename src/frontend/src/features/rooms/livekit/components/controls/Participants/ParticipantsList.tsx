@@ -56,7 +56,10 @@ export const ParticipantsList = () => {
             heading={t('raisedHands')}
             participants={raisedHandParticipants}
             renderParticipant={(participant) => (
-              <HandRaisedListItem participant={participant} />
+              <HandRaisedListItem
+                key={participant.identity}
+                participant={participant}
+              />
             )}
             action={() => (
               <LowerAllHandsButton participants={raisedHandParticipants} />
@@ -68,7 +71,10 @@ export const ParticipantsList = () => {
         heading={t('contributors')}
         participants={sortedParticipants}
         renderParticipant={(participant) => (
-          <ParticipantListItem participant={participant} />
+          <ParticipantListItem
+            key={participant.identity}
+            participant={participant}
+          />
         )}
       />
     </Div>

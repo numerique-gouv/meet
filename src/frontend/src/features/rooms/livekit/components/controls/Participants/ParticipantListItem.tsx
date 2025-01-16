@@ -118,7 +118,6 @@ export const ParticipantListItem = ({
     <HStack
       role="listitem"
       justify="space-between"
-      key={participant.identity}
       id={participant.identity}
       className={css({
         padding: '0.25rem 0',
