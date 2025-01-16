@@ -18,13 +18,16 @@
       "enable": "Activer le micro",
       "label": "Microphone"
     },
-    "heading": "Vérifiez vos paramètres",
+    "heading": "Rejoindre la réunion",
     "joinLabel": "Rejoindre",
     "joinMeeting": "Rejoindre la réjoindre",
     "toggleOff": "Cliquez pour désactiver",
     "toggleOn": "Cliquez pour activer",
     "usernameHint": "Affiché aux autres participants",
-    "usernameLabel": "Votre nom"
+    "usernameLabel": "Votre nom",
+    "errors": {
+      "usernameEmpty": "Votre nom ne peut pas être vide"
+    }
   },
   "leaveRoomPrompt": "Revenir à l'accueil vous fera quitter la réunion.",
   "shareDialog": {

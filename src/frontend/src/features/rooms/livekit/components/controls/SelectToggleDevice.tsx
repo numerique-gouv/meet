@@ -13,13 +13,14 @@ import {
   RiVideoOffLine,
   RiVideoOnLine,
 } from '@remixicon/react'
-import { Track } from 'livekit-client'
+import { LocalAudioTrack, LocalVideoTrack, Track } from 'livekit-client'
 
 import { Shortcut } from '@/features/shortcuts/types'
 
 import { ToggleDevice } from '@/features/rooms/livekit/components/controls/ToggleDevice.tsx'
 import { css } from '@/styled-system/css'
 import { ButtonRecipeProps } from '@/primitives/buttonRecipe'
+import { useEffect } from 'react'
 
 export type ToggleSource = Exclude<
   Track.Source,
@@ -66,6 +67,8 @@ const selectToggleDeviceConfig: SelectToggleDeviceConfigMap = {
 
 type SelectToggleDeviceProps<T extends ToggleSource> =
   UseTrackToggleProps<T> & {
+    track?: LocalAudioTrack | LocalVideoTrack | undefined
+    initialDeviceId?: string
     onActiveDeviceChange: (deviceId: string) => void
     source: SelectToggleSource
     variant?: NonNullable<ButtonRecipeProps>['variant']
@@ -74,10 +77,12 @@ type SelectToggleDeviceProps<T extends ToggleSource> =
   }
 
 export const SelectToggleDevice = <T extends ToggleSource>({
+  track,
+  initialDeviceId,
   onActiveDeviceChange,
   hideMenu,
   variant = 'primaryDark',
-    menuVariant = 'light',
+  menuVariant = 'light',
   ...props
 }: SelectToggleDeviceProps<T>) => {
   const config = selectToggleDeviceConfig[props.source]
@@ -88,7 +93,19 @@ export const SelectToggleDevice = <T extends ToggleSource>({
   const trackProps = useTrackToggle(props)
 
   const { devices, activeDeviceId, setActiveMediaDevice } =
-    useMediaDeviceSelect({ kind: config.kind })
+    useMediaDeviceSelect({ kind: config.kind, track })
+
+  /**
+   * When providing only track outside of a room context, activeDeviceId is undefined.
+   * So we need to initialize it with the initialDeviceId.
+   * nb: I don't understand why useMediaDeviceSelect cannot infer it from track device id.
+   */
+  useEffect(() => {
+    if (initialDeviceId !== undefined) {
+      setActiveMediaDevice(initialDeviceId)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [setActiveMediaDevice])
 
   const selectLabel = t('choose', { keyPrefix: `join.${config.kind}` })
 
