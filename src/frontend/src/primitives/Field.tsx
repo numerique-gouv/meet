@@ -25,11 +25,31 @@ const FieldWrapper = styled('div', {
     marginBottom: 'textfield',
     minWidth: 0,
   },
+  variants: {
+    noMargin: {
+      true: {
+        marginBottom: 0,
+      },
+    },
+    fullWidth: {
+      true: {
+        width: '100%',
+      },
+    },
+  },
 })
 
 const StyledLabel = styled(Label, {
   base: {
     display: 'block',
+    fontSize: '12px',
+  },
+  variants: {
+    center: {
+      true: {
+        textAlign: 'center',
+      },
+    },
   },
 })
 
@@ -80,6 +100,8 @@ type FieldProps<T extends object> = (
 ) & {
   label: string
   description?: string
+  wrapperProps?: React.ComponentProps<typeof FieldWrapper>
+  labelProps?: React.ComponentProps<typeof StyledLabel>
 }
 
 /**
@@ -104,7 +126,7 @@ export const Field = <T extends object>({
 }: FieldProps<T>) => {
   const LabelAndDescription = (
     <>
-      <StyledLabel>{label}</StyledLabel>
+      <StyledLabel {...props.labelProps}>{label}</StyledLabel>
       <FieldDescription slot="description">{description}</FieldDescription>
     </>
   )
@@ -118,7 +140,7 @@ export const Field = <T extends object>({
 
   if (type === 'text') {
     return (
-      <FieldWrapper>
+      <FieldWrapper {...props.wrapperProps}>
         <RACTextField
           validate={validate as unknown as TextFieldProps['validate']}
           {...(props as PartialTextFieldProps)}
@@ -133,7 +155,7 @@ export const Field = <T extends object>({
 
   if (type === 'checkbox') {
     return (
-      <FieldWrapper>
+      <FieldWrapper {...props.wrapperProps}>
         <Checkbox
           validate={validate as unknown as CheckboxProps['validate']}
           description={description}
@@ -147,7 +169,7 @@ export const Field = <T extends object>({
 
   if (type === 'checkboxGroup') {
     return (
-      <FieldWrapper>
+      <FieldWrapper {...props.wrapperProps}>
         <CheckboxGroup
           validate={validate as unknown as CheckboxGroupProps['validate']}
           {...(props as PartialCheckboxGroupProps)}
@@ -170,7 +192,7 @@ export const Field = <T extends object>({
 
   if (type === 'radioGroup') {
     return (
-      <FieldWrapper>
+      <FieldWrapper {...props.wrapperProps}>
         <RadioGroup
           validate={validate as unknown as RadioGroupProps['validate']}
           {...(props as PartialRadioGroupProps)}
@@ -189,7 +211,7 @@ export const Field = <T extends object>({
 
   if (type === 'select') {
     return (
-      <FieldWrapper>
+      <FieldWrapper {...props.wrapperProps}>
         <Select
           validate={validate as unknown as SelectProps<T>['validate']}
           {...(props as PartialSelectProps<T>)}
