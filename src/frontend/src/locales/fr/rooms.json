@@ -79,7 +79,7 @@
   "options": {
     "buttonLabel": "Plus d'options",
     "items": {
-      "feedbacks": "Partager votre avis",
+      "feedback": "Partager votre avis",
       "settings": "Paramètres",
       "username": "Choisir votre nom",
       "effects": "Appliquer des effets"
