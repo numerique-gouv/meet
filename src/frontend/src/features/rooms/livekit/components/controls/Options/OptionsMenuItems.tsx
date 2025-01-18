@@ -40,7 +40,7 @@ export const OptionsMenuItems = () => {
           className={menuRecipe({ icon: true }).item}
         >
           <RiMegaphoneLine size={20} />
-          {t('feedbacks')}
+          {t('feedback')}
         </MenuItem>
         <MenuItem
           className={menuRecipe({ icon: true }).item}

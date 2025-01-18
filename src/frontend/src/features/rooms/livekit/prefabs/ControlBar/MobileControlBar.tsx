@@ -154,8 +154,8 @@ export function MobileControlBar({
             <LinkButton
               href="https://grist.incubateur.net/o/docs/forms/1YrfNP1QSSy8p2gCxMFnSf/4"
               variant="primaryTextDark"
-              tooltip={t('options.items.feedbacks')}
-              aria-label={t('options.items.feedbacks')}
+              tooltip={t('options.items.feedback')}
+              aria-label={t('options.items.feedback')}
               description={true}
               target="_blank"
               onPress={() => setIsMenuOpened(false)}

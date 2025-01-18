@@ -79,7 +79,7 @@
   "options": {
     "buttonLabel": "More Options",
     "items": {
-      "feedbacks": "Give us feedbacks",
+      "feedback": "Give us feedback",
       "settings": "Settings",
       "username": "Update Your Name",
       "effects": "Apply effects"
