@@ -46,9 +46,9 @@ export const ScreenShareToggle = ({
       {...props}
     >
       <Div position="relative">
-        <RiRectangleLine size={28} />
+        <RiRectangleLine size={24} />
         <Icon
-          size={16}
+          size={14}
           style={{
             position: 'absolute',
             top: '50%',
