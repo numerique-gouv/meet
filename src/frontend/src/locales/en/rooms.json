@@ -18,6 +18,10 @@
       "enable": "Enable microphone",
       "label": "Microphone"
     },
+    "effects": {
+      "description": "Apply effects",
+      "title": "Effects"
+    },
     "heading": "Join the meeting",
     "joinLabel": "Join",
     "joinMeeting": "Join meeting",

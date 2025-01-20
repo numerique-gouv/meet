@@ -13,7 +13,12 @@ import {
   RiVideoOffLine,
   RiVideoOnLine,
 } from '@remixicon/react'
-import { LocalAudioTrack, LocalVideoTrack, Track } from 'livekit-client'
+import {
+  LocalAudioTrack,
+  LocalVideoTrack,
+  Track,
+  VideoCaptureOptions,
+} from 'livekit-client'
 
 import { Shortcut } from '@/features/shortcuts/types'
 
@@ -21,6 +26,8 @@ import { ToggleDevice } from '@/features/rooms/livekit/components/controls/Toggl
 import { css } from '@/styled-system/css'
 import { ButtonRecipeProps } from '@/primitives/buttonRecipe'
 import { useEffect } from 'react'
+import { usePersistentUserChoices } from '../../hooks/usePersistentUserChoices'
+import { BackgroundBlurFactory } from '../blur'
 
 export type ToggleSource = Exclude<
   Track.Source,
@@ -92,6 +99,39 @@ export const SelectToggleDevice = <T extends ToggleSource>({
   const { t } = useTranslation('rooms', { keyPrefix: 'join' })
   const trackProps = useTrackToggle(props)
 
+  const { userChoices } = usePersistentUserChoices({})
+
+  const toggle = () => {
+    if (props.source === Track.Source.Camera) {
+      /**
+       * We need to make sure that we apply the in-memory processor when re-enabling the camera.
+       * Before, we had the following bug:
+       * 1 - Configure a processor on join screen
+       * 2 - Turn off camera on join screen
+       * 3 - Join the room
+       * 4 - Turn on the camera
+       * 5 - No processor is applied to the camera
+       * Expected: The processor is applied.
+       *
+       * See https://github.com/numerique-gouv/meet/pull/309#issuecomment-2622404121
+       */
+      const processor = BackgroundBlurFactory.deserializeProcessor(
+        userChoices.processorSerialized
+      )
+
+      const toggle = trackProps.toggle as (
+        forceState: boolean,
+        captureOptions: VideoCaptureOptions
+      ) => Promise<void>
+
+      toggle(!trackProps.enabled, {
+        processor: processor,
+      } as VideoCaptureOptions)
+    } else {
+      trackProps.toggle()
+    }
+  }
+
   const { devices, activeDeviceId, setActiveMediaDevice } =
     useMediaDeviceSelect({ kind: config.kind, track })
 
@@ -120,6 +160,7 @@ export const SelectToggleDevice = <T extends ToggleSource>({
         {...trackProps}
         config={config}
         variant={variant}
+        toggle={toggle}
         toggleButtonProps={{
           ...(hideMenu
             ? {
