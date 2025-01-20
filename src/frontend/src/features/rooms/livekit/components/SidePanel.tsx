@@ -8,9 +8,9 @@ import { useTranslation } from 'react-i18next'
 import { ParticipantsList } from './controls/Participants/ParticipantsList'
 import { useSidePanel } from '../hooks/useSidePanel'
 import { ReactNode } from 'react'
-import { Effects } from './Effects'
 import { Chat } from '../prefabs/Chat'
 import { Transcript } from './Transcript'
+import { Effects } from './effects/Effects'
 
 type StyledSidePanelProps = {
   title: string
