@@ -11,7 +11,11 @@ import {
   TIMEOUT_TICK,
   timerWorkerScript,
 } from './TimerWorker'
-import { BackgroundBlurProcessorInterface, BackgroundOptions } from '.'
+import {
+  BackgroundBlurProcessorInterface,
+  BackgroundOptions,
+  ProcessorType,
+} from '.'
 
 const PROCESSING_WIDTH = 256
 const PROCESSING_HEIGHT = 144
@@ -281,5 +285,12 @@ export class BackgroundBlurCustomProcessor
 
   clone() {
     return new BackgroundBlurCustomProcessor(this.options)
+  }
+
+  serialize() {
+    return {
+      type: ProcessorType.BLUR,
+      options: this.options,
+    }
   }
 }

@@ -1,11 +1,11 @@
 import { Track } from 'livekit-client'
 import * as React from 'react'
-import { usePersistentUserChoices } from '@livekit/components-react'
 
 import { MobileControlBar } from './MobileControlBar'
 import { DesktopControlBar } from './DesktopControlBar'
 import { SettingsDialogProvider } from '../../components/controls/SettingsDialogContext'
 import { useIsMobile } from '@/utils/useIsMobile'
+import { usePersistentUserChoices } from '../../hooks/usePersistentUserChoices'
 
 /** @public */
 export type ControlBarControls = {

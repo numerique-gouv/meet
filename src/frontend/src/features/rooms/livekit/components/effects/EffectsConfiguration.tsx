@@ -1,4 +1,4 @@
-import { LocalVideoTrack, Track, TrackProcessor } from 'livekit-client'
+import { LocalVideoTrack } from 'livekit-client'
 import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import {
@@ -33,7 +33,7 @@ export const EffectsConfiguration = ({
   layout = 'horizontal',
 }: {
   videoTrack: LocalVideoTrack
-  onSubmit?: (processor?: TrackProcessor<Track.Kind.Video>) => void
+  onSubmit?: (processor?: BackgroundBlurProcessorInterface) => void
   layout?: 'vertical' | 'horizontal'
 }) => {
   const videoRef = useRef<HTMLVideoElement>(null)
@@ -68,6 +68,8 @@ export const EffectsConfiguration = ({
         onSubmit?.(newProcessor)
       } else {
         processor?.update({ blurRadius })
+        // We want to trigger onSubmit when options changes so the parent component is aware of it.
+        onSubmit?.(processor)
       }
     } catch (error) {
       console.error('Error applying blur:', error)

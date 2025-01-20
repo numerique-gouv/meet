@@ -1,9 +1,5 @@
 import { useTranslation } from 'react-i18next'
-import {
-  usePersistentUserChoices,
-  usePreviewTracks,
-  type LocalUserChoices,
-} from '@livekit/components-react'
+import { usePreviewTracks } from '@livekit/components-react'
 import { css } from '@/styled-system/css'
 import { Screen } from '@/layout/Screen'
 import { useMemo, useEffect, useRef, useState } from 'react'
@@ -13,6 +9,13 @@ import { SelectToggleDevice } from '../livekit/components/controls/SelectToggleD
 import { Field } from '@/primitives/Field'
 import { Form } from '@/primitives'
 import { HStack, VStack } from '@/styled-system/jsx'
+import { Button, Dialog } from '@/primitives'
+import { LocalUserChoices } from '../routes/Room'
+import { Heading } from 'react-aria-components'
+import { RiImageCircleAiFill } from '@remixicon/react'
+import { EffectsConfiguration } from '../livekit/components/effects/EffectsConfiguration'
+import { usePersistentUserChoices } from '../livekit/hooks/usePersistentUserChoices'
+import { BackgroundBlurFactory } from '../livekit/components/blur'
 
 const onError = (e: Error) => console.error('ERROR', e)
 
@@ -28,6 +31,7 @@ export const Join = ({
     saveAudioInputDeviceId,
     saveVideoInputDeviceId,
     saveUsername,
+    saveProcessorSerialized,
   } = usePersistentUserChoices({})
 
   const [audioDeviceId, setAudioDeviceId] = useState<string>(
@@ -37,6 +41,11 @@ export const Join = ({
     initialUserChoices.videoDeviceId
   )
   const [username, setUsername] = useState<string>(initialUserChoices.username)
+  const [processor, setProcessor] = useState(
+    BackgroundBlurFactory.deserializeProcessor(
+      initialUserChoices.processorSerialized
+    )
+  )
 
   useEffect(() => {
     saveAudioInputDeviceId(audioDeviceId)
@@ -49,6 +58,9 @@ export const Join = ({
   useEffect(() => {
     saveUsername(username)
   }, [username, saveUsername])
+  useEffect(() => {
+    saveProcessorSerialized(processor?.serialize())
+  }, [processor, saveProcessorSerialized])
 
   const [audioEnabled, setAudioEnabled] = useState(true)
   const [videoEnabled, setVideoEnabled] = useState(true)
@@ -107,11 +119,52 @@ export const Join = ({
       audioDeviceId,
       videoDeviceId,
       username,
+      processorSerialized: processor?.serialize(),
     })
   }
 
+  const [isEffectsOpen, setEffectsOpen] = useState(false)
+
+  const openEffects = () => {
+    setEffectsOpen(true)
+  }
+
+  // This hook is used to setup the persisted user choice processor on initialization.
+  // So it's on purpose that processor is not included in the deps.
+  // We just want to wait for the videoTrack to be loaded to apply the default processor.
+  useEffect(() => {
+    if (processor && videoTrack && !videoTrack.getProcessor()) {
+      videoTrack.setProcessor(processor)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [videoTrack])
+
   return (
     <Screen footer={false}>
+      <Dialog
+        isOpen={isEffectsOpen}
+        onOpenChange={setEffectsOpen}
+        role="dialog"
+        type="flex"
+        size="large"
+      >
+        <Heading
+          slot="title"
+          level={1}
+          className={css({
+            textStyle: 'h1',
+            marginBottom: '1.5rem',
+          })}
+        >
+          {t('effects.title')}
+        </Heading>
+        <EffectsConfiguration
+          videoTrack={videoTrack}
+          onSubmit={(processor) => {
+            setProcessor(processor)
+          }}
+        />
+      </Dialog>
       <div
         className={css({
           display: 'flex',
@@ -204,8 +257,35 @@ export const Join = ({
                   </p>
                 </div>
               )}
+              <div
+                className={css({
+                  position: 'absolute',
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
+                  height: '20%',
+                  backgroundImage:
+                    'linear-gradient(0deg, rgba(0,0,0,0.8) 0%, rgba(255,255,255,0) 100%)',
+                })}
+              ></div>
+              <div
+                className={css({
+                  position: 'absolute',
+                  right: 0,
+                  bottom: '0',
+                  padding: '1rem',
+                })}
+              >
+                <Button
+                  variant="whiteCircle"
+                  onPress={openEffects}
+                  tooltip={t('effects.description')}
+                  aria-label={t('effects.description')}
+                >
+                  <RiImageCircleAiFill size={24} />
+                </Button>
+              </div>
             </div>
-
             <HStack justify="center" padding={1.5}>
               <SelectToggleDevice
                 source={Track.Source.Microphone}

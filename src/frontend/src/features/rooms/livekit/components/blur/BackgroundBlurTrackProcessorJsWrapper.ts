@@ -4,7 +4,11 @@ import {
   ProcessorWrapper,
 } from '@livekit/track-processors'
 import { ProcessorOptions, Track } from 'livekit-client'
-import { BackgroundBlurProcessorInterface, BackgroundOptions } from '.'
+import {
+  BackgroundBlurProcessorInterface,
+  BackgroundOptions,
+  ProcessorType,
+} from '.'
 
 /**
  * This is simply a wrapper around track-processor-js Processor
@@ -53,5 +57,12 @@ export class BackgroundBlurTrackProcessorJsWrapper
     return new BackgroundBlurTrackProcessorJsWrapper({
       blurRadius: this.options!.blurRadius,
     })
+  }
+
+  serialize() {
+    return {
+      type: ProcessorType.BLUR,
+      options: this.options,
+    }
   }
 }

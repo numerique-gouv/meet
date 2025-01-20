@@ -1,15 +1,13 @@
 import { A, Badge, Button, DialogProps, Field, H, P } from '@/primitives'
 import { Trans, useTranslation } from 'react-i18next'
-import {
-  usePersistentUserChoices,
-  useRoomContext,
-} from '@livekit/components-react'
+import { useRoomContext } from '@livekit/components-react'
 import { logoutUrl, useUser } from '@/features/auth'
 import { css } from '@/styled-system/css'
 import { TabPanel, TabPanelProps } from '@/primitives/Tabs'
 import { HStack } from '@/styled-system/jsx'
 import { useState } from 'react'
 import { ProConnectButton } from '@/components/ProConnectButton'
+import { usePersistentUserChoices } from '@/features/rooms/livekit/hooks/usePersistentUserChoices'
 
 export type AccountTabProps = Pick<DialogProps, 'onOpenChange'> &
   Pick<TabPanelProps, 'id'>

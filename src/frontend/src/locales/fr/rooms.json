@@ -19,6 +19,10 @@
       "label": "Microphone"
     },
     "heading": "Rejoindre la réunion",
+    "effects": {
+      "description": "Appliquer des effets",
+      "title": "Effets"
+    },
     "joinLabel": "Rejoindre",
     "joinMeeting": "Rejoindre la réjoindre",
     "toggleOff": "Cliquez pour désactiver",

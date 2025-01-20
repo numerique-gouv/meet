@@ -9,7 +9,6 @@ import { useUser, UserAware } from '@/features/auth'
 import { JoinMeetingDialog } from '../components/JoinMeetingDialog'
 import { ProConnectButton } from '@/components/ProConnectButton'
 import { useCreateRoom } from '@/features/rooms'
-import { usePersistentUserChoices } from '@livekit/components-react'
 import { RiAddLine, RiLink } from '@remixicon/react'
 import { LaterMeetingDialog } from '@/features/home/components/LaterMeetingDialog'
 import { IntroSlider } from '@/features/home/components/IntroSlider'
@@ -18,6 +17,7 @@ import { ReactNode, useState } from 'react'
 
 import { css } from '@/styled-system/css'
 import { menuRecipe } from '@/primitives/menuRecipe.ts'
+import { usePersistentUserChoices } from '@/features/rooms/livekit/hooks/usePersistentUserChoices'
 
 const Columns = ({ children }: { children?: ReactNode }) => {
   return (
