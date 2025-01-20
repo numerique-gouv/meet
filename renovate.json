@@ -14,7 +14,7 @@
       "groupName": "ignored js dependencies",
       "matchManagers": ["npm"],
       "matchPackageNames": [
-        "eslint"
+        "eslint", "react", "react-dom", "@types/react-dom", "@types/react", "react-i18next"
       ]
     }
   ]
