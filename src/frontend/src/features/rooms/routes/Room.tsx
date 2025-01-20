@@ -9,11 +9,18 @@ import { useUser, UserAware } from '@/features/auth'
 import { Conference } from '../components/Conference'
 import { Join } from '../components/Join'
 import { useKeyboardShortcuts } from '@/features/shortcuts/useKeyboardShortcuts'
+import { BackgroundBlurProcessorInterface } from '../livekit/components/blur'
+
+export type LocalUserChoicesCustom = LocalUserChoices & {
+  processor?: BackgroundBlurProcessorInterface
+}
 
 export const Room = () => {
   const { isLoggedIn } = useUser()
   const { userChoices: existingUserChoices } = usePersistentUserChoices()
-  const [userConfig, setUserConfig] = useState<LocalUserChoices | null>(null)
+  const [userConfig, setUserConfig] = useState<LocalUserChoicesCustom | null>(
+    null
+  )
 
   const { roomId } = useParams()
   const initialRoomData = history.state?.initialRoomData

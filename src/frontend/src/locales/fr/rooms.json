@@ -18,6 +18,9 @@
       "enable": "Activer le micro",
       "label": "Microphone"
     },
+    "effects": {
+      "description": "Appliquer des effets"
+    },
     "heading": "Rejoignez la réunion",
     "joinLabel": "Rejoindre",
     "joinMeeting": "Rejoindre la réjoindre",

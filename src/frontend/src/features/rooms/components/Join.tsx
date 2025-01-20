@@ -19,18 +19,24 @@ import {
 import { H } from '@/primitives/H'
 import { SelectToggleDevice } from '../livekit/components/controls/SelectToggleDevice'
 import { Field } from '@/primitives/Field'
-import { Button } from '@/primitives'
+import { Button, Dialog } from '@/primitives'
+import { LocalUserChoicesCustom } from '../routes/Room'
+import { Heading } from 'react-aria-components'
+import { RiImageCircleAiFill } from '@remixicon/react'
+import { EffectsConfiguration } from '../livekit/components/effects/EffectsConfiguration'
 
 const onError = (e: Error) => console.error('ERROR', e)
 
 export const Join = ({
   onSubmit,
 }: {
-  onSubmit: (choices: LocalUserChoices) => void
+  onSubmit: (choices: LocalUserChoicesCustom) => void
 }) => {
   const { t } = useTranslation('rooms')
   const { user } = useUser()
-  const defaults: Partial<LocalUserChoices> = { username: user?.full_name }
+  const defaults: Partial<LocalUserChoicesCustom> = {
+    username: user?.full_name,
+  }
   const persistUserChoices = true
   const joinLabel = t('join.joinLabel')
   const userLabel = t('join.usernameLabel')
@@ -177,8 +183,41 @@ export const Join = ({
     }
   }
 
+  const [isEffectsOpen, setEffectsOpen] = React.useState(false)
+
+  const openEffects = () => {
+    setEffectsOpen(true)
+  }
+
   return (
     <Screen footer={false}>
+      <Dialog
+        isOpen={isEffectsOpen}
+        onOpenChange={setEffectsOpen}
+        role="dialog"
+        type="flex"
+        size="large"
+      >
+        <Heading
+          slot="title"
+          level={1}
+          className={css({
+            textStyle: 'h1',
+            marginBottom: '1.5rem',
+          })}
+        >
+          {t('sidePanel.heading.effects')}
+        </Heading>
+        <EffectsConfiguration
+          videoTrack={videoTrack}
+          onSubmit={(processor) => {
+            setUserChoices((value) => ({
+              ...value,
+              processor,
+            }))
+          }}
+        />
+      </Dialog>
       <div
         className={css({
           display: 'flex',
@@ -269,7 +308,34 @@ export const Join = ({
                   />
                 </div>
               )}
-              <div className="lk-button-group-container"></div>
+              <div
+                className={css({
+                  position: 'absolute',
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
+                  height: '20%',
+                  backgroundImage:
+                    'linear-gradient(0deg, rgba(0,0,0,0.8) 0%, rgba(255,255,255,0) 100%)',
+                })}
+              ></div>
+              <div
+                className={css({
+                  position: 'absolute',
+                  right: 0,
+                  bottom: '0',
+                  padding: '1rem',
+                })}
+              >
+                <Button
+                  variant={'white'}
+                  onPress={openEffects}
+                  tooltip={t('join.effects.description')}
+                  aria-label={t('join.effects.description')}
+                >
+                  <RiImageCircleAiFill size={24} />
+                </Button>
+              </div>
             </div>
             <div
               className={css({

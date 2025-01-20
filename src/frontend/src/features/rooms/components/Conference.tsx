@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { useTranslation } from 'react-i18next'
-import { LiveKitRoom, type LocalUserChoices } from '@livekit/components-react'
+import { LiveKitRoom } from '@livekit/components-react'
 import { Room, RoomOptions } from 'livekit-client'
 import { keys } from '@/api/queryKeys'
 import { queryClient } from '@/api/queryClient'
@@ -12,10 +12,10 @@ import { fetchRoom } from '../api/fetchRoom'
 import { ApiRoom } from '../api/ApiRoom'
 import { useCreateRoom } from '../api/createRoom'
 import { InviteDialog } from './InviteDialog'
-
 import { VideoConference } from '../livekit/prefabs/VideoConference'
 import posthog from 'posthog-js'
 import { css } from '@/styled-system/css'
+import { LocalUserChoicesCustom } from '../routes/Room'
 
 export const Conference = ({
   roomId,
@@ -24,7 +24,7 @@ export const Conference = ({
   mode = 'join',
 }: {
   roomId: string
-  userConfig: LocalUserChoices
+  userConfig: LocalUserChoicesCustom
   mode?: 'join' | 'create'
   initialRoomData?: ApiRoom
 }) => {
@@ -111,7 +111,13 @@ export const Conference = ({
           token={data?.livekit?.token}
           connect={true}
           audio={userConfig.audioEnabled}
-          video={userConfig.videoEnabled}
+          video={
+            userConfig.videoEnabled
+              ? {
+                  processor: userConfig.processor?.clone(),
+                }
+              : false
+          }
           connectOptions={connectOptions}
           className={css({
             backgroundColor: 'primaryDark.50 !important',
