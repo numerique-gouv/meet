@@ -11,6 +11,7 @@ export interface BackgroundBlurProcessorInterface
   extends TrackProcessor<Track.Kind> {
   update(opts: BackgroundOptions): void
   options: BackgroundOptions
+  clone(): BackgroundBlurProcessorInterface
 }
 
 export class BackgroundBlurFactory {
