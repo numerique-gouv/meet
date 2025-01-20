@@ -18,8 +18,11 @@ export class BackgroundBlurTrackProcessorJsWrapper
 
   processor: ProcessorWrapper<BackgroundOptions>
 
+  opts: BackgroundOptions
+
   constructor(opts: BackgroundOptions) {
     this.processor = BackgroundBlur(opts.blurRadius)
+    this.opts = opts
   }
 
   async init(opts: ProcessorOptions<Track.Kind>) {
@@ -44,5 +47,11 @@ export class BackgroundBlurTrackProcessorJsWrapper
 
   get options() {
     return (this.processor.transformer as BackgroundTransformer).options
+  }
+
+  clone() {
+    return new BackgroundBlurTrackProcessorJsWrapper({
+      blurRadius: this.options!.blurRadius,
+    })
   }
 }

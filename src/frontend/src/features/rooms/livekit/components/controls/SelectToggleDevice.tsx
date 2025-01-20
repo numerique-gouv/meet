@@ -19,6 +19,7 @@ import { Shortcut } from '@/features/shortcuts/types'
 
 import { ToggleDevice } from '@/features/rooms/livekit/components/controls/ToggleDevice.tsx'
 import { css } from '@/styled-system/css'
+import { ButtonRecipeProps } from '@/primitives/buttonRecipe'
 
 export type ToggleSource = Exclude<
   Track.Source,
@@ -67,10 +68,12 @@ type SelectToggleDeviceProps<T extends ToggleSource> =
   UseTrackToggleProps<T> & {
     onActiveDeviceChange: (deviceId: string) => void
     source: SelectToggleSource
+    variant?: NonNullable<ButtonRecipeProps>['variant']
   }
 
 export const SelectToggleDevice = <T extends ToggleSource>({
   onActiveDeviceChange,
+  variant = 'primaryDark',
   ...props
 }: SelectToggleDeviceProps<T>) => {
   const config = selectToggleDeviceConfig[props.source]
@@ -92,14 +95,14 @@ export const SelectToggleDevice = <T extends ToggleSource>({
         gap: '1px',
       })}
     >
-      <ToggleDevice {...trackProps} config={config} />
+      <ToggleDevice {...trackProps} config={config} variant={variant} />
       <Menu>
         <Button
           tooltip={selectLabel}
           aria-label={selectLabel}
           groupPosition="right"
           square
-          variant={trackProps.enabled ? 'primaryDark' : 'error2'}
+          variant={trackProps.enabled ? variant : 'error2'}
         >
           <RiArrowDownSLine />
         </Button>

@@ -18,7 +18,10 @@
       "enable": "Enable microphone",
       "label": "Microphone"
     },
-    "heading": "Verify your settings",
+    "effects": {
+      "description": "Apply effects"
+    },
+    "heading": "Join the meeting",
     "joinLabel": "Join",
     "joinMeeting": "Join meeting",
     "toggleOff": "Click to turn off",

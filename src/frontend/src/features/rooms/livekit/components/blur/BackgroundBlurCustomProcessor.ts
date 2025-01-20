@@ -278,4 +278,8 @@ export class BackgroundBlurCustomProcessor
     this.timerWorker?.terminate()
     this.imageSegmenter?.close()
   }
+
+  clone() {
+    return new BackgroundBlurCustomProcessor(this.options)
+  }
 }

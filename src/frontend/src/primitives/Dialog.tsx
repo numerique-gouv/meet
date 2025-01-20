@@ -11,6 +11,7 @@ import {
 import { Div, Button, Box, VerticallyOffCenter } from '@/primitives'
 import { text } from './Text'
 import { MutableRefObject } from 'react'
+import { css } from '@/styled-system/css'
 
 const StyledModalOverlay = styled(ModalOverlay, {
   base: {
@@ -48,6 +49,24 @@ const StyledRACDialog = styled(RACDialog, {
   },
 })
 
+const ModalContent = styled('div', {
+  base: {
+    margin: 'auto',
+  },
+  variants: {
+    size: {
+      full: {
+        width: 'fit-content',
+        maxWidth: '100%',
+      },
+      large: {
+        width: '100%',
+        xl: { width: '1200px' },
+      },
+    },
+  },
+})
+
 export type DialogProps = RACDialogProps & {
   title?: string
   onClose?: () => void
@@ -63,6 +82,7 @@ export type DialogProps = RACDialogProps & {
   onOpenChange?: (isOpen: boolean) => void
   type?: 'flex'
   innerRef?: MutableRefObject<HTMLDivElement | null>
+  size?: 'full' | 'large'
 }
 
 export const Dialog = ({
@@ -72,6 +92,7 @@ export const Dialog = ({
   isOpen,
   onOpenChange,
   innerRef,
+  size = 'full',
   ...dialogProps
 }: DialogProps) => {
   const isAlert = dialogProps['role'] === 'alertdialog'
@@ -94,9 +115,16 @@ export const Dialog = ({
         <StyledRACDialog {...dialogProps}>
           {({ close }) => (
             <VerticallyOffCenter>
-              <Div margin="auto" width="fit-content" maxWidth="full">
+              <ModalContent size={size}>
                 <Div margin="1rem" pointerEvents="auto">
-                  <Box size="sm" type={boxType} ref={innerRef}>
+                  <Box
+                    size="sm"
+                    type={boxType}
+                    ref={innerRef}
+                    className={css({
+                      padding: '1.5rem',
+                    })}
+                  >
                     {!!title && (
                       <Heading
                         slot="title"
@@ -124,7 +152,7 @@ export const Dialog = ({
                     )}
                   </Box>
                 </Div>
-              </Div>
+              </ModalContent>
             </VerticallyOffCenter>
           )}
         </StyledRACDialog>
