@@ -73,6 +73,19 @@ export const buttonRecipe = cva({
           color: 'greyscale.400',
         },
       },
+      whiteCircle: {
+        color: 'white',
+        border: '1px white solid',
+        width: '56px',
+        height: '56px',
+        borderRadius: '100%',
+        '&[data-hovered]': {
+          backgroundColor: 'greyscale.100/20',
+        },
+        '&[data-pressed]': {
+          backgroundColor: 'greyscale.100/50',
+        },
+      },
       tertiary: {
         backgroundColor: 'primary.100',
         color: 'primary.800',
