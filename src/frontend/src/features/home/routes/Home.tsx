@@ -10,8 +10,9 @@ import { JoinMeetingDialog } from '../components/JoinMeetingDialog'
 import { ProConnectButton } from '@/components/ProConnectButton'
 import { useCreateRoom } from '@/features/rooms'
 import { usePersistentUserChoices } from '@livekit/components-react'
-import { RiAddLine, RiLink } from '@remixicon/react'
+import { RiAddLine, RiLink, RiUserAddLine } from '@remixicon/react'
 import { LaterMeetingDialog } from '@/features/home/components/LaterMeetingDialog'
+import { PersonalizeMeetingDialog } from '@/features/home/components/PersonalizeMeetingDialog'
 import { IntroSlider } from '@/features/home/components/IntroSlider'
 import { MoreLink } from '@/features/home/components/MoreLink'
 import { ReactNode, useState } from 'react'
@@ -155,6 +156,7 @@ export const Home = () => {
 
   const { mutateAsync: createRoom } = useCreateRoom()
   const [laterRoomId, setLaterRoomId] = useState<null | string>(null)
+  const [isPersonalizeModalOpen, setIsPersonalizeModalOpen] = useState(false)
 
   return (
     <UserAware>
@@ -209,6 +211,18 @@ export const Home = () => {
                       <RiLink size={18} />
                       {t('createMenu.laterOption')}
                     </MenuItem>
+                    <MenuItem
+                      className={
+                        menuRecipe({ icon: true, variant: 'light' }).item
+                      }
+                      onAction={() => {
+                        setIsPersonalizeModalOpen(true)
+                      }}
+                      data-attr="create-option-personalize"
+                    >
+                      <RiUserAddLine size={18} />
+                      {t('createMenu.personalizeOption')}
+                    </MenuItem>
                   </RACMenu>
                 </Menu>
               ) : (
@@ -249,6 +263,10 @@ export const Home = () => {
         <LaterMeetingDialog
           roomId={laterRoomId || ''}
           onOpenChange={() => setLaterRoomId(null)}
+        />
+        <PersonalizeMeetingDialog
+          isOpen={isPersonalizeModalOpen}
+          onOpenChange={() => setIsPersonalizeModalOpen(false)}
         />
       </Screen>
     </UserAware>

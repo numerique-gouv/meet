@@ -32,6 +32,7 @@ export const JoinMeetingDialog = () => {
                 <Ul>
                   <li>{window.location.origin}/uio-azer-jkl</li>
                   <li>uio-azer-jkl</li>
+                  <li>teamalpha</li>
                 </Ul>
               </>
             ) : null
