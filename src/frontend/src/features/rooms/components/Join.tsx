@@ -122,6 +122,14 @@ export const Join = ({
     [tracks]
   )
 
+  const audioTrack = React.useMemo(
+    () =>
+      tracks?.filter(
+        (track) => track.kind === Track.Kind.Audio
+      )[0] as LocalVideoTrack,
+    [tracks]
+  )
+
   const facingMode = React.useMemo(() => {
     if (videoTrack) {
       const { facingMode } = facingModeFromLocalTrack(videoTrack)
@@ -283,8 +291,10 @@ export const Join = ({
             >
               <SelectToggleDevice
                 source={Track.Source.Microphone}
-                onChange={(enabled) => setAudioEnabled(enabled)}
                 initialState={audioEnabled}
+                track={audioTrack}
+                initialDeviceId={audioDeviceId}
+                onChange={(enabled) => setAudioEnabled(enabled)}
                 onDeviceError={(error) => console.error(error)}
                 onActiveDeviceChange={(deviceId) =>
                   setAudioDeviceId(deviceId ?? '')
@@ -294,6 +304,8 @@ export const Join = ({
               <SelectToggleDevice
                 source={Track.Source.Camera}
                 initialState={videoEnabled}
+                track={videoTrack}
+                initialDeviceId={videoDeviceId}
                 onChange={(enabled) => {
                   setVideoEnabled(enabled)
                 }}
