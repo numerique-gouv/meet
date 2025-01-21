@@ -349,6 +349,7 @@ export const Join = ({
                 labelProps={{
                   center: true,
                 }}
+                maxLength={50}
               />
               <Button
                 variant={'primary'}
