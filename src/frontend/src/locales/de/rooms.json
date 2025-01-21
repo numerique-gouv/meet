@@ -24,7 +24,10 @@
     "toggleOff": "",
     "toggleOn": "",
     "usernameHint": "",
-    "usernameLabel": ""
+    "usernameLabel": "",
+    "errors": {
+      "usernameEmpty": ""
+    }
   },
   "leaveRoomPrompt": "",
   "shareDialog": {

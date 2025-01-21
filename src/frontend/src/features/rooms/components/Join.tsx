@@ -335,9 +335,7 @@ export const Join = ({
                 defaultValue={username}
                 onChange={(value) => setUsername(value)}
                 validate={(value) => {
-                  return !value ? (
-                    <p>{'Votre Nom ne peut pas être vide'}</p>
-                  ) : null
+                  return !value ? <p>{t('join.errors.usernameEmpty')}</p> : null
                 }}
                 className={css({
                   width: '100%',

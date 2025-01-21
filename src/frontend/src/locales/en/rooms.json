@@ -24,7 +24,10 @@
     "toggleOff": "Click to turn off",
     "toggleOn": "Click to turn on",
     "usernameHint": "Shown to other participants",
-    "usernameLabel": "Your name"
+    "usernameLabel": "Your name",
+    "errors": {
+      "usernameEmpty": "Your name cannot be empty"
+    }
   },
   "leaveRoomPrompt": "This will make you leave the meeting.",
   "shareDialog": {
