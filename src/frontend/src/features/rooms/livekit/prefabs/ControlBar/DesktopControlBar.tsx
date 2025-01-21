@@ -62,6 +62,7 @@ export function DesktopControlBar({
             onActiveDeviceChange={(deviceId) =>
               saveAudioInputDeviceId(deviceId ?? '')
             }
+            variant="dark"
           />
           <SelectToggleDevice
             source={Track.Source.Camera}
@@ -72,6 +73,7 @@ export function DesktopControlBar({
             onActiveDeviceChange={(deviceId) =>
               saveVideoInputDeviceId(deviceId ?? '')
             }
+            variant="dark"
           />
           {browserSupportsScreenSharing && (
             <ScreenShareToggle

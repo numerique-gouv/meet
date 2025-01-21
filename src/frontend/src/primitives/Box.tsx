@@ -30,7 +30,7 @@ const box = cva({
       },
     },
     variant: {
-      default: {
+      light: {
         borderWidth: '1px',
         borderStyle: 'solid',
         borderColor: 'box.border',
@@ -46,6 +46,10 @@ const box = cva({
         backgroundColor: 'box.bg',
         color: 'control.text',
       },
+      dark: {
+        backgroundColor: 'primaryDark.50',
+        borderColord: 'primaryDark.50',
+      },
     },
     size: {
       default: {
@@ -57,7 +61,7 @@ const box = cva({
     },
   },
   defaultVariants: {
-    variant: 'default',
+    variant: 'light',
     size: 'default',
   },
 })

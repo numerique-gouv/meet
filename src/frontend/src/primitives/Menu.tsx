@@ -8,15 +8,17 @@ import { Box } from './Box'
  */
 export const Menu = ({
   children,
+  variant = 'light',
 }: {
   children: [trigger: ReactNode, menu: ReactNode]
+  variant?: 'dark' | 'light'
 }) => {
   const [trigger, menu] = children
   return (
     <MenuTrigger>
       {trigger}
       <StyledPopover>
-        <Box size="sm" type="popover">
+        <Box size="sm" type="popover" variant={variant}>
           {menu}
         </Box>
       </StyledPopover>

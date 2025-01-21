@@ -10,6 +10,7 @@ export const MenuList = <T extends string | number = string>({
   onAction,
   selectedItem,
   items = [],
+  variant = 'light',
   ...menuProps
 }: {
   onAction: (key: T) => void
@@ -18,7 +19,11 @@ export const MenuList = <T extends string | number = string>({
 } & MenuProps<unknown> &
   RecipeVariantProps<typeof menuRecipe>) => {
   const [variantProps] = menuRecipe.splitVariantProps(menuProps)
-  const classes = menuRecipe({ extraPadding: true, ...variantProps })
+  const classes = menuRecipe({
+    extraPadding: true,
+    variant: variant,
+    ...variantProps,
+  })
   return (
     <Menu
       selectionMode={selectedItem !== undefined ? 'single' : undefined}
