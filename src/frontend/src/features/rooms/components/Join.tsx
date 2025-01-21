@@ -350,6 +350,7 @@ export const Join = ({
                 maxLength={50}
               />
               <Button
+                type="submit"
                 variant={'primary'}
                 onPress={handleSubmit}
                 isDisabled={!isValid}
