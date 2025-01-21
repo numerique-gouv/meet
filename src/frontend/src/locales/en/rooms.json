@@ -87,7 +87,11 @@
       "settings": "Settings",
       "username": "Update Your Name",
       "effects": "Apply effects",
-      "switchCamera": "Switch camera"
+      "switchCamera": "Switch camera",
+      "fullscreen": {
+        "enter": "Fullscreen",
+        "exit": "Exit fullscreen mode"
+      }
     }
   },
   "effects": {
