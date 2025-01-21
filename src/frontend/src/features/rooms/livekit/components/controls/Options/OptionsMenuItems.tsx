@@ -1,5 +1,7 @@
 import {
   RiAccountBoxLine,
+  RiFullscreenExitLine,
+  RiFullscreenLine,
   RiMegaphoneLine,
   RiSettings3Line,
 } from '@remixicon/react'
@@ -10,12 +12,17 @@ import { useSidePanel } from '../../../hooks/useSidePanel'
 import { menuRecipe } from '@/primitives/menuRecipe.ts'
 import { useSettingsDialog } from '../SettingsDialogContext'
 import { GRIST_FORM } from '@/utils/constants'
+import { useFullScreen } from '../../../hooks/useFullScreen'
 
 // @todo try refactoring it to use MenuList component
 export const OptionsMenuItems = () => {
   const { t } = useTranslation('rooms', { keyPrefix: 'options.items' })
   const { toggleEffects } = useSidePanel()
   const { setDialogOpen } = useSettingsDialog()
+
+  const { toggleFullScreen, isCurrentlyFullscreen, isFullscreenAvailable } =
+    useFullScreen()
+
   return (
     <RACMenu
       style={{
@@ -24,6 +31,24 @@ export const OptionsMenuItems = () => {
       }}
     >
       <MenuSection>
+        {isFullscreenAvailable && (
+          <MenuItem
+            onAction={() => toggleFullScreen()}
+            className={menuRecipe({ icon: true, variant: 'dark' }).item}
+          >
+            {isCurrentlyFullscreen ? (
+              <>
+                <RiFullscreenExitLine size={20} />
+                {t('fullscreen.exit')}
+              </>
+            ) : (
+              <>
+                <RiFullscreenLine size={20} />
+                {t('fullscreen.enter')}
+              </>
+            )}
+          </MenuItem>
+        )}
         <MenuItem
           onAction={() => toggleEffects()}
           className={menuRecipe({ icon: true, variant: 'dark' }).item}

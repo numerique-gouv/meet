@@ -84,7 +84,11 @@
       "settings": "",
       "username": "",
       "effects": "",
-      "switchCamera": ""
+      "switchCamera": "",
+      "fullscreen": {
+        "enter": "",
+        "exit": ""
+      }
     }
   },
   "effects": {
