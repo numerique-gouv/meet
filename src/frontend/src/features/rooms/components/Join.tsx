@@ -244,6 +244,7 @@ export const Join = ({
                     width: '100%',
                     height: '100%',
                     objectFit: 'cover',
+                    transform: 'rotateY(180deg)',
                   })}
                 />
               )}
