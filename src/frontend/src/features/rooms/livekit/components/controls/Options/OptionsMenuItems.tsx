@@ -26,7 +26,7 @@ export const OptionsMenuItems = () => {
       <MenuSection>
         <MenuItem
           onAction={() => toggleEffects()}
-          className={menuRecipe({ icon: true }).item}
+          className={menuRecipe({ icon: true, variant: 'dark' }).item}
         >
           <RiAccountBoxLine size={20} />
           {t('effects')}
@@ -37,13 +37,13 @@ export const OptionsMenuItems = () => {
         <MenuItem
           href={GRIST_FORM}
           target="_blank"
-          className={menuRecipe({ icon: true }).item}
+          className={menuRecipe({ icon: true, variant: 'dark' }).item}
         >
           <RiMegaphoneLine size={20} />
           {t('feedback')}
         </MenuItem>
         <MenuItem
-          className={menuRecipe({ icon: true }).item}
+          className={menuRecipe({ icon: true, variant: 'dark' }).item}
           onAction={() => setDialogOpen(true)}
         >
           <RiSettings3Line size={20} />

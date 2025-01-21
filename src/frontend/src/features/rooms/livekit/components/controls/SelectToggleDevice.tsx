@@ -67,10 +67,12 @@ type SelectToggleDeviceProps<T extends ToggleSource> =
   UseTrackToggleProps<T> & {
     onActiveDeviceChange: (deviceId: string) => void
     source: SelectToggleSource
+    variant?: 'dark' | 'light'
   }
 
 export const SelectToggleDevice = <T extends ToggleSource>({
   onActiveDeviceChange,
+  variant = 'light',
   ...props
 }: SelectToggleDeviceProps<T>) => {
   const config = selectToggleDeviceConfig[props.source]
@@ -93,7 +95,7 @@ export const SelectToggleDevice = <T extends ToggleSource>({
       })}
     >
       <ToggleDevice {...trackProps} config={config} />
-      <Menu>
+      <Menu variant={variant}>
         <Button
           tooltip={selectLabel}
           aria-label={selectLabel}
@@ -113,6 +115,7 @@ export const SelectToggleDevice = <T extends ToggleSource>({
             setActiveMediaDevice(value as string)
             onActiveDeviceChange(value as string)
           }}
+          variant={variant}
         />
       </Menu>
     </div>

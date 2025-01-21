@@ -46,7 +46,11 @@ export const menuRecipe = sva({
           },
         },
       },
-      dark: {},
+      dark: {
+        item: {
+          color: 'white',
+        },
+      },
     },
     extraPadding: {
       true: {
@@ -67,6 +71,6 @@ export const menuRecipe = sva({
     },
   },
   defaultVariants: {
-    variant: 'dark',
+    variant: 'light',
   },
 })

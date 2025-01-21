@@ -8,7 +8,7 @@ export const OptionsButton = () => {
 
   return (
     <>
-      <Menu>
+      <Menu variant="dark">
         <Button
           square
           variant="primaryDark"
