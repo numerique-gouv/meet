@@ -28,6 +28,7 @@ import { RiHand } from '@remixicon/react'
 import { useRaisedHand } from '@/features/rooms/livekit/hooks/useRaisedHand'
 import { HStack } from '@/styled-system/jsx'
 import { MutedMicIndicator } from '@/features/rooms/livekit/components/MutedMicIndicator'
+import { FullscreenToggle } from '@/features/rooms/livekit/components/controls/FullscreenToggle'
 
 export function TrackRefContextIfNeeded(
   props: React.PropsWithChildren<{
@@ -174,6 +175,7 @@ export const ParticipantTile: (
             </>
           )}
           {!disableMetadata && <FocusToggle trackRef={trackReference} />}
+          {!disableMetadata && <FullscreenToggle trackRef={trackReference} />}
         </ParticipantContextIfNeeded>
       </TrackRefContextIfNeeded>
     </div>

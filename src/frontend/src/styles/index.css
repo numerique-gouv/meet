@@ -38,3 +38,7 @@ body:has(.lk-video-conference) #crisp-chatbox > div > a {
     transform: translateY(0);
   }
 }
+
+.lk-fullscreen-toggle-button {
+  right: 2em !important;
+}
