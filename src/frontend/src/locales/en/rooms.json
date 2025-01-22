@@ -77,7 +77,8 @@
       "open": "Hide AI assistant",
       "closed": "Show AI assistant"
     },
-    "support": "Support"
+    "support": "Support",
+    "moreOptions": "More options"
   },
   "options": {
     "buttonLabel": "More Options",
