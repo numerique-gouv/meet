@@ -83,7 +83,11 @@
       "settings": "Paramètres",
       "username": "Choisir votre nom",
       "effects": "Appliquer des effets",
-      "switchCamera": "Changer de caméra"
+      "switchCamera": "Changer de caméra",
+      "fullscreen": {
+        "enter": "Plein écran",
+        "exit": "Quitter le mode plein écran"
+      }
     }
   },
   "effects": {
