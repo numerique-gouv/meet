@@ -10,6 +10,7 @@ export default defineConfig(({ mode }) => {
     server: {
       port: parseInt(env.VITE_PORT) || 3000,
       host: env.VITE_HOST || 'localhost',
+      allowedHosts: ['.nip.io'],
     },
   }
 })
