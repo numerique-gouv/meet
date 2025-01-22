@@ -7,7 +7,9 @@ import { ToggleButtonProps } from '@/primitives/ToggleButton'
 
 export const SupportToggle = ({ onPress, ...props }: ToggleButtonProps) => {
   const { t } = useTranslation('rooms', { keyPrefix: 'controls' })
-  const [isOpened, setIsOpened] = useState($crisp.is('chat:opened'))
+  const [isOpened, setIsOpened] = useState(() => {
+    return window?.$crisp?.is?.('chat:opened') || false
+  })
 
   useEffect(() => {
     if (!Crisp) {
