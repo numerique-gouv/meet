@@ -8,10 +8,8 @@ import { HandToggle } from '../../components/controls/HandToggle'
 import { ScreenShareToggle } from '../../components/controls/ScreenShareToggle'
 import { OptionsButton } from '../../components/controls/Options/OptionsButton'
 import { StartMediaButton } from '../../components/controls/StartMediaButton'
-import { ChatToggle } from '../../components/controls/ChatToggle'
-import { ParticipantsToggle } from '../../components/controls/Participants/ParticipantsToggle'
-import { SupportToggle } from '../../components/controls/SupportToggle'
-import { TranscriptToggle } from '../../components/controls/TranscriptToggle'
+import { MoreOptions } from './MoreOptions'
+import { useRef } from 'react'
 
 export function DesktopControlBar({
   onDeviceError,
@@ -21,9 +19,11 @@ export function DesktopControlBar({
   saveVideoInputDeviceId,
 }: ControlBarAuxProps) {
   const browserSupportsScreenSharing = supportsScreenSharing()
+  const desktopControlBarEl = useRef<HTMLDivElement>(null)
   return (
     <>
       <div
+        ref={desktopControlBarEl}
         className={css({
           width: '100vw',
           display: 'flex',
@@ -87,21 +87,7 @@ export function DesktopControlBar({
           <LeaveButton />
           <StartMediaButton />
         </div>
-        <div
-          className={css({
-            display: 'flex',
-            justifyContent: 'flex-end',
-            flex: '1 1 33%',
-            alignItems: 'center',
-            gap: '0.5rem',
-            paddingRight: '0.25rem',
-          })}
-        >
-          <ChatToggle />
-          <ParticipantsToggle />
-          <TranscriptToggle />
-          <SupportToggle />
-        </div>
+        <MoreOptions parentElement={desktopControlBarEl} />
       </div>
     </>
   )

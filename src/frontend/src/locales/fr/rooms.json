@@ -74,7 +74,8 @@
       "open": "Masquer l'assistant IA",
       "closed": "Afficher l'assistant IA"
     },
-    "support": "Support"
+    "support": "Support",
+    "moreOptions": "Plus d'options"
   },
   "options": {
     "buttonLabel": "Plus d'options",
