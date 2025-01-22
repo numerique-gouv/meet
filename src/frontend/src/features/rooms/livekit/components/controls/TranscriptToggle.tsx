@@ -7,7 +7,7 @@ import { css } from '@/styled-system/css'
 import { ToggleButtonProps } from '@/primitives/ToggleButton'
 
 export const TranscriptToggle = ({
-  variant = 'primaryDark',
+  variant = 'primaryTextDark',
   onPress,
   ...props
 }: ToggleButtonProps) => {
