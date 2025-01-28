@@ -3,6 +3,7 @@ import { Form as RACForm, type FormProps } from 'react-aria-components'
 import { useTranslation } from 'react-i18next'
 import { HStack } from '@/styled-system/jsx'
 import { Button, useCloseDialog } from '@/primitives'
+import { ButtonProps } from '@/primitives/Button'
 
 /**
  * From wrapper that exposes form data on submit and adds submit/cancel buttons
@@ -13,6 +14,7 @@ import { Button, useCloseDialog } from '@/primitives'
 export const Form = ({
   onSubmit,
   submitLabel,
+  submitButtonProps,
   withCancelButton = true,
   onCancelButtonPress,
   children,
@@ -25,6 +27,7 @@ export const Form = ({
     event: FormEvent<HTMLFormElement>
   ) => void
   submitLabel: string
+  submitButtonProps?: ButtonProps
   withCancelButton?: boolean
   onCancelButtonPress?: () => void
 }) => {
@@ -47,7 +50,7 @@ export const Form = ({
     >
       {children}
       <HStack gap="gutter">
-        <Button type="submit" variant="primary">
+        <Button type="submit" variant="primary" {...submitButtonProps}>
           {submitLabel}
         </Button>
         {!!onCancel && (

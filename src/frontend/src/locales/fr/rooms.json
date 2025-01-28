@@ -27,7 +27,9 @@
     "usernameLabel": "Votre nom",
     "errors": {
       "usernameEmpty": "Votre nom ne peut pas être vide"
-    }
+    },
+    "cameraDisabled": "La caméra est désactivée.",
+    "cameraStarting": "La caméra va démarrer."
   },
   "leaveRoomPrompt": "Revenir à l'accueil vous fera quitter la réunion.",
   "shareDialog": {
