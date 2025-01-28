@@ -1,25 +1,18 @@
 import { useTranslation } from 'react-i18next'
 import {
-  ParticipantPlaceholder,
   usePersistentUserChoices,
   usePreviewTracks,
   type LocalUserChoices,
 } from '@livekit/components-react'
 import { css } from '@/styled-system/css'
-import { log } from '@livekit/components-core'
-import { defaultUserChoices } from '@livekit/components-core'
 import { Screen } from '@/layout/Screen'
-import { useUser } from '@/features/auth'
-import React from 'react'
-import {
-  facingModeFromLocalTrack,
-  LocalVideoTrack,
-  Track,
-} from 'livekit-client'
+import { useMemo, useEffect, useRef, useState } from 'react'
+import { LocalVideoTrack, Track } from 'livekit-client'
 import { H } from '@/primitives/H'
 import { SelectToggleDevice } from '../livekit/components/controls/SelectToggleDevice'
 import { Field } from '@/primitives/Field'
-import { Button } from '@/primitives'
+import { Form } from '@/primitives'
+import { HStack, VStack } from '@/styled-system/jsx'
 
 const onError = (e: Error) => console.error('ERROR', e)
 
@@ -28,92 +21,47 @@ export const Join = ({
 }: {
   onSubmit: (choices: LocalUserChoices) => void
 }) => {
-  const { t } = useTranslation('rooms')
-  const { user } = useUser()
-  const defaults: Partial<LocalUserChoices> = { username: user?.full_name }
-  const persistUserChoices = true
-  const joinLabel = t('join.joinLabel')
-  const userLabel = t('join.usernameLabel')
-
-  const [userChoices, setUserChoices] = React.useState(defaultUserChoices)
-
-  // TODO: Remove and pipe `defaults` object directly into `usePersistentUserChoices` once we fully switch from type `LocalUserChoices` to `UserChoices`.
-  const partialDefaults: Partial<LocalUserChoices> = {
-    ...(defaults.audioDeviceId !== undefined && {
-      audioDeviceId: defaults.audioDeviceId,
-    }),
-    ...(defaults.videoDeviceId !== undefined && {
-      videoDeviceId: defaults.videoDeviceId,
-    }),
-    ...(defaults.audioEnabled !== undefined && {
-      audioEnabled: defaults.audioEnabled,
-    }),
-    ...(defaults.videoEnabled !== undefined && {
-      videoEnabled: defaults.videoEnabled,
-    }),
-    ...(defaults.username !== undefined && { username: defaults.username }),
-  }
+  const { t } = useTranslation('rooms', { keyPrefix: 'join' })
 
   const {
     userChoices: initialUserChoices,
     saveAudioInputDeviceId,
-    saveAudioInputEnabled,
     saveVideoInputDeviceId,
-    saveVideoInputEnabled,
     saveUsername,
-  } = usePersistentUserChoices({
-    defaults: partialDefaults,
-    preventSave: !persistUserChoices,
-    preventLoad: !persistUserChoices,
-  })
+  } = usePersistentUserChoices({})
 
-  // Initialize device settings
-  const [audioEnabled, setAudioEnabled] = React.useState<boolean>(
-    initialUserChoices.audioEnabled
-  )
-  const [videoEnabled, setVideoEnabled] = React.useState<boolean>(
-    initialUserChoices.videoEnabled
-  )
-  const [audioDeviceId, setAudioDeviceId] = React.useState<string>(
+  const [audioDeviceId, setAudioDeviceId] = useState<string>(
     initialUserChoices.audioDeviceId
   )
-  const [videoDeviceId, setVideoDeviceId] = React.useState<string>(
+  const [videoDeviceId, setVideoDeviceId] = useState<string>(
     initialUserChoices.videoDeviceId
   )
-  const [username, setUsername] = React.useState(initialUserChoices.username)
+  const [username, setUsername] = useState<string>(initialUserChoices.username)
 
-  // Save user choices to persistent storage.
-  React.useEffect(() => {
-    saveAudioInputEnabled(audioEnabled)
-  }, [audioEnabled, saveAudioInputEnabled])
-  React.useEffect(() => {
-    saveVideoInputEnabled(videoEnabled)
-  }, [videoEnabled, saveVideoInputEnabled])
-  React.useEffect(() => {
+  useEffect(() => {
     saveAudioInputDeviceId(audioDeviceId)
   }, [audioDeviceId, saveAudioInputDeviceId])
-  React.useEffect(() => {
+
+  useEffect(() => {
     saveVideoInputDeviceId(videoDeviceId)
   }, [videoDeviceId, saveVideoInputDeviceId])
-  React.useEffect(() => {
+
+  useEffect(() => {
     saveUsername(username)
   }, [username, saveUsername])
 
+  const [audioEnabled, setAudioEnabled] = useState(true)
+  const [videoEnabled, setVideoEnabled] = useState(true)
+
   const tracks = usePreviewTracks(
     {
-      audio: audioEnabled
-        ? { deviceId: initialUserChoices.audioDeviceId }
-        : false,
-      video: videoEnabled
-        ? { deviceId: initialUserChoices.videoDeviceId }
-        : false,
+      audio: { deviceId: initialUserChoices.audioDeviceId },
+      video: { deviceId: initialUserChoices.videoDeviceId },
     },
     onError
   )
 
-  const videoEl = React.useRef(null)
-
-  const videoTrack = React.useMemo(
+  const videoTrack = useMemo(
     () =>
       tracks?.filter(
         (track) => track.kind === Track.Kind.Video
@@ -121,7 +69,7 @@ export const Join = ({
     [tracks]
   )
 
-  const audioTrack = React.useMemo(
+  const audioTrack = useMemo(
     () =>
       tracks?.filter(
         (track) => track.kind === Track.Kind.Audio
@@ -129,59 +77,37 @@ export const Join = ({
     [tracks]
   )
 
-  const facingMode = React.useMemo(() => {
-    if (videoTrack) {
-      const { facingMode } = facingModeFromLocalTrack(videoTrack)
-      return facingMode
-    } else {
-      return 'undefined'
-    }
-  }, [videoTrack])
+  const videoEl = useRef(null)
 
-  React.useEffect(() => {
-    if (videoEl.current && videoTrack) {
+  useEffect(() => {
+    const videoElement = videoEl.current as HTMLVideoElement | null
+
+    const handleVideoLoaded = () => {
+      if (videoElement) {
+        videoElement.style.opacity = '1'
+      }
+    }
+
+    if (videoElement && videoTrack && videoEnabled) {
       videoTrack.unmute()
-      videoTrack.attach(videoEl.current)
+      videoTrack.attach(videoElement)
+      videoElement.addEventListener('loadedmetadata', handleVideoLoaded)
     }
 
     return () => {
       videoTrack?.detach()
+      videoElement?.removeEventListener('loadedmetadata', handleVideoLoaded)
     }
-  }, [videoTrack])
-
-  const [isValid, setIsValid] = React.useState<boolean>()
-
-  const handleValidation = React.useCallback((values: LocalUserChoices) => {
-    return values.username !== ''
-  }, [])
-
-  React.useEffect(() => {
-    const newUserChoices = {
-      username,
-      videoEnabled,
-      videoDeviceId,
-      audioEnabled,
-      audioDeviceId,
-    }
-    setUserChoices(newUserChoices)
-    setIsValid(handleValidation(newUserChoices))
-  }, [
-    username,
-    videoEnabled,
-    handleValidation,
-    audioEnabled,
-    audioDeviceId,
-    videoDeviceId,
-  ])
+  }, [videoTrack, videoEnabled])
 
   function handleSubmit() {
-    if (handleValidation(userChoices)) {
-      if (typeof onSubmit === 'function') {
-        onSubmit(userChoices)
-      }
-    } else {
-      log.warn('Validation failed with: ', userChoices)
-    }
+    onSubmit({
+      audioEnabled,
+      videoEnabled,
+      audioDeviceId,
+      videoDeviceId,
+      username,
+    })
   }
 
   return (
@@ -232,67 +158,60 @@ export const Join = ({
                 height: 'auto',
                 aspectRatio: 16 / 9,
                 '--tw-shadow':
-                  '0 20px 25px -5px #0000001a, 0 8px 10px -6px #0000001a',
+                  '0 10px 15px -5px #00000010, 0 4px 5px -6px #00000010',
                 '--tw-shadow-colored':
-                  '0 20px 25px -5px var(--tw-shadow-color), 0 8px 10px -6px var(--tw-shadow-color)',
+                  '0 10px 15px -5px var(--tw-shadow-color), 0 8px 10px -6px var(--tw-shadow-color)',
                 boxShadow:
                   'var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)',
+                backgroundColor: 'black',
               })}
             >
-              {videoTrack && (
+              {videoTrack && videoEnabled ? (
                 // eslint-disable-next-line jsx-a11y/media-has-caption
                 <video
                   ref={videoEl}
                   width="1280"
                   height="720"
-                  data-lk-facing-mode={facingMode}
                   className={css({
                     display: 'block',
-                    width: '100%',
-                    height: '100%',
+                    width: '102%',
+                    height: '102%',
                     objectFit: 'cover',
                     transform: 'rotateY(180deg)',
+                    opacity: 0,
+                    transition: 'opacity 0.3s ease-in-out',
                   })}
                 />
-              )}
-              {(!videoTrack || !videoEnabled) && (
+              ) : (
                 <div
-                  id="container"
                   className={css({
-                    position: 'absolute',
-                    top: 0,
-                    left: 0,
-                    right: 0,
-                    bottom: 0,
-                    backgroundColor: '#000',
-                    display: 'grid',
-                    placeItems: 'center',
+                    width: '100%',
+                    height: '100%',
+                    color: 'white',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
                   })}
                 >
-                  <ParticipantPlaceholder
+                  <p
                     className={css({
-                      maxWidth: '100%',
-                      height: '70%',
+                      fontSize: '24px',
+                      fontWeight: '300',
                     })}
-                  />
+                  >
+                    {!videoEnabled && t('cameraDisabled')}
+                    {videoEnabled && !videoTrack && t('cameraStarting')}
+                  </p>
                 </div>
               )}
-              <div className="lk-button-group-container"></div>
             </div>
-            <div
-              className={css({
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                padding: '1.5rem',
-                gap: '1rem',
-              })}
-            >
+
+            <HStack justify="center" padding={1.5}>
               <SelectToggleDevice
                 source={Track.Source.Microphone}
                 initialState={audioEnabled}
                 track={audioTrack}
-                initialDeviceId={audioDeviceId}
+                initialDeviceId={initialUserChoices.audioDeviceId}
                 onChange={(enabled) => setAudioEnabled(enabled)}
                 onDeviceError={(error) => console.error(error)}
                 onActiveDeviceChange={(deviceId) =>
@@ -304,19 +223,16 @@ export const Join = ({
                 source={Track.Source.Camera}
                 initialState={videoEnabled}
                 track={videoTrack}
-                initialDeviceId={videoDeviceId}
-                onChange={(enabled) => {
-                  setVideoEnabled(enabled)
-                }}
+                initialDeviceId={initialUserChoices.videoDeviceId}
+                onChange={(enabled) => setVideoEnabled(enabled)}
                 onDeviceError={(error) => console.error(error)}
                 onActiveDeviceChange={(deviceId) =>
                   setVideoDeviceId(deviceId ?? '')
                 }
                 variant="tertiary"
               />
-            </div>
+            </HStack>
           </div>
-
           <div
             className={css({
               width: '100%',
@@ -328,48 +244,35 @@ export const Join = ({
               },
             })}
           >
-            <form
-              className={css({
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'center',
-                alignItems: 'center',
-                gap: '1rem',
-              })}
+            <Form
+              onSubmit={handleSubmit}
+              submitLabel={t('joinLabel')}
+              submitButtonProps={{
+                fullWidth: true,
+              }}
             >
-              <H lvl={1} className={css({ marginBottom: 0 })}>
-                {t('join.heading')}
-              </H>
-              <Field
-                type="text"
-                label={userLabel}
-                defaultValue={username}
-                onChange={(value) => setUsername(value)}
-                validate={(value) => {
-                  return !value ? <p>{t('join.errors.usernameEmpty')}</p> : null
-                }}
-                className={css({
-                  width: '100%',
-                })}
-                wrapperProps={{
-                  noMargin: true,
-                  fullWidth: true,
-                }}
-                labelProps={{
-                  center: true,
-                }}
-                maxLength={50}
-              />
-              <Button
-                type="submit"
-                variant={'primary'}
-                onPress={handleSubmit}
-                isDisabled={!isValid}
-                fullWidth
-              >
-                {joinLabel}
-              </Button>
-            </form>
+              <VStack marginBottom={1}>
+                <H lvl={1} margin={false}>
+                  {t('heading')}
+                </H>
+                <Field
+                  type="text"
+                  onChange={setUsername}
+                  label={t('usernameLabel')}
+                  aria-label={t('usernameLabel')}
+                  defaultValue={initialUserChoices?.username}
+                  validate={(value) => !value && t('errors.usernameEmpty')}
+                  wrapperProps={{
+                    noMargin: true,
+                    fullWidth: true,
+                  }}
+                  labelProps={{
+                    center: true,
+                  }}
+                  maxLength={50}
+                />
+              </VStack>
+            </Form>
           </div>
         </div>
       </div>

@@ -27,7 +27,9 @@
     "usernameLabel": "Your name",
     "errors": {
       "usernameEmpty": "Your name cannot be empty"
-    }
+    },
+    "cameraDisabled": "Camera is disabled.",
+    "cameraStarting": "Camera is starting."
   },
   "leaveRoomPrompt": "This will make you leave the meeting.",
   "shareDialog": {
