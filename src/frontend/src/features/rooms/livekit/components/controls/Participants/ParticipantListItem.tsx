@@ -13,36 +13,10 @@ import {
 } from '@livekit/components-react'
 import Source = Track.Source
 import { RiMicFill, RiMicOffFill } from '@remixicon/react'
-import { Button, Dialog, P } from '@/primitives'
+import { Button } from '@/primitives'
 import { useState } from 'react'
 import { useMuteParticipant } from '@/features/rooms/livekit/api/muteParticipant'
-
-const MuteAlertDialog = ({
-  isOpen,
-  onClose,
-  onSubmit,
-  name,
-}: {
-  isOpen: boolean
-  onClose: () => void
-  onSubmit: () => void
-  name: string
-}) => {
-  const { t } = useTranslation('rooms')
-  return (
-    <Dialog isOpen={isOpen} role="alertdialog">
-      <P>{t('participants.muteParticipantAlert.description', { name })}</P>
-      <HStack gap={1}>
-        <Button variant="text" size="sm" onPress={onClose}>
-          {t('participants.muteParticipantAlert.cancel')}
-        </Button>
-        <Button variant="text" size="sm" onPress={onSubmit}>
-          {t('participants.muteParticipantAlert.confirm')}
-        </Button>
-      </HStack>
-    </Dialog>
-  )
-}
+import { MuteAlertDialog } from '../../MuteAlertDialog'
 
 type MicIndicatorProps = {
   participant: Participant
