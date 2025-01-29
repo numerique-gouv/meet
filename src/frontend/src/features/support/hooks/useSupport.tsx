@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import { Crisp } from 'crisp-sdk-web'
 import { ApiUser } from '@/features/auth/api/ApiUser'
+import { useConfig } from '@/api/useConfig'
 
 export const initializeSupportSession = (user: ApiUser) => {
   if (!Crisp.isCrispInjected()) return
@@ -28,4 +29,9 @@ export const useSupport = ({ id }: useSupportProps) => {
   }, [id])
 
   return null
+}
+
+export const useIsSupportEnabled = () => {
+  const { data } = useConfig()
+  return !!data?.support?.id
 }
