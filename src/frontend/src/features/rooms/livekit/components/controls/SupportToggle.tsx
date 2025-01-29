@@ -4,9 +4,11 @@ import { useTranslation } from 'react-i18next'
 import { Crisp } from 'crisp-sdk-web'
 import { useEffect, useState } from 'react'
 import { ToggleButtonProps } from '@/primitives/ToggleButton'
+import { useIsSupportEnabled } from '@/features/support/hooks/useSupport'
 
 export const SupportToggle = ({ onPress, ...props }: ToggleButtonProps) => {
   const { t } = useTranslation('rooms', { keyPrefix: 'controls' })
+
   const [isOpened, setIsOpened] = useState(() => {
     return window?.$crisp?.is?.('chat:opened') || false
   })
@@ -27,6 +29,12 @@ export const SupportToggle = ({ onPress, ...props }: ToggleButtonProps) => {
       Crisp.chat.offChatClosed()
     }
   }, [])
+
+  const isSupportEnabled = useIsSupportEnabled()
+
+  if (!isSupportEnabled) {
+    return
+  }
 
   return (
     <ToggleButton
