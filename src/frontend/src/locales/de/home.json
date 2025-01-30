@@ -15,7 +15,8 @@
   "moreAbout": "",
   "createMenu": {
     "laterOption": "",
-    "instantOption": ""
+    "instantOption": "",
+    "personalizeOption": ""
   },
   "laterMeetingDialog": {
     "heading": "",
@@ -23,6 +24,23 @@
     "copy": "",
     "copied": "",
     "permissions": ""
+  },
+  "personalizeMeetingDialog": {
+    "heading": "",
+    "label": "",
+    "submit": "",
+    "placeholder": "",
+    "errors": {
+      "validation": {
+        "length": "",
+        "spaceOrSpecialCharacter": ""
+      },
+      "server": {
+        "taken": "",
+        "unknown": ""
+      }
+    },
+    "warning": ""
   },
   "introSlider": {
     "previous": {
