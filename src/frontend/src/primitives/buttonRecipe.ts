@@ -86,6 +86,22 @@ export const buttonRecipe = cva({
           backgroundColor: 'greyscale.100/50',
         },
       },
+      bigSquare: {
+        width: '56px',
+        height: '56px',
+        borderColor: 'greyscale.200',
+        borderRadius: '4px',
+        backgroundColor: 'greyscale.50',
+        padding: '0',
+        flexShrink: 0,
+        '&[data-hovered]': {
+          backgroundColor: 'greyscale.100',
+        },
+        transition: 'box-shadow 0.2s ease-in-out',
+        '&[data-selected]': {
+          boxShadow: 'token(colors.primary.400) 0px 0px 0px 3px inset',
+        },
+      },
       tertiary: {
         backgroundColor: 'primary.100',
         color: 'primary.800',

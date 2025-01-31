@@ -21,7 +21,8 @@
     "heading": "Rejoindre la réunion",
     "effects": {
       "description": "Appliquer des effets",
-      "title": "Effets"
+      "title": "Effets",
+      "subTitle": "Paramétrez les effets de votre caméra."
     },
     "joinLabel": "Rejoindre",
     "joinMeeting": "Rejoindre la réjoindre",
@@ -102,13 +103,19 @@
   },
   "effects": {
     "activateCamera": "Votre camera est désactivée. Choisissez une option pour l'activer.",
-    "notAvailable": "L'effet de flou sera bientôt disponible sur votre navigateur. Nous y travaillons ! En attendant, vous pouvez utiliser Google Chrome pour une meilleure performance ou Firefox :(",
+    "notAvailable": "Les effets vidéo seront bientôt disponible sur votre navigateur. Nous y travaillons ! En attendant, vous pouvez utiliser Google Chrome pour une meilleure performance ou Firefox :(",
     "heading": "Flou",
     "blur": {
+      "title": "Flou d'arrière-plan",
       "light": "Léger flou",
       "normal": "Flou",
       "apply": "Appliquer le flou",
       "clear": "Désactiver le flou"
+    },
+    "virtual": {
+      "title": "Arrière-plan virtuel",
+      "apply": "Appliquer l'arrière plan virtuel",
+      "clear": "Désactiver l'arrière plan virtuel"
     },
     "experimental": "Fonctionnalité expérimentale. Une v2 arrive pour un support complet sur tous les navigateurs et une meilleur qualité."
   },

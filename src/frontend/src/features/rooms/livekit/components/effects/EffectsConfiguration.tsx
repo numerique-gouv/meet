@@ -2,12 +2,16 @@ import { LocalVideoTrack } from 'livekit-client'
 import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import {
-  BackgroundBlurFactory,
-  BackgroundBlurProcessorInterface,
+  BackgroundProcessorFactory,
+  BackgroundProcessorInterface,
+  ProcessorType,
 } from '../blur'
 import { css } from '@/styled-system/css'
 import { Text, P, ToggleButton, H } from '@/primitives'
-import { HStack, styled } from '@/styled-system/jsx'
+import { styled } from '@/styled-system/jsx'
+import { BackgroundOptions } from '@livekit/track-processors'
+import { BlurOn } from '@/components/icons/BlurOn'
+import { BlurOnStrong } from '@/components/icons/BlurOnStrong'
 
 enum BlurRadius {
   NONE = 0,
@@ -15,21 +19,20 @@ enum BlurRadius {
   NORMAL = 10,
 }
 
-const isSupported = BackgroundBlurFactory.isSupported()
+const isSupported = BackgroundProcessorFactory.isSupported()
 
 const Information = styled('div', {
   base: {
     backgroundColor: 'orange.50',
     borderRadius: '4px',
     padding: '0.75rem 0.75rem',
-    marginTop: '0.8rem',
     alignItems: 'start',
   },
 })
 
 export type EffectsConfigurationProps = {
   videoTrack: LocalVideoTrack
-  onSubmit?: (processor?: BackgroundBlurProcessorInterface) => void
+  onSubmit?: (processor?: BackgroundProcessorInterface) => void
   layout?: 'vertical' | 'horizontal'
 }
 
@@ -55,46 +58,56 @@ export const EffectsConfiguration = ({
     }
   }, [videoTrack, videoTrack?.isMuted])
 
-  const toggleBlur = async (blurRadius: number) => {
+  const toggleEffect = async (
+    type: ProcessorType,
+    options: BackgroundOptions
+  ) => {
     if (!videoTrack) return
     setProcessorPending(true)
     const processor = getProcessor()
-    const currentBlurRadius = getBlurRadius()
     try {
-      if (blurRadius == currentBlurRadius && processor) {
+      if (isSelected(type, options)) {
+        // Stop processor.
         await videoTrack.stopProcessor()
         onSubmit?.(undefined)
-      } else if (!processor) {
-        const newProcessor = BackgroundBlurFactory.getProcessor({ blurRadius })!
+      } else if (!processor || processor.serialize().type !== type) {
+        // Change processor.
+        const newProcessor = BackgroundProcessorFactory.getProcessor(
+          type,
+          options
+        )!
         await videoTrack.setProcessor(newProcessor)
         onSubmit?.(newProcessor)
       } else {
-        processor?.update({ blurRadius })
+        // Update processor.
+        processor?.update(options)
         // We want to trigger onSubmit when options changes so the parent component is aware of it.
         onSubmit?.(processor)
       }
     } catch (error) {
       console.error('Error applying blur:', error)
     } finally {
-      setProcessorPending(false)
+      // Without setTimeout the DOM is not refreshing when updating the options.
+      setTimeout(() => setProcessorPending(false))
     }
   }
 
   const getProcessor = () => {
-    return videoTrack?.getProcessor() as BackgroundBlurProcessorInterface
+    return videoTrack?.getProcessor() as BackgroundProcessorInterface
   }
 
-  const getBlurRadius = (): BlurRadius => {
+  const isSelected = (type: ProcessorType, options: BackgroundOptions) => {
     const processor = getProcessor()
-    return processor?.options.blurRadius || BlurRadius.NONE
+    const processorSerialized = processor?.serialize()
+    return (
+      !!processor &&
+      processorSerialized.type === type &&
+      JSON.stringify(processorSerialized.options) === JSON.stringify(options)
+    )
   }
 
-  const isSelected = (blurRadius: BlurRadius) => {
-    return getBlurRadius() == blurRadius
-  }
-
-  const tooltipLabel = (blurRadius: BlurRadius) => {
-    return t(`blur.${isSelected(blurRadius) ? 'clear' : 'apply'}`)
+  const tooltipLabel = (type: ProcessorType, options: BackgroundOptions) => {
+    return t(`${type}.${isSelected(type, options) ? 'clear' : 'apply'}`)
   }
 
   return (
@@ -104,7 +117,7 @@ export const EffectsConfiguration = ({
           ? {
               display: 'flex',
               flexDirection: 'column',
-              gap: '0.5rem',
+              gap: '1.5rem',
             }
           : {
               display: 'flex',
@@ -112,6 +125,7 @@ export const EffectsConfiguration = ({
               flexDirection: 'column',
               md: {
                 flexDirection: 'row',
+                overflow: 'hidden',
               },
             }
       )}
@@ -164,49 +178,138 @@ export const EffectsConfiguration = ({
                 md: {
                   borderLeft: '1px solid #dadce0',
                   paddingLeft: '1.5rem',
+                  width: '420px',
+                  flexShrink: 0,
                 },
               }
             : {}
         )}
       >
-        <H
-          lvl={3}
-          style={{
-            marginBottom: '0.4rem',
-            fontWeight: 'bold',
-          }}
-        >
-          {t('heading')}
-        </H>
         {isSupported ? (
-          <HStack>
-            <ToggleButton
-              size={'sm'}
-              aria-label={tooltipLabel(BlurRadius.LIGHT)}
-              tooltip={tooltipLabel(BlurRadius.LIGHT)}
-              isDisabled={processorPending}
-              onPress={async () => await toggleBlur(BlurRadius.LIGHT)}
-              isSelected={isSelected(BlurRadius.LIGHT)}
-            >
-              {t('blur.light')}
-            </ToggleButton>
-            <ToggleButton
-              size={'sm'}
-              aria-label={tooltipLabel(BlurRadius.NORMAL)}
-              tooltip={tooltipLabel(BlurRadius.NORMAL)}
-              isDisabled={processorPending}
-              onPress={async () => await toggleBlur(BlurRadius.NORMAL)}
-              isSelected={isSelected(BlurRadius.NORMAL)}
-            >
-              {t('blur.normal')}
-            </ToggleButton>
-          </HStack>
+          <>
+            <div>
+              <div>
+                <H
+                  lvl={3}
+                  style={{
+                    marginBottom: '1rem',
+                  }}
+                  variant="bodyXsBold"
+                >
+                  {t('blur.title')}
+                </H>
+                <div
+                  className={css({
+                    display: 'flex',
+                    gap: '1.25rem',
+                  })}
+                >
+                  <ToggleButton
+                    variant="bigSquare"
+                    aria-label={tooltipLabel(ProcessorType.BLUR, {
+                      blurRadius: BlurRadius.LIGHT,
+                    })}
+                    tooltip={tooltipLabel(ProcessorType.BLUR, {
+                      blurRadius: BlurRadius.LIGHT,
+                    })}
+                    isDisabled={processorPending}
+                    onChange={async () =>
+                      await toggleEffect(ProcessorType.BLUR, {
+                        blurRadius: BlurRadius.LIGHT,
+                      })
+                    }
+                    isSelected={isSelected(ProcessorType.BLUR, {
+                      blurRadius: BlurRadius.LIGHT,
+                    })}
+                  >
+                    <BlurOn />
+                  </ToggleButton>
+                  <ToggleButton
+                    variant="bigSquare"
+                    aria-label={tooltipLabel(ProcessorType.BLUR, {
+                      blurRadius: BlurRadius.NORMAL,
+                    })}
+                    tooltip={tooltipLabel(ProcessorType.BLUR, {
+                      blurRadius: BlurRadius.NORMAL,
+                    })}
+                    isDisabled={processorPending}
+                    onChange={async () =>
+                      await toggleEffect(ProcessorType.BLUR, {
+                        blurRadius: BlurRadius.NORMAL,
+                      })
+                    }
+                    isSelected={isSelected(ProcessorType.BLUR, {
+                      blurRadius: BlurRadius.NORMAL,
+                    })}
+                  >
+                    <BlurOnStrong />
+                  </ToggleButton>
+                </div>
+              </div>
+              <div
+                className={css({
+                  marginTop: '1.5rem',
+                })}
+              >
+                <H
+                  lvl={3}
+                  style={{
+                    marginBottom: '1rem',
+                  }}
+                  variant="bodyXsBold"
+                >
+                  {t('virtual.title')}
+                </H>
+                <div
+                  className={css({
+                    display: 'flex',
+                    gap: '1.25rem',
+                    flexWrap: 'wrap',
+                  })}
+                >
+                  {[...Array(8).keys()].map((i) => {
+                    const imagePath = `/assets/backgrounds/${i + 1}.jpg`
+                    const thumbnailPath = `/assets/backgrounds/thumbnails/${i + 1}.jpg`
+                    return (
+                      <ToggleButton
+                        key={i}
+                        variant="bigSquare"
+                        aria-label={tooltipLabel(ProcessorType.VIRTUAL, {
+                          imagePath,
+                        })}
+                        tooltip={tooltipLabel(ProcessorType.VIRTUAL, {
+                          imagePath,
+                        })}
+                        isDisabled={processorPending}
+                        onChange={async () =>
+                          await toggleEffect(ProcessorType.VIRTUAL, {
+                            imagePath,
+                          })
+                        }
+                        isSelected={isSelected(ProcessorType.VIRTUAL, {
+                          imagePath,
+                        })}
+                        className={css({
+                          bgSize: 'cover',
+                        })}
+                        style={{
+                          backgroundImage: `url(${thumbnailPath})`,
+                        }}
+                      ></ToggleButton>
+                    )
+                  })}
+                </div>
+              </div>
+            </div>
+            <Information className={css({ marginTop: '1rem' })}>
+              <Text variant="sm">⚠︎ {t('experimental')}</Text>
+            </Information>
+          </>
         ) : (
-          <Text variant="sm">{t('notAvailable')}</Text>
+          <Information>
+            <Text variant="sm">{t('notAvailable')}</Text>
+          </Information>
         )}
-        <Information>
-          <Text variant="sm">⚠︎ {t('experimental')}</Text>
-        </Information>
       </div>
     </div>
   )
