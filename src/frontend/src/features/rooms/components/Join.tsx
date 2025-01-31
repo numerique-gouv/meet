@@ -19,6 +19,7 @@ import {
 } from '../livekit/components/effects/EffectsConfiguration'
 import { usePersistentUserChoices } from '../livekit/hooks/usePersistentUserChoices'
 import { BackgroundBlurFactory } from '../livekit/components/blur'
+import { isMobileBrowser } from '@livekit/components-core'
 
 const onError = (e: Error) => console.error('ERROR', e)
 
@@ -29,6 +30,10 @@ const Effects = ({
   const { t } = useTranslation('rooms', { keyPrefix: 'join.effects' })
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const openDialog = () => setIsDialogOpen(true)
+
+  if (!BackgroundBlurFactory.isSupported() || isMobileBrowser()) {
+    return
+  }
 
   return (
     <>
