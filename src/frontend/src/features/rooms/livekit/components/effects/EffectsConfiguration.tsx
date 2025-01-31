@@ -27,15 +27,17 @@ const Information = styled('div', {
   },
 })
 
+export type EffectsConfigurationProps = {
+  videoTrack: LocalVideoTrack
+  onSubmit?: (processor?: BackgroundBlurProcessorInterface) => void
+  layout?: 'vertical' | 'horizontal'
+}
+
 export const EffectsConfiguration = ({
   videoTrack,
   onSubmit,
   layout = 'horizontal',
-}: {
-  videoTrack: LocalVideoTrack
-  onSubmit?: (processor?: BackgroundBlurProcessorInterface) => void
-  layout?: 'vertical' | 'horizontal'
-}) => {
+}: EffectsConfigurationProps) => {
   const videoRef = useRef<HTMLVideoElement>(null)
   const { t } = useTranslation('rooms', { keyPrefix: 'effects' })
   const [processorPending, setProcessorPending] = useState(false)
