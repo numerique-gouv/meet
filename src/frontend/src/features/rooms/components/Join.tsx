@@ -274,6 +274,8 @@ export const Join = ({
                     opacity: 0,
                     transition: 'opacity 0.3s ease-in-out',
                   })}
+                  disablePictureInPicture
+                  disableRemotePlayback
                 />
               ) : (
                 <div
