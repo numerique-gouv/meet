@@ -184,6 +184,8 @@
     "pin": {
       "enable": "",
       "disable": ""
-    }
+    },
+    "effects": "",
+    "muteParticipant": ""
   }
 }
