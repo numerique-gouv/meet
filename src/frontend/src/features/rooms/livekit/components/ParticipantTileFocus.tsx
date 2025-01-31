@@ -2,7 +2,6 @@ import { css } from '@/styled-system/css'
 import { HStack } from '@/styled-system/jsx'
 import { Button } from '@/primitives'
 import {
-  RiAccountBoxLine,
   RiImageCircleAiFill,
   RiMicLine,
   RiMicOffLine,
