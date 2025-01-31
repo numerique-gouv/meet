@@ -242,7 +242,7 @@ export const Footer = () => {
               {t('links.data')}
             </A>
           </StyledLi>
-          <StyledLi>
+          <StyledLi divider>
             <A
               externalIcon
               underline={false}
@@ -253,6 +253,17 @@ export const Footer = () => {
               }
             >
               {t('links.accessibility')}
+            </A>
+          </StyledLi>
+          <StyledLi>
+            <A
+              externalIcon
+              underline={false}
+              footer="minor"
+              href="https://github.com/numerique-gouv/meet/"
+              aria-label={t('links.code') + ' - ' + t('links.ariaLabel')}
+            >
+              {t('links.code')}
             </A>
           </StyledLi>
         </SecondRow>
