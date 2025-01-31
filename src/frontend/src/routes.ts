@@ -1,8 +1,9 @@
 import { FeedbackRoute, RoomRoute, roomIdPattern } from '@/features/rooms'
 import { HomeRoute } from '@/features/home'
+import { SdkCreateButton } from './features/rooms/routes/sdk/CreateButton'
 
 export const routes: Record<
-  'home' | 'room' | 'feedback',
+  'home' | 'room' | 'feedback' | 'sdkCreateButton',
   {
     name: RouteName
     path: RegExp | string
@@ -26,6 +27,11 @@ export const routes: Record<
     name: 'feedback',
     path: '/feedback',
     Component: FeedbackRoute,
+  },
+  sdkCreateButton: {
+    name: 'sdkCreateButton',
+    path: '/sdk/create-button',
+    Component: SdkCreateButton,
   },
 }
 
