@@ -194,6 +194,8 @@
     "pin": {
       "enable": "Épingler",
       "disable": "Annuler l'épinglage"
-    }
+    },
+    "effects": "Appliquer des effets",
+    "muteParticipant": "Couper le micro de {{name}}"
   }
 }
