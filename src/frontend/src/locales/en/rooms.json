@@ -178,6 +178,7 @@
     "muteYourself": "Close your mic",
     "muteParticipant": "Close the mic of {{name}}",
     "muteParticipantAlert": {
+      "heading": "Mute {{name}}",
       "description": "Mute {{name}} for all participants? {{name}} will be the only one who can unmute themselves.",
       "confirm": "Mute",
       "cancel": "Cancel"

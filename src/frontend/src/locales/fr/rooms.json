@@ -178,6 +178,7 @@
     "muteYourself": "Couper votre micro",
     "muteParticipant": "Couper le micro de {{name}}",
     "muteParticipantAlert": {
+      "heading": "Couper le micro de {{name}}",
       "description": "Couper le micro de {{name}} pour tous les participants ? {{name}} est la seule personne habilitée à réactiver son micro",
       "confirm": "Couper le micro",
       "cancel": "Annuler"

@@ -17,7 +17,11 @@ export const MuteAlertDialog = ({
     keyPrefix: 'participants.muteParticipantAlert',
   })
   return (
-    <Dialog isOpen={isOpen} role="alertdialog">
+    <Dialog
+      isOpen={isOpen}
+      role="alertdialog"
+      aria-label={t('heading', { name })}
+    >
       <P>{t('description', { name })}</P>
       <HStack gap={1}>
         <Button variant="text" size="sm" onPress={onClose}>

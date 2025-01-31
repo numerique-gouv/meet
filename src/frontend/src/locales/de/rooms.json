@@ -179,6 +179,7 @@
     "muteYourself": "",
     "muteParticipant": "",
     "muteParticipantAlert": {
+      "heading": "",
       "description": "",
       "confirm": "",
       "cancel": ""
