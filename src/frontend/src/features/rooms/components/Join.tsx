@@ -82,7 +82,8 @@ const Effects = ({
           bottom: 0,
           height: '20%',
           backgroundImage:
-            'linear-gradient(0deg, rgba(0,0,0,0.8) 0%, rgba(255,255,255,0) 100%)',
+            'linear-gradient(0deg, rgba(0,0,0,0.7) 0%, rgba(255,255,255,0) 100%)',
+          borderBottomRadius: '1rem',
         })}
       />
     </>
@@ -267,12 +268,13 @@ export const Join = ({
                   height="720"
                   className={css({
                     display: 'block',
-                    width: '102%',
-                    height: '102%',
+                    width: '100%',
+                    height: '100%',
                     objectFit: 'cover',
                     transform: 'rotateY(180deg)',
                     opacity: 0,
                     transition: 'opacity 0.3s ease-in-out',
+                    borderRadius: '1rem',
                   })}
                   disablePictureInPicture
                   disableRemotePlayback
