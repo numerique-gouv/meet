@@ -34,7 +34,8 @@
       "legalsTerms": "Mentions légales",
       "data": "Données personnelles et cookie",
       "accessibility": "Accessibilités : audit en cours",
-      "ariaLabel": "nouvelle fenêtre"
+      "ariaLabel": "nouvelle fenêtre",
+      "code": "Dépôt de code Open Source"
     },
     "mentions": "Sauf mention contraire, les contenus de ce site sont disponibles sous",
     "license": "licence etalab 2.0"
