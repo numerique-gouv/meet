@@ -31,7 +31,17 @@ export const useSupport = ({ id }: useSupportProps) => {
   return null
 }
 
+// Some users may block Crisp chat widget with browser ad blockers or anti-tracking plugins
+// So we need to safely check if Crisp is available and not blocked
+const isCrispAvailable = () => {
+  try {
+    return !!window?.$crisp?.is
+  } catch {
+    return false
+  }
+}
+
 export const useIsSupportEnabled = () => {
   const { data } = useConfig()
-  return !!data?.support?.id
+  return !!data?.support?.id && isCrispAvailable()
 }
