@@ -8,6 +8,9 @@ export const buttonRecipe = cva({
     transition: 'background 200ms, outline 200ms, border-color 200ms',
     cursor: 'pointer',
     border: '1px solid transparent',
+    '&[data-disabled]': {
+      cursor: 'default',
+    },
   },
   variants: {
     size: {
