@@ -28,6 +28,14 @@ export const text = cva({
           paddingTop: 'heading',
         },
       },
+      subTitle: {
+        fontSize: '1rem',
+        color: 'greyscale.600',
+      },
+      bodyXsBold: {
+        textStyle: 'body',
+        fontWeight: 'bold',
+      },
       body: {
         textStyle: 'body',
       },

@@ -5,7 +5,7 @@ import {
 } from '@livekit/track-processors'
 import { ProcessorOptions, Track } from 'livekit-client'
 import {
-  BackgroundBlurProcessorInterface,
+  BackgroundProcessorInterface,
   BackgroundOptions,
   ProcessorType,
 } from '.'
@@ -16,9 +16,9 @@ import {
  * used accross the project.
  */
 export class BackgroundBlurTrackProcessorJsWrapper
-  implements BackgroundBlurProcessorInterface
+  implements BackgroundProcessorInterface
 {
-  name: string = 'Blur'
+  name: string = 'blur'
 
   processor: ProcessorWrapper<BackgroundOptions>
 

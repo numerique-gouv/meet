@@ -12,7 +12,7 @@ import {
   timerWorkerScript,
 } from './TimerWorker'
 import {
-  BackgroundBlurProcessorInterface,
+  BackgroundProcessorInterface,
   BackgroundOptions,
   ProcessorType,
 } from '.'
@@ -32,9 +32,7 @@ const DEFAULT_BLUR = '10'
  * It also make possible to run blurring on browser that does not implement MediaStreamTrackGenerator and
  * MediaStreamTrackProcessor.
  */
-export class BackgroundBlurCustomProcessor
-  implements BackgroundBlurProcessorInterface
-{
+export class BackgroundCustomProcessor implements BackgroundProcessorInterface {
   options: BackgroundOptions
   name: string
   processedTrack?: MediaStreamTrack | undefined
@@ -63,9 +61,18 @@ export class BackgroundBlurCustomProcessor
 
   timerWorker?: Worker
 
+  type: ProcessorType
+  virtualBackgroundImage?: HTMLImageElement
+
   constructor(opts: BackgroundOptions) {
     this.name = 'blur'
     this.options = opts
+
+    if (this.options.blurRadius) {
+      this.type = ProcessorType.BLUR
+    } else {
+      this.type = ProcessorType.VIRTUAL
+    }
   }
 
   static get isSupported() {
@@ -81,6 +88,7 @@ export class BackgroundBlurCustomProcessor
     this.sourceSettings = this.source!.getSettings()
     this.videoElement = opts.element as HTMLVideoElement
 
+    this._initVirtualBackgroundImage()
     this._createMainCanvas()
     this._createMaskCanvas()
 
@@ -98,8 +106,21 @@ export class BackgroundBlurCustomProcessor
     posthog.capture('firefox-blurring-init')
   }
 
+  _initVirtualBackgroundImage() {
+    const needsUpdate =
+      this.options.imagePath &&
+      this.virtualBackgroundImage &&
+      this.virtualBackgroundImage.src !== this.options.imagePath
+    if (this.options.imagePath || needsUpdate) {
+      this.virtualBackgroundImage = document.createElement('img')
+      this.virtualBackgroundImage.crossOrigin = 'anonymous'
+      this.virtualBackgroundImage.src = this.options.imagePath!
+    }
+  }
+
   update(opts: BackgroundOptions): void {
     this.options = opts
+    this._initVirtualBackgroundImage()
   }
 
   _initWorker() {
@@ -201,6 +222,7 @@ export class BackgroundBlurCustomProcessor
     this.outputCanvasCtx!.globalCompositeOperation = 'copy'
     this.outputCanvasCtx!.filter = 'blur(8px)'
 
+    // Put opacity mask.
     this.outputCanvasCtx!.drawImage(
       this.segmentationMaskCanvas!,
       0,
@@ -213,19 +235,69 @@ export class BackgroundBlurCustomProcessor
       this.videoElement!.videoHeight
     )
 
+    // Draw clear body.
     this.outputCanvasCtx!.globalCompositeOperation = 'source-in'
     this.outputCanvasCtx!.filter = 'none'
     this.outputCanvasCtx!.drawImage(this.videoElement!, 0, 0)
 
+    // Draw blurry background.
     this.outputCanvasCtx!.globalCompositeOperation = 'destination-over'
     this.outputCanvasCtx!.filter = `blur(${this.options.blurRadius ?? DEFAULT_BLUR}px)`
     this.outputCanvasCtx!.drawImage(this.videoElement!, 0, 0)
   }
 
+  /**
+   * TODO: future improvement with WebGL.
+   */
+  async drawVirtualBackground() {
+    const mask = this.imageSegmenterResult!.categoryMask!.getAsUint8Array()
+    for (let i = 0; i < mask.length; ++i) {
+      this.segmentationMask!.data[i * 4 + 3] = 255 - mask[i]
+    }
+
+    this.segmentationMaskCanvasCtx!.putImageData(this.segmentationMask!, 0, 0)
+
+    this.outputCanvasCtx!.globalCompositeOperation = 'copy'
+    this.outputCanvasCtx!.filter = 'blur(8px)'
+
+    // Put opacity mask.
+    this.outputCanvasCtx!.drawImage(
+      this.segmentationMaskCanvas!,
+      0,
+      0,
+      PROCESSING_WIDTH,
+      PROCESSING_HEIGHT,
+      0,
+      0,
+      this.videoElement!.videoWidth,
+      this.videoElement!.videoHeight
+    )
+
+    // Draw clear body.
+    this.outputCanvasCtx!.globalCompositeOperation = 'source-in'
+    this.outputCanvasCtx!.filter = 'none'
+    this.outputCanvasCtx!.drawImage(this.videoElement!, 0, 0)
+
+    // Draw virtual background.
+    this.outputCanvasCtx!.globalCompositeOperation = 'destination-over'
+    this.outputCanvasCtx!.drawImage(
+      this.virtualBackgroundImage!,
+      0,
+      0,
+      this.outputCanvas!.width,
+      this.outputCanvas!.height
+    )
+  }
+
   async process() {
     await this.sizeSource()
     await this.segment()
-    await this.blur()
+
+    if (this.options.blurRadius) {
+      await this.blur()
+    } else {
+      await this.drawVirtualBackground()
+    }
     this.timerWorker!.postMessage({
       id: SET_TIMEOUT,
       timeMs: 1000 / 30,
@@ -284,12 +356,12 @@ export class BackgroundBlurCustomProcessor
   }
 
   clone() {
-    return new BackgroundBlurCustomProcessor(this.options)
+    return new BackgroundCustomProcessor(this.options)
   }
 
   serialize() {
     return {
-      type: ProcessorType.BLUR,
+      type: this.type,
       options: this.options,
     }
   }

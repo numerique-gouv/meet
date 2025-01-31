@@ -27,7 +27,7 @@ import { css } from '@/styled-system/css'
 import { ButtonRecipeProps } from '@/primitives/buttonRecipe'
 import { useEffect } from 'react'
 import { usePersistentUserChoices } from '../../hooks/usePersistentUserChoices'
-import { BackgroundBlurFactory } from '../blur'
+import { BackgroundProcessorFactory } from '../blur'
 
 export type ToggleSource = Exclude<
   Track.Source,
@@ -115,7 +115,7 @@ export const SelectToggleDevice = <T extends ToggleSource>({
        *
        * See https://github.com/numerique-gouv/meet/pull/309#issuecomment-2622404121
        */
-      const processor = BackgroundBlurFactory.deserializeProcessor(
+      const processor = BackgroundProcessorFactory.deserializeProcessor(
         userChoices.processorSerialized
       )
 
