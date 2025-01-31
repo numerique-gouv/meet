@@ -13,16 +13,18 @@ export const MuteAlertDialog = ({
   onSubmit: () => void
   name: string
 }) => {
-  const { t } = useTranslation('rooms')
+  const { t } = useTranslation('rooms', {
+    keyPrefix: 'participants.muteParticipantAlert',
+  })
   return (
     <Dialog isOpen={isOpen} role="alertdialog">
-      <P>{t('participants.muteParticipantAlert.description', { name })}</P>
+      <P>{t('description', { name })}</P>
       <HStack gap={1}>
         <Button variant="text" size="sm" onPress={onClose}>
-          {t('participants.muteParticipantAlert.cancel')}
+          {t('cancel')}
         </Button>
         <Button variant="text" size="sm" onPress={onSubmit}>
-          {t('participants.muteParticipantAlert.confirm')}
+          {t('confirm')}
         </Button>
       </HStack>
     </Dialog>
