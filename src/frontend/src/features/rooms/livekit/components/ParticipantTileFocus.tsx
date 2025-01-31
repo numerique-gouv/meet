@@ -1,11 +1,24 @@
 import { css } from '@/styled-system/css'
 import { HStack } from '@/styled-system/jsx'
 import { Button } from '@/primitives'
-import { RiPushpin2Line, RiUnpinLine } from '@remixicon/react'
-import { useFocusToggle } from '@livekit/components-react'
+import {
+  RiImageCircleAiFill,
+  RiMicLine,
+  RiMicOffLine,
+  RiPushpin2Line,
+  RiUnpinLine,
+} from '@remixicon/react'
+import {
+  useFocusToggle,
+  useTrackMutedIndicator,
+} from '@livekit/components-react'
 import { useTranslation } from 'react-i18next'
 import { TrackReferenceOrPlaceholder } from '@livekit/components-core'
 import { useEffect, useState } from 'react'
+import { useSidePanel } from '@/features/rooms/livekit/hooks/useSidePanel'
+import { Participant, Track } from 'livekit-client'
+import { MuteAlertDialog } from './MuteAlertDialog'
+import { useMuteParticipant } from '../api/muteParticipant'
 
 const FocusButton = ({
   trackRef,
@@ -31,6 +44,59 @@ const FocusButton = ({
   )
 }
 
+const EffectsButton = () => {
+  const { t } = useTranslation('rooms', { keyPrefix: 'participantTileFocus' })
+  const { isEffectsOpen, toggleEffects } = useSidePanel()
+  return (
+    <Button
+      size={'sm'}
+      variant={'primaryTextDark'}
+      square
+      tooltip={t('effects')}
+      onPress={() => !isEffectsOpen && toggleEffects()}
+    >
+      <RiImageCircleAiFill />
+    </Button>
+  )
+}
+
+const MuteButton = ({ participant }: { participant: Participant }) => {
+  const { t } = useTranslation('rooms', { keyPrefix: 'participantTileFocus' })
+
+  const { isMuted } = useTrackMutedIndicator({
+    participant: participant,
+    source: Track.Source.Microphone,
+  })
+
+  const { muteParticipant } = useMuteParticipant()
+  const [isAlertOpen, setIsAlertOpen] = useState(false)
+
+  const name = participant.name || participant.identity
+
+  return (
+    <>
+      <Button
+        isDisabled={isMuted}
+        size={'sm'}
+        variant={'primaryTextDark'}
+        square
+        onPress={() => setIsAlertOpen(true)}
+        tooltip={t('muteParticipant', { name })}
+      >
+        {!isMuted ? <RiMicLine /> : <RiMicOffLine />}
+      </Button>
+      <MuteAlertDialog
+        isOpen={isAlertOpen}
+        onSubmit={() =>
+          muteParticipant(participant).then(() => setIsAlertOpen(false))
+        }
+        onClose={() => setIsAlertOpen(false)}
+        name={name}
+      />
+    </>
+  )
+}
+
 export const ParticipantTileFocus = ({
   trackRef,
 }: {
@@ -49,6 +115,8 @@ export const ParticipantTileFocus = ({
       setOpacity(0)
     }
   }, [hovered])
+
+  const participant = trackRef.participant
 
   return (
     <div
@@ -89,6 +157,11 @@ export const ParticipantTileFocus = ({
             })}
           >
             <FocusButton trackRef={trackRef} />
+            {participant.isLocal ? (
+              <EffectsButton />
+            ) : (
+              <MuteButton participant={participant} />
+            )}
           </HStack>
         </div>
       )}

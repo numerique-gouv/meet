@@ -194,6 +194,8 @@
     "pin": {
       "enable": "Pin",
       "disable": "Unpin"
-    }
+    },
+    "effects": "Apply visual effects",
+    "muteParticipant": "Mute {{name}}"
   }
 }
