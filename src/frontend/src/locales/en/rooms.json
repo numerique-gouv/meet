@@ -188,5 +188,11 @@
   },
   "recording": {
     "label": "Recording"
+  },
+  "participantTileFocus": {
+    "pin": {
+      "enable": "Pin",
+      "disable": "Unpin"
+    }
   }
 }

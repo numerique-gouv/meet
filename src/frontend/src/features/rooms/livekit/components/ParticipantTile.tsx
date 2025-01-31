@@ -1,7 +1,6 @@
 import {
   AudioTrack,
   ConnectionQualityIndicator,
-  FocusToggle,
   LockLockedIcon,
   ParticipantName,
   ParticipantTileProps,
@@ -23,11 +22,12 @@ import {
   TrackReferenceOrPlaceholder,
 } from '@livekit/components-core'
 import { Track } from 'livekit-client'
-import { ParticipantPlaceholder } from '@/features/rooms/livekit/components/ParticipantPlaceholder'
 import { RiHand } from '@remixicon/react'
-import { useRaisedHand } from '@/features/rooms/livekit/hooks/useRaisedHand'
+import { useRaisedHand } from '../hooks/useRaisedHand'
 import { HStack } from '@/styled-system/jsx'
-import { MutedMicIndicator } from '@/features/rooms/livekit/components/MutedMicIndicator'
+import { MutedMicIndicator } from './MutedMicIndicator'
+import { ParticipantPlaceholder } from './ParticipantPlaceholder'
+import { ParticipantTileFocus } from './ParticipantTileFocus'
 
 export function TrackRefContextIfNeeded(
   props: React.PropsWithChildren<{
@@ -173,7 +173,9 @@ export const ParticipantTile: (
               )}
             </>
           )}
-          {!disableMetadata && <FocusToggle trackRef={trackReference} />}
+          {!disableMetadata && (
+            <ParticipantTileFocus trackRef={trackReference} />
+          )}
         </ParticipantContextIfNeeded>
       </TrackRefContextIfNeeded>
     </div>
