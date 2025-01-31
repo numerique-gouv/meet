@@ -1,0 +1,46 @@
+{
+  "name": "@gouvfr-lasuite/visio-sdk",
+  "private": false,
+  "publishConfig": {
+    "access": "public"
+  },
+  "version": "0.0.2",
+  "type": "module",
+  "main": "./dist/widged-sdk.umd.cjs",
+  "module": "./dist/widged-sdk.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/widged-sdk.js",
+      "require": "./dist/widged-sdk.umd.cjs"
+    }
+  },
+  "scripts": {
+    "dev": "vite build -w",
+    "build": "tsc -b && vite build",
+    "lint": "eslint . --ext ts,tsx",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "react-modal": "3.16.1",
+    "styled-components": "6.1.12"
+  },
+  "devDependencies": {
+    "@types/react": "18.3.3",
+    "@types/react-dom": "18.3.0",
+    "@types/styled-components": "^5.1.34",
+    "@typescript-eslint/eslint-plugin": "7.15.0",
+    "@typescript-eslint/parser": "7.15.0",
+    "@vitejs/plugin-react-swc": "3.5.0",
+    "eslint": "8.57.0",
+    "eslint-plugin-react-hooks": "4.6.2",
+    "eslint-plugin-react-refresh": "0.4.7",
+    "typescript": "5.4.5",
+    "vite": "5.3.4",
+    "vite-plugin-dts": "3.9.1",
+    "vite-tsconfig-paths": "4.3.2"
+  }
+}

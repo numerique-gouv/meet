@@ -1,0 +1,10 @@
+.widged__modal__overlay {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: var(--c--components--modal--backdrop-color);
+  opacity: 0;
+  animation: backdrop-fade-in .2s ease-out forwards;
+}
