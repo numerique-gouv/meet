@@ -27,7 +27,7 @@ export const ToggleButton = ({
     <TooltipWrapper tooltip={tooltip} tooltipType={tooltipType}>
       <RACToggleButton
         {...componentProps}
-        className={buttonRecipe(variantProps)}
+        className={[buttonRecipe(variantProps), props.className].join(' ')}
       >
         <>
           {componentProps.children as ReactNode}

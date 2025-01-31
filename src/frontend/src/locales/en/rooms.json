@@ -20,7 +20,8 @@
     },
     "effects": {
       "description": "Apply effects",
-      "title": "Effects"
+      "title": "Effects",
+      "subTitle": "Configure your camera's effects."
     },
     "heading": "Join the meeting",
     "joinLabel": "Join",
@@ -102,13 +103,19 @@
   },
   "effects": {
     "activateCamera": "Your camera is disabled. Choose an option to enable it.",
-    "notAvailable": "The blur effect will be available soon on your browser. We're working on it! In the meantime, you can use Google Chrome for best performance or Firefox :(",
+    "notAvailable": "Video effects will be available soon on your browser. We're working on it! In the meantime, you can use Google Chrome for best performance or Firefox :(",
     "heading": "Blur",
     "blur": {
+      "title": "Background blur",
       "light": "Light blur",
       "normal": "Blur",
       "apply": "Enable blur",
       "clear": "Disable blur"
+    },
+    "virtual": {
+      "title": "Virtual background",
+      "apply": "Enable virtual background",
+      "clear": "Disable virtual background"
     },
     "experimental": "Experimental feature. A v2 is coming for full browser support and improved quality."
   },

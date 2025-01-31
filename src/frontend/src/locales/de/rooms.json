@@ -19,6 +19,11 @@
       "label": ""
     },
     "heading": "",
+    "effects": {
+      "description": "",
+      "title": "",
+      "subTitle": ""
+    },
     "joinLabel": "",
     "joinMeeting": "",
     "toggleOff": "",
@@ -102,8 +107,14 @@
     "notAvailable": "",
     "heading": "",
     "blur": {
+      "title": "",
       "light": "",
       "normal": "",
+      "apply": "",
+      "clear": ""
+    },
+    "virtual": {
+      "title": "",
       "apply": "",
       "clear": ""
     },
