@@ -16,7 +16,7 @@ import { VideoConference } from '../livekit/prefabs/VideoConference'
 import posthog from 'posthog-js'
 import { css } from '@/styled-system/css'
 import { LocalUserChoices } from '../routes/Room'
-import { BackgroundBlurFactory } from '../livekit/components/blur'
+import { BackgroundProcessorFactory } from '../livekit/components/blur'
 
 export const Conference = ({
   roomId,
@@ -114,7 +114,7 @@ export const Conference = ({
           audio={userConfig.audioEnabled}
           video={
             userConfig.videoEnabled && {
-              processor: BackgroundBlurFactory.deserializeProcessor(
+              processor: BackgroundProcessorFactory.deserializeProcessor(
                 userConfig.processorSerialized
               ),
             }

@@ -1,10 +1,12 @@
 import { ProcessorWrapper } from '@livekit/track-processors'
 import { Track, TrackProcessor } from 'livekit-client'
 import { BackgroundBlurTrackProcessorJsWrapper } from './BackgroundBlurTrackProcessorJsWrapper'
-import { BackgroundBlurCustomProcessor } from './BackgroundBlurCustomProcessor'
+import { BackgroundCustomProcessor } from './BackgroundCustomProcessor'
+import { BackgroundVirtualTrackProcessorJsWrapper } from './BackgroundVirtualTrackProcessorJsWrapper'
 
 export type BackgroundOptions = {
   blurRadius?: number
+  imagePath?: string
 }
 
 export interface ProcessorSerialized {
@@ -12,40 +14,49 @@ export interface ProcessorSerialized {
   options: BackgroundOptions
 }
 
-export interface BackgroundBlurProcessorInterface
+export interface BackgroundProcessorInterface
   extends TrackProcessor<Track.Kind> {
   update(opts: BackgroundOptions): void
   options: BackgroundOptions
-  clone(): BackgroundBlurProcessorInterface
+  clone(): BackgroundProcessorInterface
   serialize(): ProcessorSerialized
 }
 
 export enum ProcessorType {
   BLUR = 'blur',
+  VIRTUAL = 'virtual',
 }
 
-export class BackgroundBlurFactory {
+export class BackgroundProcessorFactory {
   static isSupported() {
-    return (
-      ProcessorWrapper.isSupported || BackgroundBlurCustomProcessor.isSupported
-    )
+    return ProcessorWrapper.isSupported || BackgroundCustomProcessor.isSupported
   }
 
   static getProcessor(
+    type: ProcessorType,
     opts: BackgroundOptions
-  ): BackgroundBlurProcessorInterface | undefined {
-    if (ProcessorWrapper.isSupported) {
-      return new BackgroundBlurTrackProcessorJsWrapper(opts)
-    }
-    if (BackgroundBlurCustomProcessor.isSupported) {
-      return new BackgroundBlurCustomProcessor(opts)
+  ): BackgroundProcessorInterface | undefined {
+    if (type === ProcessorType.BLUR) {
+      if (ProcessorWrapper.isSupported) {
+        return new BackgroundBlurTrackProcessorJsWrapper(opts)
+      }
+      if (BackgroundCustomProcessor.isSupported) {
+        return new BackgroundCustomProcessor(opts)
+      }
+    } else if (type === ProcessorType.VIRTUAL) {
+      if (ProcessorWrapper.isSupported) {
+        return new BackgroundVirtualTrackProcessorJsWrapper(opts)
+      }
+      if (BackgroundCustomProcessor.isSupported) {
+        return new BackgroundCustomProcessor(opts)
+      }
     }
     return undefined
   }
 
   static deserializeProcessor(data?: ProcessorSerialized) {
-    if (data?.type === ProcessorType.BLUR) {
-      return BackgroundBlurFactory.getProcessor(data?.options)
+    if (data?.type) {
+      return BackgroundProcessorFactory.getProcessor(data?.type, data?.options)
     }
     return undefined
   }

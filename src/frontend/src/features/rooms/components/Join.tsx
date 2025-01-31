@@ -7,9 +7,8 @@ import { LocalVideoTrack, Track } from 'livekit-client'
 import { H } from '@/primitives/H'
 import { SelectToggleDevice } from '../livekit/components/controls/SelectToggleDevice'
 import { Field } from '@/primitives/Field'
-import { Form } from '@/primitives'
+import { Button, Dialog, Text, Form } from '@/primitives'
 import { HStack, VStack } from '@/styled-system/jsx'
-import { Button, Dialog } from '@/primitives'
 import { LocalUserChoices } from '../routes/Room'
 import { Heading } from 'react-aria-components'
 import { RiImageCircleAiFill } from '@remixicon/react'
@@ -18,7 +17,7 @@ import {
   EffectsConfigurationProps,
 } from '../livekit/components/effects/EffectsConfiguration'
 import { usePersistentUserChoices } from '../livekit/hooks/usePersistentUserChoices'
-import { BackgroundBlurFactory } from '../livekit/components/blur'
+import { BackgroundProcessorFactory } from '../livekit/components/blur'
 import { isMobileBrowser } from '@livekit/components-core'
 
 const onError = (e: Error) => console.error('ERROR', e)
@@ -31,7 +30,7 @@ const Effects = ({
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const openDialog = () => setIsDialogOpen(true)
 
-  if (!BackgroundBlurFactory.isSupported() || isMobileBrowser()) {
+  if (!BackgroundProcessorFactory.isSupported() || isMobileBrowser()) {
     return
   }
 
@@ -49,11 +48,19 @@ const Effects = ({
           level={1}
           className={css({
             textStyle: 'h1',
-            marginBottom: '1.5rem',
+            marginBottom: '0.25rem',
           })}
         >
           {t('title')}
         </Heading>
+        <Text
+          variant="subTitle"
+          className={css({
+            marginBottom: '1.5rem',
+          })}
+        >
+          {t('subTitle')}
+        </Text>
         <EffectsConfiguration videoTrack={videoTrack} onSubmit={onSubmit} />
       </Dialog>
       <div
@@ -105,6 +112,8 @@ export const Join = ({
     saveProcessorSerialized,
   } = usePersistentUserChoices({})
 
+  const [audioEnabled, setAudioEnabled] = useState(true)
+  const [videoEnabled, setVideoEnabled] = useState(true)
   const [audioDeviceId, setAudioDeviceId] = useState<string>(
     initialUserChoices.audioDeviceId
   )
@@ -113,7 +122,7 @@ export const Join = ({
   )
   const [username, setUsername] = useState<string>(initialUserChoices.username)
   const [processor, setProcessor] = useState(
-    BackgroundBlurFactory.deserializeProcessor(
+    BackgroundProcessorFactory.deserializeProcessor(
       initialUserChoices.processorSerialized
     )
   )
@@ -129,12 +138,15 @@ export const Join = ({
   useEffect(() => {
     saveUsername(username)
   }, [username, saveUsername])
+
   useEffect(() => {
     saveProcessorSerialized(processor?.serialize())
-  }, [processor, saveProcessorSerialized])
-
-  const [audioEnabled, setAudioEnabled] = useState(true)
-  const [videoEnabled, setVideoEnabled] = useState(true)
+  }, [
+    processor,
+    saveProcessorSerialized,
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    JSON.stringify(processor?.serialize()),
+  ])
 
   const tracks = usePreviewTracks(
     {
