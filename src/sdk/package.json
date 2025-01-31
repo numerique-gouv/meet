@@ -5,7 +5,6 @@
   "license": "ISC",
   "description": "",
   "workspaces": [
-    "./consumer",
     "./library"
   ]
 }
