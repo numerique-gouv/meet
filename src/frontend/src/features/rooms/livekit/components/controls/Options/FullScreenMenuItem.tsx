@@ -7,7 +7,7 @@ import { useFullScreen } from '../../../hooks/useFullScreen'
 export const FullScreenMenuItem = () => {
   const { t } = useTranslation('rooms', { keyPrefix: 'options.items' })
   const { toggleFullScreen, isCurrentlyFullscreen, isFullscreenAvailable } =
-    useFullScreen()
+    useFullScreen({})
 
   if (!isFullscreenAvailable) {
     return null

@@ -2,9 +2,32 @@
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-nocheck
 
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
+import { TrackReferenceOrPlaceholder } from '@livekit/components-core'
 
-export function useFullScreen() {
+export function useFullScreen({
+  trackRef,
+}: {
+  trackRef?: TrackReferenceOrPlaceholder
+}) {
+  const videoElement = useMemo(() => {
+    const elements = trackRef?.publication?.track?.attachedElements
+
+    if (!elements) return
+
+    // Find the visible video element
+    const likeKitElement = elements.find((el) =>
+      el.classList.contains('lk-participant-media-video')
+    )
+
+    if (!likeKitElement) {
+      console.warn('Could not find LiveKit-managed video element')
+      return elements[0] || null
+    }
+
+    return likeKitElement
+  }, [trackRef])
+
   const getIsFullscreen = () => {
     return !!(
       document.fullscreenElement ||
@@ -24,7 +47,7 @@ export function useFullScreen() {
 
   const enterFullscreen = async () => {
     try {
-      const docEl = document.documentElement
+      const docEl = videoElement || document.documentElement
       if (docEl.requestFullscreen) {
         await docEl.requestFullscreen()
       } else if (docEl.webkitRequestFullscreen) {
