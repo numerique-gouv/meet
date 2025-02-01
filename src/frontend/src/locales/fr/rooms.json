@@ -196,6 +196,7 @@
       "disable": "Annuler l'épinglage"
     },
     "effects": "Appliquer des effets",
-    "muteParticipant": "Couper le micro de {{name}}"
+    "muteParticipant": "Couper le micro de {{name}}",
+    "fullScreen": "Plein écran"
   }
 }

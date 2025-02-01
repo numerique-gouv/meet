@@ -196,6 +196,7 @@
       "disable": "Unpin"
     },
     "effects": "Apply visual effects",
-    "muteParticipant": "Mute {{name}}"
+    "muteParticipant": "Mute {{name}}",
+    "fullScreen": "Full screen"
   }
 }
