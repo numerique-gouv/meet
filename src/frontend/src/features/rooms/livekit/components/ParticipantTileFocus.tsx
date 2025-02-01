@@ -2,6 +2,7 @@ import { css } from '@/styled-system/css'
 import { HStack } from '@/styled-system/jsx'
 import { Button } from '@/primitives'
 import {
+  RiFullscreenLine,
   RiImageCircleAiFill,
   RiMicLine,
   RiMicOffLine,
@@ -15,10 +16,38 @@ import {
 import { useTranslation } from 'react-i18next'
 import { TrackReferenceOrPlaceholder } from '@livekit/components-core'
 import { useEffect, useState } from 'react'
-import { useSidePanel } from '@/features/rooms/livekit/hooks/useSidePanel'
+import { useSidePanel } from '../hooks/useSidePanel'
+import { useFullScreen } from '../hooks/useFullScreen'
 import { Participant, Track } from 'livekit-client'
 import { MuteAlertDialog } from './MuteAlertDialog'
 import { useMuteParticipant } from '../api/muteParticipant'
+
+const ZoomButton = ({
+  trackRef,
+}: {
+  trackRef: TrackReferenceOrPlaceholder
+}) => {
+  const { t } = useTranslation('rooms', { keyPrefix: 'participantTileFocus' })
+  const { toggleFullScreen, isFullscreenAvailable } = useFullScreen({
+    trackRef,
+  })
+
+  if (!isFullscreenAvailable) {
+    return
+  }
+
+  return (
+    <Button
+      size="sm"
+      variant="primaryTextDark"
+      square
+      tooltip={t('fullScreen')}
+      onPress={() => toggleFullScreen()}
+    >
+      <RiFullscreenLine />
+    </Button>
+  )
+}
 
 const FocusButton = ({
   trackRef,
@@ -118,6 +147,9 @@ export const ParticipantTileFocus = ({
 
   const participant = trackRef.participant
 
+  const isScreenShare = trackRef.source == Track.Source.ScreenShare
+  const isLocal = trackRef.participant.isLocal
+
   return (
     <div
       className={css({
@@ -157,10 +189,16 @@ export const ParticipantTileFocus = ({
             })}
           >
             <FocusButton trackRef={trackRef} />
-            {participant.isLocal ? (
-              <EffectsButton />
+            {!isScreenShare ? (
+              <>
+                {participant.isLocal ? (
+                  <EffectsButton />
+                ) : (
+                  <MuteButton participant={participant} />
+                )}
+              </>
             ) : (
-              <MuteButton participant={participant} />
+              !isLocal && <ZoomButton trackRef={trackRef} />
             )}
           </HStack>
         </div>
