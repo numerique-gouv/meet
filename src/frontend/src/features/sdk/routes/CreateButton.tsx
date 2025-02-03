@@ -8,10 +8,12 @@ import { RiCheckLine, RiFileCopyLine } from '@remixicon/react'
 import { VisioIcon } from '@/assets/VisioIcon'
 import { generateRoomId, useCreateRoom } from '../../rooms'
 import { ClientMessageType, SdkReverseClient } from '../SdkReverseClient'
+import { authUrl, useUser } from '@/features/auth'
 
 export const SdkCreateButton = () => {
+  const { isLoggedIn } = useUser()
+  console.log('isLoggedIn', isLoggedIn)
   const { t } = useTranslation('sdk', { keyPrefix: 'createButton' })
-  const { t: th } = useTranslation('home')
   const [roomUrl, setRoomUrl] = useState<string>()
   const [isLoading, setIsLoading] = useState(false)
   const {
@@ -20,7 +22,32 @@ export const SdkCreateButton = () => {
 
   const { mutateAsync: createRoom } = useCreateRoom()
 
-  const submit = () => {
+  /**
+   * Listen to the broadcast channel. When the window opened via startSSO will be redirected to the success page,
+   * it will broadcast an AUTHENTICATED message which this function will use to re-fetch the user.
+   * Once this is done we will broadcast an AUTHENTICATED_ACK message to the opened window which will be waiting
+   * for it to close itself.
+   */
+  const setupBroadcastChannel = () => {
+    const bc = new BroadcastChannel('APP_CHANNEL')
+    bc.onmessage = async (event) => {
+      console.log('EVENT BROADCAST', event.data)
+      if (event.data.type === 'AUTHENTICATED') {
+        // await init?.()
+        bc.postMessage({ type: 'AUTHENTICATED_ACK' })
+        submitCreateRoom()
+      }
+    }
+  }
+
+  const startSSO = () => {
+    setupBroadcastChannel()
+    const params = `scrollbars=no,resizable=no,status=no,location=no,toolbar=no,menubar=no,
+width=400,height=900,left=100,top=100`
+    window.open(new URL('authenticate/', authUrl()).href, '', params)
+  }
+
+  const submitCreateRoom = () => {
     console.log('SUBMIT')
     setIsLoading(true)
     setTimeout(() => {
@@ -36,13 +63,12 @@ export const SdkCreateButton = () => {
     }, 0)
   }
 
-  const [isCopied, setIsCopied] = useState(false)
-  const [isHovered, setIsHovered] = useState(false)
-
-  const copy = () => {
-    navigator.clipboard.writeText(roomUrl!)
-    setIsCopied(true)
-    setTimeout(() => setIsCopied(false), 1000)
+  const submit = () => {
+    if (isLoggedIn) {
+      submitCreateRoom()
+    } else {
+      startSSO()
+    }
   }
 
   return (
@@ -53,34 +79,7 @@ export const SdkCreateButton = () => {
       })}
     >
       {roomUrl ? (
-        <Button
-          variant={isCopied ? 'success' : 'quaternary'}
-          onHoverChange={setIsHovered}
-          data-attr="sdk-create-copy"
-          onPress={copy}
-          className={css({
-            ...(isCopied
-              ? {}
-              : {
-                  paddingLeft: 0,
-                }),
-          })}
-          icon={
-            isCopied ? (
-              <RiCheckLine size={18} style={{ marginRight: '8px' }} />
-            ) : (
-              <RiFileCopyLine size={24} />
-            )
-          }
-        >
-          {isCopied ? (
-            th('laterMeetingDialog.copied')
-          ) : (
-            <>
-              {isHovered ? th('laterMeetingDialog.copy') : <div>{roomUrl}</div>}
-            </>
-          )}
-        </Button>
+        <RoomButton roomUrl={roomUrl} />
       ) : (
         <Button
           variant="primaryDark"
@@ -94,5 +93,52 @@ export const SdkCreateButton = () => {
         </Button>
       )}
     </div>
+  )
+}
+
+const RoomButton = ({ roomUrl }: { roomUrl: string }) => {
+  const { t } = useTranslation('sdk', { keyPrefix: 'createButton' })
+  const { t: th } = useTranslation('home')
+  const [isCopied, setIsCopied] = useState(false)
+  const [isHovered, setIsHovered] = useState(false)
+
+  const copy = () => {
+    navigator.clipboard.writeText(roomUrl!)
+    setIsCopied(true)
+    setTimeout(() => setIsCopied(false), 1000)
+  }
+
+  return (
+    <>
+      {roomUrl}
+      <Button
+        variant={isCopied ? 'success' : 'quaternaryText'}
+        onHoverChange={setIsHovered}
+        data-attr="sdk-create-copy"
+        onPress={copy}
+        className={css({
+          ...(isCopied
+            ? {}
+            : {
+                paddingLeft: 0,
+              }),
+        })}
+        icon={
+          isCopied ? (
+            <RiCheckLine size={18} style={{ marginRight: '8px' }} />
+          ) : (
+            <RiFileCopyLine size={24} />
+          )
+        }
+      >
+        {isCopied ? (
+          th('laterMeetingDialog.copied')
+        ) : (
+          <>
+            {isHovered ? th('laterMeetingDialog.copy') : <div>{roomUrl}</div>}
+          </>
+        )}
+      </Button>
+    </>
   )
 }

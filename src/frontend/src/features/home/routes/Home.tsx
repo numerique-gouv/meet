@@ -14,7 +14,7 @@ import { RiAddLine, RiLink } from '@remixicon/react'
 import { LaterMeetingDialog } from '@/features/home/components/LaterMeetingDialog'
 import { IntroSlider } from '@/features/home/components/IntroSlider'
 import { MoreLink } from '@/features/home/components/MoreLink'
-import { ReactNode, useState } from 'react'
+import { ReactNode, useEffect, useState } from 'react'
 
 import { css } from '@/styled-system/css'
 import { menuRecipe } from '@/primitives/menuRecipe.ts'
@@ -155,6 +155,31 @@ export const Home = () => {
 
   const { mutateAsync: createRoom } = useCreateRoom()
   const [laterRoomId, setLaterRoomId] = useState<null | string>(null)
+
+  const { user } = useUser()
+
+  /**
+   * Used for SDK popup.
+   */
+  useEffect(() => {
+    if (!user) {
+      return
+    }
+
+    const bc = new BroadcastChannel('APP_CHANNEL')
+    bc.postMessage({ type: 'AUTHENTICATED' })
+
+    /**
+     * This means the parent window has authenticated has successfully refetched user, then we can close the popup.
+     */
+    bc.onmessage = (event) => {
+      console.log('message', event.data)
+      if (event.data.type === 'AUTHENTICATED_ACK') {
+        console.log('CLOSE WINDOW')
+        window.close()
+      }
+    }
+  }, [user])
 
   return (
     <UserAware>
