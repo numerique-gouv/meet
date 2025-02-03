@@ -8,6 +8,7 @@ export const buttonRecipe = cva({
     transition: 'background 200ms, outline 200ms, border-color 200ms',
     cursor: 'pointer',
     border: '1px solid transparent',
+    gap: '0.5rem',
   },
   variants: {
     size: {
@@ -228,6 +229,9 @@ export const buttonRecipe = cva({
       true: {
         width: 'full',
       },
+    },
+    loading: {
+      true: {},
     },
     // some toggle buttons make more sense without a "pushed button" style when selected because their content changes to mark the state
     shySelected: {

@@ -28,11 +28,11 @@ export const routes: Record<
     path: '/feedback',
     Component: FeedbackRoute,
   },
-  sdkCreateButton: {
-    name: 'sdkCreateButton',
-    path: '/sdk/create-button',
-    Component: SdkCreateButton,
-  },
+  // sdkCreateButton: {
+  //   name: 'sdkCreateButton',
+  //   path: '/sdk/create-button',
+  //   Component: SdkCreateButton,
+  // },
 }
 
 export type RouteName = keyof typeof routes
