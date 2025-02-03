@@ -2,9 +2,11 @@ import { DEFAULT_CONFIG } from "@/Config";
 import { ClientMessageType } from "@/Types";
 import { useEffect, useRef } from "react";
 
-export const VisioCreateButton = () => {
-  const iframe = useRef<HTMLIFrameElement>(null);
-
+export const VisioCreateButton = ({
+  onRoomCreated,
+}: {
+  onRoomCreated: (roomUrl: string) => void;
+}) => {
   useEffect(() => {
     window.onmessage = (event) => {
       // TODO: Verify origin.
@@ -16,16 +18,20 @@ export const VisioCreateButton = () => {
       if (event.data.type === ClientMessageType.ROOM_CREATED) {
         console.log("event", event);
         const data = event.data.data;
+        const roomUrl = data.url;
+        console.log("roomUrl", roomUrl);
+        onRoomCreated(roomUrl);
       }
     };
   }, []);
 
   return (
     <iframe
+      allow="clipboard-read; clipboard-write"
       src={DEFAULT_CONFIG.url + "/create-button"}
       style={{
         width: "100%",
-        height: "48px",
+        height: "52px",
         border: "none",
       }}
     ></iframe>

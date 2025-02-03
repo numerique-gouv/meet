@@ -13,7 +13,7 @@ import { routes } from './routes'
 import './i18n/init'
 import { queryClient } from '@/api/queryClient'
 import { AppInitialization } from '@/components/AppInitialization'
-import { SdkCreateButton } from './features/rooms/routes/sdk/CreateButton'
+import { SdkCreateButton } from './features/sdk/routes/CreateButton'
 
 function App() {
   const { i18n } = useTranslation()

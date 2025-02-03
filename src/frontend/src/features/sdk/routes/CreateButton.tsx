@@ -1,14 +1,13 @@
 import { Button } from '@/primitives/Button'
 import { useTranslation } from 'react-i18next'
-import { generateRoomId } from '../../utils/generateRoomId'
-import { useCreateRoom } from '../../api/createRoom'
 import { usePersistentUserChoices } from '@livekit/components-react'
 import { useState } from 'react'
 import { getRouteUrl } from '@/navigation/getRouteUrl'
 import { css } from '@/styled-system/css'
 import { RiCheckLine, RiFileCopyLine } from '@remixicon/react'
-import { Loader } from '@/primitives/Loader'
 import { VisioIcon } from '@/assets/VisioIcon'
+import { generateRoomId, useCreateRoom } from '../../rooms'
+import { ClientMessageType, SdkReverseClient } from '../SdkReverseClient'
 
 export const SdkCreateButton = () => {
   const { t } = useTranslation('sdk', { keyPrefix: 'createButton' })
@@ -30,8 +29,11 @@ export const SdkCreateButton = () => {
         const roomUrlTmp = getRouteUrl('room', data.slug)
         setRoomUrl(roomUrlTmp)
         setIsLoading(false)
+        SdkReverseClient.post(ClientMessageType.ROOM_CREATED, {
+          url: roomUrlTmp,
+        })
       })
-    }, 2000)
+    }, 0)
   }
 
   const [isCopied, setIsCopied] = useState(false)
@@ -44,33 +46,39 @@ export const SdkCreateButton = () => {
   }
 
   return (
-    <div className={css({})}>
+    <div
+      className={css({
+        paddingTop: '3px',
+        paddingLeft: '3px',
+      })}
+    >
       {roomUrl ? (
         <Button
-          variant={isCopied ? 'success' : 'tertiaryText'}
+          variant={isCopied ? 'success' : 'quaternary'}
           onHoverChange={setIsHovered}
           data-attr="sdk-create-copy"
           onPress={copy}
+          className={css({
+            ...(isCopied
+              ? {}
+              : {
+                  paddingLeft: 0,
+                }),
+          })}
           icon={
             isCopied ? (
               <RiCheckLine size={18} style={{ marginRight: '8px' }} />
-            ) : undefined
+            ) : (
+              <RiFileCopyLine size={24} />
+            )
           }
         >
           {isCopied ? (
             th('laterMeetingDialog.copied')
           ) : (
-            <div
-              className={css({
-                display: 'flex',
-                alignItems: 'center',
-                color: 'greyscale.600',
-                gap: '0.5rem',
-              })}
-            >
-              <div>{roomUrl}</div>
-              <RiFileCopyLine size={24} />
-            </div>
+            <>
+              {isHovered ? th('laterMeetingDialog.copy') : <div>{roomUrl}</div>}
+            </>
           )}
         </Button>
       ) : (

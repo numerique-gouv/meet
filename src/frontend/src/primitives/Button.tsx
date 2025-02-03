@@ -23,12 +23,13 @@ export const Button = ({
   ...props
 }: ButtonProps) => {
   const [variantProps, componentProps] = buttonRecipe.splitVariantProps(props)
+  const { className, ...remainingComponentProps } = componentProps
 
   return (
     <TooltipWrapper tooltip={tooltip} tooltipType={tooltipType}>
       <RACButton
-        className={buttonRecipe(variantProps)}
-        {...(componentProps as RACButtonsProps)}
+        className={[buttonRecipe(variantProps), className].join(' ')}
+        {...(remainingComponentProps as RACButtonsProps)}
       >
         {!props.loading && props.icon}
         {props.loading && <Loader />}

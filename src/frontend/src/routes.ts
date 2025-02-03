@@ -1,6 +1,5 @@
 import { FeedbackRoute, RoomRoute, roomIdPattern } from '@/features/rooms'
 import { HomeRoute } from '@/features/home'
-import { SdkCreateButton } from './features/rooms/routes/sdk/CreateButton'
 
 export const routes: Record<
   'home' | 'room' | 'feedback' | 'sdkCreateButton',
@@ -28,11 +27,6 @@ export const routes: Record<
     path: '/feedback',
     Component: FeedbackRoute,
   },
-  // sdkCreateButton: {
-  //   name: 'sdkCreateButton',
-  //   path: '/sdk/create-button',
-  //   Component: SdkCreateButton,
-  // },
 }
 
 export type RouteName = keyof typeof routes
