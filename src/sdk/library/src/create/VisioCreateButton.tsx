@@ -16,10 +16,8 @@ export const VisioCreateButton = ({
       //     return;
       // }
       if (event.data.type === ClientMessageType.ROOM_CREATED) {
-        console.log("event", event);
         const data = event.data.data;
         const roomUrl = data.url;
-        console.log("roomUrl", roomUrl);
         onRoomCreated(roomUrl);
       }
     };

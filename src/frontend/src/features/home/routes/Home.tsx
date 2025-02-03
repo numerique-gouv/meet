@@ -18,6 +18,7 @@ import { ReactNode, useEffect, useState } from 'react'
 
 import { css } from '@/styled-system/css'
 import { menuRecipe } from '@/primitives/menuRecipe.ts'
+import { SdkReverseClient } from '@/features/sdk/SdkReverseClient'
 
 const Columns = ({ children }: { children?: ReactNode }) => {
   return (
@@ -165,20 +166,7 @@ export const Home = () => {
     if (!user) {
       return
     }
-
-    const bc = new BroadcastChannel('APP_CHANNEL')
-    bc.postMessage({ type: 'AUTHENTICATED' })
-
-    /**
-     * This means the parent window has authenticated has successfully refetched user, then we can close the popup.
-     */
-    bc.onmessage = (event) => {
-      console.log('message', event.data)
-      if (event.data.type === 'AUTHENTICATED_ACK') {
-        console.log('CLOSE WINDOW')
-        window.close()
-      }
-    }
+    SdkReverseClient.broadcastAuthentication()
   }, [user])
 
   return (

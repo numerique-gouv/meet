@@ -11,8 +11,7 @@ import { ClientMessageType, SdkReverseClient } from '../SdkReverseClient'
 import { authUrl, useUser } from '@/features/auth'
 
 export const SdkCreateButton = () => {
-  const { isLoggedIn } = useUser()
-  console.log('isLoggedIn', isLoggedIn)
+  const { isLoggedIn, ...other } = useUser()
   const { t } = useTranslation('sdk', { keyPrefix: 'createButton' })
   const [roomUrl, setRoomUrl] = useState<string>()
   const [isLoading, setIsLoading] = useState(false)
@@ -22,33 +21,17 @@ export const SdkCreateButton = () => {
 
   const { mutateAsync: createRoom } = useCreateRoom()
 
-  /**
-   * Listen to the broadcast channel. When the window opened via startSSO will be redirected to the success page,
-   * it will broadcast an AUTHENTICATED message which this function will use to re-fetch the user.
-   * Once this is done we will broadcast an AUTHENTICATED_ACK message to the opened window which will be waiting
-   * for it to close itself.
-   */
-  const setupBroadcastChannel = () => {
-    const bc = new BroadcastChannel('APP_CHANNEL')
-    bc.onmessage = async (event) => {
-      console.log('EVENT BROADCAST', event.data)
-      if (event.data.type === 'AUTHENTICATED') {
-        // await init?.()
-        bc.postMessage({ type: 'AUTHENTICATED_ACK' })
-        submitCreateRoom()
-      }
-    }
-  }
-
   const startSSO = () => {
-    setupBroadcastChannel()
+    SdkReverseClient.waitForAuthenticationAck().then(async () => {
+      await other.refetch()
+      submitCreateRoom()
+    })
     const params = `scrollbars=no,resizable=no,status=no,location=no,toolbar=no,menubar=no,
 width=400,height=900,left=100,top=100`
     window.open(new URL('authenticate/', authUrl()).href, '', params)
   }
 
   const submitCreateRoom = () => {
-    console.log('SUBMIT')
     setIsLoading(true)
     setTimeout(() => {
       const slug = generateRoomId()
@@ -79,7 +62,7 @@ width=400,height=900,left=100,top=100`
       })}
     >
       {roomUrl ? (
-        <RoomButton roomUrl={roomUrl} />
+        <RoomUrl roomUrl={roomUrl} />
       ) : (
         <Button
           variant="primaryDark"
@@ -96,11 +79,8 @@ width=400,height=900,left=100,top=100`
   )
 }
 
-const RoomButton = ({ roomUrl }: { roomUrl: string }) => {
-  const { t } = useTranslation('sdk', { keyPrefix: 'createButton' })
-  const { t: th } = useTranslation('home')
+const RoomUrl = ({ roomUrl }: { roomUrl: string }) => {
   const [isCopied, setIsCopied] = useState(false)
-  const [isHovered, setIsHovered] = useState(false)
 
   const copy = () => {
     navigator.clipboard.writeText(roomUrl!)
@@ -109,36 +89,28 @@ const RoomButton = ({ roomUrl }: { roomUrl: string }) => {
   }
 
   return (
-    <>
-      {roomUrl}
+    <div
+      className={css({
+        display: 'flex',
+        alignItems: 'center',
+        gap: '0.5rem',
+      })}
+    >
+      <span
+        className={css({
+          color: 'greyscale.600',
+        })}
+      >
+        {roomUrl}
+      </span>
       <Button
         variant={isCopied ? 'success' : 'quaternaryText'}
-        onHoverChange={setIsHovered}
         data-attr="sdk-create-copy"
         onPress={copy}
-        className={css({
-          ...(isCopied
-            ? {}
-            : {
-                paddingLeft: 0,
-              }),
-        })}
-        icon={
-          isCopied ? (
-            <RiCheckLine size={18} style={{ marginRight: '8px' }} />
-          ) : (
-            <RiFileCopyLine size={24} />
-          )
-        }
+        square
       >
-        {isCopied ? (
-          th('laterMeetingDialog.copied')
-        ) : (
-          <>
-            {isHovered ? th('laterMeetingDialog.copy') : <div>{roomUrl}</div>}
-          </>
-        )}
+        {isCopied ? <RiCheckLine /> : <RiFileCopyLine />}
       </Button>
-    </>
+    </div>
   )
 }
