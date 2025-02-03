@@ -7,6 +7,6 @@ entries:
     name: meet
     type: application
     urls:
-    - https://numerique-gouv.github.io/meet/meet-0.0.1.tgz
+    - https://suitenumerique.github.io/meet/meet-0.0.1.tgz
     version: 0.0.1
 generated: "2025-01-02T16:53:42.250429432Z"
