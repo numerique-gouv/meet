@@ -1,4 +1,4 @@
-import { LocalVideoTrack } from 'livekit-client'
+import { LocalVideoTrack, Track } from 'livekit-client'
 import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import {
@@ -12,6 +12,7 @@ import { styled } from '@/styled-system/jsx'
 import { BackgroundOptions } from '@livekit/track-processors'
 import { BlurOn } from '@/components/icons/BlurOn'
 import { BlurOnStrong } from '@/components/icons/BlurOnStrong'
+import { useTrackToggle } from '@livekit/components-react'
 import { Loader } from '@/primitives/Loader'
 import { useSyncAfterDelay } from '@/hooks/useSyncAfterDelay'
 
@@ -45,6 +46,7 @@ export const EffectsConfiguration = ({
 }: EffectsConfigurationProps) => {
   const videoRef = useRef<HTMLVideoElement>(null)
   const { t } = useTranslation('rooms', { keyPrefix: 'effects' })
+  const { toggle, enabled } = useTrackToggle({ source: Track.Source.Camera })
   const [processorPending, setProcessorPending] = useState(false)
   const processorPendingReveal = useSyncAfterDelay(processorPending)
 
@@ -65,8 +67,30 @@ export const EffectsConfiguration = ({
     type: ProcessorType,
     options: BackgroundOptions
   ) => {
-    if (!videoTrack) return
     setProcessorPending(true)
+    if (!videoTrack) {
+      /**
+       * Special case: if no video track is available, then we must pass directly the processor into the
+       * toggle call. Otherwise, the rest of the function below would not have a videoTrack to call
+       * setProccesor on.
+       *
+       * We arrive in this condition when we enter the room with the camera already off.
+       */
+      const newProcessorTmp = BackgroundProcessorFactory.getProcessor(
+        type,
+        options
+      )!
+      await toggle(true, {
+        processor: newProcessorTmp,
+      })
+      setTimeout(() => setProcessorPending(false))
+      return
+    }
+
+    if (!enabled) {
+      await toggle(true)
+    }
+
     const processor = getProcessor()
     try {
       if (isSelected(type, options)) {
@@ -88,7 +112,7 @@ export const EffectsConfiguration = ({
         onSubmit?.(processor)
       }
     } catch (error) {
-      console.error('Error applying blur:', error)
+      console.error('Error applying effect:', error)
     } finally {
       // Without setTimeout the DOM is not refreshing when updating the options.
       setTimeout(() => setProcessorPending(false))
