@@ -12,6 +12,8 @@ import { styled } from '@/styled-system/jsx'
 import { BackgroundOptions } from '@livekit/track-processors'
 import { BlurOn } from '@/components/icons/BlurOn'
 import { BlurOnStrong } from '@/components/icons/BlurOnStrong'
+import { Loader } from '@/primitives/Loader'
+import { useSyncAfterDelay } from '@/hooks/useSyncAfterDelay'
 
 enum BlurRadius {
   NONE = 0,
@@ -44,6 +46,7 @@ export const EffectsConfiguration = ({
   const videoRef = useRef<HTMLVideoElement>(null)
   const { t } = useTranslation('rooms', { keyPrefix: 'effects' })
   const [processorPending, setProcessorPending] = useState(false)
+  const processorPendingReveal = useSyncAfterDelay(processorPending)
 
   useEffect(() => {
     const videoElement = videoRef.current
@@ -134,6 +137,7 @@ export const EffectsConfiguration = ({
         className={css({
           width: '100%',
           aspectRatio: 16 / 9,
+          position: 'relative',
         })}
       >
         {videoTrack && !videoTrack.isMuted ? (
@@ -168,6 +172,17 @@ export const EffectsConfiguration = ({
             >
               {t('activateCamera')}
             </P>
+          </div>
+        )}
+        {processorPendingReveal && (
+          <div
+            className={css({
+              position: 'absolute',
+              right: '8px',
+              bottom: '8px',
+            })}
+          >
+            <Loader />
           </div>
         )}
       </div>
@@ -212,7 +227,7 @@ export const EffectsConfiguration = ({
                     tooltip={tooltipLabel(ProcessorType.BLUR, {
                       blurRadius: BlurRadius.LIGHT,
                     })}
-                    isDisabled={processorPending}
+                    isDisabled={processorPendingReveal}
                     onChange={async () =>
                       await toggleEffect(ProcessorType.BLUR, {
                         blurRadius: BlurRadius.LIGHT,
@@ -232,7 +247,7 @@ export const EffectsConfiguration = ({
                     tooltip={tooltipLabel(ProcessorType.BLUR, {
                       blurRadius: BlurRadius.NORMAL,
                     })}
-                    isDisabled={processorPending}
+                    isDisabled={processorPendingReveal}
                     onChange={async () =>
                       await toggleEffect(ProcessorType.BLUR, {
                         blurRadius: BlurRadius.NORMAL,
@@ -280,7 +295,7 @@ export const EffectsConfiguration = ({
                         tooltip={tooltipLabel(ProcessorType.VIRTUAL, {
                           imagePath,
                         })}
-                        isDisabled={processorPending}
+                        isDisabled={processorPendingReveal}
                         onChange={async () =>
                           await toggleEffect(ProcessorType.VIRTUAL, {
                             imagePath,

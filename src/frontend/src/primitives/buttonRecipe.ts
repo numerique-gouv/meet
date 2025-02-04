@@ -101,6 +101,11 @@ export const buttonRecipe = cva({
         '&[data-selected]': {
           boxShadow: 'token(colors.primary.400) 0px 0px 0px 3px inset',
         },
+        '&[data-disabled]': {
+          backgroundColor: 'greyscale.100',
+          color: 'greyscale.400',
+          opacity: '0.7',
+        },
       },
       tertiary: {
         backgroundColor: 'primary.100',
