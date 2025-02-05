@@ -82,6 +82,7 @@
 | `backend.persistence.volume-name.mountPath`           | Path where the volume should be mounted to                                         |                                                                                                                               |
 | `backend.extraVolumeMounts`                           | Additional volumes to mount on the backend.                                        | `[]`                                                                                                                          |
 | `backend.extraVolumes`                                | Additional volumes to mount on the backend.                                        | `[]`                                                                                                                          |
+| `backend.pdb.enabled`                                 | Enable pdb on backend                                                              | `true`                                                                                                                        |
 
 ### frontend
 
@@ -131,6 +132,7 @@
 | `frontend.persistence.volume-name.mountPath`           | Path where the volume should be mounted to                                          |                         |
 | `frontend.extraVolumeMounts`                           | Additional volumes to mount on the frontend.                                        | `[]`                    |
 | `frontend.extraVolumes`                                | Additional volumes to mount on the frontend.                                        | `[]`                    |
+| `frontend.pdb.enabled`                                 | Enable pdb on frontend                                                              | `true`                  |
 
 ### posthog
 
@@ -208,6 +210,7 @@
 | `summary.persistence.volume-name.mountPath`           | Path where the volume should be mounted to                                         |                    |
 | `summary.extraVolumeMounts`                           | Additional volumes to mount on the summary.                                        | `[]`               |
 | `summary.extraVolumes`                                | Additional volumes to mount on the summary.                                        | `[]`               |
+| `summary.pdb.enabled`                                 | Enable pdb on summary                                                              | `true`             |
 
 ### celery
 
@@ -255,3 +258,4 @@
 | `celery.persistence.volume-name.mountPath`           | Path where the volume should be mounted to                                        |             |
 | `celery.extraVolumeMounts`                           | Additional volumes to mount on the celery.                                        | `[]`        |
 | `celery.extraVolumes`                                | Additional volumes to mount on the celery.                                        | `[]`        |
+| `celery.pdb.enabled`                                 | Enable pdb on celery                                                              | `false`     |
