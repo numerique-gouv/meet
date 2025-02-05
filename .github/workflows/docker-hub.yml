@@ -128,4 +128,4 @@ jobs:
         run: |
           data='{"ref": "'$GITHUB_REF'","repository": {"html_url":"'$GITHUB_SERVER_URL'/'$GITHUB_REPOSITORY'"}}'
           sig=$(echo -n ${data} | openssl dgst -sha1 -hmac "${{ secrets.ARGOCD_WEBHOOK_SECRET }}" | awk '{print "X-Hub-Signature: sha1="$2}')
-          curl -X POST -H 'X-GitHub-Event:push' -H "Content-Type: application/json" -H "${sig}" --data "${data}" ${{ vars.ARGOCD_WEBHOOK_URL }}
+          curl -X POST -H 'X-GitHub-Event:push' -H "Content-Type: application/json" -H "${sig}" --data "${data}" ${{ vars.ARGOCD_PREPROD_WEBHOOK_URL }}
