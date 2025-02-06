@@ -7,13 +7,5 @@
     {
       "path": "./tsconfig.node.json"
     }
-  ],
-  "compilerOptions": {
-    "jsx": "preserve",
-    "allowSyntheticDefaultImports": true,
-    "baseUrl": "./src",
-    "paths": {
-      "@/*": ["./*"]
-    }
-  }
+  ]
 }

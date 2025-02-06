@@ -1,4 +1,5 @@
-// TODO: Handle config by env
 export const DEFAULT_CONFIG = {
-  url: "http://localhost:3000/sdk",
+  url: import.meta.env.VITE_VISIO_SDK_URL,
 };
+
+console.log(import.meta.env.VITE_VISIO_SDK_URL);

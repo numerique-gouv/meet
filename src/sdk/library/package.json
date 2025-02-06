@@ -17,7 +17,7 @@
     }
   },
   "scripts": {
-    "dev": "vite build -w",
+    "dev": "vite build -w --mode development",
     "build": "tsc -b && vite build",
     "lint": "eslint . --ext ts,tsx",
     "preview": "vite preview"

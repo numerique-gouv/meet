@@ -1,6 +1,6 @@
 import { DEFAULT_CONFIG } from "@/Config";
 import { ClientMessageType } from "@/Types";
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 
 export const VisioCreateButton = ({
   onRoomCreated,

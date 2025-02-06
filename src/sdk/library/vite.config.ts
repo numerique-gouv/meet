@@ -1,13 +1,23 @@
-import { resolve } from "path";
+import path, { resolve } from "path";
 
 import react from "@vitejs/plugin-react-swc";
-import { defineConfig } from "vite";
+import { AliasOptions, defineConfig } from "vite";
 import dts from "vite-plugin-dts";
 import tsconfigPaths from "vite-tsconfig-paths";
 
+console.log(path.resolve(__dirname, "src"));
+
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [tsconfigPaths(), react(), dts()],
+  plugins: [
+    react(),
+    dts({ tsconfigPath: "./tsconfig.app.json", rollupTypes: true }),
+  ],
+  resolve: {
+    alias: {
+      "@": path.resolve(__dirname, "src"),
+    } as AliasOptions,
+  },
   build: {
     lib: {
       entry: resolve(__dirname, "src/index.tsx"),
