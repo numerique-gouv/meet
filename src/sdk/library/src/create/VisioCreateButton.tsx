@@ -9,12 +9,10 @@ export const VisioCreateButton = ({
 }) => {
   useEffect(() => {
     window.onmessage = (event) => {
-      // TODO: Verify origin.
-      // console.log('Message received window', event.data, event.origin);
-      // if (event.origin !== ORIGIN) {
-      //     console.error('Origin not allowed', event.origin);
-      //     return;
-      // }
+      // Make sure it is the correct origin.
+      if (event.origin !== new URL(DEFAULT_CONFIG.url).origin) {
+        return;
+      }
       if (event.data.type === ClientMessageType.ROOM_CREATED) {
         const data = event.data.data;
         const roomUrl = data.url;

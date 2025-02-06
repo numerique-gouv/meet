@@ -3,9 +3,6 @@ import path, { resolve } from "path";
 import react from "@vitejs/plugin-react-swc";
 import { AliasOptions, defineConfig } from "vite";
 import dts from "vite-plugin-dts";
-import tsconfigPaths from "vite-tsconfig-paths";
-
-console.log(path.resolve(__dirname, "src"));
 
 // https://vitejs.dev/config/
 export default defineConfig({

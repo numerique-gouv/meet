@@ -1,24 +1,30 @@
 <div align="center">
 
-# 🗂️ Widged SDK
-
-🏗️ Work in progress ...
-
-**Please see the official [README](https://github.com/numerique-gouv/widged)**
+# 🎥 Visio SDK
 
 **Easily open a widget to browse user files on any of your project**
 
-<img src="https://github.com/numerique-gouv/widged/blob/main/assets/workspaces.png" alt="" />
+<img src="docs/demo.gif" alt="" />
 
 **As simple as**
+
 </div>
 
 ```ts
-const client = new WidgedClient();
-client.pickFile({
-  maxFiles: 3,
-  onSelection: (files) => {
-    console.log('Selected files', files);
-  },
-});
+import { VisioCreateButton } from "@gouvfr-lasuite/visio-sdk";
+
+function App() {
+  const [roomUrl, setRoomUrl] = useState();
+
+  return <VisioCreateButton onRoomCreated={setRoomUrl} />;
+}
+```
+
+## Installation
+
+To install, you can use npm or yarn:
+
+```
+$ npm install --save @gouvfr-lasuite/visio-sdk
+$ yarn add @gouvfr-lasuite/visio-sdk
 ```

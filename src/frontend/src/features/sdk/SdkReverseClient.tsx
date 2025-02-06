@@ -4,15 +4,14 @@ export enum ClientMessageType {
 
 export class SdkReverseClient {
   /**
-   * TODO: Use API Key. Must be based on some sort of credentials ?
+   * IDEA: Use API Key. Must be based on some sort of credentials ? No needs for now as now security
+   * issues are plausible.
    */
   static getAllowTargetOrigin() {
     return '*'
   }
 
   static post(type: ClientMessageType, data: unknown = {}) {
-    console.log('POST !', type, data, window.parent)
-    // TODO: Make sure to use the correct origin.
     window.parent.postMessage(
       {
         type,
@@ -20,7 +19,6 @@ export class SdkReverseClient {
       },
       SdkReverseClient.getAllowTargetOrigin()
     )
-    // TODO: Maybe use this to enforce security.
   }
 
   static broadcastAuthentication() {

@@ -160,7 +160,7 @@ export const Home = () => {
   const { user } = useUser()
 
   /**
-   * Used for SDK popup.
+   * Used for SDK popup to close automatically.
    */
   useEffect(() => {
     if (!user) {
