@@ -7,6 +7,19 @@ import { Div } from '@/primitives'
 import { ChatMessage, isMobileBrowser } from '@livekit/components-core'
 import { useNotificationSound } from '@/features/notifications/hooks/useSoundNotification'
 
+enum ToastDuration {
+  SHORT = 3000,
+  MEDIUM = 4000,
+  LONG = 5000,
+}
+
+const NotificationDuration = {
+  ALERT: ToastDuration.SHORT,
+  MESSAGE: ToastDuration.LONG,
+  PARTICIPANT_JOINED: ToastDuration.LONG,
+  HAND_RAISED: ToastDuration.LONG,
+} as const
+
 export const MainNotificationToast = () => {
   const room = useRoomContext()
   const { triggerNotificationSound } = useNotificationSound()
@@ -23,7 +36,7 @@ export const MainNotificationToast = () => {
           message: chatMessage.message,
           type: NotificationType.MessageReceived,
         },
-        { timeout: 5000 }
+        { timeout: NotificationDuration.MESSAGE }
       )
     }
     room.on(RoomEvent.ChatMessage, handleChatMessage)
@@ -49,7 +62,7 @@ export const MainNotificationToast = () => {
               participant,
               type: NotificationType.ParticipantMuted,
             },
-            { timeout: 3000 }
+            { timeout: NotificationDuration.ALERT }
           )
           break
         default:
@@ -74,7 +87,7 @@ export const MainNotificationToast = () => {
           type: NotificationType.ParticipantJoined,
         },
         {
-          timeout: 5000,
+          timeout: NotificationDuration.PARTICIPANT_JOINED,
         }
       )
     }
@@ -133,7 +146,7 @@ export const MainNotificationToast = () => {
             participant,
             type: NotificationType.HandRaised,
           },
-          { timeout: 5000 }
+          { timeout: NotificationDuration.HAND_RAISED }
         )
       }
     }
