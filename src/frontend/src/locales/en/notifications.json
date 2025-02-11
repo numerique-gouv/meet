@@ -6,5 +6,6 @@
   "raised": {
     "description": "{{name}} has raised their hand.",
     "cta": "Open waiting list"
-  }
+  },
+  "muted": "{{name}} has muted your microphone. No participant can hear you."
 }

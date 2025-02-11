@@ -6,5 +6,6 @@
   "raised": {
     "description": "{{name}} a levé la main.",
     "cta": "Ouvrir la file d'attente"
-  }
+  },
+  "muted": "{{name}} a coupé votre micro. Aucun participant ne peut l'entendre."
 }
