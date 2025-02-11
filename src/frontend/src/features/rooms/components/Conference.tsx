@@ -32,7 +32,7 @@ export const Conference = ({
   useEffect(() => {
     posthog.capture('visit-room', { slug: roomId })
   }, [roomId])
-  const fetchKey = [keys.room, roomId, userConfig.username]
+  const fetchKey = [keys.room, roomId]
 
   const {
     mutateAsync: createRoom,
@@ -49,6 +49,7 @@ export const Conference = ({
     isError: isFetchError,
     data,
   } = useQuery({
+    /* eslint-disable @tanstack/query/exhaustive-deps */
     queryKey: fetchKey,
     staleTime: 6 * 60 * 60 * 1000, // By default, LiveKit access tokens expire 6 hours after generation
     initialData: initialRoomData,
