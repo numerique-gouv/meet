@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import { useRoomContext } from '@livekit/components-react'
-import { Participant, RoomEvent } from 'livekit-client'
+import { Participant, RemoteParticipant, RoomEvent } from 'livekit-client'
 import { ToastProvider, toastQueue } from './components/ToastProvider'
 import { NotificationType } from './NotificationType'
 import { Div } from '@/primitives'
@@ -10,6 +10,36 @@ import { useNotificationSound } from '@/features/notifications/hooks/useSoundNot
 export const MainNotificationToast = () => {
   const room = useRoomContext()
   const { triggerNotificationSound } = useNotificationSound()
+
+  useEffect(() => {
+    const handleDataReceived = (
+      payload: Uint8Array,
+      participant?: RemoteParticipant
+    ) => {
+      const decoder = new TextDecoder()
+      const notificationType = decoder.decode(payload)
+
+      if (!participant) return
+
+      switch (notificationType) {
+        case NotificationType.ParticipantMuted:
+          toastQueue.add(
+            {
+              participant,
+              type: NotificationType.ParticipantMuted,
+            },
+            { timeout: 3000 }
+          )
+          break
+        default:
+          console.warn(`Unhandled notification type: ${notificationType}`)
+      }
+    }
+    room.on(RoomEvent.DataReceived, handleDataReceived)
+    return () => {
+      room.off(RoomEvent.DataReceived, handleDataReceived)
+    }
+  }, [room])
 
   useEffect(() => {
     const showJoinNotification = (participant: Participant) => {
