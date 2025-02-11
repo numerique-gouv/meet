@@ -3,11 +3,23 @@ import Source = Track.Source
 import { fetchServerApi } from './fetchServerApi'
 import { buildServerApiUrl } from './buildServerApiUrl'
 import { useRoomData } from '../hooks/useRoomData'
+import { useRoomContext } from '@livekit/components-react'
+import { NotificationType } from '@/features/notifications/NotificationType'
 
 export const useMuteParticipant = () => {
   const data = useRoomData()
+  const room = useRoomContext()
 
-  const muteParticipant = (participant: Participant) => {
+  const notifyParticipant = async (participant: Participant) => {
+    const encoder = new TextEncoder()
+    const data = encoder.encode(NotificationType.ParticipantMuted)
+    await room.localParticipant.publishData(data, {
+      reliable: true,
+      destinationIdentities: [participant.identity],
+    })
+  }
+
+  const muteParticipant = async (participant: Participant) => {
     if (!data || !data?.livekit) {
       throw new Error('Room data is not available')
     }
@@ -18,22 +30,33 @@ export const useMuteParticipant = () => {
     if (!trackSid) {
       throw new Error('Missing audio track')
     }
-    return fetchServerApi(
-      buildServerApiUrl(
-        data.livekit.url,
-        'twirp/livekit.RoomService/MutePublishedTrack'
-      ),
-      data.livekit.token,
-      {
-        method: 'POST',
-        body: JSON.stringify({
-          room: data.livekit.room,
-          identity: participant.identity,
-          muted: true,
-          track_sid: trackSid,
-        }),
-      }
-    )
+
+    try {
+      const response = await fetchServerApi(
+        buildServerApiUrl(
+          data.livekit.url,
+          'twirp/livekit.RoomService/MutePublishedTrack'
+        ),
+        data.livekit.token,
+        {
+          method: 'POST',
+          body: JSON.stringify({
+            room: data.livekit.room,
+            identity: participant.identity,
+            muted: true,
+            track_sid: trackSid,
+          }),
+        }
+      )
+
+      await notifyParticipant(participant)
+
+      return response
+    } catch (error) {
+      console.error(
+        `Failed to mute participant ${participant.identity}: ${error instanceof Error ? error.message : 'Unknown error'}`
+      )
+    }
   }
   return { muteParticipant }
 }
