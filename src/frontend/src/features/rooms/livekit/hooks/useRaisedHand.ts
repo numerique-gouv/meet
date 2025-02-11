@@ -19,5 +19,5 @@ export function useRaisedHand({ participant }: useRaisedHandProps) {
     }
   }
 
-  return { isHandRaised: parsedMetadata.raised, toggleRaisedHand }
+  return { isHandRaised: parsedMetadata.raised || false, toggleRaisedHand }
 }
