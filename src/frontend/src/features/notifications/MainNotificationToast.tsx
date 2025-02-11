@@ -4,12 +4,33 @@ import { Participant, RemoteParticipant, RoomEvent } from 'livekit-client'
 import { ToastProvider, toastQueue } from './components/ToastProvider'
 import { NotificationType } from './NotificationType'
 import { Div } from '@/primitives'
-import { isMobileBrowser } from '@livekit/components-core'
+import { ChatMessage, isMobileBrowser } from '@livekit/components-core'
 import { useNotificationSound } from '@/features/notifications/hooks/useSoundNotification'
 
 export const MainNotificationToast = () => {
   const room = useRoomContext()
   const { triggerNotificationSound } = useNotificationSound()
+
+  useEffect(() => {
+    const handleChatMessage = (
+      chatMessage: ChatMessage,
+      participant?: Participant | undefined
+    ) => {
+      if (!participant || participant.isLocal) return
+      toastQueue.add(
+        {
+          participant: participant,
+          message: chatMessage.message,
+          type: NotificationType.MessageReceived,
+        },
+        { timeout: 5000 }
+      )
+    }
+    room.on(RoomEvent.ChatMessage, handleChatMessage)
+    return () => {
+      room.off(RoomEvent.ChatMessage, handleChatMessage)
+    }
+  }, [room])
 
   useEffect(() => {
     const handleDataReceived = (
@@ -32,7 +53,7 @@ export const MainNotificationToast = () => {
           )
           break
         default:
-          console.warn(`Unhandled notification type: ${notificationType}`)
+          return
       }
     }
     room.on(RoomEvent.DataReceived, handleDataReceived)
