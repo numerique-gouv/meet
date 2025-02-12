@@ -24,7 +24,21 @@ function getNotificationsState(): State {
     const stored = localStorage.getItem(STORAGE_KEYS.NOTIFICATIONS)
     if (!stored) return DEFAULT_STATE
     const parsed = JSON.parse(stored, deserializeToProxyMap)
-    return parsed || DEFAULT_STATE
+    // Ensure all default notification types exist in the recovered state
+    return {
+      ...DEFAULT_STATE,
+      ...parsed,
+      soundNotifications: proxyMap(
+        new Map(
+          Array.from(DEFAULT_STATE.soundNotifications.keys()).map((key) => [
+            key,
+            parsed.soundNotifications.has(key)
+              ? parsed.soundNotifications.get(key)
+              : DEFAULT_STATE.soundNotifications.get(key),
+          ])
+        )
+      ),
+    }
   } catch (error: unknown) {
     console.error(
       '[NotificationsStore] Failed to parse stored settings:',
