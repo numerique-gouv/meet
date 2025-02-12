@@ -34,6 +34,11 @@ RUN npm run build
 # ---- Front-end image ----
 FROM nginxinc/nginx-unprivileged:1.26-alpine AS frontend-production
 
+USER root
+RUN apk update && apk upgrade libssl3 libcrypto3
+
+USER nginx
+
 # Un-privileged user running the application
 ARG DOCKER_USER
 USER ${DOCKER_USER}
