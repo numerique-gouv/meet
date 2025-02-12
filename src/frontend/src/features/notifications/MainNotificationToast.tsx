@@ -30,6 +30,7 @@ export const MainNotificationToast = () => {
       participant?: Participant | undefined
     ) => {
       if (!participant || participant.isLocal) return
+      triggerNotificationSound(NotificationType.MessageReceived)
       toastQueue.add(
         {
           participant: participant,
@@ -43,7 +44,7 @@ export const MainNotificationToast = () => {
     return () => {
       room.off(RoomEvent.ChatMessage, handleChatMessage)
     }
-  }, [room])
+  }, [room, triggerNotificationSound])
 
   useEffect(() => {
     const handleDataReceived = (
