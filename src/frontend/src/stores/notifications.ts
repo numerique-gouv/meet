@@ -14,6 +14,7 @@ const DEFAULT_STATE: State = {
     new Map([
       [NotificationType.ParticipantJoined, true],
       [NotificationType.HandRaised, true],
+      [NotificationType.MessageReceived, true],
     ])
   ),
   soundNotificationVolume: 0.1,
