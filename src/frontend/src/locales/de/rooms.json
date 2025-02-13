@@ -199,5 +199,10 @@
     "effects": "",
     "muteParticipant": "",
     "fullScreen": ""
+  },
+  "fullScreenWarning": {
+    "message": "",
+    "stop": "",
+    "ignore": ""
   }
 }

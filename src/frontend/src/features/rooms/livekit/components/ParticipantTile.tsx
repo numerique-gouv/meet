@@ -28,6 +28,7 @@ import { HStack } from '@/styled-system/jsx'
 import { MutedMicIndicator } from './MutedMicIndicator'
 import { ParticipantPlaceholder } from './ParticipantPlaceholder'
 import { ParticipantTileFocus } from './ParticipantTileFocus'
+import { FullScreenShareWarning } from './FullScreenShareWarning'
 
 export function TrackRefContextIfNeeded(
   props: React.PropsWithChildren<{
@@ -100,6 +101,7 @@ export const ParticipantTile: (
     <div ref={ref} style={{ position: 'relative' }} {...elementProps}>
       <TrackRefContextIfNeeded trackRef={trackReference}>
         <ParticipantContextIfNeeded participant={trackReference.participant}>
+          <FullScreenShareWarning trackReference={trackReference} />
           {children ?? (
             <>
               {isTrackReference(trackReference) &&
