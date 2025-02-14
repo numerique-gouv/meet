@@ -15,7 +15,7 @@ import {
 } from '@livekit/components-react'
 import { useTranslation } from 'react-i18next'
 import { TrackReferenceOrPlaceholder } from '@livekit/components-core'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useSidePanel } from '../hooks/useSidePanel'
 import { useFullScreen } from '../hooks/useFullScreen'
 import { Participant, Track } from 'livekit-client'
@@ -126,6 +126,8 @@ const MuteButton = ({ participant }: { participant: Participant }) => {
   )
 }
 
+const MOUSE_IDLE_TIME = 3000
+
 export const ParticipantTileFocus = ({
   trackRef,
 }: {
@@ -134,8 +136,11 @@ export const ParticipantTileFocus = ({
   const [hovered, setHovered] = useState(false)
   const [opacity, setOpacity] = useState(0)
 
+  const idleTimerRef = useRef<number | null>(null)
+  const [isIdleRef, setIsIdleRef] = useState(false)
+
   useEffect(() => {
-    if (hovered) {
+    if (hovered && !isIdleRef) {
       // Wait for next frame to ensure element is mounted
       requestAnimationFrame(() => {
         setOpacity(0.6)
@@ -143,7 +148,17 @@ export const ParticipantTileFocus = ({
     } else {
       setOpacity(0)
     }
-  }, [hovered])
+  }, [hovered, isIdleRef])
+
+  const handleMouseMove = () => {
+    if (idleTimerRef.current) {
+      window.clearTimeout(idleTimerRef.current)
+    }
+    idleTimerRef.current = window.setTimeout(() => {
+      setIsIdleRef(true)
+    }, MOUSE_IDLE_TIME)
+    setIsIdleRef(false)
+  }
 
   const participant = trackRef.participant
 
@@ -164,6 +179,7 @@ export const ParticipantTileFocus = ({
       })}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
+      onMouseMove={handleMouseMove}
     >
       {hovered && (
         <div
