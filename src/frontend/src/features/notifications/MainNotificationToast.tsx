@@ -3,22 +3,10 @@ import { useRoomContext } from '@livekit/components-react'
 import { Participant, RemoteParticipant, RoomEvent } from 'livekit-client'
 import { ToastProvider, toastQueue } from './components/ToastProvider'
 import { NotificationType } from './NotificationType'
+import { NotificationDuration } from './NotificationDuration'
 import { Div } from '@/primitives'
 import { ChatMessage, isMobileBrowser } from '@livekit/components-core'
 import { useNotificationSound } from '@/features/notifications/hooks/useSoundNotification'
-
-enum ToastDuration {
-  SHORT = 3000,
-  MEDIUM = 4000,
-  LONG = 5000,
-}
-
-const NotificationDuration = {
-  ALERT: ToastDuration.SHORT,
-  MESSAGE: ToastDuration.LONG,
-  PARTICIPANT_JOINED: ToastDuration.LONG,
-  HAND_RAISED: ToastDuration.LONG,
-} as const
 
 export const MainNotificationToast = () => {
   const room = useRoomContext()
